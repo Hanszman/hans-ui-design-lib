@@ -71,3 +71,15 @@ export default defineConfig([
   },
 ])
 ```
+
+Commands ran to build this project:
+
+npm create vite@latest my-ui -- --template react-ts
+
+npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-prettier eslint-plugin-react eslint-plugin-react-hooks prettier
+
+npm i -D tailwindcss @tailwindcss/vite
+
+npx storybook@latest init --builder @storybook/builder-vite
+
+npm i -D vitest @testing-library/react @testing-library/jest-dom @types/testing-library__jest-dom jsdom
