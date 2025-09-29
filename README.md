@@ -1,79 +1,140 @@
-# React + TypeScript + Vite
+# Hans UI Design Library
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A **React + TypeScript component library** that serves as the base design system for my personal projects.  
+This library provides reusable, styled and documented UI components with a consistent structure and best practices.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+- ⚛️ **React 19** with **TypeScript** for type safety
+- 🎨 **TailwindCSS + SCSS** for styling flexibility
+- 📖 **Storybook** for interactive component documentation
+- ✅ **Vitest + React Testing Library + JSDOM** for unit and integration testing
+- 📊 **Test Coverage (V8)** with HTML reports
+- 🧹 **ESLint + Prettier** for code quality and formatting
+- ⚡ **Vite** as the bundler for fast builds and DX
+- 🌍 Ready to be published and consumed via **npm**
+- **Node Version to build this project: 22.18.0 and npm 10.9.3**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 📦 Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install hans-ui-design-lib
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🛠️ Usage
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```tsx
+import { Button } from 'hans-ui-design-lib';
+
+function App() {
+  return <Button>Click me</Button>;
+}
 ```
 
-Commands ran to build this project:
+---
 
+## 🧑‍💻 Development
+
+Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/Hanszman/hans-ui-design-lib.git
+cd hans-ui-design-lib
+npm install
+```
+
+Start the dev server:
+
+```bash
+npm run dev
+```
+
+Run tests:
+
+```bash
+npm test
+```
+
+Run tests with coverage:
+
+```bash
+npm run test:coverage
+```
+
+Lint code:
+
+```bash
+npm run lint
+```
+
+Build the package:
+
+```bash
+npm run build
+```
+
+---
+
+## 📖 Documentation
+
+The components are documented using **Storybook**.
+
+Run Storybook:
+
+```bash
+npm run storybook
+```
+
+To build the static documentation:
+
+```bash
+npm run build-storybook
+```
+
+---
+
+## 🚢 Publishing to npm
+
+Make sure you are logged in to npm:
+
+```bash
+npm login
+```
+
+Then build and publish:
+
+```bash
+npm run build
+npm publish
+```
+
+---
+
+## 🛠️ Tech Stack
+
+- **React 19**
+- **TypeScript**
+- **Vite**
+- **Storybook**
+- **TailwindCSS**
+- **SCSS**
+- **Vitest**
+- **React Testing Library**
+- **JSDOM**
+- **ESLint (flat config)**
+- **Prettier**
+
+---
+
+## 📜 History of commands used to build this project:
+
+```
 npm create vite@latest my-ui -- --template react-ts
 
 npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-prettier eslint-plugin-react eslint-plugin-react-hooks prettier
@@ -82,4 +143,7 @@ npm i -D tailwindcss @tailwindcss/vite
 
 npx storybook@latest init --builder @storybook/builder-vite
 
-npm i -D vitest @testing-library/react @testing-library/jest-dom @types/testing-library__jest-dom jsdom
+npm i -D vitest @testing-library/react @testing-library/jest-dom @types/testing-library\_\_jest-dom jsdom
+
+npm i -D sass
+```
