@@ -31,11 +31,10 @@ npm install hans-ui-design-lib
 ## 🛠️ Usage
 
 ```tsx
+import 'hans-ui-design-lib/dist/style.css';
 import { Button } from 'hans-ui-design-lib';
 
-function App() {
-  return <Button>Click me</Button>;
-}
+<Button label="Button" onClick={() => {}} primary />;
 ```
 
 ---
@@ -112,8 +111,10 @@ Then build and publish:
 
 ```bash
 npm run build
-npm publish
+npm run publish:[UPDATE-TYPE]
 ```
+
+UPDATE-TYPES: patch | minor | major
 
 ---
 

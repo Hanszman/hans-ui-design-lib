@@ -1,5 +1,3 @@
--Build and Publish package
--Try to use package on some test project
 -Create new components basing on storybook deafault components
 -Clean/Remove storybook default components
 -Set dev page

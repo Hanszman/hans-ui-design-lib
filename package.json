@@ -8,6 +8,7 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
+  "style": "dist/style.css",
   "files": [
     "dist"
   ],
@@ -29,6 +30,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "tsc -p tsconfig.build.json && vite build",
+    "publish:patch": "npm version patch && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:major": "npm version major && npm publish",
     "lint": "eslint .",
     "test": "vitest run",
     "test:coverage": "npm run test -- --coverage",
