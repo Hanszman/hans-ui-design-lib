@@ -31,7 +31,7 @@ npm install hans-ui-design-lib
 ## 🛠️ Usage
 
 ```tsx
-import 'hans-ui-design-lib/dist/style.css';
+import 'hans-ui-design-lib/style.css';
 import { Button } from 'hans-ui-design-lib';
 
 <Button label="Button" onClick={() => {}} primary />;
