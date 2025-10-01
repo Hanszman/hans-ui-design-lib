@@ -1,6 +1,5 @@
--Clean not needed assets
 -Set dev page
--Create new components basing on storybook deafault components
--Clean/Remove storybook default components
--Refactor portfolio to use this package and create a backend for it
+-Create new components and stories basing on storybook default components
+-Clean/Remove storybook default components and assets
+-Refactor portfolio to use this package and create a backend for it (Neon DB PostgreSQL)
 -Start game site project
