@@ -1,12 +1,12 @@
+// Global resets
+@use './reset.scss';
+
+// Component-level overrides
+@use '../stories/button.css';
+
 // Tailwind layers
 @import './tailwind.css';
 
 // Custom variables
 // @import "./variables/colors.scss";
 // @import "./variables/spacing.scss";
-
-// Global resets
-// @import "./reset.scss";
-
-// Component-level overrides (se tiver)
-@import '../stories/button.css';
