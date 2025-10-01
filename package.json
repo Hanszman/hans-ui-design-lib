@@ -2,7 +2,7 @@
   "name": "hans-ui-design-lib",
   "description": "UI Design System Base Lib",
   "author": "Victor Hanszman",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "license": "MIT",
   "main": "dist/index.cjs.js",

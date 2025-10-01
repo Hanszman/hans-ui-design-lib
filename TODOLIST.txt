@@ -1,6 +1,6 @@
+-Clean not needed assets
+-Set dev page
 -Create new components basing on storybook deafault components
 -Clean/Remove storybook default components
--Set dev page
--Clean not needed assets
 -Refactor portfolio to use this package and create a backend for it
 -Start game site project
