@@ -148,4 +148,8 @@ npx storybook@latest init --builder @storybook/builder-vite
 npm i -D vitest @testing-library/react @testing-library/jest-dom @types/testing-library\_\_jest-dom jsdom
 
 npm i -D sass
+
+npm i -D tailwindcss autoprefixer postcss
+
+npm i -D @tailwindcss/vite
 ```
