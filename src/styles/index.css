@@ -5,8 +5,7 @@
 @import '../stories/button.css';
 
 /* Custom variables */
-/* @import "./variables/colors.scss" as *; */
-/* @import "./variables/spacing.scss" as *; */
+@import './colors.scss';
 
 /* Tailwind layers */
 @import './tailwind.css';
