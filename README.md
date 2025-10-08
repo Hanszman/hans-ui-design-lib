@@ -1,6 +1,6 @@
 # Hans UI Design Library
 
-A **React + TypeScript component library** that serves as the base design system for my personal projects.  
+A **React + TypeScript component library** that serves as the base design system for personal projects.  
 This library provides reusable, styled and documented UI components with a consistent structure and best practices.
 
 ---
@@ -85,13 +85,13 @@ npm run build
 
 When developing a component, to export it to the lib, you can add those lines into the files:
 
-```
+```ts
 // ./src/index.ts
 export * from './components/YourComponent';
 ```
 
-```
-// ./src/styles/index.css
+```css
+/* ./src/styles/index.css */
 @import '../components/yourComponent.scss';
 ```
 
