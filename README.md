@@ -31,7 +31,7 @@ npm install hans-ui-design-lib
 ## 🛠️ Usage
 
 ```tsx
-import 'hans-ui-design-lib/style.css';
+import 'hans-ui-design-lib/style.css'; // Can be imported in a root file from your project
 import { Button } from 'hans-ui-design-lib';
 
 <Button label="Button" onClick={() => {}} primary />;
@@ -77,6 +77,22 @@ Build the package:
 
 ```bash
 npm run build
+```
+
+---
+
+## 🚢 Exporting
+
+When developing a component, to export it to the lib, you can add those lines into the files:
+
+```
+// ./src/index.ts
+export * from './components/YourComponent';
+```
+
+```
+// ./src/styles/index.css
+@import '../components/yourComponent.scss';
 ```
 
 ---
