@@ -9,6 +9,23 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/setupTests.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: [
+        'node_modules',
+        'dist',
+        'storybook-static',
+        '.storybook',
+        '.vscode',
+        '**/*.stories.tsx',
+        '**/*.model.ts',
+        '**/*.mdx',
+        '**/index.ts',
+        '**/main.tsx',
+      ],
+    },
   },
   esbuild: {
     jsx: 'automatic',
