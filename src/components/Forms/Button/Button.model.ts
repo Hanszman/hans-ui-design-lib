@@ -1,4 +1,4 @@
-export type ButtonSize = 'small' | 'medium';
+export type ButtonSize = 'small' | 'medium' | 'large';
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'transparent';
 export type ButtonStatus =
   | 'default'
@@ -12,11 +12,9 @@ export type ButtonType = 'button' | 'submit' | 'reset';
 export default interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
-  icon?: React.ReactNode | string;
-  iconPosition?: IconPosition;
   size?: ButtonSize;
   variant?: ButtonVariant;
   status?: ButtonStatus;
-  customClasses?: string;
   buttonType?: ButtonType;
+  customClasses?: string;
 }

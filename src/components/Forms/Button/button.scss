@@ -1,0 +1,11 @@
+.hans-button {
+  @apply flex;
+}
+
+.hans-danger {
+  @apply bg-[var(--purple-500)];
+}
+
+.hans-small {
+  @apply w-6 h-4;
+}
