@@ -1,5 +1,4 @@
--Create new components and stories basing on storybook default components
--Clean/Remove storybook default components and assets
+-Create more components and stories basing on DS components
 -Prepare this lib to be a module federation and be consumed by Angular (separating or integrating build on Vercel)
 -Start game site project in Next.js + React + React Native using this lib
 -Refactor portfolio in Angular to use this module federation and create a backend for it (Node.js + Neon + PostgreSQL DB)

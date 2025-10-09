@@ -2,4 +2,4 @@
 import './styles/index.css';
 
 // Exports
-export * from './stories/Button';
+export * from './components/Forms/Button/Button';
