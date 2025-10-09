@@ -11,6 +11,7 @@ export const Button = React.memo((props: ButtonProps) => {
     customClasses = '',
     buttonType = 'button',
     disabled = false,
+    children,
     ...rest
   } = props;
 
@@ -21,7 +22,7 @@ export const Button = React.memo((props: ButtonProps) => {
       className={`hans-button block hans-${variant} hans-${status} hans-${size} ${customClasses}`}
       {...rest}
     >
-      {label && <span>{label}</span>}
+      {children ?? (label && <span>{label}</span>)}
     </button>
   );
 });
