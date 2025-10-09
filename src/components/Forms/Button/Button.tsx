@@ -1,5 +1,6 @@
 import React from 'react';
 import type ButtonProps from './Button.model';
+import { Icon } from '../../Icon/Icon';
 
 export const Button = React.memo((props: ButtonProps) => {
   const {
@@ -15,21 +16,13 @@ export const Button = React.memo((props: ButtonProps) => {
     ...rest
   } = props;
 
-  const renderIcon = () => {
-    if (!icon) return null;
-
-    if (typeof icon === 'string') {
-      // Font Awesome ou classes customizadas
-      return (
-        <i className={`${icon} ${iconPosition === 'Left' ? 'mr-2' : 'ml-2'}`} />
-      );
-    }
-
-    // ReactNode (ex: <FaHome />)
-    return (
-      <span className={iconPosition === 'Left' ? 'mr-2' : 'ml-2'}>{icon}</span>
-    );
-  };
+  const renderIcon = icon ? (
+    typeof icon === 'string' ? (
+      <Icon name={icon} />
+    ) : React.isValidElement(icon) ? (
+      icon
+    ) : null
+  ) : null;
 
   return (
     <button
@@ -38,9 +31,9 @@ export const Button = React.memo((props: ButtonProps) => {
       className={`stw-button block stw-${variant} stw-${status} stw-${size} ${customClasses}`}
       {...rest}
     >
-      {iconPosition === 'Left' && renderIcon()}
+      {iconPosition === 'Left' && renderIcon}
       {label && <span>{label}</span>}
-      {iconPosition === 'Right' && renderIcon()}
+      {iconPosition === 'Right' && renderIcon}
     </button>
   );
 });
