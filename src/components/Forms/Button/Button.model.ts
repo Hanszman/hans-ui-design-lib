@@ -6,7 +6,6 @@ export type ButtonStatus =
   | 'warning'
   | 'success'
   | 'info';
-export type IconPosition = 'Left' | 'Right';
 export type ButtonType = 'button' | 'submit' | 'reset';
 
 export default interface ButtonProps

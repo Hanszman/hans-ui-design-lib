@@ -1,15 +1,7 @@
-import type { IconType } from 'react-icons';
 import React from 'react';
-
-export interface IconProps {
-  name?: string;
-  icon?: IconType;
-  className?: string;
-  [key: string]: any;
-}
+import type IconProps from './Icon.model';
 
 export const Icon: React.FC<IconProps> = ({
-  name,
   icon: IconComp,
   className,
   ...rest
@@ -21,6 +13,5 @@ export const Icon: React.FC<IconProps> = ({
         {...(rest as React.SVGProps<SVGSVGElement>)}
       />
     );
-  if (name) return <i className={`${name} ${className}`} {...rest} />;
   return null;
 };

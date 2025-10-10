@@ -9,12 +9,6 @@ describe('Icon', () => {
     expect(icon).toBeInTheDocument();
   });
 
-  it('renders font-awesome string', () => {
-    render(<Icon name="fa fa-home" data-testid="fa-icon" />);
-    const icon = screen.getByTestId('fa-icon');
-    expect(icon).toBeInTheDocument();
-  });
-
   it('renders nothing if no props', () => {
     const { container } = render(<Icon />);
     expect(container.firstChild).toBeNull();

@@ -10,7 +10,6 @@ const meta: Meta<typeof Icon> = {
   component: Icon,
   tags: ['autodocs'],
   argTypes: {
-    name: { control: 'text' },
     icon: { control: false },
   },
 };
@@ -28,23 +27,12 @@ export const ReactIcons: Story = {
   ),
 };
 
-export const FontAwesomeStrings: Story = {
-  render: () => (
-    <div className="flex gap-4">
-      <Icon name="fa fa-home" />
-      <Icon name="fa fa-user" />
-      <Icon name="fa fa-check" />
-    </div>
-  ),
-};
-
 export const AllReactIcons: Story = {
   render: () => (
     <div className="flex gap-4">
-      {Object.entries(icons).map(([name, IconComp]) => (
-        <div key={name} className="flex flex-col items-center">
+      {Object.entries(icons).map(([_, IconComp]) => (
+        <div className="flex flex-col items-center">
           <IconComp />
-          <span className="text-xs">{name}</span>
         </div>
       ))}
     </div>
