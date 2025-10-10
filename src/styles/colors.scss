@@ -36,38 +36,24 @@
   --white: #ffffff;
 }
 
-/* TODO: Definir Tema:
+[data-theme='combination1'] {
+  --primary-color: var(--purple-500);
+  --secondary-color: var(--blue-500);
+  --success-color: var(--green-500);
+  --danger-color: var(--red-500);
+  --warning-color: var(--yellow-500);
+  --info-color: var(--blue-300);
+  --background-color: var(--gray-100);
+  --text-color: var(--gray-900);
+}
 
-// :root {
-//   --primary-color: #8257e5;
-//   --secondary-color: #3d8bff;
-//   --success-color: #04d361;
-//   --danger-color: #e83f5b;
-//   --warning-color: #f7b500;
-//   --info-color: #a8c9ff;
-//   --background-color: #f2f2f5;
-//   --text-color: #0e0e10;
-// }
-
-// [data-theme="portfolio"] {
-//   --primary-color: var(--purple-500);
-//   --secondary-color: var(--blue-500);
-//   --success-color: var(--green-500);
-//   --danger-color: var(--red-500);
-//   --warning-color: var(--yellow-500);
-//   --info-color: var(--blue-300);
-//   --background-color: var(--gray-100);
-//   --text-color: var(--gray-900);
-// }
-
-// [data-theme="games"] {
-//   --primary-color: var(--yellow-500);
-//   --secondary-color: var(--purple-300);
-//   --success-color: var(--green-300);
-//   --danger-color: var(--red-300);
-//   --warning-color: var(--yellow-300);
-//   --info-color: var(--blue-300);
-//   --background-color: var(--gray-900);
-//   --text-color: var(--gray-100);
-// }
-*/
+[data-theme='combination2'] {
+  --primary-color: var(--yellow-500);
+  --secondary-color: var(--purple-300);
+  --success-color: var(--green-300);
+  --danger-color: var(--red-300);
+  --warning-color: var(--yellow-300);
+  --info-color: var(--blue-300);
+  --background-color: var(--gray-900);
+  --text-color: var(--gray-100);
+}

@@ -2,8 +2,20 @@
   @apply flex;
 }
 
+.hans-primary {
+  @apply bg-[var(--primary-color)] text-[var(--text-color)];
+}
+
+.hans-secondary {
+  @apply bg-[var(--secondary-color)] text-[var(--text-color)];
+}
+
+.hans-success {
+  @apply bg-[var(--success-color)] text-[var(--white)];
+}
+
 .hans-danger {
-  @apply bg-[var(--purple-500)];
+  @apply bg-[var(--danger-color)] text-[var(--white)];
 }
 
 .hans-small {
