@@ -8,19 +8,19 @@ const meta: Meta<typeof Button> = {
   args: {
     label: 'Primary',
     size: 'medium',
-    variant: 'primary',
-    status: 'default',
+    variant: 'default',
+    color: 'primary',
     disabled: false,
   },
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'outline', 'transparent'],
+      options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
     },
     size: { control: 'select', options: ['small', 'medium', 'large'] },
-    status: {
+    color: {
       control: 'select',
-      options: ['default', 'danger', 'warning', 'success', 'info'],
+      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
     },
   },
 };
@@ -33,7 +33,7 @@ export const Default: Story = {};
 export const Danger: Story = {
   args: {
     label: 'Danger',
-    status: 'danger',
+    color: 'danger',
   },
 };
 

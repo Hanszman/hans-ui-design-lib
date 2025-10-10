@@ -1,8 +1,10 @@
-/* Global resets */
+/* Global resets and styles */
 @import './reset.scss';
+@import './common.scss';
 
 /* Component-level overrides */
 @import '../components/Forms/Button/button.scss';
+@import '../components/Icon/icon.scss';
 
 /* Custom variables */
 @import './colors.scss';

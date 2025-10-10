@@ -1,15 +1,14 @@
 import React from 'react';
-import type ButtonProps from './Button.model';
-import './button.scss';
+import type ButtonProps from './Button.types';
 
 export const Button = React.memo((props: ButtonProps) => {
   const {
     label = '',
     size = 'medium',
-    variant = 'primary',
-    status = 'default',
-    customClasses = '',
+    variant = 'default',
+    color = 'primary',
     buttonType = 'button',
+    customClasses = '',
     disabled = false,
     children,
     ...rest
@@ -19,7 +18,7 @@ export const Button = React.memo((props: ButtonProps) => {
     <button
       type={buttonType}
       disabled={disabled}
-      className={`hans-button block hans-${variant} hans-${status} hans-${size} ${customClasses}`}
+      className={`hans-button block hans-${variant} hans-${color} hans-${size} ${customClasses}`}
       {...rest}
     >
       {children ?? (label && <span>{label}</span>)}
