@@ -6,8 +6,8 @@ export default interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
   size?: Size;
-  variant?: Variant;
   color?: Color;
+  variant?: Variant;
   buttonType?: ButtonType;
   customClasses?: string;
 }

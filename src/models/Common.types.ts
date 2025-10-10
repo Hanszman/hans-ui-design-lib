@@ -1,10 +1,4 @@
 export type Size = 'small' | 'medium' | 'large';
-export type Variant =
-  | 'strong'
-  | 'default'
-  | 'neutral'
-  | 'outline'
-  | 'transparent';
 export type Color =
   | 'primary'
   | 'secondary'
@@ -12,3 +6,9 @@ export type Color =
   | 'danger'
   | 'warning'
   | 'info';
+export type Variant =
+  | 'strong'
+  | 'default'
+  | 'neutral'
+  | 'outline'
+  | 'transparent';

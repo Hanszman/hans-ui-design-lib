@@ -13,7 +13,7 @@ export const Icon: React.FC<IconProps> = (props: IconProps) => {
   if (IconComp)
     return (
       <IconComp
-        className={`hans-icon block hans-${color} hans-${size} ${customClasses}`}
+        className={`hans-icon hans-icon-${size} hans-icon-${color} ${customClasses}`}
         {...(rest as React.SVGProps<SVGSVGElement>)}
       />
     );

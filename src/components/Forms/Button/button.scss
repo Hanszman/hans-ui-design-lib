@@ -1,23 +1,35 @@
 .hans-button {
-  @apply flex;
+  @apply rounded-full cursor-pointer;
 }
 
-.hans-primary {
-  @apply bg-[var(--primary-color)] text-[var(--text-color)];
+.hans-button-primary.hans-button-strong {
+  @apply bg-[var(--primary-strong-color)] text-[var(--primary-neutral-color)];
 }
 
-.hans-secondary {
-  @apply bg-[var(--secondary-color)] text-[var(--text-color)];
+.hans-button-primary.hans-button-default {
+  @apply bg-[var(--primary-default-color)] text-[var(--white)];
 }
 
-.hans-success {
-  @apply bg-[var(--success-color)] text-[var(--white)];
+.hans-button-primary.hans-button-neutral {
+  @apply bg-[var(--primary-neutral-color)] text-[var(--primary-strong-color)];
 }
 
-.hans-danger {
-  @apply bg-[var(--danger-color)] text-[var(--white)];
+.hans-button-primary.hans-button-outline {
+  @apply bg-transparent text-[var(--primary-strong-color)] border-[var(--primary-default-color)];
 }
 
-.hans-small {
-  @apply w-6 h-4;
+.hans-button-primary.hans-button-transparent {
+  @apply bg-transparent text-[var(--primary-default-color)];
+}
+
+.hans-button-small {
+  @apply px-4 py-1;
+}
+
+.hans-button-medium {
+  @apply px-5 py-2;
+}
+
+.hans-button-large {
+  @apply px-6 py-3;
 }
