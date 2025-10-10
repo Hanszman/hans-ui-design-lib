@@ -2,6 +2,18 @@
   @apply rounded-full cursor-pointer;
 }
 
+.hans-button-small {
+  @apply px-4 py-1;
+}
+
+.hans-button-medium {
+  @apply px-5 py-2;
+}
+
+.hans-button-large {
+  @apply px-6 py-3;
+}
+
 .hans-button-primary.hans-button-strong {
   @apply bg-[var(--primary-strong-color)] text-[var(--primary-neutral-color)];
 }
@@ -22,14 +34,102 @@
   @apply bg-transparent text-[var(--primary-default-color)];
 }
 
-.hans-button-small {
-  @apply px-4 py-1;
+.hans-button-secondary.hans-button-strong {
+  @apply bg-[var(--secondary-strong-color)] text-[var(--secondary-neutral-color)];
 }
 
-.hans-button-medium {
-  @apply px-5 py-2;
+.hans-button-secondary.hans-button-default {
+  @apply bg-[var(--secondary-default-color)] text-[var(--white)];
 }
 
-.hans-button-large {
-  @apply px-6 py-3;
+.hans-button-secondary.hans-button-neutral {
+  @apply bg-[var(--secondary-neutral-color)] text-[var(--secondary-strong-color)];
+}
+
+.hans-button-secondary.hans-button-outline {
+  @apply bg-transparent text-[var(--secondary-strong-color)] border-[var(--secondary-default-color)];
+}
+
+.hans-button-secondary.hans-button-transparent {
+  @apply bg-transparent text-[var(--secondary-default-color)];
+}
+
+.hans-button-success.hans-button-strong {
+  @apply bg-[var(--success-strong-color)] text-[var(--success-neutral-color)];
+}
+
+.hans-button-success.hans-button-default {
+  @apply bg-[var(--success-default-color)] text-[var(--white)];
+}
+
+.hans-button-success.hans-button-neutral {
+  @apply bg-[var(--success-neutral-color)] text-[var(--success-strong-color)];
+}
+
+.hans-button-success.hans-button-outline {
+  @apply bg-transparent text-[var(--success-strong-color)] border-[var(--success-default-color)];
+}
+
+.hans-button-success.hans-button-transparent {
+  @apply bg-transparent text-[var(--success-default-color)];
+}
+
+.hans-button-danger.hans-button-strong {
+  @apply bg-[var(--danger-strong-color)] text-[var(--danger-neutral-color)];
+}
+
+.hans-button-danger.hans-button-default {
+  @apply bg-[var(--danger-default-color)] text-[var(--white)];
+}
+
+.hans-button-danger.hans-button-neutral {
+  @apply bg-[var(--danger-neutral-color)] text-[var(--danger-strong-color)];
+}
+
+.hans-button-danger.hans-button-outline {
+  @apply bg-transparent text-[var(--danger-strong-color)] border-[var(--danger-default-color)];
+}
+
+.hans-button-danger.hans-button-transparent {
+  @apply bg-transparent text-[var(--danger-default-color)];
+}
+
+.hans-button-warning.hans-button-strong {
+  @apply bg-[var(--warning-strong-color)] text-[var(--warning-neutral-color)];
+}
+
+.hans-button-warning.hans-button-default {
+  @apply bg-[var(--warning-default-color)] text-[var(--white)];
+}
+
+.hans-button-warning.hans-button-neutral {
+  @apply bg-[var(--warning-neutral-color)] text-[var(--warning-strong-color)];
+}
+
+.hans-button-warning.hans-button-outline {
+  @apply bg-transparent text-[var(--warning-strong-color)] border-[var(--warning-default-color)];
+}
+
+.hans-button-warning.hans-button-transparent {
+  @apply bg-transparent text-[var(--warning-default-color)];
+}
+
+.hans-button-info.hans-button-strong {
+  @apply bg-[var(--info-strong-color)] text-[var(--info-neutral-color)];
+}
+
+.hans-button-info.hans-button-default {
+  @apply bg-[var(--info-default-color)] text-[var(--white)];
+}
+
+.hans-button-info.hans-button-neutral {
+  @apply bg-[var(--info-neutral-color)] text-[var(--info-strong-color)];
+}
+
+.hans-button-info.hans-button-outline {
+  @apply bg-transparent text-[var(--info-strong-color)] border-[var(--info-default-color)];
+}
+
+.hans-button-info.hans-button-transparent {
+  @apply bg-transparent text-[var(--info-default-color)];
 }

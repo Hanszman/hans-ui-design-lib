@@ -20,7 +20,7 @@ export default defineConfig({
         '.storybook',
         '.vscode',
         '**/*.stories.tsx',
-        '**/*.model.ts',
+        '**/*.types.ts',
         '**/*.mdx',
         '**/index.ts',
         '**/main.tsx',

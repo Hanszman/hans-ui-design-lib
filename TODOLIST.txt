@@ -1,17 +1,12 @@
 Create more components and stories basing on DS components:
 Icon:
--Include size
 -Configure MDX with Stories and set react icons link (and show some examples on Storybook)
--Change interface to model on model files
 
 Button:
--Set SCSS for general status, variants and size
 -Set examples for Button with all colors, status and with icons on MDX with stories
 -Set more tests for Button
--Change interface to model on model files
 
 General:
--Set SCSS for general status, variants and size
 -Try to remove test button on storybook
 
 Other projects:
