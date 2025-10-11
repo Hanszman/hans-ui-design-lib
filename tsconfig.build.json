@@ -8,5 +8,14 @@
     "noEmit": false,
     "allowImportingTsExtensions": false
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "**/*.stories.tsx",
+    "**/*.stories.ts",
+    "**/*.test.tsx",
+    "**/*.test.ts",
+    "**/*.mdx",
+    "node_modules",
+    "dist"
+  ]
 }
