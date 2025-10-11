@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 import DocsPage from './Button.mdx';
+// import { Icon } from '../../Icon/Icon';
+// import { FaHome } from 'react-icons/fa';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
@@ -33,7 +35,11 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const Primary: Story = {};
+export const Primary: Story = {
+  args: {
+    label: 'Click',
+  },
+};
 
 export const Sizes: Story = {
   render: () => (
@@ -76,5 +82,14 @@ export const VariantsAndColors: Story = {
         ),
       )}
     </div>
+  ),
+};
+
+export const WithChildren: Story = {
+  render: () => (
+    <Button>
+      {/* <Icon icon={FaHome} /> */}
+      <span>Child Text</span>
+    </Button>
   ),
 };
