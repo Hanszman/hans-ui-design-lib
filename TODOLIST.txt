@@ -1,10 +1,12 @@
 Create more components and stories basing on DS components:
 Icon:
--Configure MDX with Stories and set react icons link (and show some examples on Storybook)
+-Fix Icon component to show React Icon when passed a string
+-Configure MDX with Stories and set React Icons link (and show some examples on Storybook)
+-Set more tests for Icon
+-Fix Icons CSS if necessary
 
 Button:
--Set examples for Button with all colors, status and with icons on MDX with stories
--Set more tests for Button
+-Fix children example on MDX from Button when Icon component is fixed
 
 General:
 -Try to remove test button on storybook
