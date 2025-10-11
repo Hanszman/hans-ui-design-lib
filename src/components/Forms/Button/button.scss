@@ -2,6 +2,15 @@
   @apply rounded-full cursor-pointer;
 }
 
+.hans-button:disabled,
+.hans-button[disabled] {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.hans-button:disabled > * {
+  @apply pointer-events-none;
+}
+
 .hans-button-small {
   @apply px-4 py-1;
 }
