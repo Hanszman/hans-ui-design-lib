@@ -13,11 +13,11 @@ const meta: Meta<typeof Button> = {
     disabled: false,
   },
   argTypes: {
+    size: { control: 'select', options: ['small', 'medium', 'large'] },
     variant: {
       control: 'select',
       options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
     },
-    size: { control: 'select', options: ['small', 'medium', 'large'] },
     color: {
       control: 'select',
       options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
@@ -33,20 +33,17 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const Default: Story = {};
-
-export const Danger: Story = {
-  args: {
-    label: 'Danger',
-    color: 'danger',
-  },
-};
-
-export const Small: Story = {
-  args: {
-    label: 'Small Button',
-    size: 'small',
-  },
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {['small', 'medium', 'large'].map((size) => (
+        <div key={size}>
+          <p className="font-bold mb-2">{size}</p>
+          <Button key={size} label={`${size}`} size={size as any} />
+        </div>
+      ))}
+    </div>
+  ),
 };
 
 export const VariantsAndColors: Story = {

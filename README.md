@@ -34,7 +34,7 @@ npm install hans-ui-design-lib
 import 'hans-ui-design-lib/style.css'; // Can be imported in a root file from your project
 import { Button } from 'hans-ui-design-lib';
 
-<Button label="Button" onClick={() => {}} primary />;
+<Button label="Button" onClick={() => {}} />;
 ```
 
 ---

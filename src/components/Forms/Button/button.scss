@@ -27,7 +27,7 @@
 }
 
 .hans-button-primary.hans-button-outline {
-  @apply bg-transparent text-[var(--primary-strong-color)] border-[var(--primary-default-color)];
+  @apply bg-transparent text-[var(--primary-strong-color)] border-[var(--primary-default-color)] outline;
 }
 
 .hans-button-primary.hans-button-transparent {
@@ -47,7 +47,7 @@
 }
 
 .hans-button-secondary.hans-button-outline {
-  @apply bg-transparent text-[var(--secondary-strong-color)] border-[var(--secondary-default-color)];
+  @apply bg-transparent text-[var(--secondary-strong-color)] border-[var(--secondary-default-color)] outline;
 }
 
 .hans-button-secondary.hans-button-transparent {
@@ -67,7 +67,7 @@
 }
 
 .hans-button-success.hans-button-outline {
-  @apply bg-transparent text-[var(--success-strong-color)] border-[var(--success-default-color)];
+  @apply bg-transparent text-[var(--success-strong-color)] border-[var(--success-default-color)] outline;
 }
 
 .hans-button-success.hans-button-transparent {
@@ -87,7 +87,7 @@
 }
 
 .hans-button-danger.hans-button-outline {
-  @apply bg-transparent text-[var(--danger-strong-color)] border-[var(--danger-default-color)];
+  @apply bg-transparent text-[var(--danger-strong-color)] border-[var(--danger-default-color)] outline;
 }
 
 .hans-button-danger.hans-button-transparent {
@@ -107,7 +107,7 @@
 }
 
 .hans-button-warning.hans-button-outline {
-  @apply bg-transparent text-[var(--warning-strong-color)] border-[var(--warning-default-color)];
+  @apply bg-transparent text-[var(--warning-strong-color)] border-[var(--warning-default-color)] outline;
 }
 
 .hans-button-warning.hans-button-transparent {
@@ -127,7 +127,7 @@
 }
 
 .hans-button-info.hans-button-outline {
-  @apply bg-transparent text-[var(--info-strong-color)] border-[var(--info-default-color)];
+  @apply bg-transparent text-[var(--info-strong-color)] border-[var(--info-default-color)] outline;
 }
 
 .hans-button-info.hans-button-transparent {

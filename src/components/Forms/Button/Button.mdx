@@ -3,22 +3,23 @@ import {
   Title,
   Primary,
   Controls,
-  Stories,
-  ArgTypes,
+  Canvas,
 } from '@storybook/addon-docs/blocks';
+import * as ButtonStories from './Button.stories';
 
-<Meta title="Components/Button" />
+<Meta isTemplate />
 
 <Title />
 
-O componente **Button** é usado para disparar ações dentro da interface.  
-Suporta múltiplas cores, tamanhos e variações de estilo, permitindo personalização total com temas.
+The **Button** component is used to trigger actions within the interface.
+It supports multiple sizes, colors and style variations, allowing full customization with themes.
 
 ---
 
-## 🚀 Uso
+## 🚀 Usage
 
-Para utilizar o componente em seu projeto React:
+To use the component you need to import it and include it in your React app.
+Make sure you have already set up the [Hans UI Design Library](/docs/getting-started--docs) in your project.
 
 ```tsx
 import { Button } from '@hans/ui-design-lib';
@@ -27,3 +28,27 @@ export const Example = () => (
   <Button label="Click me" color="primary" variant="default" />
 );
 ```
+
+Then, you can use the component in your template. Here is a basic example:
+
+<Primary />
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Sizes
+
+Listed below are the possible sizes of the component:
+
+<Canvas of={ButtonStories.Sizes} />
+
+## Variations
+
+Listed below are the possible colors and variations of the component with all its states:
+
+<Canvas of={ButtonStories.VariantsAndColors} />
+
+You can also change the combination of color theme to see other options.
