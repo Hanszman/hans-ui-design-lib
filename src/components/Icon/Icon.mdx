@@ -1,0 +1,28 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as IconStories from './Icon.stories';
+
+<Meta of={IconStories} />
+
+<Title />
+
+The **Icon** component dynamically renders any icon from the [React Icons](https://react-icons.github.io/react-icons/) library using only the icon name.
+
+It allows consuming projects (React, Angular, etc.) to use icons **without directly importing** `react-icons`, acting as a middleware for consistent usage across frameworks.
+
+---
+
+## 🚀 Usage
+
+```tsx
+import { Icon } from '@hans/ui-design-lib';
+
+export const Example = () => (
+  <Icon name="FaHome" color="primary" size="medium" />
+);
+```

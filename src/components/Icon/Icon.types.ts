@@ -1,10 +1,8 @@
-import type { IconType } from 'react-icons';
 import type { Size, Color } from '../../models/Common.types';
 
 export default interface IconProps {
-  icon?: IconType;
+  name?: string;
   size?: Size;
   color?: Color;
   customClasses?: string;
-  [key: string]: any;
 }

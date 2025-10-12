@@ -1,38 +1,40 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Icon } from './Icon';
-import { FaHome, FaUser, FaCheck } from 'react-icons/fa';
-
-const icons = { FaHome, FaUser, FaCheck };
-//https://react-icons.github.io/react-icons/
 
 const meta: Meta<typeof Icon> = {
   title: 'Components/Icon',
   component: Icon,
-  tags: ['autodocs'],
+  args: {
+    size: 'medium',
+    color: 'primary',
+  },
   argTypes: {
-    icon: { control: false },
+    name: {
+      control: 'text',
+      description: 'Nome do ícone (ex: FaHome, MdAdd, BiStar)',
+    },
+    size: { control: 'select', options: ['small', 'medium', 'large'] },
+    color: {
+      control: 'select',
+      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+    },
   },
 };
 
 export default meta;
 type Story = StoryObj<typeof Icon>;
 
-export const ReactIcons: Story = {
-  render: () => (
-    <div className="flex gap-4">
-      <Icon icon={FaHome} />
-      <Icon icon={FaUser} />
-      <Icon icon={FaCheck} />
-    </div>
-  ),
+export const Basic: Story = {
+  args: { name: 'FaHome' },
 };
 
-export const AllReactIcons: Story = {
+export const MultipleIcons: Story = {
   render: () => (
     <div className="flex gap-4">
-      {Object.entries(icons).map(([_, IconComp]) => (
-        <div className="flex flex-col items-center">
-          <IconComp />
+      {['FaHome', 'FaUser', 'MdAdd', 'BiStar', 'AiFillHeart'].map((name) => (
+        <div key={name} className="flex flex-col items-center">
+          <Icon name={name} />
+          <span className="text-xs mt-1">{name}</span>
         </div>
       ))}
     </div>
