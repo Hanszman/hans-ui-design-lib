@@ -12,6 +12,7 @@ export default defineConfig([
     '.storybook',
     'storybook-static',
     'coverage',
+    'html',
   ]),
   {
     files: ['**/*.{ts,tsx}'],
