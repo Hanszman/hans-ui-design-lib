@@ -8,5 +8,6 @@
   "tailwindCSS.includeLanguages": {
     "scss": "javascript"
   },
-  "tailwindCSS.emmetCompletions": true
+  "tailwindCSS.emmetCompletions": true,
+  "scss.lint.unknownAtRules": "ignore"
 }
