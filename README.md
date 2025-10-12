@@ -3,8 +3,6 @@
 A **React + TypeScript component library** that serves as the base design system for personal projects.  
 This library provides reusable, styled and documented UI components with a consistent structure and best practices.
 
----
-
 ## 🚀 Features
 
 - ⚛️ **React 19** with **TypeScript** for type safety
@@ -18,15 +16,11 @@ This library provides reusable, styled and documented UI components with a consi
 - 📖 Documentation ready to be used (deployed by **Vercel**) at https://hans-ui-design-lib.vercel.app/
 - **Node Version to build this project: 22.18.0 and npm 10.9.3**
 
----
-
 ## 📦 Installation
 
 ```bash
 npm install hans-ui-design-lib
 ```
-
----
 
 ## 🛠️ Usage
 
@@ -36,8 +30,6 @@ import { Button } from 'hans-ui-design-lib';
 
 <Button label="Button" onClick={() => {}} />;
 ```
-
----
 
 ## 🧑‍💻 Development
 
@@ -79,8 +71,6 @@ Build the package:
 npm run build
 ```
 
----
-
 ## 🚢 Exporting
 
 When developing a component, to export it to the lib, you can add those lines into the files:
@@ -94,8 +84,6 @@ export * from './components/YourComponent';
 /* ./src/styles/index.css */
 @import '../components/yourComponent.scss';
 ```
-
----
 
 ## 📖 Documentation
 
@@ -112,8 +100,6 @@ To build the static documentation:
 ```bash
 npm run build-storybook
 ```
-
----
 
 ## 🚢 Publishing to npm
 
@@ -132,8 +118,6 @@ npm run publish:[UPDATE-TYPE]
 
 UPDATE-TYPES: patch | minor | major
 
----
-
 ## 🛠️ Tech Stack
 
 - **React 19**
@@ -147,8 +131,6 @@ UPDATE-TYPES: patch | minor | major
 - **JSDOM**
 - **ESLint (flat config)**
 - **Prettier**
-
----
 
 ## 📜 History of commands used to build this project:
 
