@@ -1,5 +1,5 @@
 .hans-button {
-  @apply rounded-full cursor-pointer;
+  @apply rounded-full cursor-pointer flex items-center gap-1;
 }
 
 .hans-button:disabled,

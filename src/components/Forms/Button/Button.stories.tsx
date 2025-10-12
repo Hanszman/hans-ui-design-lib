@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 import DocsPage from './Button.mdx';
-// import { Icon } from '../../Icon/Icon';
-// import { FaHome } from 'react-icons/fa';
+import { Icon } from '../../Icon/Icon';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
@@ -88,7 +87,7 @@ export const VariantsAndColors: Story = {
 export const WithChildren: Story = {
   render: () => (
     <Button>
-      {/* <Icon icon={FaHome} /> */}
+      <Icon name="FaHome" />
       <span>Child Text</span>
     </Button>
   ),

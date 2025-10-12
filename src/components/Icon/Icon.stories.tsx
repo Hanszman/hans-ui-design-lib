@@ -6,7 +6,6 @@ const meta: Meta<typeof Icon> = {
   component: Icon,
   args: {
     size: 'medium',
-    color: 'primary',
   },
   argTypes: {
     name: {
@@ -14,10 +13,6 @@ const meta: Meta<typeof Icon> = {
       description: 'Nome do ícone (ex: FaHome, MdAdd, BiStar)',
     },
     size: { control: 'select', options: ['small', 'medium', 'large'] },
-    color: {
-      control: 'select',
-      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
-    },
   },
 };
 

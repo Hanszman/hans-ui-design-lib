@@ -14,30 +14,6 @@
   @apply text-xl;
 }
 
-.hans-icon-primary {
-  @apply text-[var(--primary-default-color)];
-}
-
-.hans-icon-secondary {
-  @apply text-[var(--secondary-default-color)];
-}
-
-.hans-icon-success {
-  @apply text-[var(--success-default-color)];
-}
-
-.hans-icon-danger {
-  @apply text-[var(--danger-default-color)];
-}
-
-.hans-icon-warning {
-  @apply text-[var(--warning-default-color)];
-}
-
-.hans-icon-info {
-  @apply text-[var(--info-default-color)];
-}
-
 .hans-icon-loading {
-  @apply animate-pulse w-4 h-4 bg-gray-200 rounded-full;
+  @apply animate-pulse w-4 h-4 bg-[var(--gray-300)] rounded-full;
 }

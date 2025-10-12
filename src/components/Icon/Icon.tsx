@@ -1,59 +1,54 @@
 import React from 'react';
 import type IconProps from './Icon.types';
-import * as FaIcons from 'react-icons/fa';
-import * as MdIcons from 'react-icons/md';
-import * as BiIcons from 'react-icons/bi';
-import * as AiIcons from 'react-icons/ai';
-import * as BsIcons from 'react-icons/bs';
-import * as IoIcons from 'react-icons/io';
-import * as RiIcons from 'react-icons/ri';
-import * as HiIcons from 'react-icons/hi';
-import * as PiIcons from 'react-icons/pi';
-import * as TbIcons from 'react-icons/tb';
-import * as LuIcons from 'react-icons/lu';
 
-const iconLibraries: Record<
-  string,
-  Record<string, React.ComponentType<any>>
-> = {
-  Fa: FaIcons,
-  Md: MdIcons,
-  Bi: BiIcons,
-  Ai: AiIcons,
-  Bs: BsIcons,
-  Io: IoIcons,
-  Ri: RiIcons,
-  Hi: HiIcons,
-  Pi: PiIcons,
-  Tb: TbIcons,
-  Lu: LuIcons,
+export const dynamicIconImports: Record<string, () => Promise<any>> = {
+  Fa: () => import('react-icons/fa'),
+  Md: () => import('react-icons/md'),
+  Bi: () => import('react-icons/bi'),
+  Ai: () => import('react-icons/ai'),
+  Bs: () => import('react-icons/bs'),
+  Io: () => import('react-icons/io'),
+  Ri: () => import('react-icons/ri'),
+  Hi: () => import('react-icons/hi'),
+  Pi: () => import('react-icons/pi'),
+  Tb: () => import('react-icons/tb'),
+  Lu: () => import('react-icons/lu'),
 };
 
 export const Icon: React.FC<IconProps> = React.memo((props: IconProps) => {
-  const {
-    name,
-    size = 'medium',
-    color = 'primary',
-    customClasses = '',
-    ...rest
-  } = props;
+  const { name, size = 'medium', customClasses = '', ...rest } = props;
+  const [IconComp, setIconComp] = React.useState<React.ComponentType | null>(
+    null,
+  );
 
-  if (!name) return null;
+  React.useEffect(() => {
+    let mounted = true;
+    if (!name) return;
+    const prefix = name.slice(0, 2);
+    const loader = dynamicIconImports[prefix];
+    if (!loader) return;
 
-  const prefix = name.slice(0, 2);
-  const lib = iconLibraries[prefix];
-  const IconComp = lib?.[name];
+    (async () => {
+      try {
+        const lib = await loader();
+        if (!mounted) return;
+        setIconComp(() => lib[name] || null);
+      } catch (err) {
+        console.warn(`[HansUI] Error loading icon ${name}:`, err);
+        if (mounted) setIconComp(() => null);
+      }
+    })();
 
-  if (!IconComp) {
-    console.warn(
-      `[HansUI] Icon "${name}" not found or unsupported prefix "${prefix}".`,
-    );
-    return null;
-  }
+    return () => {
+      mounted = false;
+    };
+  }, [name]);
+
+  if (!IconComp) return <span className="hans-icon-loading" />;
 
   return (
     <IconComp
-      className={`hans-icon hans-icon-${size} hans-icon-${color} ${customClasses}`}
+      className={`hans-icon hans-icon-${size} ${customClasses}`}
       {...(rest as React.SVGProps<SVGSVGElement>)}
     />
   );
