@@ -37,7 +37,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:coverage": "npm run test -- --coverage",
-    "test:coverage-html": "npx vite preview --outDir html",
+    "test:coverage-html": "npx vitest run --coverage --reporter=html",
+    "test:ui": "npx vite preview --outDir html",
     "test:watch": "vitest"
   },
   "peerDependencies": {
