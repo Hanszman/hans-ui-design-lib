@@ -12,17 +12,46 @@ import * as IconStories from './Icon.stories';
 <Title />
 
 The **Icon** component dynamically renders any icon from the [React Icons](https://react-icons.github.io/react-icons/) library using only the icon name.
-
 It allows consuming projects (React, Angular, etc.) to use icons **without directly importing** `react-icons`, acting as a middleware for consistent usage across frameworks.
-
----
 
 ## 🚀 Usage
 
 ```tsx
-import { Icon } from '@hans/ui-design-lib';
+import { Icon } from 'hans-ui-design-lib';
 
-export const Example = () => (
-  <Icon name="FaHome" color="primary" size="medium" />
-);
+export const Example = () => <Icon name="FaHome" size="medium" />;
 ```
+
+Here is a basic example:
+
+<Primary />
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Sizes
+
+Listed below are the possible sizes of the component:
+
+<Canvas of={IconStories.Sizes} />
+
+## Multiple Libraries
+
+You can import icons for all react-icons libraries, such as:
+
+- Fa => Font Awesome
+- Md => Material Design
+- Bi => BoxIcons
+- Ai => Ant Design
+- Bs => Bootstrap
+- Io => Ionicons
+- Ri => Remix
+- Hi => Heroicons
+- Pi => Phosphor
+- Tb => Tabler
+- Lu => Lucide
+
+<Canvas of={IconStories.MultipleIcons} />

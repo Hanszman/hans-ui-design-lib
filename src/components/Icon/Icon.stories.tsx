@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { Size } from '../../models/Common.types';
 import { Icon } from './Icon';
+import DocsPage from './Icon.mdx';
 
 const meta: Meta<typeof Icon> = {
   title: 'Components/Icon',
@@ -14,13 +16,31 @@ const meta: Meta<typeof Icon> = {
     },
     size: { control: 'select', options: ['small', 'medium', 'large'] },
   },
+  parameters: {
+    docs: {
+      page: DocsPage,
+    },
+  },
 };
 
 export default meta;
 type Story = StoryObj<typeof Icon>;
 
-export const Basic: Story = {
+export const Primary: Story = {
   args: { name: 'FaHome' },
+};
+
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {['small', 'medium', 'large'].map((size) => (
+        <div key={size}>
+          <p className="font-bold mb-2">{size}</p>
+          <Icon key={size} name="IoIosHappy" size={size as Size} />
+        </div>
+      ))}
+    </div>
+  ),
 };
 
 export const MultipleIcons: Story = {

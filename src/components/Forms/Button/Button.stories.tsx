@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import type { Size, Color, Variant } from '../../../models/Common.types';
 import { Button } from './Button';
-import DocsPage from './Button.mdx';
 import { Icon } from '../../Icon/Icon';
+import DocsPage from './Button.mdx';
 
 const meta: Meta<typeof Button> = {
-  title: 'Components/Button',
+  title: 'Components/Forms/Button',
   component: Button,
   args: {
     label: 'Primary',
@@ -46,7 +47,7 @@ export const Sizes: Story = {
       {['small', 'medium', 'large'].map((size) => (
         <div key={size}>
           <p className="font-bold mb-2">{size}</p>
-          <Button key={size} label={`${size}`} size={size as any} />
+          <Button key={size} label={`${size}`} size={size as Size} />
         </div>
       ))}
     </div>
@@ -72,8 +73,8 @@ export const VariantsAndColors: Story = {
                 <Button
                   key={color + variant}
                   label={`${color}`}
-                  color={color as any}
-                  variant={variant as any}
+                  color={color as Color}
+                  variant={variant as Variant}
                 />
               ))}
             </div>
