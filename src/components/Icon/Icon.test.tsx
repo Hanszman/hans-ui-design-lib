@@ -1,6 +1,9 @@
+import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import { vi } from 'vitest';
 import { Icon } from './Icon';
+import type { IconLibrary } from './Icon.types';
+import { DynamicIconImports } from './Icon.types';
 
 function deferred<T>() {
   let resolve!: (v: T) => void;
@@ -35,12 +38,14 @@ describe('Icon', () => {
   });
 
   it('Should handle error when loader import fails', async () => {
-    const errorLoader = vi.fn().mockRejectedValue(new Error('fail'));
+    const errorLoader: () => Promise<IconLibrary> = vi
+      .fn()
+      .mockRejectedValue(new Error('fail'));
     const spyWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const iconModule = await import('./Icon');
-    iconModule.dynamicIconImports.Fa = errorLoader;
+    const originalFa = DynamicIconImports.Fa;
+    DynamicIconImports.Fa = errorLoader;
 
-    render(<iconModule.Icon name="FaErrorIcon" />);
+    render(<Icon name="FaErrorIcon" />);
     await new Promise((r) => setTimeout(r, 0));
 
     expect(spyWarn).toHaveBeenCalledWith(
@@ -48,32 +53,36 @@ describe('Icon', () => {
       expect.any(Error),
     );
     expect(document.querySelector('.hans-icon-loading')).toBeInTheDocument();
+    DynamicIconImports.Fa = originalFa;
     spyWarn.mockRestore();
   });
 
   it('Should ignore late resolution from previous effect after name changes (cleanup path)', async () => {
-    const iconModule = await import('./Icon');
-    const originalFa = iconModule.dynamicIconImports.Fa;
-    const first = deferred<any>();
-    const second = Promise.resolve({
-      FaBeer: (props: any) => <svg data-testid="icon-beer" {...props} />,
+    const originalFa = DynamicIconImports.Fa;
+    const first = deferred<IconLibrary>();
+    const second: Promise<IconLibrary> = Promise.resolve({
+      FaBeer: (props: React.SVGProps<SVGSVGElement>) => (
+        <svg data-testid="icon-beer" {...props} />
+      ),
     });
-    const mockLoader = vi
-      .fn<() => Promise<any>>()
+    const mockLoader: () => Promise<IconLibrary> = vi
+      .fn<() => Promise<IconLibrary>>()
       .mockReturnValueOnce(first.promise)
       .mockReturnValueOnce(second);
-    iconModule.dynamicIconImports.Fa = mockLoader;
-    const { rerender } = render(<iconModule.Icon name="FaHome" />);
+    DynamicIconImports.Fa = mockLoader;
+    const { rerender } = render(<Icon name="FaHome" />);
 
-    rerender(<iconModule.Icon name="FaBeer" />);
+    rerender(<Icon name="FaBeer" />);
     await act(async () => {
       first.resolve({
-        FaHome: (p: any) => <svg data-testid="icon-home" {...p} />,
+        FaHome: (p: React.SVGProps<SVGSVGElement>) => (
+          <svg data-testid="icon-home" {...p} />
+        ),
       });
       await Promise.resolve();
     });
 
     expect(await screen.findByTestId('icon-beer')).toBeInTheDocument();
-    iconModule.dynamicIconImports.Fa = originalFa;
+    DynamicIconImports.Fa = originalFa;
   });
 });
