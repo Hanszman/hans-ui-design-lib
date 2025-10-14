@@ -10,7 +10,7 @@ function App() {
             className="w-6 h-auto !mx-2 !my-1"
             alt="Victor Hanszman's Logo"
           />
-          <h1 className="text-[var(--purple-500)] !text-xl !font-bold">
+          <h1 className="text-[var(--primary-default-color)] !text-xl !font-bold">
             Hanszman's UI Design Lib
           </h1>
         </div>
@@ -20,7 +20,10 @@ function App() {
           </p>
           <p>
             Check out the documentation by running the script: &nbsp;
-            <code className="text-[var(--purple-500)]">npm run storybook</code>.
+            <code className="text-[var(--primary-default-color)]">
+              npm run storybook
+            </code>
+            .
           </p>
         </div>
       </div>

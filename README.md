@@ -24,11 +24,26 @@ npm install hans-ui-design-lib
 
 ## 🛠️ Usage
 
+In a root file of your application, define:
+
 ```tsx
-import 'hans-ui-design-lib/style.css'; // Can be imported in a root file from your project
+import 'hans-ui-design-lib/style.css';
+
+...
+
+// Put the data-theme combination of your choice in the html or body tags:
+// (if you don't choose it, the Fallback is gona be the combination1)
+<html data-theme="combination1">
+...
+</html>
+```
+
+Import and use the component you wish passing the props you want:
+
+```tsx
 import { Button } from 'hans-ui-design-lib';
 
-<Button label="Button" onClick={() => {}} />;
+<Button label="Button" />;
 ```
 
 ## 🧑‍💻 Development
