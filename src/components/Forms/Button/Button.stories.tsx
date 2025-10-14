@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { Size, Color, Variant } from '../../../models/Common.types';
+import type { Size, Color, Variant } from '../../../types/Common.types';
 import { Button } from './Button';
 import { Icon } from '../../Icon/Icon';
 import DocsPage from './Button.mdx';

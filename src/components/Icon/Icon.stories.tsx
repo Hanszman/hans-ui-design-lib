@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { Size } from '../../models/Common.types';
+import type { Size } from '../../types/Common.types';
 import { Icon } from './Icon';
 import DocsPage from './Icon.mdx';
 

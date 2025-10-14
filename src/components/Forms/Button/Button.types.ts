@@ -1,4 +1,4 @@
-import type { Size, Variant, Color } from '../../../models/Common.types';
+import type { Size, Variant, Color } from '../../../types/Common.types';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
 

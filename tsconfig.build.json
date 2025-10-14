@@ -7,7 +7,7 @@
     "jsx": "react-jsx",
     "declaration": true,
     "declarationDir": "dist",
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "outDir": "dist",
     "noEmit": false,
     "skipLibCheck": true,
@@ -17,7 +17,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true
   },
-  "include": ["src", "src/**/*.d.ts", "global.d.ts"],
+  "include": ["src", "src/**/*.d.ts"],
   "exclude": [
     "**/*.stories.tsx",
     "**/*.stories.ts",

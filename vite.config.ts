@@ -11,6 +11,9 @@ export default defineConfig({
     dts({
       insertTypesEntry: true,
       outDir: 'dist',
+      entryRoot: 'src',
+      rollupTypes: true,
+      tsconfigPath: path.resolve(__dirname, 'tsconfig.build.json'),
     }),
   ],
   test: {
@@ -29,6 +32,7 @@ export default defineConfig({
         '.vscode',
         '**/*.stories.tsx',
         '**/*.types.ts',
+        '**/*.d.ts',
         '**/*.mdx',
         '**/index.ts',
         '**/main.tsx',

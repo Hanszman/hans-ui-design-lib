@@ -6,6 +6,6 @@ import './styles/index.css';
 export * from './components/Forms/Button/Button';
 export * from './components/Icon/Icon';
 
-// Models:
+// Types:
 export * from './components/Forms/Button/Button.types';
 export * from './components/Icon/Icon.types';

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Size } from '../../models/Common.types';
+import type { Size } from '../../types/Common.types';
 
 export type IconLibrary = Record<
   string,
