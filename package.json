@@ -42,8 +42,8 @@
     "test:watch": "vitest"
   },
   "peerDependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react": ">=19.0.0 <20.0.0",
+    "react-dom": ">=19.0.0 <20.0.0"
   },
   "peerDependenciesMeta": {
     "react": {
