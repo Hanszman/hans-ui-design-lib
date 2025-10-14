@@ -20,7 +20,7 @@ export const DynamicIconImports: Record<string, () => Promise<IconLibrary>> = {
   Lu: () => import('react-icons/lu') as unknown as Promise<IconLibrary>,
 };
 
-export default interface IconProps {
+export interface IconProps {
   name?: string;
   size?: Size;
   customClasses?: string;

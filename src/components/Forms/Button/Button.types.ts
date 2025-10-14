@@ -2,7 +2,7 @@ import type { Size, Variant, Color } from '../../../models/Common.types';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
 
-export default interface ButtonProps
+export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label?: string;
   size?: Size;

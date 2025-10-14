@@ -1,5 +1,5 @@
 import React from 'react';
-import type ButtonProps from './Button.types';
+import type { ButtonProps } from './Button.types';
 
 export const Button = React.memo((props: ButtonProps) => {
   const {
