@@ -1,14 +1,23 @@
 {
-  "extends": "./tsconfig.app.json",
   "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
     "declaration": true,
     "declarationDir": "dist",
-    "emitDeclarationOnly": false,
+    "emitDeclarationOnly": true,
     "outDir": "dist",
     "noEmit": false,
-    "allowImportingTsExtensions": false
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true
   },
-  "include": ["src"],
+  "include": ["src", "src/**/*.d.ts", "global.d.ts"],
   "exclude": [
     "**/*.stories.tsx",
     "**/*.stories.ts",
@@ -16,6 +25,9 @@
     "**/*.test.ts",
     "**/*.mdx",
     "node_modules",
-    "dist"
+    "dist",
+    "html",
+    "coverage",
+    "storybook-static"
   ]
 }
