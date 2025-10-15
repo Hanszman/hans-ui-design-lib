@@ -1,6 +1,6 @@
 # Hans UI Design Library
 
-A **React + TypeScript component library** that serves as the base design system for personal projects.  
+A **React + TypeScript Component Library** that serves as the base design system for personal projects.  
 This library provides reusable, styled and documented UI components with a consistent structure and best practices.
 
 ## 🚀 Features
@@ -65,7 +65,7 @@ npm run dev
 Run tests:
 
 ```bash
-npm test
+npm run test
 ```
 
 Run tests with coverage:
@@ -84,6 +84,12 @@ Build the package:
 
 ```bash
 npm run build
+```
+
+Start the server:
+
+```bash
+npm run start
 ```
 
 ## 🚢 Exporting
@@ -149,8 +155,8 @@ UPDATE-TYPES: patch | minor | major
 
 ## 📜 History of commands used to build this project:
 
-```
-npm create vite@latest my-ui -- --template react-ts
+```bash
+npm create vite@latest hans-ui-design-lib -- --template react-ts
 
 npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-prettier eslint-plugin-react eslint-plugin-react-hooks prettier
 
@@ -162,5 +168,5 @@ npm i -D vitest @testing-library/react @testing-library/jest-dom @types/testing-
 
 npm i -D sass
 
-npm i react-icons
+npm i -D react-icons
 ```
