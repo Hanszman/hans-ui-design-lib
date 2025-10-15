@@ -5,7 +5,7 @@ This library provides reusable, styled and documented UI components with a consi
 
 ## 🚀 Features
 
-- ⚛️ **React 19** with **TypeScript** for type safety
+- ⚛️ **React 19.1.1** with **TypeScript 5.8.3** for type safety
 - 🎨 **TailwindCSS + SCSS** for styling flexibility
 - 📖 **Storybook** for interactive component documentation
 - ✅ **Vitest + React Testing Library + JSDOM** for unit and integration testing
@@ -141,8 +141,8 @@ UPDATE-TYPES: patch | minor | major
 
 ## 🛠️ Tech Stack
 
-- **React 19**
-- **TypeScript**
+- **React 19.1.1**
+- **TypeScript 5.8.3**
 - **Vite**
 - **Storybook**
 - **TailwindCSS**
