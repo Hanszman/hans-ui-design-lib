@@ -171,4 +171,8 @@ npm i -D @vitest/coverage-v8 @vitest/ui
 npm i -D sass
 
 npm i -D react-icons
+
+npm i -D @originjs/vite-plugin-federation
+
+npm i -D react-to-webcomponent
 ```
