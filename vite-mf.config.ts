@@ -3,24 +3,23 @@ import path from 'node:path';
 import federation from '@originjs/vite-plugin-federation';
 
 export default defineConfig({
-  base: './', // importante para assets quando deployar em Vercel
+  base: './',
   build: {
-    outDir: 'cdn', // pasta de saída específica para MF
-    // preserveFiles: true,
-    rollupOptions: {
-      input: path.resolve(__dirname, 'src/mf/webcomponents-init.ts'),
+    outDir: 'cdn',
+    target: 'esnext',
+    cssCodeSplit: true,
+    lib: {
+      entry: path.resolve(__dirname, 'src/mf/webcomponents-init.ts'),
+      formats: ['es'],
+      fileName: () => 'index.js',
     },
   },
   plugins: [
     federation({
-      name: 'hans_ui_lib', // nome do remote
-      filename: 'remoteEntry.js', // arquivo gerado
+      name: 'hans_ui_lib',
+      filename: 'remoteEntry.js',
       exposes: {
-        // expose a função que define os webcomponents
         './define': './src/mf/webcomponents-init.ts',
-        // também expose seus componentes ESM pra hosts React se quiser
-        // './Button': './src/components/Forms/Button/Button',
-        // './Icon': './src/components/Icon/Icon',
       },
       shared: ['react', 'react-dom'],
     }),
