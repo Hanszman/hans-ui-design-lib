@@ -1,4 +1,3 @@
--Prepare this lib to be a module federation and be consumed by Angular (DOING)
 -Refactor MF files
 -Refactor portfolio in Angular to use this module federation and create a backend for it (Node.js + Neon + PostgreSQL DB)
 -Create more components and stories basing on DS components (as necessary in the other projects)
