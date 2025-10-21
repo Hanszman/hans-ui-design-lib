@@ -8,6 +8,7 @@ export default defineConfig({
     outDir: 'cdn',
     target: 'esnext',
     cssCodeSplit: true,
+    assetsDir: '',
     lib: {
       entry: path.resolve(__dirname, 'src/mf/webcomponents-init.ts'),
       formats: ['es'],
