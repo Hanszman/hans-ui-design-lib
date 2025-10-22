@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ComponentType } from 'react';
-import { createRoot } from 'react-dom/client';
+import { react18Renderer } from './react18-renderer';
 import reactToWebComponent from 'react-to-webcomponent';
 import '../styles/index.css'; // garante que os estilos sejam empacotados no build MF
 
@@ -17,18 +17,12 @@ function toWC<P extends PropsRecord>(
   Component: ReactComp<P>,
   tagName: string,
 ): void {
-  // convert react component para webcomponent
-  // reactToWebComponent aceita o component + React + optional renderer.
-  // Passamos um renderer fortemente tipado (acima) — não usamos `any`.
-  /**
-   * ⚠️ A tipagem de `react-to-webcomponent` espera uma função "render" antiga do ReactDOM,
-   * não o novo `createRoot`. Como `createRoot` é a API recomendada, a gente apenas
-   * faz um cast explícito de tipo sem usar `any`.
-   */
-  const renderer = createRoot as unknown as Parameters<
-    typeof reactToWebComponent
-  >[2];
-  const WC = reactToWebComponent(Component, React, renderer);
+  const WC = reactToWebComponent(
+    Component,
+    React,
+    react18Renderer as unknown as Parameters<typeof reactToWebComponent>[2],
+    { shadow: undefined },
+  );
   if (!customElements.get(tagName)) {
     customElements.define(tagName, WC);
   }
