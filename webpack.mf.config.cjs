@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
 const pkg = require('./package.json');
@@ -62,10 +61,6 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'style.css',
-    }),
-    new HtmlWebpackPlugin({
-      templateContent: '<html><body><div id="preview"></div></body></html>',
-      inject: false,
     }),
   ],
   optimization: {
