@@ -36,7 +36,7 @@ export default defineConfig({
         '**/*.mdx',
         '**/index.ts',
         '**/main.tsx',
-        'src/mf/**',
+        'src/module-federation/**',
       ],
     },
   },

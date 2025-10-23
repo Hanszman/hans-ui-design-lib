@@ -172,7 +172,17 @@ npm i -D sass
 
 npm i -D react-icons
 
-npm i -D @originjs/vite-plugin-federation
-
 npm i -D react-to-webcomponent
+
+npm install -D webpack webpack-cli webpack-merge html-webpack-plugin css-loader style-loader tslib
+
+npm install -D babel-loader @babel/core @babel/preset-env @babel/preset-react
+
+npm install -D webpack-dev-server
+
+npm install -D ts-loader source-map-loader
+
+npm install -D copy-webpack-plugin
+
+npm install -D @babel/preset-typescript react@19.2.0 react-dom@19.2.0
 ```
