@@ -80,5 +80,10 @@ export default defineConfig(({ mode }) => {
           cssCodeSplit: true,
           outDir: 'dist',
         },
+
+    define: {
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env': {},
+    },
   };
 });
