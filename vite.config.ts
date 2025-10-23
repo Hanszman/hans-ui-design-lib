@@ -66,6 +66,7 @@ export default defineConfig(({ mode }) => {
               },
             },
           },
+          cssCodeSplit: false,
         }
       : {
           lib: {
