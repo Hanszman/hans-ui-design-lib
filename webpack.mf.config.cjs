@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
-
 const pkg = require('./package.json');
 
 module.exports = {
@@ -32,8 +32,12 @@ module.exports = {
         },
       },
       {
+        test: /\.s[ac]ss$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
+      {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },
@@ -43,6 +47,7 @@ module.exports = {
       filename: 'remoteEntry.js',
       exposes: {
         './Widget': './src/module-federation/widgetBootstrap.tsx',
+        './Button': './src/components/Forms/Button/Button.tsx',
       },
       shared: {
         react: {
@@ -54,6 +59,9 @@ module.exports = {
           requiredVersion: pkg.peerDependencies['react-dom'],
         },
       },
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'style.css',
     }),
     new HtmlWebpackPlugin({
       templateContent: '<html><body><div id="preview"></div></body></html>',

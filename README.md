@@ -185,4 +185,6 @@ npm install -D ts-loader source-map-loader
 npm install -D copy-webpack-plugin
 
 npm install -D @babel/preset-typescript react@19.2.0 react-dom@19.2.0
+
+npm install -D mini-css-extract-plugin
 ```
