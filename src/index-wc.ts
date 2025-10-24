@@ -2,13 +2,13 @@ import './styles/index.css';
 import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import reactToWebComponent from 'react-to-webcomponent';
-import { Button } from './components/Forms/Button/Button';
+import { HansButton } from './components/Forms/Button/Button';
 
 const ReactDOMtoWC = ReactDOM as unknown as Parameters<
   typeof reactToWebComponent
 >[2];
 
-const HansButton = reactToWebComponent(Button, React, ReactDOMtoWC, {
+const HansButtonWC = reactToWebComponent(HansButton, React, ReactDOMtoWC, {
   props: [
     'label',
     'size',
@@ -21,4 +21,4 @@ const HansButton = reactToWebComponent(Button, React, ReactDOMtoWC, {
   ],
 });
 
-customElements.define('hans-button', HansButton);
+customElements.define('hans-button', HansButtonWC);

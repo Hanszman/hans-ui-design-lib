@@ -1,4 +1,4 @@
--Rename Hans components
--Refactor props in index-wc file
--Document step by step on module federation consuming
+-Rename Hans components (continue with Icon component) (update projects that use it)
+-Refactor props in index-wc file and export Icon
+-Fix children prop on index-wc to work in Angular projects
 -Create more components and stories basing on DS components (as necessary in the other projects)

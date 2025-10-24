@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { Size, Color, Variant } from '../../../types/Common.types';
-import { Button } from './Button';
+import { HansButton } from './Button';
 import { Icon } from '../../Icon/Icon';
 import DocsPage from './Button.mdx';
 
-const meta: Meta<typeof Button> = {
+const meta: Meta<typeof HansButton> = {
   title: 'Components/Forms/Button',
-  component: Button,
+  component: HansButton,
   args: {
     label: 'Primary',
     size: 'medium',
@@ -33,7 +33,7 @@ const meta: Meta<typeof Button> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof HansButton>;
 
 export const Primary: Story = {
   args: {
@@ -47,7 +47,7 @@ export const Sizes: Story = {
       {['small', 'medium', 'large'].map((size) => (
         <div key={size}>
           <p className="font-bold mb-2">{size}</p>
-          <Button key={size} label={`${size}`} size={size as Size} />
+          <HansButton key={size} label={`${size}`} size={size as Size} />
         </div>
       ))}
     </div>
@@ -70,7 +70,7 @@ export const VariantsAndColors: Story = {
                 'warning',
                 'info',
               ].map((color) => (
-                <Button
+                <HansButton
                   key={color + variant}
                   label={`${color}`}
                   color={color as Color}
@@ -87,9 +87,9 @@ export const VariantsAndColors: Story = {
 
 export const WithChildren: Story = {
   render: () => (
-    <Button>
+    <HansButton>
       <Icon name="FaHome" />
       <span>Child Text</span>
-    </Button>
+    </HansButton>
   ),
 };

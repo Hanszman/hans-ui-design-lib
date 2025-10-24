@@ -5,9 +5,9 @@ import {
   Controls,
   Canvas,
 } from '@storybook/addon-docs/blocks';
-import * as ButtonStories from './Button.stories';
+import * as HansButtonStories from './Button.stories';
 
-<Meta of={ButtonStories} />
+<Meta of={HansButtonStories} />
 
 <Title />
 
@@ -20,10 +20,10 @@ To use the component you need to import it and include it in your React app.
 Make sure you have already set up the [Hans UI Design Library](/docs/getting-started--docs) in your project.
 
 ```tsx
-import { Button } from 'hans-ui-design-lib';
+import { HansButton } from 'hans-ui-design-lib';
 
 export const Example = () => (
-  <Button label="Click me" color="primary" variant="default" />
+  <HansButton label="Click me" color="primary" variant="default" />
 );
 ```
 
@@ -41,13 +41,13 @@ The component accepts the following properties:
 
 Listed below are the possible sizes of the component:
 
-<Canvas of={ButtonStories.Sizes} />
+<Canvas of={HansButtonStories.Sizes} />
 
 ## Variations
 
 Listed below are the possible colors and variations of the component with all its states:
 
-<Canvas of={ButtonStories.VariantsAndColors} />
+<Canvas of={HansButtonStories.VariantsAndColors} />
 
 You can also change the combination of color theme to see other options.
 
@@ -55,4 +55,4 @@ You can also change the combination of color theme to see other options.
 
 You can also set a child to the component, deciding what comes inside of the Button, customazing with possible icons and tags:
 
-<Canvas of={ButtonStories.WithChildren} />
+<Canvas of={HansButtonStories.WithChildren} />

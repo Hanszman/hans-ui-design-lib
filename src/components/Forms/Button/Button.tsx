@@ -1,7 +1,7 @@
 import React from 'react';
-import type { ButtonProps } from './Button.types';
+import type { HansButtonProps } from './Button.types';
 
-export const Button = React.memo((props: ButtonProps) => {
+export const HansButton = React.memo((props: HansButtonProps) => {
   const {
     label = '',
     size = 'medium',
@@ -26,4 +26,4 @@ export const Button = React.memo((props: ButtonProps) => {
   );
 });
 
-Button.displayName = 'Button';
+HansButton.displayName = 'Button';

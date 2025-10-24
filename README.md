@@ -24,7 +24,9 @@ npm install hans-ui-design-lib
 
 ## 🛠️ Usage
 
-In a root file of your application, define:
+### React:
+
+If you're using React, you have to install the lib with npm (checkout the installation section of this document). In a root file of your application, define:
 
 ```tsx
 import 'hans-ui-design-lib/style.css';
@@ -41,9 +43,51 @@ import 'hans-ui-design-lib/style.css';
 Import and use the component you wish passing the props you want:
 
 ```tsx
-import { Button } from 'hans-ui-design-lib';
+import { HansButton } from 'hans-ui-design-lib';
 
-<Button label="Button" />;
+...
+<HansButton label="Button"></HansButton>;
+```
+
+### Others:
+
+If you're using other Technologies like Angular for example, you don't have to install it with npm, you just have to import the CDN links. In the root index.html of your application, define:
+
+```html
+<html data-theme="combination1">
+  <!-- Put the data-theme combination of your choice in the html or body tags: -->
+  <!-- (if you don't choose it, the Fallback is gona be the combination1) -->
+  ...
+  <head>
+    ...
+    <link
+      rel="stylesheet"
+      href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css"
+    />
+    <script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js"></script>
+  </head>
+  <body>
+    ...
+  </body>
+</html>
+```
+
+If you're using a technology like Angular, probably you're gonna have to declare CUSTOM_ELEMENTS_SCHEMA like this in your component:
+
+```ts
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  ...
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+...
+```
+
+And in your component html you can just call it like this, passing the props you want:
+
+```html
+<hans-button label="Button"></hans-button>
 ```
 
 ## 🧑‍💻 Development
@@ -173,4 +217,8 @@ npm i -D sass
 npm i -D react-icons
 
 npm i -D react react-dom react-to-webcomponent @ungap/custom-elements
+```
+
+```
+
 ```

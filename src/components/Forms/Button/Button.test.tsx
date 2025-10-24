@@ -1,16 +1,21 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import { Button } from './Button';
+import { HansButton } from './Button';
 
-describe('Button', () => {
+describe('HansButton', () => {
   it('Should render with label', () => {
-    render(<Button label="Primary" />);
+    render(<HansButton label="Primary" />);
     expect(screen.getByText('Primary')).toBeInTheDocument();
   });
 
   it('applies size, color and variant classes correctly', () => {
     render(
-      <Button size="large" color="danger" variant="outline" label="Click" />,
+      <HansButton
+        size="large"
+        color="danger"
+        variant="outline"
+        label="Click"
+      />,
     );
     const button = screen.getByRole('button');
 
@@ -22,7 +27,7 @@ describe('Button', () => {
 
   it('Should render with all props combined', () => {
     render(
-      <Button
+      <HansButton
         label="All Props"
         size="small"
         color="success"
@@ -44,25 +49,25 @@ describe('Button', () => {
   });
 
   it('uses default type="button" if not specified', () => {
-    render(<Button label="Default Type" />);
+    render(<HansButton label="Default Type" />);
     const button = screen.getByRole('button');
     expect(button).toHaveAttribute('type', 'button');
   });
 
   it('uses provided button type', () => {
-    render(<Button label="Submit" buttonType="submit" />);
+    render(<HansButton label="Submit" buttonType="submit" />);
     const button = screen.getByRole('button');
     expect(button).toHaveAttribute('type', 'submit');
   });
 
   it('Should render with custom classes', () => {
-    render(<Button label="Click" customClasses="extra-class" />);
+    render(<HansButton label="Click" customClasses="extra-class" />);
     const button = screen.getByRole('button');
     expect(button).toHaveClass('extra-class');
   });
 
   it('is disabled when prop is true', () => {
-    render(<Button label="Disabled" disabled />);
+    render(<HansButton label="Disabled" disabled />);
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();
     expect(button).toHaveClass('hans-button-medium');
@@ -70,9 +75,9 @@ describe('Button', () => {
 
   it('Should render with children instead of label', () => {
     render(
-      <Button>
+      <HansButton>
         <span>Custom Child</span>
-      </Button>,
+      </HansButton>,
     );
     expect(screen.getByText('Custom Child')).toBeInTheDocument();
     expect(screen.queryByText('Primary')).not.toBeInTheDocument();
