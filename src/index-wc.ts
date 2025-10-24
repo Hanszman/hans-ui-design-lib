@@ -17,6 +17,7 @@ const HansButton = reactToWebComponent(Button, React, ReactDOMtoWC, {
     'buttonType',
     'customClasses',
     'disabled',
+    'children',
   ],
 });
 
