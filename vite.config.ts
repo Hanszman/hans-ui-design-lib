@@ -6,6 +6,8 @@ import path from 'node:path';
 
 export default defineConfig(({ mode }) => {
   const isCdn = mode === 'cdn';
+  const isTest = process.env.VITEST === 'true';
+  const isBuild = process.env.NODE_ENV === 'production' && !isTest;
 
   return {
     plugins: [
@@ -82,9 +84,11 @@ export default defineConfig(({ mode }) => {
           outDir: 'dist',
         },
 
-    define: {
-      'process.env.NODE_ENV': JSON.stringify('production'),
-      'process.env': {},
-    },
+    define: isBuild
+      ? {
+          'process.env.NODE_ENV': JSON.stringify('production'),
+          'process.env': {},
+        }
+      : {},
   };
 });

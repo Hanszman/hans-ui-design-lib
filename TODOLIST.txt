@@ -1,3 +1,4 @@
 -Rename Hans components
 -Refactor props in index-wc file
+-Document step by step on module federation consuming
 -Create more components and stories basing on DS components (as necessary in the other projects)
