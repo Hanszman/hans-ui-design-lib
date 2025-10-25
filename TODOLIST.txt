@@ -1,3 +1,2 @@
--Refactor Schema types logic
 -Refactor index-wc to work with prop children on Angular
 -Create more components and stories basing on DS components (as necessary in the other projects)
