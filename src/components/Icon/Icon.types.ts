@@ -3,11 +3,6 @@ import { createPropsList } from '../../types/Schema.types';
 import type { InferPropsFromSchema } from '../../types/Schema.types';
 import type { Size } from '../../types/Common.types';
 
-type IconLibrary = Record<
-  string,
-  React.ComponentType<React.SVGProps<SVGSVGElement>>
->;
-
 const HansIconSchema = {
   name: 'string',
   size: { type: 'custom', ref: {} as Size },
@@ -17,6 +12,11 @@ const HansIconSchema = {
 export type HansIconProps = InferPropsFromSchema<typeof HansIconSchema>;
 
 export const HansIconPropsList = createPropsList(HansIconSchema);
+
+export type IconLibrary = Record<
+  string,
+  React.ComponentType<React.SVGProps<SVGSVGElement>>
+>;
 
 export const DynamicIconImports: Record<string, () => Promise<IconLibrary>> = {
   Fa: () => import('react-icons/fa') as unknown as Promise<IconLibrary>,

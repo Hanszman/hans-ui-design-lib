@@ -42,7 +42,7 @@ function createWebComponent<T>(
       if (typeof superConnected === 'function') superConnected.call(this);
 
       this.observer = new MutationObserver(() => {
-        this.innerHTML = this.innerHTML;
+        this.replaceChildren(...this.childNodes);
       });
       this.observer.observe(this, { childList: true, subtree: true });
     }
