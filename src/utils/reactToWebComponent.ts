@@ -29,7 +29,9 @@ function createWebComponent<T>(
     options as R2WCOptions<object>,
   );
 
-  class HansElement extends (BaseWC as unknown as { new (): HTMLElement }) {
+  return class HansElement extends (BaseWC as unknown as {
+    new (): HTMLElement;
+  }) {
     private observer?: MutationObserver;
 
     connectedCallback(): void {
@@ -39,50 +41,16 @@ function createWebComponent<T>(
         | undefined;
       if (typeof superConnected === 'function') superConnected.call(this);
 
-      this.syncChildren();
-      this.observer = new MutationObserver(() => this.syncChildren());
+      this.observer = new MutationObserver(() => {
+        this.innerHTML = this.innerHTML;
+      });
       this.observer.observe(this, { childList: true, subtree: true });
     }
 
     disconnectedCallback(): void {
       this.observer?.disconnect();
     }
-
-    private syncChildren = (): void => {
-      const nodes = Array.from(this.childNodes);
-      if (!nodes.length) return;
-
-      const convertNodeToReact = (node: Node): React.ReactNode => {
-        if (node.nodeType === Node.TEXT_NODE) return node.textContent ?? '';
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          const el = node as HTMLElement;
-          const props: Record<string, unknown> = {};
-          for (const { name, value } of Array.from(el.attributes)) {
-            props[name] = value;
-          }
-          const children = Array.from(el.childNodes).map(convertNodeToReact);
-
-          return React.createElement(
-            el.tagName.toLowerCase(),
-            props,
-            ...children,
-          );
-        }
-        return null;
-      };
-
-      const reactChildren = nodes.map(convertNodeToReact).filter(Boolean);
-      const nextChildren =
-        reactChildren.length === 1 ? reactChildren[0] : reactChildren;
-
-      const current = (this as unknown as Record<string, unknown>).children;
-      if (current !== nextChildren) {
-        (this as unknown as Record<string, unknown>).children = nextChildren;
-      }
-    };
-  }
-
-  return HansElement;
+  };
 }
 
 export function registerReactAsWebComponent<T>(
