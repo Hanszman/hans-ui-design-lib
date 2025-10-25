@@ -1,23 +1,19 @@
 import './styles/index.css';
-import React from 'react';
-import * as ReactDOM from 'react-dom/client';
-import reactToWebComponent from 'react-to-webcomponent';
 import { HansButton } from './components/Forms/Button/Button';
-import { HansIcon } from './components/Icon/Icon';
 import { HansButtonPropsList } from './components/Forms/Button/Button.types';
+import type { HansButtonProps } from './components/Forms/Button/Button.types';
+import { HansIcon } from './components/Icon/Icon';
 import { HansIconPropsList } from './components/Icon/Icon.types';
+import type { HansIconProps } from './components/Icon/Icon.types';
+import { registerReactAsWebComponent } from './utils/reactToWebComponent';
 
-const ReactDOMtoWC = ReactDOM as unknown as Parameters<
-  typeof reactToWebComponent
->[2];
-
-const HansButtonWC = reactToWebComponent(HansButton, React, ReactDOMtoWC, {
-  props: HansButtonPropsList,
-});
-
-const HansIconWC = reactToWebComponent(HansIcon, React, ReactDOMtoWC, {
-  props: HansIconPropsList,
-});
-
-customElements.define('hans-button', HansButtonWC);
-customElements.define('hans-icon', HansIconWC);
+registerReactAsWebComponent<HansButtonProps>(
+  'hans-button',
+  HansButton,
+  HansButtonPropsList,
+);
+registerReactAsWebComponent<HansIconProps>(
+  'hans-icon',
+  HansIcon,
+  HansIconPropsList,
+);
