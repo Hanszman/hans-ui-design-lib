@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import { vi } from 'vitest';
-import { Icon } from './Icon';
+import { HansIcon } from './Icon';
 import type { IconLibrary } from './Icon.types';
 import { DynamicIconImports } from './Icon.types';
 
@@ -11,28 +11,28 @@ function deferred<T>() {
   return { promise, resolve };
 }
 
-describe('Icon', () => {
+describe('HansIcon', () => {
   it('Should render icon dynamically by name (FaHome)', async () => {
-    render(<Icon name="FaHome" data-testid="icon-home" />);
+    render(<HansIcon name="FaHome" data-testid="icon-home" />);
     const icon = await screen.findByTestId('icon-home');
     expect(icon).toBeInTheDocument();
     expect(icon).toHaveClass('hans-icon');
   });
 
   it('Should render loading placeholder if no name is passed', () => {
-    const { container } = render(<Icon />);
+    const { container } = render(<HansIcon />);
     const loading = container.querySelector('.hans-icon-loading');
     expect(loading).toBeInTheDocument();
   });
 
   it('Should not crash if icon prefix is invalid (no loader)', async () => {
-    render(<Icon name="XxUnknown" />);
+    render(<HansIcon name="XxUnknown" />);
     await new Promise((r) => setTimeout(r, 0));
     expect(document.querySelector('.hans-icon-loading')).toBeInTheDocument();
   });
 
   it('Should handle loader present but icon name missing in lib', async () => {
-    render(<Icon name="FaDoesNotExist" />);
+    render(<HansIcon name="FaDoesNotExist" />);
     await new Promise((r) => setTimeout(r, 0));
     expect(document.querySelector('.hans-icon-loading')).toBeInTheDocument();
   });
@@ -45,7 +45,7 @@ describe('Icon', () => {
     const originalFa = DynamicIconImports.Fa;
     DynamicIconImports.Fa = errorLoader;
 
-    render(<Icon name="FaErrorIcon" />);
+    render(<HansIcon name="FaErrorIcon" />);
     await new Promise((r) => setTimeout(r, 0));
 
     expect(spyWarn).toHaveBeenCalledWith(
@@ -70,9 +70,9 @@ describe('Icon', () => {
       .mockReturnValueOnce(first.promise)
       .mockReturnValueOnce(second);
     DynamicIconImports.Fa = mockLoader;
-    const { rerender } = render(<Icon name="FaHome" />);
+    const { rerender } = render(<HansIcon name="FaHome" />);
 
-    rerender(<Icon name="FaBeer" />);
+    rerender(<HansIcon name="FaBeer" />);
     await act(async () => {
       first.resolve({
         FaHome: (p: React.SVGProps<SVGSVGElement>) => (

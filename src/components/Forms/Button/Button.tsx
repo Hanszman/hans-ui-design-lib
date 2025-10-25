@@ -26,4 +26,4 @@ export const HansButton = React.memo((props: HansButtonProps) => {
   );
 });
 
-HansButton.displayName = 'Button';
+HansButton.displayName = 'HansButton';

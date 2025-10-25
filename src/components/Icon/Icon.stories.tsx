@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { Size } from '../../types/Common.types';
-import { Icon } from './Icon';
+import { HansIcon } from './Icon';
 import DocsPage from './Icon.mdx';
 
-const meta: Meta<typeof Icon> = {
+const meta: Meta<typeof HansIcon> = {
   title: 'Components/Icon',
-  component: Icon,
+  component: HansIcon,
   args: {
     size: 'medium',
   },
@@ -24,7 +24,7 @@ const meta: Meta<typeof Icon> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Icon>;
+type Story = StoryObj<typeof HansIcon>;
 
 export const Primary: Story = {
   args: { name: 'FaHome' },
@@ -36,7 +36,7 @@ export const Sizes: Story = {
       {['small', 'medium', 'large'].map((size) => (
         <div key={size}>
           <p className="font-bold mb-2">{size}</p>
-          <Icon key={size} name="IoIosHappy" size={size as Size} />
+          <HansIcon key={size} name="IoIosHappy" size={size as Size} />
         </div>
       ))}
     </div>
@@ -48,7 +48,7 @@ export const MultipleIcons: Story = {
     <div className="flex gap-4">
       {['FaHome', 'FaUser', 'MdAdd', 'BiStar', 'AiFillHeart'].map((name) => (
         <div key={name} className="flex flex-col items-center">
-          <Icon name={name} />
+          <HansIcon name={name} />
           <span className="text-xs mt-1">{name}</span>
         </div>
       ))}

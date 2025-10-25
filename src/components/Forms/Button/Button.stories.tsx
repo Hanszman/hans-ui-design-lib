@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { Size, Color, Variant } from '../../../types/Common.types';
 import { HansButton } from './Button';
-import { Icon } from '../../Icon/Icon';
+import { HansIcon } from '../../Icon/Icon';
 import DocsPage from './Button.mdx';
 
 const meta: Meta<typeof HansButton> = {
@@ -88,7 +88,7 @@ export const VariantsAndColors: Story = {
 export const WithChildren: Story = {
   render: () => (
     <HansButton>
-      <Icon name="FaHome" />
+      <HansIcon name="FaHome" />
       <span>Child Text</span>
     </HansButton>
   ),
