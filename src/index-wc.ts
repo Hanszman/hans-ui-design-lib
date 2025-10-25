@@ -3,6 +3,7 @@ import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import reactToWebComponent from 'react-to-webcomponent';
 import { HansButton } from './components/Forms/Button/Button';
+import { HansIcon } from './components/Icon/Icon';
 
 const ReactDOMtoWC = ReactDOM as unknown as Parameters<
   typeof reactToWebComponent
@@ -21,4 +22,9 @@ const HansButtonWC = reactToWebComponent(HansButton, React, ReactDOMtoWC, {
   ],
 });
 
+const HansIconWC = reactToWebComponent(HansIcon, React, ReactDOMtoWC, {
+  props: ['name', 'size', 'customClasses'],
+});
+
 customElements.define('hans-button', HansButtonWC);
+customElements.define('hans-icon', HansIconWC);

@@ -1,4 +1,3 @@
--Rename Hans components (continue with Icon component) (update projects that use it)
 -Refactor props in index-wc file and export Icon
 -Fix children prop on index-wc to work in Angular projects
 -Create more components and stories basing on DS components (as necessary in the other projects)
