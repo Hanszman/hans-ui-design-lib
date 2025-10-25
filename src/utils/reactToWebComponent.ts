@@ -37,9 +37,7 @@ function createWebComponent<T>(
       const superConnected = proto.connectedCallback as
         | (() => void)
         | undefined;
-      if (typeof superConnected === 'function') {
-        superConnected.call(this);
-      }
+      if (typeof superConnected === 'function') superConnected.call(this);
 
       this.syncChildren();
       this.observer = new MutationObserver(() => this.syncChildren());
@@ -52,21 +50,34 @@ function createWebComponent<T>(
 
     private syncChildren = (): void => {
       const nodes = Array.from(this.childNodes);
-      if (nodes.length === 0) return;
+      if (!nodes.length) return;
 
-      const parsedChildren = nodes
-        .map((node) => {
-          if (node.nodeType === Node.TEXT_NODE) return node.textContent;
-          if (node.nodeType === Node.ELEMENT_NODE) return node as HTMLElement;
-          return null;
-        })
-        .filter(Boolean);
+      const convertNodeToReact = (node: Node): React.ReactNode => {
+        if (node.nodeType === Node.TEXT_NODE) return node.textContent ?? '';
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          const el = node as HTMLElement;
+          const props: Record<string, unknown> = {};
+          for (const { name, value } of Array.from(el.attributes)) {
+            props[name] = value;
+          }
+          const children = Array.from(el.childNodes).map(convertNodeToReact);
+
+          return React.createElement(
+            el.tagName.toLowerCase(),
+            props,
+            ...children,
+          );
+        }
+        return null;
+      };
+
+      const reactChildren = nodes.map(convertNodeToReact).filter(Boolean);
+      const nextChildren =
+        reactChildren.length === 1 ? reactChildren[0] : reactChildren;
 
       const current = (this as unknown as Record<string, unknown>).children;
-      const next =
-        parsedChildren.length === 1 ? parsedChildren[0] : parsedChildren;
-      if (current !== next) {
-        (this as unknown as Record<string, unknown>).children = next;
+      if (current !== nextChildren) {
+        (this as unknown as Record<string, unknown>).children = nextChildren;
       }
     };
   }
