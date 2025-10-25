@@ -18,7 +18,7 @@ const ReactDOMtoWC = ReactDOM as unknown as Parameters<
   typeof reactToWebComponent
 >[2];
 
-function createWebComponent<T>(
+export function createWebComponent<T>(
   Component: React.ComponentType<T>,
   options?: R2WCOptions<T>,
 ): CustomElementConstructor {
@@ -42,7 +42,7 @@ function createWebComponent<T>(
       if (typeof superConnected === 'function') superConnected.call(this);
 
       this.observer = new MutationObserver(() => {
-        this.replaceChildren(...this.childNodes);
+        this.dispatchEvent(new Event('slotchange', { bubbles: true }));
       });
       this.observer.observe(this, { childList: true, subtree: true });
     }
