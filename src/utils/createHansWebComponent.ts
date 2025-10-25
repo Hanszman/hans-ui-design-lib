@@ -52,7 +52,7 @@ class WebComponentChildrenHelper extends HTMLElement {
   private observer?: MutationObserver;
 
   connectedCallback(): void {
-    this.setupObserver();
+    setTimeout(() => this.setupObserver(), 0);
   }
 
   disconnectedCallback(): void {
