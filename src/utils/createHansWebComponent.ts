@@ -95,6 +95,7 @@ export function registerHansComponent<P extends object>(
 
   const options = {
     props: propSchema,
+    shadow: false,
   } as unknown as R2WCOptions;
 
   const ReactDOMtoWC = ReactDOM as unknown as Parameters<
