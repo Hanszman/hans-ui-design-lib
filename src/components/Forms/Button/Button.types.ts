@@ -13,7 +13,6 @@ const HansButtonSchema = {
   buttonType: { type: 'custom', ref: {} as ButtonType },
   customClasses: 'string',
   disabled: 'boolean',
-  children: 'node',
 } as const;
 
 export type HansButtonProps = InferPropsFromSchema<typeof HansButtonSchema> &
