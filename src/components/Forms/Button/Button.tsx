@@ -22,7 +22,6 @@ export const HansButton = React.memo((props: HansButtonProps) => {
       {...rest}
     >
       {children ?? (label && <span>{label}</span>)}
-      <slot />
     </button>
   );
 });

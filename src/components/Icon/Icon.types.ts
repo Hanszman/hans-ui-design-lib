@@ -1,4 +1,5 @@
 import React from 'react';
+import { createComponentSchema } from '../../types/Schema.types';
 import type { Size } from '../../types/Common.types';
 
 export type IconLibrary = Record<
@@ -20,8 +21,19 @@ export const DynamicIconImports: Record<string, () => Promise<IconLibrary>> = {
   Lu: () => import('react-icons/lu') as unknown as Promise<IconLibrary>,
 };
 
-export interface HansIconProps {
-  name?: string;
-  size?: Size;
-  customClasses?: string;
-}
+const { schema: HansIconSchema, propsList: HansIconPropsList } =
+  createComponentSchema({
+    name: 'string',
+    size: { type: 'custom', ref: {} as Size },
+    customClasses: 'string',
+  });
+
+export type HansIconProps = {
+  [K in keyof typeof HansIconSchema]: (typeof HansIconSchema)[K] extends 'string'
+    ? string
+    : (typeof HansIconSchema)[K] extends { type: 'custom'; ref: infer U }
+      ? U
+      : never;
+};
+
+export { HansIconSchema, HansIconPropsList };
