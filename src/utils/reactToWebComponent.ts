@@ -51,12 +51,22 @@ function createWebComponent<T>(
     }
 
     private syncChildren = (): void => {
-      const inner = this.innerHTML?.trim();
-      if (!inner) return;
+      const nodes = Array.from(this.childNodes);
+      if (nodes.length === 0) return;
+
+      const parsedChildren = nodes
+        .map((node) => {
+          if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+          if (node.nodeType === Node.ELEMENT_NODE) return node as HTMLElement;
+          return null;
+        })
+        .filter(Boolean);
 
       const current = (this as unknown as Record<string, unknown>).children;
-      if (current !== inner) {
-        (this as unknown as Record<string, unknown>).children = inner;
+      const next =
+        parsedChildren.length === 1 ? parsedChildren[0] : parsedChildren;
+      if (current !== next) {
+        (this as unknown as Record<string, unknown>).children = next;
       }
     };
   }
