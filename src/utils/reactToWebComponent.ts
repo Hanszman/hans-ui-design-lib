@@ -30,9 +30,11 @@ function createWebComponent<T>(
   );
 
   class HansElement extends (BaseWC as unknown as { new (): HTMLElement }) {
+    private observer?: MutationObserver;
+
     connectedCallback(): void {
-      const superProto = Object.getPrototypeOf(HansElement.prototype);
-      const superConnected = superProto.connectedCallback as
+      const proto = Object.getPrototypeOf(HansElement.prototype);
+      const superConnected = proto.connectedCallback as
         | (() => void)
         | undefined;
       if (typeof superConnected === 'function') {
@@ -40,14 +42,18 @@ function createWebComponent<T>(
       }
 
       this.syncChildren();
-      this.addEventListener('slotchange', this.syncChildren);
-      const observer = new MutationObserver(() => this.syncChildren());
-      observer.observe(this, { childList: true, subtree: true });
+      this.observer = new MutationObserver(() => this.syncChildren());
+      this.observer.observe(this, { childList: true, subtree: true });
+    }
+
+    disconnectedCallback(): void {
+      this.observer?.disconnect();
     }
 
     private syncChildren = (): void => {
-      const inner = this.innerHTML.trim();
+      const inner = this.innerHTML?.trim();
       if (!inner) return;
+
       const current = (this as unknown as Record<string, unknown>).children;
       if (current !== inner) {
         (this as unknown as Record<string, unknown>).children = inner;
