@@ -12,6 +12,7 @@ type PropType =
 
 type R2WCOptions<T> = {
   props?: (keyof T)[] | Partial<Record<Extract<keyof T, string>, PropType>>;
+  shadow?: boolean | 'open' | 'closed';
 };
 
 const ReactDOMtoWC = ReactDOM as unknown as Parameters<
@@ -22,11 +23,16 @@ export function createWebComponent<T>(
   Component: React.ComponentType<T>,
   options?: R2WCOptions<T>,
 ): CustomElementConstructor {
+  const mergedOptions = {
+    ...(options as R2WCOptions<object>),
+    shadow: false as unknown as 'open',
+  };
+
   const BaseWC = reactToWebComponent(
     Component as React.ComponentType<object>,
     React,
     ReactDOMtoWC,
-    options as R2WCOptions<object>,
+    mergedOptions,
   );
 
   return class HansElement extends (BaseWC as unknown as {
@@ -60,6 +66,9 @@ export function registerReactAsWebComponent<T>(
 ): void {
   if (customElements.get(tagName)) return;
 
-  const WebComponent = createWebComponent(Component, { props: [...propsList] });
+  const WebComponent = createWebComponent(Component, {
+    props: [...propsList],
+    shadow: false,
+  });
   customElements.define(tagName, WebComponent);
 }
