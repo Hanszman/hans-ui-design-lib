@@ -35,53 +35,69 @@ function buildPropSchemaFromDefaultProps<P extends object>(
   const keys = Object.keys(defaults) as Array<
     Exclude<Extract<keyof P, string>, 'container'>
   >;
-
   keys.forEach((k) => {
     const val = (defaults as Record<string, unknown>)[k];
     schema[k] = inferPropTypeLiteral(val);
   });
-
   if (!('children' in schema)) {
     (schema as Record<string, PropTypeLiteral>)['children'] = 'string';
   }
-
   return schema;
 }
 
-class WebComponentChildrenHelper extends HTMLElement {
+export class HansWebComponentBase extends HTMLElement {
   private observer?: MutationObserver;
 
+  constructor() {
+    super();
+    this.syncInitialChildren();
+  }
+
   connectedCallback(): void {
-    setTimeout(() => this.setupObserver(), 0);
+    this.observeChildrenChanges();
   }
 
   disconnectedCallback(): void {
     this.observer?.disconnect();
   }
 
-  protected setupObserver(): void {
-    this.updateChildren();
-    this.observer = new MutationObserver(() => this.updateChildren());
-    this.observer.observe(this, { childList: true, subtree: true });
-  }
+  private syncInitialChildren(): void {
+    const html = this.innerHTML?.trim();
+    if (!html) return;
 
-  protected updateChildren(): void {
-    const inner = this.innerHTML.trim();
-    if (!inner) return;
-
-    const maybeR2WC = this as unknown as {
+    const target = this as unknown as {
       props?: Record<string, unknown>;
       requestUpdate?: () => void;
     };
 
-    maybeR2WC.props = {
-      ...(maybeR2WC.props ?? {}),
+    target.props = {
+      ...(target.props ?? {}),
       children: React.createElement('span', {
-        dangerouslySetInnerHTML: { __html: inner },
+        dangerouslySetInnerHTML: { __html: html },
       }),
     };
+  }
 
-    maybeR2WC.requestUpdate?.();
+  private observeChildrenChanges(): void {
+    this.observer = new MutationObserver(() => this.updateChildren());
+    this.observer.observe(this, { childList: true, subtree: true });
+  }
+
+  private updateChildren(): void {
+    const html = this.innerHTML?.trim();
+    const target = this as unknown as {
+      props?: Record<string, unknown>;
+      requestUpdate?: () => void;
+    };
+    target.props = {
+      ...(target.props ?? {}),
+      children: html
+        ? React.createElement('span', {
+            dangerouslySetInnerHTML: { __html: html },
+          })
+        : undefined,
+    };
+    target.requestUpdate?.();
   }
 }
 
@@ -91,12 +107,10 @@ export function registerHansComponent<P extends object>(
 ): void {
   const propSchema = buildPropSchemaFromDefaultProps(ReactComponent);
 
-  type R2WCOptions = Parameters<typeof reactToWebComponent>[3];
-
   const options = {
     props: propSchema,
     shadow: false,
-  } as unknown as R2WCOptions;
+  } as unknown as Parameters<typeof reactToWebComponent>[3];
 
   const ReactDOMtoWC = ReactDOM as unknown as Parameters<
     typeof reactToWebComponent
@@ -110,8 +124,7 @@ export function registerHansComponent<P extends object>(
   );
 
   class HansWC extends (BaseWC as unknown as { new (): HTMLElement }) {}
-
-  Object.setPrototypeOf(HansWC.prototype, WebComponentChildrenHelper.prototype);
+  Object.setPrototypeOf(HansWC.prototype, HansWebComponentBase.prototype);
 
   if (!customElements.get(tagName)) {
     customElements.define(tagName, HansWC);
