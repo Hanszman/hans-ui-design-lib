@@ -69,6 +69,14 @@ export default defineConfig(({ mode }) => {
             },
           },
           cssCodeSplit: false,
+          define: {
+            'import.meta.env.VITE_HANS_UI_URL': JSON.stringify(
+              process.env.VITE_HANS_UI_URL,
+            ),
+            'import.meta.env.VITE_HANS_UI_STYLESHEET_FILE': JSON.stringify(
+              process.env.VITE_HANS_UI_STYLESHEET_FILE,
+            ),
+          },
         }
       : {
           lib: {
