@@ -21,7 +21,7 @@ export const HansButton = React.memo((props: HansButtonProps) => {
       className={`hans-button hans-button-${size} hans-button-${color} hans-button-${variant} ${customClasses}`}
       {...rest}
     >
-      {children ?? (label && <span>{label}</span>)}
+      <slot>{children ?? (label && <span>{label}</span>)}</slot>
     </button>
   );
 });

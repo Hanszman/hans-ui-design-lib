@@ -1,45 +1,37 @@
 import React from 'react';
-import * as ReactDOM from 'react-dom/client';
-import reactToWebComponent from 'react-to-webcomponent';
-
-type PropType =
-  | 'string'
-  | 'number'
-  | 'boolean'
-  | 'function'
-  | 'method'
-  | 'json';
+import * as ReactDOMClient from 'react-dom/client';
+import reactToWebcomponent from 'react-to-webcomponent';
 
 type R2WCOptions<T> = {
-  props?: (keyof T)[] | Partial<Record<Extract<keyof T, string>, PropType>>;
+  props?: (keyof T)[] | Partial<Record<Extract<keyof T, string>, string>>;
   shadow?: boolean | 'open' | 'closed';
+  stylesheetHref?: string;
 };
-
-const ReactDOMtoWC = ReactDOM as unknown as Parameters<
-  typeof reactToWebComponent
->[2];
 
 export function createWebComponent<T>(
   Component: React.ComponentType<T>,
   options?: R2WCOptions<T>,
 ): CustomElementConstructor {
-  const mergedOptions = {
-    ...(options as R2WCOptions<object>),
-    shadow: false as unknown as 'open',
-  };
+  const merged = {
+    props: (options as R2WCOptions<object>)?.props ?? [],
+    shadow: (options as R2WCOptions<object>)?.shadow ?? 'open',
+    stylesheetHref:
+      (options as R2WCOptions<object>)?.stylesheetHref ?? undefined,
+  } as R2WCOptions<T>;
 
-  const BaseWC = reactToWebComponent(
+  const WebBase = reactToWebcomponent(
     Component as React.ComponentType<object>,
     React,
-    ReactDOMtoWC,
-    mergedOptions,
+    ReactDOMClient as any,
+    {
+      props: merged.props as any,
+      shadow: merged.shadow as any,
+    },
   );
 
-  return class HansElement extends (BaseWC as unknown as {
+  return class HansElement extends (WebBase as unknown as {
     new (): HTMLElement;
   }) {
-    private observer?: MutationObserver;
-
     connectedCallback(): void {
       const proto = Object.getPrototypeOf(HansElement.prototype);
       const superConnected = proto.connectedCallback as
@@ -47,39 +39,18 @@ export function createWebComponent<T>(
         | undefined;
       if (typeof superConnected === 'function') superConnected.call(this);
 
-      this.observer = new MutationObserver(() => {
-        this.updateChildren();
-      });
-      this.observer.observe(this, { childList: true, subtree: true });
-      this.updateChildren();
-    }
-
-    disconnectedCallback(): void {
-      this.observer?.disconnect();
-    }
-
-    private updateChildren() {
-      const childNodes = Array.from(this.childNodes);
-      // @ts-ignore
-      if (this._root && this._root._reactRootContainer) {
-        const currentProps = (this as any)._props || {};
-        (this as any)._reactRootContainer.render(
-          React.createElement(Component as React.ComponentType<any>, {
-            ...currentProps,
-            children: React.createElement(
-              React.Fragment,
-              null,
-              ...childNodes.map((c) => {
-                if (c.nodeType === Node.TEXT_NODE) return c.textContent;
-                return React.createElement('span', {
-                  dangerouslySetInnerHTML: {
-                    __html: (c as HTMLElement).outerHTML,
-                  },
-                });
-              }),
-            ),
-          }),
-        );
+      try {
+        const shadow = (this as any).shadowRoot;
+        if (shadow && merged.stylesheetHref) {
+          if (!shadow.querySelector(`link[href="${merged.stylesheetHref}"]`)) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = merged.stylesheetHref;
+            shadow.prepend(link);
+          }
+        }
+      } catch (e) {
+        console.warn('could not inject stylesheet into shadowRoot', e);
       }
     }
   };
@@ -92,9 +63,11 @@ export function registerReactAsWebComponent<T>(
 ): void {
   if (customElements.get(tagName)) return;
 
-  const WebComponent = createWebComponent(Component, {
+  const WebComp = createWebComponent(Component, {
     props: [...propsList],
-    shadow: false,
+    shadow: 'open',
+    stylesheetHref:
+      'https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css',
   });
-  customElements.define(tagName, WebComponent);
+  customElements.define(tagName, WebComp);
 }
