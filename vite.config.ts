@@ -1,10 +1,12 @@
-import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import dts from 'vite-plugin-dts';
 import path from 'node:path';
+import { defineConfig } from 'vitest/config';
+import { loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), 'VITE_');
   const isCdn = mode === 'cdn';
   const isTest = process.env.VITEST === 'true';
   const isBuild = process.env.NODE_ENV === 'production' && !isTest;
@@ -71,10 +73,10 @@ export default defineConfig(({ mode }) => {
           cssCodeSplit: false,
           define: {
             'import.meta.env.VITE_HANS_UI_URL': JSON.stringify(
-              process.env.VITE_HANS_UI_URL,
+              env.VITE_HANS_UI_URL,
             ),
             'import.meta.env.VITE_HANS_UI_STYLESHEET_FILE': JSON.stringify(
-              process.env.VITE_HANS_UI_STYLESHEET_FILE,
+              env.VITE_HANS_UI_STYLESHEET_FILE,
             ),
           },
         }
