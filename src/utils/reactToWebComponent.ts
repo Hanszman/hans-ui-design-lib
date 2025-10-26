@@ -48,13 +48,39 @@ export function createWebComponent<T>(
       if (typeof superConnected === 'function') superConnected.call(this);
 
       this.observer = new MutationObserver(() => {
-        this.dispatchEvent(new Event('slotchange', { bubbles: true }));
+        this.updateChildren();
       });
       this.observer.observe(this, { childList: true, subtree: true });
+      this.updateChildren();
     }
 
     disconnectedCallback(): void {
       this.observer?.disconnect();
+    }
+
+    private updateChildren() {
+      const childNodes = Array.from(this.childNodes);
+      // @ts-ignore
+      if (this._root && this._root._reactRootContainer) {
+        const currentProps = (this as any)._props || {};
+        (this as any)._reactRootContainer.render(
+          React.createElement(Component as React.ComponentType<any>, {
+            ...currentProps,
+            children: React.createElement(
+              React.Fragment,
+              null,
+              ...childNodes.map((c) => {
+                if (c.nodeType === Node.TEXT_NODE) return c.textContent;
+                return React.createElement('span', {
+                  dangerouslySetInnerHTML: {
+                    __html: (c as HTMLElement).outerHTML,
+                  },
+                });
+              }),
+            ),
+          }),
+        );
+      }
     }
   };
 }
