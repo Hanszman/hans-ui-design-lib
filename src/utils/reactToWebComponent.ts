@@ -1,7 +1,6 @@
 import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import reactToWebcomponent from 'react-to-webcomponent';
-import { HANS_UI_CDN } from '../config-cdn';
 
 type shadowOptions = 'open' | 'closed' | undefined;
 
@@ -72,12 +71,10 @@ export function registerReactAsWebComponent<T>(
 ): void {
   if (customElements.get(tagName)) return;
 
-  const stylesheetUrl = `${HANS_UI_CDN.baseUrl}${HANS_UI_CDN.stylesheet}`;
   const WebComp = createWebComponent(Component, {
     props: [...propsList],
     shadow: 'open',
     stylesheetHref:
-      stylesheetUrl ??
       'https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css',
   });
 
