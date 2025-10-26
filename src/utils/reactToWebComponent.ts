@@ -76,7 +76,9 @@ export function registerReactAsWebComponent<T>(
   const WebComp = createWebComponent(Component, {
     props: [...propsList],
     shadow: 'open',
-    stylesheetHref: stylesheetUrl ?? '',
+    stylesheetHref:
+      stylesheetUrl ??
+      'https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css',
   });
 
   customElements.define(tagName, WebComp);
