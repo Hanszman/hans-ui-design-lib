@@ -1,52 +1,26 @@
-/// <reference types="vite/client" />
 import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import reactToWebcomponent from 'react-to-webcomponent';
 
-type ShadowOptions = 'open' | 'closed' | undefined;
+type shadowOptions = 'open' | 'closed' | undefined;
 
-export type ReactToWebComponentOptions<T> = {
+type ReactToWebComponentOptions<T> = {
   props?: (keyof T)[] | Partial<Record<Extract<keyof T, string>, string>>;
-  shadow?: ShadowOptions;
+  shadow?: shadowOptions;
   stylesheetHref?: string;
 };
-
-class HansElement extends HTMLElement {
-  private readonly stylesheetHref?: string;
-
-  constructor(stylesheetHref?: string) {
-    super();
-    this.stylesheetHref = stylesheetHref;
-  }
-
-  connectedCallback(): void {
-    const shadow = (this as HTMLElement & { shadowRoot?: ShadowRoot })
-      .shadowRoot;
-    if (!shadow || !this.stylesheetHref) return;
-
-    const exists = shadow.querySelector(`link[href="${this.stylesheetHref}"]`);
-    if (exists) return;
-
-    try {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = this.stylesheetHref;
-      shadow.prepend(link);
-    } catch (error) {
-      console.warn('could not inject stylesheet into shadowRoot', error);
-    }
-  }
-}
 
 export function createWebComponent<T>(
   Component: React.ComponentType<T>,
   options?: ReactToWebComponentOptions<T>,
 ): CustomElementConstructor {
-  const elementOptions: Required<ReactToWebComponentOptions<T>> = {
-    props: (options?.props ?? []) as (keyof T)[],
-    shadow: options?.shadow ?? 'open',
-    stylesheetHref: options?.stylesheetHref ?? '',
-  };
+  const elementOptions = {
+    props: (options as ReactToWebComponentOptions<object>)?.props ?? [],
+    shadow: (options as ReactToWebComponentOptions<object>)?.shadow ?? 'open',
+    stylesheetHref:
+      (options as ReactToWebComponentOptions<object>)?.stylesheetHref ??
+      undefined,
+  } as ReactToWebComponentOptions<T>;
 
   const BaseElement = reactToWebcomponent(
     Component as React.ComponentType<object>,
@@ -54,17 +28,38 @@ export function createWebComponent<T>(
     ReactDOMClient as unknown as Parameters<typeof reactToWebcomponent>[2],
     {
       props: elementOptions.props as string[],
-      shadow: elementOptions.shadow,
+      shadow: elementOptions.shadow as shadowOptions,
     },
-  ) as unknown as { new (): HTMLElement };
+  );
 
-  return class HansReactElement extends HansElement {
-    private readonly BaseCtor = BaseElement;
+  return class HansElement extends (BaseElement as unknown as {
+    new (): HTMLElement;
+  }) {
+    connectedCallback(): void {
+      const elementPrototype = Object.getPrototypeOf(HansElement.prototype);
+      const superConnected = elementPrototype.connectedCallback as
+        | (() => void)
+        | undefined;
+      if (typeof superConnected === 'function') superConnected.call(this);
 
-    constructor() {
-      super(elementOptions.stylesheetHref);
-      const instance = new this.BaseCtor();
-      Object.setPrototypeOf(this, Object.getPrototypeOf(instance));
+      try {
+        const shadow = (this as HTMLElement & { shadowRoot?: ShadowRoot })
+          .shadowRoot;
+        if (shadow && elementOptions.stylesheetHref) {
+          if (
+            !shadow.querySelector(
+              `link[(href = '${elementOptions.stylesheetHref}')]`,
+            )
+          ) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = elementOptions.stylesheetHref;
+            shadow.prepend(link);
+          }
+        }
+      } catch (error) {
+        console.warn('could not inject stylesheet into shadowRoot', error);
+      }
     }
   };
 }
