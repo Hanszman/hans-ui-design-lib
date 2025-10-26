@@ -1,6 +1,7 @@
 import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import reactToWebcomponent from 'react-to-webcomponent';
+import { HANS_UI_CDN } from '../config-cdn';
 
 type shadowOptions = 'open' | 'closed' | undefined;
 
@@ -71,7 +72,7 @@ export function registerReactAsWebComponent<T>(
 ): void {
   if (customElements.get(tagName)) return;
 
-  const stylesheetUrl = `${import.meta.env.VITE_HANS_UI_URL}${import.meta.env.VITE_HANS_UI_STYLESHEET_FILE}`;
+  const stylesheetUrl = `${HANS_UI_CDN.baseUrl}${HANS_UI_CDN.stylesheet}`;
   const WebComp = createWebComponent(Component, {
     props: [...propsList],
     shadow: 'open',
