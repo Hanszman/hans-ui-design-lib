@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import reactToWebcomponent from 'react-to-webcomponent';
