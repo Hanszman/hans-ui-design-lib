@@ -12,9 +12,13 @@ const html = `
       <script src="/hans-ui-web-components.js"></script>
     </head>
     <body>
-      <h1>Hans UI Design Lib - CDN Preview:</h1>
-      <hans-button><a href="/hans-ui-design-lib.css">CSS Link File</a></hans-button>
-      <hans-button><a href="/hans-ui-web-components.js">JS Link File</a></hans-button>
+      <div class="!mx-5 !my-3">
+        <h1 class="!text-xl !font-bold">Hans UI Design Lib - CDN Preview:</h1>
+        <div class="flex !my-2">
+          <hans-button class="!mx-2"><a href="/hans-ui-design-lib.css">CSS Link File</a></hans-button>
+          <hans-button class="!mx-2"><a href="/hans-ui-web-components.js">JS Link File</a></hans-button>
+        </div>
+      </div>
     </body>
   </html>
 `;
