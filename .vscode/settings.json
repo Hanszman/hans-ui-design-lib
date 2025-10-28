@@ -9,5 +9,6 @@
     "scss": "javascript"
   },
   "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.validate": false,
   "scss.lint.unknownAtRules": "ignore"
 }
