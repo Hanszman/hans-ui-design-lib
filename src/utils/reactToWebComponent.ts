@@ -2,55 +2,63 @@ import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import reactToWebcomponent from 'react-to-webcomponent';
 
-type R2WCOptions<T> = {
+type shadowOptions = 'open' | 'closed' | undefined;
+
+type ReactToWebComponentOptions<T> = {
   props?: (keyof T)[] | Partial<Record<Extract<keyof T, string>, string>>;
-  shadow?: boolean | 'open' | 'closed';
+  shadow?: shadowOptions;
   stylesheetHref?: string;
 };
 
 export function createWebComponent<T>(
   Component: React.ComponentType<T>,
-  options?: R2WCOptions<T>,
+  options?: ReactToWebComponentOptions<T>,
 ): CustomElementConstructor {
-  const merged = {
-    props: (options as R2WCOptions<object>)?.props ?? [],
-    shadow: (options as R2WCOptions<object>)?.shadow ?? 'open',
+  const elementOptions = {
+    props: (options as ReactToWebComponentOptions<object>)?.props ?? [],
+    shadow: (options as ReactToWebComponentOptions<object>)?.shadow ?? 'open',
     stylesheetHref:
-      (options as R2WCOptions<object>)?.stylesheetHref ?? undefined,
-  } as R2WCOptions<T>;
+      (options as ReactToWebComponentOptions<object>)?.stylesheetHref ??
+      undefined,
+  } as ReactToWebComponentOptions<T>;
 
-  const WebBase = reactToWebcomponent(
+  const BaseElement = reactToWebcomponent(
     Component as React.ComponentType<object>,
     React,
-    ReactDOMClient as any,
+    ReactDOMClient as unknown as Parameters<typeof reactToWebcomponent>[2],
     {
-      props: merged.props as any,
-      shadow: merged.shadow as any,
+      props: elementOptions.props as string[],
+      shadow: elementOptions.shadow as shadowOptions,
     },
   );
 
-  return class HansElement extends (WebBase as unknown as {
+  return class HansElement extends (BaseElement as unknown as {
     new (): HTMLElement;
   }) {
     connectedCallback(): void {
-      const proto = Object.getPrototypeOf(HansElement.prototype);
-      const superConnected = proto.connectedCallback as
+      const elementPrototype = Object.getPrototypeOf(HansElement.prototype);
+      const superConnected = elementPrototype.connectedCallback as
         | (() => void)
         | undefined;
       if (typeof superConnected === 'function') superConnected.call(this);
 
       try {
-        const shadow = (this as any).shadowRoot;
-        if (shadow && merged.stylesheetHref) {
-          if (!shadow.querySelector(`link[href="${merged.stylesheetHref}"]`)) {
+        const shadow = (this as HTMLElement & { shadowRoot?: ShadowRoot })
+          .shadowRoot;
+        if (shadow && elementOptions.stylesheetHref) {
+          if (
+            !shadow.querySelector(
+              `link[href="${elementOptions.stylesheetHref}"]`,
+            )
+          ) {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = merged.stylesheetHref;
+            link.href = elementOptions.stylesheetHref;
             shadow.prepend(link);
           }
         }
-      } catch (e) {
-        console.warn('could not inject stylesheet into shadowRoot', e);
+      } catch (error) {
+        console.warn('could not inject stylesheet into shadowRoot', error);
       }
     }
   };
@@ -69,5 +77,6 @@ export function registerReactAsWebComponent<T>(
     stylesheetHref:
       'https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css',
   });
+
   customElements.define(tagName, WebComp);
 }
