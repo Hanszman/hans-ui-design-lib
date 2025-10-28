@@ -71,11 +71,11 @@ export function registerReactAsWebComponent<T>(
 ): void {
   if (customElements.get(tagName)) return;
 
+  const stylesheetUrl = `${import.meta.env.VITE_HANS_UI_URL}${import.meta.env.VITE_HANS_UI_STYLESHEET_FILE}`;
   const WebComp = createWebComponent(Component, {
     props: [...propsList],
     shadow: 'open',
-    stylesheetHref:
-      'https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css',
+    stylesheetHref: stylesheetUrl,
   });
 
   customElements.define(tagName, WebComp);

@@ -1,4 +1,3 @@
 -Refactor react to wc to use best practices
--Fix cdn css url with config variables on react to wc
 -Fix tests for react to wc
 -Create more components and stories basing on DS components (as necessary in the other projects)
