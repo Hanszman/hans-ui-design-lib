@@ -163,8 +163,12 @@ npm run storybook
 To build the static documentation:
 
 ```bash
-npm run build-storybook
+npm run build:storybook
 ```
+
+The build is going to generate the folder 'storybook-static' on the root of this application.
+Vercel is ready to publish the Storybook documentation with this build command and this folder name.
+Whenever you push your commits on 'main' branch, the Vercel deploy will be called.
 
 ## 🚢 Publishing to npm
 
@@ -182,6 +186,50 @@ npm run publish:[UPDATE-TYPE]
 ```
 
 UPDATE-TYPES: patch | minor | major
+The build is going to generate the folder 'dist' on root of this application.
+The command publish is going to update the npm lib.
+
+To use the lib locally and feed your projects in development, run this command:
+
+```bash
+npm run build:local
+```
+
+On the consumer project update the package.json with the lib generated '.tgz' file's path on your machine:
+
+"hans-ui-design-lib": "[PATH]/hans-ui-design-lib/dist/hans-ui-design-lib-0.0.52.tgz",
+
+and then run:
+
+```bash
+npm install
+```
+
+## 🚢 Publishing to CDN
+
+Build and publish:
+
+```bash
+npm run build:cdn
+```
+
+The build is going to generate the folder 'cdn' on the root of this application.
+Vercel is ready to publish the CDN remote entries with this build command and this folder name.
+Whenever you push your commits on 'main' branch, the Vercel deploy will be called.
+These are the production URL's:
+
+https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css
+https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js
+
+To run CDN locally and feed your projects in development, run this command:
+
+```bash
+npm run build:cdn-local
+```
+
+These are the local URL's:
+http://localhost:5173/hans-ui-design-lib.css
+http://localhost:5173/hans-ui-web-components.js
 
 ## 🛠️ Tech Stack
 
