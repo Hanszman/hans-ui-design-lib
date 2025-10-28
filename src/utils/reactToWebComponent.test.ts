@@ -43,50 +43,46 @@ describe('reactToWebComponent', () => {
     registerReactAsWebComponent(tag, Dummy, []);
     expect(customElements.get(tag)).toBeDefined();
   });
+  it('Should inject stylesheet when stylesheetHref is given', () => {
+    const Dummy: React.FC = () => React.createElement('div');
+    const href = 'https://example.com/style.css';
+    const tag = 'styled-element';
 
-  //   it('Should inject stylesheet when stylesheetHref is given', () => {
-  //     const Dummy: React.FC = () => React.createElement('div');
-  //     const href = 'https://example.com/style.css';
-  //     const tag = 'styled-element';
+    const WebComp = createWebComponent(Dummy, { stylesheetHref: href });
+    customElements.define(tag, WebComp);
 
-  //     const WebComp = createWebComponent(Dummy, { stylesheetHref: href });
-  //     customElements.define(tag, WebComp);
+    const instance = document.createElement(tag) as HTMLElement & {
+      connectedCallback: () => void;
+    };
 
-  //     const instance = document.createElement(tag) as HTMLElement & {
-  //       connectedCallback: () => void;
-  //       shadowRoot?: ShadowRoot;
-  //       attachShadow: (opts: { mode: 'open' }) => ShadowRoot;
-  //     };
+    instance.connectedCallback();
+    const shadow = instance.shadowRoot!;
+    const link = shadow.querySelector(`link[href="${href}"]`);
 
-  //     const shadow = instance.attachShadow({ mode: 'open' });
-  //     instance.connectedCallback();
+    expect(link).not.toBeNull();
+  });
 
-  //     const link = shadow.querySelector(`link[href="${href}"]`);
-  //     expect(link).not.toBeNull();
-  //   });
+  it('Should not inject stylesheet if already exists', () => {
+    const Dummy: React.FC = () => React.createElement('div');
+    const href = 'https://example.com/style.css';
+    const tag = 'already-styled';
 
-  //   it('Should not inject stylesheet if already exists', () => {
-  //     const Dummy: React.FC = () => React.createElement('div');
-  //     const href = 'https://example.com/style.css';
-  //     const tag = 'already-styled';
+    const WebComp = createWebComponent(Dummy, { stylesheetHref: href });
+    customElements.define(tag, WebComp);
 
-  //     const WebComp = createWebComponent(Dummy, { stylesheetHref: href });
-  //     customElements.define(tag, WebComp);
+    const instance = document.createElement(tag) as HTMLElement & {
+      connectedCallback: () => void;
+    };
 
-  //     const instance = document.createElement(tag) as HTMLElement & {
-  //       connectedCallback: () => void;
-  //       shadowRoot?: ShadowRoot;
-  //       attachShadow: (opts: { mode: 'open' }) => ShadowRoot;
-  //     };
+    const shadow =
+      instance.shadowRoot ?? instance.attachShadow({ mode: 'open' });
+    const existingLink = document.createElement('link');
+    existingLink.href = href;
+    shadow.appendChild(existingLink);
 
-  //     const shadow = instance.attachShadow({ mode: 'open' });
-  //     const existingLink = document.createElement('link');
-  //     existingLink.href = href;
-  //     shadow.appendChild(existingLink);
+    instance.connectedCallback();
 
-  //     instance.connectedCallback();
-
-  //     const links = shadow.querySelectorAll(`link[href="${href}"]`);
-  //     expect(links.length).toBe(1);
-  //   });
+    const links = shadow.querySelectorAll(`link[href="${href}"]`);
+    expect(links.length).toBe(1);
+  });
 });
