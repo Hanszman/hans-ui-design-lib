@@ -8,7 +8,7 @@ describe('HansButton', () => {
     expect(screen.getByText('Primary')).toBeInTheDocument();
   });
 
-  it('applies size, color and variant classes correctly', () => {
+  it('Should apply size, color and variant classes correctly', () => {
     render(
       <HansButton
         size="large"
@@ -48,13 +48,13 @@ describe('HansButton', () => {
     expect(button).toBeDisabled();
   });
 
-  it('uses default type="button" if not specified', () => {
+  it('Should use default type="button" if not specified', () => {
     render(<HansButton label="Default Type" />);
     const button = screen.getByRole('button');
     expect(button).toHaveAttribute('type', 'button');
   });
 
-  it('uses provided button type', () => {
+  it('Should use provided button type', () => {
     render(<HansButton label="Submit" buttonType="submit" />);
     const button = screen.getByRole('button');
     expect(button).toHaveAttribute('type', 'submit');
@@ -66,7 +66,7 @@ describe('HansButton', () => {
     expect(button).toHaveClass('extra-class');
   });
 
-  it('is disabled when prop is true', () => {
+  it('Should be disabled when prop is true', () => {
     render(<HansButton label="Disabled" disabled />);
     const button = screen.getByRole('button');
     expect(button).toBeDisabled();

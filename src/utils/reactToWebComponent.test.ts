@@ -11,7 +11,7 @@ describe('reactToWebComponent', () => {
     customElements.define = vi.fn(customElements.define);
   });
 
-  it('deve criar um web component a partir de um componente React', () => {
+  it('Should create a Web Component from a React Component', () => {
     const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
     const WebComp = createWebComponent(Dummy, { shadow: 'open' });
 
@@ -22,7 +22,7 @@ describe('reactToWebComponent', () => {
     expect(instance).toBeInstanceOf(HTMLElement);
   });
 
-  it('deve registrar um componente React como custom element', () => {
+  it('Should register a React Component as a custom element', () => {
     const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
     const tag = 'dummy-element';
 
@@ -35,7 +35,7 @@ describe('reactToWebComponent', () => {
     expect(customElements.get(tag)).toBeDefined();
   });
 
-  it('não deve registrar novamente um custom element já existente', () => {
+  it('Should not register again a custom element that already exists', () => {
     const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
     const tag = 'existing-element';
     customElements.define(tag, class extends HTMLElement {});
@@ -44,7 +44,7 @@ describe('reactToWebComponent', () => {
     expect(customElements.get(tag)).toBeDefined();
   });
 
-  //   it('deve injetar stylesheet quando stylesheetHref é fornecido', () => {
+  //   it('Should inject stylesheet when stylesheetHref is given', () => {
   //     const Dummy: React.FC = () => React.createElement('div');
   //     const href = 'https://example.com/style.css';
   //     const tag = 'styled-element';
@@ -65,7 +65,7 @@ describe('reactToWebComponent', () => {
   //     expect(link).not.toBeNull();
   //   });
 
-  //   it('não deve injetar stylesheet se já existir', () => {
+  //   it('Should not inject stylesheet if already exists', () => {
   //     const Dummy: React.FC = () => React.createElement('div');
   //     const href = 'https://example.com/style.css';
   //     const tag = 'already-styled';
