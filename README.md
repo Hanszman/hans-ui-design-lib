@@ -219,6 +219,7 @@ Whenever you push your commits on 'main' branch, the Vercel deploy will be calle
 These are the production URL's:
 
 https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css
+
 https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js
 
 To run CDN locally and feed your projects in development, run this command:
@@ -228,7 +229,9 @@ npm run build:cdn-local
 ```
 
 These are the local URL's:
+
 http://localhost:5173/hans-ui-design-lib.css
+
 http://localhost:5173/hans-ui-web-components.js
 
 ## 🛠️ Tech Stack
