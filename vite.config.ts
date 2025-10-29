@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
           entryRoot: 'src',
           rollupTypes: true,
           tsconfigPath: path.resolve(__dirname, 'tsconfig.build.json'),
+          exclude: ['src/index-wc.ts', 'src/utils/reactToWebComponent.ts'],
         }),
     ].filter(Boolean),
 

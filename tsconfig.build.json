@@ -28,6 +28,8 @@
     "dist",
     "html",
     "coverage",
-    "storybook-static"
+    "storybook-static",
+    "src/index-wc.ts",
+    "src/utils/reactToWebComponent.ts"
   ]
 }
