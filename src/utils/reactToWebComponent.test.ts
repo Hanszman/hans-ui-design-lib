@@ -14,7 +14,6 @@ describe('reactToWebComponent', () => {
   it('Should create a Web Component from a React Component', () => {
     const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
     const WebComp = createWebComponent(Dummy, { shadow: 'open' });
-
     const tag = 'dummy-test';
     customElements.define(tag, WebComp);
     const instance = document.createElement(tag);
@@ -41,20 +40,18 @@ describe('reactToWebComponent', () => {
     customElements.define(tag, class extends HTMLElement {});
 
     registerReactAsWebComponent(tag, Dummy, []);
+
     expect(customElements.get(tag)).toBeDefined();
   });
   it('Should inject stylesheet when stylesheetHref is given', () => {
     const Dummy: React.FC = () => React.createElement('div');
     const href = 'https://example.com/style.css';
     const tag = 'styled-element';
-
     const WebComp = createWebComponent(Dummy, { stylesheetHref: href });
     customElements.define(tag, WebComp);
-
     const instance = document.createElement(tag) as HTMLElement & {
       connectedCallback: () => void;
     };
-
     instance.connectedCallback();
     const shadow = instance.shadowRoot!;
     const link = shadow.querySelector(`link[href="${href}"]`);
@@ -66,23 +63,50 @@ describe('reactToWebComponent', () => {
     const Dummy: React.FC = () => React.createElement('div');
     const href = 'https://example.com/style.css';
     const tag = 'already-styled';
-
     const WebComp = createWebComponent(Dummy, { stylesheetHref: href });
     customElements.define(tag, WebComp);
-
     const instance = document.createElement(tag) as HTMLElement & {
       connectedCallback: () => void;
     };
-
     const shadow =
       instance.shadowRoot ?? instance.attachShadow({ mode: 'open' });
     const existingLink = document.createElement('link');
     existingLink.href = href;
-    shadow.appendChild(existingLink);
 
+    shadow.appendChild(existingLink);
     instance.connectedCallback();
 
     const links = shadow.querySelectorAll(`link[href="${href}"]`);
     expect(links.length).toBe(1);
+  });
+
+  it('Should log warning if stylesheet injection fails', () => {
+    const Dummy: React.FC = () => React.createElement('div');
+    const href = 'https://example.com/style.css';
+    const tag = 'error-element';
+    const WebComp = createWebComponent(Dummy, { stylesheetHref: href });
+    customElements.define(tag, WebComp);
+    const instance = document.createElement(tag) as HTMLElement & {
+      connectedCallback: () => void;
+    };
+    const fakeShadow = {
+      prepend: () => {
+        throw new Error('mock error');
+      },
+      querySelector: () => null,
+    } as unknown as ShadowRoot;
+
+    Object.defineProperty(instance, 'shadowRoot', {
+      get: () => fakeShadow,
+      configurable: true,
+    });
+    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    instance.connectedCallback();
+
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'could not inject stylesheet into shadowRoot',
+      expect.any(Error),
+    );
+    consoleSpy.mockRestore();
   });
 });
