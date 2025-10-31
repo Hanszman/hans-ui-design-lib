@@ -1,0 +1,15 @@
+.hans-input {
+  @apply rounded-lg border-[var(--text-color)] outline px-2 py-1;
+}
+
+.hans-input-small {
+  @apply w-24 h-6;
+}
+
+.hans-input-medium {
+  @apply w-36 h-8;
+}
+
+.hans-input-large {
+  @apply w-50 h-10;
+}

@@ -2,8 +2,7 @@ import React from 'react';
 import { render, screen, act } from '@testing-library/react';
 import { vi } from 'vitest';
 import { HansIcon } from './Icon';
-import type { IconLibrary } from './Icon.types';
-import { DynamicIconImports } from './Icon.types';
+import { type IconLibrary, DynamicIconImports } from './Icon.types';
 
 function deferred<T>() {
   let resolve!: (v: T) => void;

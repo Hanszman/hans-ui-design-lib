@@ -1,6 +1,8 @@
 import React from 'react';
-import { createPropsList } from '../../types/Schema.types';
-import type { InferPropsFromSchema } from '../../types/Schema.types';
+import {
+  createPropsList,
+  type InferPropsFromSchema,
+} from '../../types/Schema.types';
 import type { Size } from '../../types/Common.types';
 
 const HansIconSchema = {

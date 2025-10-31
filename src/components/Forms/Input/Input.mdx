@@ -1,0 +1,46 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansInputStories from './Input.stories';
+
+<Meta of={HansInputStories} />
+
+<Title />
+
+The **Input** component is used to pass information in forms of the interface.
+It supports multiple sizes and colors variations, allowing full customization with themes.
+
+## 🚀 Usage
+
+To use the component you need to import it and include it in your React app.
+Make sure you have already set up the [Hans UI Design Library](/docs/getting-started--docs) in your project.
+
+```tsx
+import { HansInput } from 'hans-ui-design-lib';
+
+export const Example = () => (
+  <HansInput label="Input" color="primary" size="medium" />
+);
+```
+
+Then, you can use the component in your template. Here is a basic example:
+
+<Primary />
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Sizes
+
+Listed below are the possible sizes of the component:
+
+<Canvas of={HansInputStories.Sizes} />
+
+[COMPONENT STILL IN DEVOLPMENT]

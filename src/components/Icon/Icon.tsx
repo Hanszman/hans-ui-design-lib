@@ -1,6 +1,5 @@
 import React from 'react';
-import type { HansIconProps } from './Icon.types';
-import { DynamicIconImports } from './Icon.types';
+import { type HansIconProps, DynamicIconImports } from './Icon.types';
 
 export const HansIcon: React.FC<HansIconProps> = React.memo(
   (props: HansIconProps) => {
