@@ -14,7 +14,7 @@ This library provides reusable, styled and documented UI components with a consi
 - ⚡ **Vite** as the bundler for fast builds and DX
 - 🌍 Ready to be published and consumed via **npm**
 - 📖 Documentation ready to be used (deployed by **Vercel**) at https://hans-ui-design-lib.vercel.app/
-- **Node Version to build this project: 22.18.0 and npm 10.9.3**
+- **Node Version to build this project: 22.18.0 and npm 11.8.0**
 
 ## 📦 Installation
 
@@ -186,6 +186,7 @@ npm run publish:[UPDATE-TYPE]
 ```
 
 UPDATE-TYPES: patch | minor | major
+
 The build is going to generate the folder 'dist' on root of this application.
 The command publish is going to update the npm lib.
 
@@ -268,8 +269,4 @@ npm i -D sass
 npm i -D react-icons
 
 npm i -D react react-dom react-to-webcomponent @ungap/custom-elements
-```
-
-```
-
 ```
