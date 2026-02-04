@@ -11,9 +11,9 @@ describe('HansButton', () => {
   it('Should apply size, color and variant classes correctly', () => {
     render(
       <HansButton
-        size="large"
-        color="danger"
-        variant="outline"
+        buttonSize="large"
+        buttonColor="danger"
+        buttonVariant="outline"
         label="Click"
       />,
     );
@@ -29,9 +29,9 @@ describe('HansButton', () => {
     render(
       <HansButton
         label="All Props"
-        size="small"
-        color="success"
-        variant="strong"
+        buttonSize="small"
+        buttonColor="success"
+        buttonVariant="strong"
         disabled
         customClasses="custom-test"
       />,

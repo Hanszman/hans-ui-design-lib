@@ -9,7 +9,7 @@ const HansInputSchema = {
   label: 'string',
   placeholder: 'string',
   value: 'string',
-  color: { type: 'custom', ref: {} as Color },
+  inputColor: { type: 'custom', ref: {} as Color },
   inputSize: { type: 'custom', ref: {} as Size },
   inputType: { type: 'custom', ref: {} as InputType },
   customClasses: 'string',

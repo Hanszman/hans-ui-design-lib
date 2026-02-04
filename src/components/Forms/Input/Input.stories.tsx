@@ -12,13 +12,13 @@ const meta: Meta<typeof HansInput> = {
   args: {
     label: 'Label',
     placeholder: '',
-    color: 'primary',
+    inputColor: 'primary',
     inputSize: 'medium',
     disabled: false,
   },
   argTypes: {
     inputSize: { control: 'select', options: ['small', 'medium', 'large'] },
-    color: {
+    inputColor: {
       control: 'select',
       options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
     },

@@ -7,14 +7,14 @@ const meta: Meta<typeof HansIcon> = {
   title: 'Components/Icon',
   component: HansIcon,
   args: {
-    size: 'medium',
+    iconSize: 'medium',
   },
   argTypes: {
     name: {
       control: 'text',
       description: 'Nome do ícone (ex: FaHome, MdAdd, BiStar)',
     },
-    size: { control: 'select', options: ['small', 'medium', 'large'] },
+    iconSize: { control: 'select', options: ['small', 'medium', 'large'] },
   },
   parameters: {
     docs: {
@@ -36,7 +36,7 @@ export const Sizes: Story = {
       {['small', 'medium', 'large'].map((size) => (
         <div key={size}>
           <p className="font-bold mb-2">{size}</p>
-          <HansIcon key={size} name="IoIosHappy" size={size as Size} />
+          <HansIcon key={size} name="IoIosHappy" iconSize={size as Size} />
         </div>
       ))}
     </div>

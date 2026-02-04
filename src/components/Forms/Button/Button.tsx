@@ -4,9 +4,9 @@ import type { HansButtonProps } from './Button.types';
 export const HansButton = React.memo((props: HansButtonProps) => {
   const {
     label = '',
-    size = 'medium',
-    color = 'primary',
-    variant = 'default',
+    buttonSize = 'medium',
+    buttonColor = 'primary',
+    buttonVariant = 'default',
     buttonType = 'button',
     customClasses = '',
     disabled = false,
@@ -18,7 +18,13 @@ export const HansButton = React.memo((props: HansButtonProps) => {
     <button
       type={buttonType}
       disabled={disabled}
-      className={`hans-button hans-button-${size} hans-button-${color} hans-button-${variant} ${customClasses}`}
+      className={`
+        hans-button
+        hans-button-${buttonSize}
+        hans-button-${buttonColor}
+        hans-button-${buttonVariant}
+        ${customClasses}
+      `}
       {...rest}
     >
       <slot>{children ?? (label && <span>{label}</span>)}</slot>

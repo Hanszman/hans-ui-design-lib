@@ -9,20 +9,20 @@ const meta: Meta<typeof HansButton> = {
   component: HansButton,
   args: {
     label: 'Primary',
-    size: 'medium',
-    variant: 'default',
-    color: 'primary',
+    buttonSize: 'medium',
+    buttonColor: 'primary',
+    buttonVariant: 'default',
     disabled: false,
   },
   argTypes: {
-    size: { control: 'select', options: ['small', 'medium', 'large'] },
-    variant: {
-      control: 'select',
-      options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
-    },
-    color: {
+    buttonSize: { control: 'select', options: ['small', 'medium', 'large'] },
+    buttonColor: {
       control: 'select',
       options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+    },
+    buttonVariant: {
+      control: 'select',
+      options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
     },
   },
   parameters: {
@@ -47,7 +47,7 @@ export const Sizes: Story = {
       {['small', 'medium', 'large'].map((size) => (
         <div key={size}>
           <p className="font-bold mb-2">{size}</p>
-          <HansButton key={size} label={`${size}`} size={size as Size} />
+          <HansButton key={size} label={`${size}`} buttonSize={size as Size} />
         </div>
       ))}
     </div>
@@ -73,8 +73,8 @@ export const VariantsAndColors: Story = {
                 <HansButton
                   key={color + variant}
                   label={`${color}`}
-                  color={color as Color}
-                  variant={variant as Variant}
+                  buttonColor={color as Color}
+                  buttonVariant={variant as Variant}
                 />
               ))}
             </div>

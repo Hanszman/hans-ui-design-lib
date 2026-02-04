@@ -1,3 +1,2 @@
 -Finish Input Component
--Padronize Common Types on Components (Example: ElementColor, ElementSize, etc)
 -Create more components and stories basing on DS components (as necessary in the other projects)

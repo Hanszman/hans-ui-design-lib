@@ -6,7 +6,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
     label = '',
     placeholder = '',
     value = '',
-    color = 'primary',
+    inputColor = 'primary',
     inputSize = 'medium',
     inputType = 'text',
     customClasses = '',
@@ -24,7 +24,12 @@ export const HansInput = React.memo((props: HansInputProps) => {
         disabled={disabled}
         value={value}
         placeholder={placeholder}
-        className={`hans-input hans-input-${inputSize} hans-input-${color} ${customClasses}`}
+        className={`
+          hans-input
+          hans-input-${inputSize}
+          hans-input-${inputColor}
+          ${customClasses}
+        `}
         {...rest}
       />
     </>

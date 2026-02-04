@@ -7,7 +7,7 @@ import type { Size } from '../../types/Common.types';
 
 const HansIconSchema = {
   name: 'string',
-  size: { type: 'custom', ref: {} as Size },
+  iconSize: { type: 'custom', ref: {} as Size },
   customClasses: 'string',
 } as const;
 

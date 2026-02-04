@@ -3,7 +3,7 @@ import { type HansIconProps, DynamicIconImports } from './Icon.types';
 
 export const HansIcon: React.FC<HansIconProps> = React.memo(
   (props: HansIconProps) => {
-    const { name, size = 'medium', customClasses = '', ...rest } = props;
+    const { name, iconSize = 'medium', customClasses = '', ...rest } = props;
     const [IconComp, setIconComp] = React.useState<React.ComponentType<
       React.SVGProps<SVGSVGElement>
     > | null>(null);
@@ -35,7 +35,11 @@ export const HansIcon: React.FC<HansIconProps> = React.memo(
 
     return (
       <IconComp
-        className={`hans-icon hans-icon-${size} ${customClasses}`}
+        className={`
+          hans-icon
+          hans-icon-${iconSize}
+          ${customClasses}
+        `}
         {...(rest as React.SVGProps<SVGSVGElement>)}
       />
     );
