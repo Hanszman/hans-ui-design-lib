@@ -7,6 +7,7 @@ import type { Size, Variant, Color } from '../../../types/Common.types';
 
 const HansButtonSchema = {
   label: 'string',
+  buttonId: 'string',
   buttonSize: { type: 'custom', ref: {} as Size },
   buttonColor: { type: 'custom', ref: {} as Color },
   buttonVariant: { type: 'custom', ref: {} as Variant },

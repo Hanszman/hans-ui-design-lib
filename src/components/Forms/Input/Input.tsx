@@ -4,11 +4,15 @@ import type { HansInputProps } from './Input.types';
 export const HansInput = React.memo((props: HansInputProps) => {
   const {
     label = '',
+    labelColor = 'primary',
     placeholder = '',
     value = '',
+    inputId = 'hans-input',
     inputColor = 'primary',
     inputSize = 'medium',
     inputType = 'text',
+    message = '',
+    messageColor = 'success',
     customClasses = '',
     disabled = false,
     children,
@@ -16,10 +20,19 @@ export const HansInput = React.memo((props: HansInputProps) => {
   } = props;
 
   return (
-    <>
+    <div className="hans-input-div">
       {children}
-      {label}
+      <label
+        htmlFor={inputId}
+        className={`
+          hans-input-label
+          hans-input-label-${labelColor}
+        `}
+      >
+        {label}
+      </label>
       <input
+        id={inputId}
         type={inputType}
         disabled={disabled}
         value={value}
@@ -32,7 +45,15 @@ export const HansInput = React.memo((props: HansInputProps) => {
         `}
         {...rest}
       />
-    </>
+      <p
+        className={`
+          hans-input-message
+          hans-input-message-${messageColor}
+        `}
+      >
+        {message}
+      </p>
+    </div>
   );
 });
 

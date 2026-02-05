@@ -1,3 +1,11 @@
+.hans-input-div {
+  @apply flex flex-col;
+}
+
+.hans-input-label {
+  @apply font-bold;
+}
+
 .hans-input {
   @apply rounded-lg border-[var(--text-color)] outline px-2 py-1;
 }
@@ -12,4 +20,8 @@
 
 .hans-input-large {
   @apply w-50 h-10;
+}
+
+.hans-input-message {
+  @apply text-sm;
 }

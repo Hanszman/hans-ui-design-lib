@@ -1,8 +1,8 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
   font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  @apply text-base box-border;
 }
 
 ol,
@@ -20,8 +20,7 @@ picture,
 video,
 canvas,
 svg {
-  display: block;
-  max-width: 100%;
+  @apply block max-w-full;
 }
 
 button,
@@ -38,7 +37,7 @@ textarea {
 html,
 body,
 #root {
-  height: 100%;
+  @apply h-full;
 }
 
 body {

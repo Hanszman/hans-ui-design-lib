@@ -4,6 +4,7 @@ import type { HansButtonProps } from './Button.types';
 export const HansButton = React.memo((props: HansButtonProps) => {
   const {
     label = '',
+    buttonId = 'hans-button',
     buttonSize = 'medium',
     buttonColor = 'primary',
     buttonVariant = 'default',
@@ -16,6 +17,7 @@ export const HansButton = React.memo((props: HansButtonProps) => {
 
   return (
     <button
+      id={buttonId}
       type={buttonType}
       disabled={disabled}
       className={`

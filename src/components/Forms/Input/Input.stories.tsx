@@ -44,11 +44,12 @@ export const Sizes: Story = {
     <div className="flex flex-col gap-4">
       {['small', 'medium', 'large'].map((size) => (
         <div key={size}>
-          <p className="font-bold mb-2">{size}</p>
           <HansInput
             key={size}
             label={`${size}`}
+            placeholder={`${size}`}
             inputSize={size as Size}
+            message={`${size}`}
           ></HansInput>
         </div>
       ))}
