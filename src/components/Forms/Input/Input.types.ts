@@ -7,7 +7,7 @@ import type { Size, Color } from '../../../types/Common.types';
 
 const HansInputSchema = {
   label: 'string',
-  labelColor: 'string',
+  labelColor: { type: 'custom', ref: {} as Color },
   placeholder: 'string',
   value: 'string',
   inputId: 'string',
@@ -15,9 +15,11 @@ const HansInputSchema = {
   inputSize: { type: 'custom', ref: {} as Size },
   inputType: { type: 'custom', ref: {} as InputType },
   message: 'string',
-  messageColor: 'string',
+  messageColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',
   disabled: 'boolean',
+  leftIcon: 'node',
+  rightIcon: 'node',
 } as const;
 
 export type InputType =

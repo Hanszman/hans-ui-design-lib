@@ -3,25 +3,130 @@
 }
 
 .hans-input-label {
-  @apply font-bold;
+  @apply font-bold mb-1;
 }
 
 .hans-input {
-  @apply rounded-lg border-[var(--text-color)] outline px-2 py-1;
+  @apply rounded-lg border-2 bg-transparent outline-none px-2 py-1 text-[var(--text-color)];
+}
+
+.hans-input:focus {
+  @apply outline-none;
+}
+
+.hans-input:disabled,
+.hans-input[disabled] {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.hans-input-field {
+  @apply relative flex items-center;
+}
+
+.hans-input-icon {
+  @apply absolute top-1/2 -translate-y-1/2 flex items-center justify-center;
+}
+
+.hans-input-icon-left {
+  @apply left-2;
+}
+
+.hans-input-icon-right {
+  @apply right-2;
+}
+
+.hans-input-has-left-icon {
+  @apply pl-8;
+}
+
+.hans-input-has-right-icon {
+  @apply pr-8;
 }
 
 .hans-input-small {
-  @apply w-24 h-6;
+  @apply w-24 h-6 text-xs;
 }
 
 .hans-input-medium {
-  @apply w-36 h-8;
+  @apply w-36 h-8 text-sm;
 }
 
 .hans-input-large {
-  @apply w-50 h-10;
+  @apply w-50 h-10 text-base;
 }
 
 .hans-input-message {
-  @apply text-sm;
+  @apply text-sm mt-1;
+}
+
+.hans-input-label-primary {
+  @apply text-[var(--primary-default-color)];
+}
+
+.hans-input-label-secondary {
+  @apply text-[var(--secondary-default-color)];
+}
+
+.hans-input-label-success {
+  @apply text-[var(--success-default-color)];
+}
+
+.hans-input-label-danger {
+  @apply text-[var(--danger-default-color)];
+}
+
+.hans-input-label-warning {
+  @apply text-[var(--warning-default-color)];
+}
+
+.hans-input-label-info {
+  @apply text-[var(--info-default-color)];
+}
+
+.hans-input-primary {
+  @apply border-[var(--primary-default-color)] focus:border-[var(--primary-strong-color)];
+}
+
+.hans-input-secondary {
+  @apply border-[var(--secondary-default-color)] focus:border-[var(--secondary-strong-color)];
+}
+
+.hans-input-success {
+  @apply border-[var(--success-default-color)] focus:border-[var(--success-strong-color)];
+}
+
+.hans-input-danger {
+  @apply border-[var(--danger-default-color)] focus:border-[var(--danger-strong-color)];
+}
+
+.hans-input-warning {
+  @apply border-[var(--warning-default-color)] focus:border-[var(--warning-strong-color)];
+}
+
+.hans-input-info {
+  @apply border-[var(--info-default-color)] focus:border-[var(--info-strong-color)];
+}
+
+.hans-input-message-primary {
+  @apply text-[var(--primary-default-color)];
+}
+
+.hans-input-message-secondary {
+  @apply text-[var(--secondary-default-color)];
+}
+
+.hans-input-message-success {
+  @apply text-[var(--success-default-color)];
+}
+
+.hans-input-message-danger {
+  @apply text-[var(--danger-default-color)];
+}
+
+.hans-input-message-warning {
+  @apply text-[var(--warning-default-color)];
+}
+
+.hans-input-message-info {
+  @apply text-[var(--info-default-color)];
 }
