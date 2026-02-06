@@ -4,15 +4,15 @@ import type { HansInputProps } from './Input.types';
 export const HansInput = React.memo((props: HansInputProps) => {
   const {
     label = '',
-    labelColor = 'primary',
+    labelColor = 'base',
     placeholder = '',
     value,
     inputId = 'hans-input',
-    inputColor = 'primary',
+    inputColor = 'base',
     inputSize = 'medium',
     inputType = 'text',
     message = '',
-    messageColor = 'success',
+    messageColor = 'base',
     customClasses = '',
     disabled = false,
     leftIcon,
@@ -21,8 +21,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
     ...rest
   } = props;
 
-  const valueProps =
-    typeof value === 'undefined' ? {} : { value: value ?? '' };
+  const valueProps = typeof value === 'undefined' ? {} : { value };
 
   return (
     <div className="hans-input-div">

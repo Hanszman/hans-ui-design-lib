@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import { HansInput } from './Input';
 
 describe('HansInput', () => {
@@ -75,13 +75,18 @@ describe('HansInput', () => {
   });
 
   it('Should support controlled and uncontrolled values', () => {
-    const { rerender } = render(
-      <HansInput placeholder="Controlled" value="abc" />,
+    render(
+      <HansInput
+        placeholder="Controlled"
+        value="abc"
+        onChange={() => {}}
+      />,
     );
     const controlledInput = screen.getByPlaceholderText('Controlled');
     expect(controlledInput).toHaveValue('abc');
 
-    rerender(
+    cleanup();
+    render(
       <HansInput placeholder="Uncontrolled" defaultValue="init" />,
     );
     const uncontrolledInput = screen.getByPlaceholderText('Uncontrolled');

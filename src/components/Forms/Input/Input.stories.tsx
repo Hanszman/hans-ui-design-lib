@@ -13,25 +13,49 @@ const meta: Meta<typeof HansInput> = {
   args: {
     label: 'Label',
     placeholder: '',
-    inputColor: 'primary',
+    inputColor: 'base',
     inputSize: 'medium',
     disabled: false,
     message: '',
-    messageColor: 'success',
+    messageColor: 'base',
   },
   argTypes: {
     inputSize: { control: 'select', options: ['small', 'medium', 'large'] },
     inputColor: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+      options: [
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
     },
     labelColor: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+      options: [
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
     },
     messageColor: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+      options: [
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
     },
   },
   parameters: {
@@ -52,9 +76,9 @@ export const Primary: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       {['small', 'medium', 'large'].map((size) => (
-        <div key={size}>
+        <div key={size} className="w-full">
           <HansInput
             key={size}
             label={`${size}`}
@@ -70,8 +94,8 @@ export const Sizes: Story = {
 
 export const ColorsAndMessages: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
-      {['primary', 'secondary', 'success', 'danger', 'warning', 'info'].map(
+    <div className="flex flex-col gap-4 w-full">
+      {['base', 'primary', 'secondary', 'success', 'danger', 'warning', 'info'].map(
         (color) => (
           <HansInput
             key={color}
@@ -90,7 +114,7 @@ export const ColorsAndMessages: Story = {
 
 export const WithIcons: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       <HansInput
         label="Search"
         placeholder="Search..."
@@ -120,5 +144,15 @@ export const ValidationProps: Story = {
     maxLength: 12,
     message: 'Min 3, max 12 characters',
     messageColor: 'info',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: 'Disabled',
+    placeholder: 'Disabled input',
+    disabled: true,
+    message: 'Field is disabled',
+    messageColor: 'warning',
   },
 };

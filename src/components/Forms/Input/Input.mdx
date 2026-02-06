@@ -23,7 +23,7 @@ Make sure you have already set up the [Hans UI Design Library](/docs/getting-sta
 import { HansInput } from 'hans-ui-design-lib';
 
 export const Example = () => (
-  <HansInput label="Input" inputColor="primary" inputSize="medium" />
+  <HansInput label="Input" inputColor="base" inputSize="medium" />
 );
 ```
 
@@ -60,3 +60,7 @@ You can place icons inside the input using `leftIcon` or `rightIcon`.
 Native validation props like `minLength` and `maxLength` are supported.
 
 <Canvas of={HansInputStories.ValidationProps} />
+
+## Disabled
+
+<Canvas of={HansInputStories.Disabled} />

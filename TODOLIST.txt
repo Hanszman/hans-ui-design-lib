@@ -1,2 +1,1 @@
--Finish Input Component (fix input value action, color messages, possibility of icons inside of the input (right and left), tests, more story cases, validations)
 -Create more components and stories basing on DS components (as necessary in the other projects)

@@ -7,7 +7,7 @@
 }
 
 .hans-input {
-  @apply rounded-lg border-2 bg-transparent outline-none px-2 py-1 text-[var(--text-color)];
+  @apply w-full rounded-lg border-2 bg-transparent outline-none px-2 py-1 text-[var(--text-color)];
 }
 
 .hans-input:focus {
@@ -20,7 +20,7 @@
 }
 
 .hans-input-field {
-  @apply relative flex items-center;
+  @apply relative flex items-center w-full;
 }
 
 .hans-input-icon {
@@ -44,19 +44,23 @@
 }
 
 .hans-input-small {
-  @apply w-24 h-6 text-xs;
+  @apply h-6 text-xs;
 }
 
 .hans-input-medium {
-  @apply w-36 h-8 text-sm;
+  @apply h-8 text-sm;
 }
 
 .hans-input-large {
-  @apply w-50 h-10 text-base;
+  @apply h-10 text-base;
 }
 
 .hans-input-message {
   @apply text-sm mt-1;
+}
+
+.hans-input-label-base {
+  @apply text-[var(--text-color)];
 }
 
 .hans-input-label-primary {
@@ -83,6 +87,10 @@
   @apply text-[var(--info-default-color)];
 }
 
+.hans-input-base {
+  @apply border-[var(--text-color)] focus:border-[var(--text-color)];
+}
+
 .hans-input-primary {
   @apply border-[var(--primary-default-color)] focus:border-[var(--primary-strong-color)];
 }
@@ -105,6 +113,10 @@
 
 .hans-input-info {
   @apply border-[var(--info-default-color)] focus:border-[var(--info-strong-color)];
+}
+
+.hans-input-message-base {
+  @apply text-[var(--text-color)];
 }
 
 .hans-input-message-primary {

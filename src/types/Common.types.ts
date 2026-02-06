@@ -1,5 +1,6 @@
 export type Size = 'small' | 'medium' | 'large';
 export type Color =
+  | 'base'
   | 'primary'
   | 'secondary'
   | 'success'

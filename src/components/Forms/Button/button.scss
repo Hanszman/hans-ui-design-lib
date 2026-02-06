@@ -23,6 +23,26 @@
   @apply px-6 py-3;
 }
 
+.hans-button-base.hans-button-strong {
+  @apply bg-[var(--text-color)] text-[var(--background-color)];
+}
+
+.hans-button-base.hans-button-default {
+  @apply bg-[var(--text-color)] text-[var(--white)];
+}
+
+.hans-button-base.hans-button-neutral {
+  @apply bg-[var(--background-color)] text-[var(--text-color)];
+}
+
+.hans-button-base.hans-button-outline {
+  @apply bg-transparent text-[var(--text-color)] border-[var(--text-color)] outline;
+}
+
+.hans-button-base.hans-button-transparent {
+  @apply bg-transparent text-[var(--text-color)];
+}
+
 .hans-button-primary.hans-button-strong {
   @apply bg-[var(--primary-strong-color)] text-[var(--primary-neutral-color)];
 }

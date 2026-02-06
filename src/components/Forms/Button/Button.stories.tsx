@@ -18,7 +18,15 @@ const meta: Meta<typeof HansButton> = {
     buttonSize: { control: 'select', options: ['small', 'medium', 'large'] },
     buttonColor: {
       control: 'select',
-      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+      options: [
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
     },
     buttonVariant: {
       control: 'select',
@@ -63,6 +71,7 @@ export const VariantsAndColors: Story = {
             <p className="font-bold mb-2">{variant}</p>
             <div className="flex gap-2 flex-wrap">
               {[
+                'base',
                 'primary',
                 'secondary',
                 'success',
