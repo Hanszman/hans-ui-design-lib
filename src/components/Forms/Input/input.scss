@@ -43,6 +43,34 @@
   @apply pr-8;
 }
 
+.hans-input-icon-base {
+  @apply text-[var(--text-color)];
+}
+
+.hans-input-icon-primary {
+  @apply text-[var(--primary-default-color)];
+}
+
+.hans-input-icon-secondary {
+  @apply text-[var(--secondary-default-color)];
+}
+
+.hans-input-icon-success {
+  @apply text-[var(--success-default-color)];
+}
+
+.hans-input-icon-danger {
+  @apply text-[var(--danger-default-color)];
+}
+
+.hans-input-icon-warning {
+  @apply text-[var(--warning-default-color)];
+}
+
+.hans-input-icon-info {
+  @apply text-[var(--info-default-color)];
+}
+
 .hans-input-small {
   @apply h-6 text-xs;
 }

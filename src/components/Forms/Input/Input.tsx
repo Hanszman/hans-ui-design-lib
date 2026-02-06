@@ -39,7 +39,13 @@ export const HansInput = React.memo((props: HansInputProps) => {
       ) : null}
       <div className="hans-input-field">
         {leftIcon ? (
-          <span className="hans-input-icon hans-input-icon-left">
+          <span
+            className={`
+              hans-input-icon
+              hans-input-icon-left
+              hans-input-icon-${inputColor}
+            `}
+          >
             {leftIcon}
           </span>
         ) : null}
@@ -60,7 +66,13 @@ export const HansInput = React.memo((props: HansInputProps) => {
           {...rest}
         />
         {rightIcon ? (
-          <span className="hans-input-icon hans-input-icon-right">
+          <span
+            className={`
+              hans-input-icon
+              hans-input-icon-right
+              hans-input-icon-${inputColor}
+            `}
+          >
             {rightIcon}
           </span>
         ) : null}

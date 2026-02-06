@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type {
-  Size,
-  Color,
-} from '../../../types/Common.types';
+import type { Size, Color } from '../../../types/Common.types';
 import { HansInput } from './Input';
 import { HansIcon } from '../../Icon/Icon';
 import DocsPage from './Input.mdx';
@@ -95,19 +92,25 @@ export const Sizes: Story = {
 export const ColorsAndMessages: Story = {
   render: () => (
     <div className="flex flex-col gap-4 w-full">
-      {['base', 'primary', 'secondary', 'success', 'danger', 'warning', 'info'].map(
-        (color) => (
-          <HansInput
-            key={color}
-            label={`Color ${color}`}
-            labelColor={color as Color}
-            inputColor={color as Color}
-            message={`Message ${color}`}
-            messageColor={color as Color}
-            placeholder="Type here"
-          />
-        ),
-      )}
+      {[
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ].map((color) => (
+        <HansInput
+          key={color}
+          label={`Color ${color}`}
+          labelColor={color as Color}
+          inputColor={color as Color}
+          message={`Message ${color}`}
+          messageColor={color as Color}
+          placeholder="Type here"
+        />
+      ))}
     </div>
   ),
 };
@@ -117,18 +120,24 @@ export const WithIcons: Story = {
     <div className="flex flex-col gap-4 w-full">
       <HansInput
         label="Search"
+        labelColor="base"
         placeholder="Search..."
+        inputColor="base"
         leftIcon={<HansIcon name="FaSearch" iconSize="small" />}
       />
       <HansInput
-        label="Email"
+        label="E-mail"
+        labelColor="primary"
         placeholder="user@email.com"
+        inputColor="primary"
         rightIcon={<HansIcon name="MdEmail" iconSize="small" />}
       />
       <HansInput
         label="Password"
+        labelColor="secondary"
         inputType="password"
         placeholder="********"
+        inputColor="secondary"
         leftIcon={<HansIcon name="FaLock" iconSize="small" />}
         rightIcon={<HansIcon name="MdVisibility" iconSize="small" />}
       />
@@ -143,7 +152,7 @@ export const ValidationProps: Story = {
     minLength: 3,
     maxLength: 12,
     message: 'Min 3, max 12 characters',
-    messageColor: 'info',
+    messageColor: 'danger',
   },
 };
 
