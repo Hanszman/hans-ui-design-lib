@@ -7,7 +7,7 @@
 }
 
 .hans-input {
-  @apply w-full rounded-lg border-2 bg-transparent outline-none px-2 py-1 text-[var(--text-color)];
+  @apply w-full rounded-lg border-1 bg-transparent outline-none px-2 py-1 text-[var(--text-color)];
 }
 
 .hans-input:focus {
@@ -88,31 +88,31 @@
 }
 
 .hans-input-base {
-  @apply border-[var(--text-color)] focus:border-[var(--text-color)];
+  @apply border-[var(--gray-300)] focus:border-[var(--text-color)];
 }
 
 .hans-input-primary {
-  @apply border-[var(--primary-default-color)] focus:border-[var(--primary-strong-color)];
+  @apply border-[var(--primary-neutral-color)] focus:border-[var(--primary-default-color)];
 }
 
 .hans-input-secondary {
-  @apply border-[var(--secondary-default-color)] focus:border-[var(--secondary-strong-color)];
+  @apply border-[var(--secondary-neutral-color)] focus:border-[var(--secondary-default-color)];
 }
 
 .hans-input-success {
-  @apply border-[var(--success-default-color)] focus:border-[var(--success-strong-color)];
+  @apply border-[var(--success-neutral-color)] focus:border-[var(--success-default-color)];
 }
 
 .hans-input-danger {
-  @apply border-[var(--danger-default-color)] focus:border-[var(--danger-strong-color)];
+  @apply border-[var(--danger-neutral-color)] focus:border-[var(--danger-default-color)];
 }
 
 .hans-input-warning {
-  @apply border-[var(--warning-default-color)] focus:border-[var(--warning-strong-color)];
+  @apply border-[var(--warning-neutral-color)] focus:border-[var(--warning-default-color)];
 }
 
 .hans-input-info {
-  @apply border-[var(--info-default-color)] focus:border-[var(--info-strong-color)];
+  @apply border-[var(--info-neutral-color)] focus:border-[var(--info-default-color)];
 }
 
 .hans-input-message-base {
