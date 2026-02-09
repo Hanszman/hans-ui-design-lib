@@ -1,1 +1,0 @@
--Create more components and stories basing on DS components (as necessary in the other projects)

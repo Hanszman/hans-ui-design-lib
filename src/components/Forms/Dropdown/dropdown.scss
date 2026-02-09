@@ -1,0 +1,71 @@
+.hans-dropdown {
+  @apply w-full flex flex-col;
+}
+
+.hans-dropdown-field {
+  @apply relative w-full;
+}
+
+.hans-dropdown-input {
+  @apply w-full;
+}
+
+.hans-dropdown-list {
+  @apply absolute z-50 mt-1 w-full rounded-lg border border-[var(--gray-300)] bg-[var(--background-color)] shadow-md max-h-60 overflow-auto;
+}
+
+.hans-dropdown-option {
+  @apply px-3 py-2 cursor-pointer;
+}
+
+.hans-dropdown-option:hover {
+  @apply bg-[var(--gray-100)];
+}
+
+.hans-dropdown-option-selected {
+  @apply bg-[var(--gray-100)] font-bold;
+}
+
+.hans-dropdown-option-disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.hans-dropdown-empty {
+  @apply px-3 py-2 text-sm text-[var(--gray-500)];
+}
+
+.hans-dropdown-selected {
+  @apply flex flex-wrap gap-2 mt-2;
+}
+
+.hans-dropdown-chip {
+  @apply px-2 py-1 rounded-full text-xs bg-[var(--gray-100)] text-[var(--text-color)];
+}
+
+.hans-dropdown-chip-base {
+  @apply bg-[var(--gray-100)] text-[var(--text-color)];
+}
+
+.hans-dropdown-chip-primary {
+  @apply bg-[var(--primary-neutral-color)] text-[var(--primary-strong-color)];
+}
+
+.hans-dropdown-chip-secondary {
+  @apply bg-[var(--secondary-neutral-color)] text-[var(--secondary-strong-color)];
+}
+
+.hans-dropdown-chip-success {
+  @apply bg-[var(--success-neutral-color)] text-[var(--success-strong-color)];
+}
+
+.hans-dropdown-chip-danger {
+  @apply bg-[var(--danger-neutral-color)] text-[var(--danger-strong-color)];
+}
+
+.hans-dropdown-chip-warning {
+  @apply bg-[var(--warning-neutral-color)] text-[var(--warning-strong-color)];
+}
+
+.hans-dropdown-chip-info {
+  @apply bg-[var(--info-neutral-color)] text-[var(--info-strong-color)];
+}

@@ -4,6 +4,7 @@
 /* Component-level overrides */
 @import '../components/Forms/Button/button.scss';
 @import '../components/Forms/Input/input.scss';
+@import '../components/Forms/Dropdown/dropdown.scss';
 @import '../components/Icon/icon.scss';
 
 /* Custom variables */

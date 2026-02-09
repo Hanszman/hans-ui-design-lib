@@ -10,6 +10,11 @@ import {
   type HansInputProps,
   HansInputPropsList,
 } from './components/Forms/Input/Input.types';
+import { HansDropdown } from './components/Forms/Dropdown/Dropdown';
+import {
+  type HansDropdownProps,
+  HansDropdownPropsList,
+} from './components/Forms/Dropdown/Dropdown.types';
 import { HansIcon } from './components/Icon/Icon';
 import {
   type HansIconProps,
@@ -25,6 +30,11 @@ registerReactAsWebComponent<HansInputProps>(
   'hans-input',
   HansInput,
   HansInputPropsList,
+);
+registerReactAsWebComponent<HansDropdownProps>(
+  'hans-dropdown',
+  HansDropdown,
+  HansDropdownPropsList,
 );
 registerReactAsWebComponent<HansIconProps>(
   'hans-icon',

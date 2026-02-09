@@ -1,0 +1,55 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansDropdownStories from './Dropdown.stories';
+
+<Meta of={HansDropdownStories} />
+
+<Title />
+
+The **Dropdown** component can work as a simple select, a multi-select, and an
+autocomplete input depending on its configuration.
+
+## Usage
+
+```tsx
+import { HansDropdown } from 'hans-ui-design-lib';
+
+const options = [
+  { label: 'Option 1', value: 'opt-1' },
+  { label: 'Option 2', value: 'opt-2' },
+];
+
+export const Example = () => (
+  <HansDropdown
+    label="Dropdown"
+    options={options}
+    selectionType="single"
+    enableAutocomplete
+  />
+);
+```
+
+## Properties
+
+<Controls />
+
+## Colors
+
+<Canvas of={HansDropdownStories.Colors} />
+
+## Multi Select
+
+<Canvas of={HansDropdownStories.MultiSelect} />
+
+## Without Autocomplete
+
+<Canvas of={HansDropdownStories.WithoutAutocomplete} />
+
+## Disabled
+
+<Canvas of={HansDropdownStories.Disabled} />
