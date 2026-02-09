@@ -1,0 +1,3 @@
+-Verificar e entender a lógica que o CODEX fez no dropdown
+-Corrigir stories pros dropdowns aparecerem melhor quando abrirem no storybook
+-Criar component de avatar 
