@@ -312,7 +312,7 @@ describe('HansDropdown', () => {
       .mockImplementation(() => {});
     const rectSpy = vi
       .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
-      .mockImplementation(function () {
+      .mockImplementation(function (this: HTMLElement) {
         if (this.classList.contains('hans-dropdown')) {
           return {
             x: 0,
@@ -395,13 +395,9 @@ describe('HansDropdown', () => {
 
   it('Should handle open measurement when list unmounts before RAF', async () => {
     const user = userEvent.setup();
-    let rafCallback: FrameRequestCallback | null = null;
     const rafSpy = vi
       .spyOn(window, 'requestAnimationFrame')
-      .mockImplementation((cb) => {
-        rafCallback = cb;
-        return 0;
-      });
+      .mockImplementation(() => 0);
     const cafSpy = vi
       .spyOn(window, 'cancelAnimationFrame')
       .mockImplementation(() => {});
@@ -411,8 +407,6 @@ describe('HansDropdown', () => {
     const input = screen.getByPlaceholderText('Select an option');
     await user.click(input);
     await user.click(document.body);
-
-    if (rafCallback) rafCallback(0);
 
     rafSpy.mockRestore();
     cafSpy.mockRestore();
@@ -433,10 +427,7 @@ describe('HansDropdown', () => {
   });
 
   it('Should not open dropdown when disabled', async () => {
-    const user = userEvent.setup();
-    render(
-      <HansDropdown label="Disabled" options={options} disabled />,
-    );
+    render(<HansDropdown label="Disabled" options={options} disabled />);
 
     const input = screen.getByPlaceholderText('Select an option');
     fireEvent.click(input);

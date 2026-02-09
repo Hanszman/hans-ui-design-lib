@@ -135,21 +135,53 @@ export const MultiSelect: Story = {
 };
 
 export const WithImages: Story = {
-  args: {
-    label: 'With Avatars',
-    options: optionsWithImages,
-    enableAutocomplete: true,
-    selectionType: 'single',
-  },
+  render: () => (
+    <div className="flex flex-col gap-4 w-full pb-24">
+      <HansDropdown
+        label="With Avatars"
+        options={optionsWithImages}
+        enableAutocomplete
+        selectionType="single"
+      />
+      <HansDropdown
+        label="Extra Example 1"
+        options={options}
+        enableAutocomplete
+        selectionType="single"
+      />
+      <HansDropdown
+        label="Extra Example 2"
+        options={options}
+        enableAutocomplete
+        selectionType="single"
+      />
+    </div>
+  ),
 };
 
 export const WithoutAutocomplete: Story = {
-  args: {
-    label: 'Simple Dropdown',
-    selectionType: 'single',
-    enableAutocomplete: false,
-    options,
-  },
+  render: () => (
+    <div className="flex flex-col gap-4 w-full pb-24">
+      <HansDropdown
+        label="Simple Dropdown"
+        selectionType="single"
+        enableAutocomplete={false}
+        options={options}
+      />
+      <HansDropdown
+        label="Extra Example 1"
+        selectionType="single"
+        enableAutocomplete={false}
+        options={options}
+      />
+      <HansDropdown
+        label="Extra Example 2"
+        selectionType="single"
+        enableAutocomplete={false}
+        options={options}
+      />
+    </div>
+  ),
 };
 
 export const Disabled: Story = {
