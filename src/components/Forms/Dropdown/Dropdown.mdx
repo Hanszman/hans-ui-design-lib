@@ -13,6 +13,8 @@ import * as HansDropdownStories from './Dropdown.stories';
 
 The **Dropdown** component can work as a simple select, a multi-select, and an
 autocomplete input depending on its configuration.
+Options can include an `id` for selection values and an optional `imageSrc` to
+display an avatar in the list.
 
 ## Usage
 
@@ -20,8 +22,8 @@ autocomplete input depending on its configuration.
 import { HansDropdown } from 'hans-ui-design-lib';
 
 const options = [
-  { label: 'Option 1', value: 'opt-1' },
-  { label: 'Option 2', value: 'opt-2' },
+  { id: 'opt-1', label: 'Option 1', value: 'opt-1' },
+  { id: 'opt-2', label: 'Option 2', value: 'opt-2' },
 ];
 
 export const Example = () => (
@@ -45,6 +47,10 @@ export const Example = () => (
 ## Multi Select
 
 <Canvas of={HansDropdownStories.MultiSelect} />
+
+## With Images
+
+<Canvas of={HansDropdownStories.WithImages} />
 
 ## Without Autocomplete
 

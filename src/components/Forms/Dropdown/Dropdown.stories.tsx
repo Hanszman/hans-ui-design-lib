@@ -3,12 +3,39 @@ import type { Color } from '../../../types/Common.types';
 import { HansDropdown } from './Dropdown';
 import DocsPage from './Dropdown.mdx';
 import type { DropdownOption } from './Dropdown.types';
+import logoBlue from '../../../assets/img/logo/vh_logo_blue.png';
+import logoPurple from '../../../assets/img/logo/vh_logo_purple.png';
+import logoRed from '../../../assets/img/logo/vh_logo_red.png';
 
 const options: DropdownOption[] = [
-  { label: 'Option 1', value: 'opt-1' },
-  { label: 'Option 2', value: 'opt-2' },
-  { label: 'Option 3', value: 'opt-3' },
-  { label: 'Option 4', value: 'opt-4', disabled: true },
+  { id: 'opt-1', label: 'Option 1', value: 'opt-1' },
+  { id: 'opt-2', label: 'Option 2', value: 'opt-2' },
+  { id: 'opt-3', label: 'Option 3', value: 'opt-3' },
+  { id: 'opt-4', label: 'Option 4', value: 'opt-4', disabled: true },
+];
+
+const optionsWithImages: DropdownOption[] = [
+  {
+    id: 'img-1',
+    label: 'Victor Hans',
+    value: 'victor',
+    imageSrc: logoBlue,
+    imageAlt: 'Victor Hans avatar',
+  },
+  {
+    id: 'img-2',
+    label: 'Hans UI',
+    value: 'hans-ui',
+    imageSrc: logoPurple,
+    imageAlt: 'Hans UI avatar',
+  },
+  {
+    id: 'img-3',
+    label: 'Red Team',
+    value: 'red-team',
+    imageSrc: logoRed,
+    imageAlt: 'Red Team avatar',
+  },
 ];
 
 const meta: Meta<typeof HansDropdown> = {
@@ -104,6 +131,15 @@ export const MultiSelect: Story = {
     selectionType: 'multi',
     enableAutocomplete: true,
     options,
+  },
+};
+
+export const WithImages: Story = {
+  args: {
+    label: 'With Avatars',
+    options: optionsWithImages,
+    enableAutocomplete: true,
+    selectionType: 'single',
   },
 };
 

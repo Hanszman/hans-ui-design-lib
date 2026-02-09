@@ -1,9 +1,9 @@
 .hans-dropdown {
-  @apply w-full flex flex-col;
+  @apply w-full flex flex-col overflow-visible;
 }
 
 .hans-dropdown-field {
-  @apply relative w-full;
+  @apply relative w-full overflow-visible;
 }
 
 .hans-dropdown-input {
@@ -11,15 +11,26 @@
 }
 
 .hans-dropdown-list {
-  @apply absolute z-50 mt-1 w-full rounded-lg border border-[var(--gray-300)] bg-[var(--background-color)] shadow-md max-h-60 overflow-auto;
+  @apply absolute z-[9999] w-full rounded-lg border border-[var(--gray-300)] bg-[var(--background-color)] shadow-md max-h-60 overflow-auto;
+  background-color: var(--hans-dropdown-bg, var(--white));
+}
+
+.hans-dropdown-list[data-direction='down'] {
+  @apply mt-1;
+  top: calc(100% + 0.25rem);
+}
+
+.hans-dropdown-list[data-direction='up'] {
+  @apply mb-1;
+  bottom: calc(100% + 0.25rem);
 }
 
 .hans-dropdown-option {
-  @apply px-3 py-2 cursor-pointer;
+  @apply px-3 py-2 cursor-pointer flex items-center gap-2;
 }
 
 .hans-dropdown-option:hover {
-  @apply bg-[var(--gray-100)];
+  background-color: var(--hans-dropdown-hover, var(--gray-100));
 }
 
 .hans-dropdown-option-selected {
@@ -32,6 +43,14 @@
 
 .hans-dropdown-empty {
   @apply px-3 py-2 text-sm text-[var(--gray-500)];
+}
+
+.hans-dropdown-option-image {
+  @apply w-6 h-6 rounded-full object-cover;
+}
+
+.hans-dropdown-option-label {
+  @apply flex-1;
 }
 
 .hans-dropdown-selected {

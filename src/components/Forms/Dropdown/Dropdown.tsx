@@ -13,6 +13,9 @@ const normalizeToArray = (value: DropdownValue | undefined): string[] => {
   return [];
 };
 
+const getOptionId = (option: DropdownOption): string =>
+  option.id ?? option.value;
+
 export const HansDropdown = React.memo((props: HansDropdownProps) => {
   const {
     label = '',
@@ -31,6 +34,8 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     value,
     defaultValue,
     noOptionsText = 'No options',
+    dropdownBackgroundColor = 'var(--white)',
+    dropdownHoverColor = 'var(--gray-100)',
     onChange,
     onSearch,
     onInputChange,
@@ -39,6 +44,9 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
 
   const isMulti = selectionType === 'multi';
   const [isOpen, setIsOpen] = React.useState(false);
+  const [openDirection, setOpenDirection] = React.useState<'down' | 'up'>(
+    'down',
+  );
   const [searchTerm, setSearchTerm] = React.useState('');
   const [internalValue, setInternalValue] = React.useState<DropdownValue>(() => {
     if (typeof value !== 'undefined') return value;
@@ -47,6 +55,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
   });
 
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const listRef = React.useRef<HTMLUListElement>(null);
 
   React.useEffect(() => {
     if (typeof value !== 'undefined') setInternalValue(value);
@@ -58,7 +67,9 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
 
   const selectedOptions = React.useMemo(
     () =>
-      options.filter((option) => selectedValues.includes(option.value ?? '')),
+      options.filter((option) =>
+        selectedValues.includes(getOptionId(option)),
+      ),
     [options, selectedValues],
   );
 
@@ -94,6 +105,24 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     );
   }, [enableAutocomplete, options, searchTerm]);
 
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const frame = requestAnimationFrame(() => {
+      if (!containerRef.current || !listRef.current) return;
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const listRect = listRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - containerRect.bottom;
+      const spaceAbove = containerRect.top;
+      if (spaceBelow < listRect.height && spaceAbove > listRect.height) {
+        setOpenDirection('up');
+      } else {
+        setOpenDirection('down');
+      }
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [isOpen, filteredOptions.length]);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!enableAutocomplete) return;
     const nextValue = event.target.value;
@@ -105,11 +134,12 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
 
   const handleSelectOption = (option: DropdownOption) => {
     if (option.disabled || disabled) return;
+    const optionId = getOptionId(option);
 
     if (isMulti) {
-      const nextValues = selectedValues.includes(option.value)
-        ? selectedValues.filter((valueItem) => valueItem !== option.value)
-        : [...selectedValues, option.value];
+      const nextValues = selectedValues.includes(optionId)
+        ? selectedValues.filter((valueItem) => valueItem !== optionId)
+        : [...selectedValues, optionId];
 
       if (typeof value === 'undefined') setInternalValue(nextValues);
       if (onChange) onChange(nextValues);
@@ -117,8 +147,8 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
       return;
     }
 
-    if (typeof value === 'undefined') setInternalValue(option.value);
-    if (onChange) onChange(option.value);
+    if (typeof value === 'undefined') setInternalValue(optionId);
+    if (onChange) onChange(optionId);
     if (enableAutocomplete) setSearchTerm(option.label);
     setIsOpen(false);
   };
@@ -146,7 +176,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
         </label>
       ) : null}
 
-      <div className="hans-dropdown-field">
+      <div className="hans-dropdown-field" onMouseDown={handleOpen}>
         <HansInput
           label=""
           message=""
@@ -161,6 +191,11 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
           onFocus={handleOpen}
           onClick={handleOpen}
           readOnly={!enableAutocomplete}
+          leftIcon={
+            enableAutocomplete ? (
+              <HansIcon name="FaSearch" iconSize="small" />
+            ) : undefined
+          }
           rightIcon={
             <HansIcon
               name={isOpen ? 'MdArrowDropUp' : 'MdArrowDropDown'}
@@ -172,18 +207,27 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
 
         {isOpen && !disabled ? (
           <ul
+            ref={listRef}
             className="hans-dropdown-list"
             role="listbox"
             aria-multiselectable={isMulti}
+            data-direction={openDirection}
+            style={
+              {
+                '--hans-dropdown-bg': dropdownBackgroundColor,
+                '--hans-dropdown-hover': dropdownHoverColor,
+              } as React.CSSProperties
+            }
           >
             {filteredOptions.length === 0 ? (
               <li className="hans-dropdown-empty">{noOptionsText}</li>
             ) : (
               filteredOptions.map((option) => {
-                const isSelected = selectedValues.includes(option.value);
+                const optionId = getOptionId(option);
+                const isSelected = selectedValues.includes(optionId);
                 return (
                   <li
-                    key={option.value}
+                    key={optionId}
                     role="option"
                     aria-selected={isSelected}
                     className={`
@@ -193,7 +237,16 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
                     `}
                     onClick={() => handleSelectOption(option)}
                   >
-                    {option.label}
+                    {option.imageSrc ? (
+                      <img
+                        className="hans-dropdown-option-image"
+                        src={option.imageSrc}
+                        alt={option.imageAlt ?? option.label}
+                      />
+                    ) : null}
+                    <span className="hans-dropdown-option-label">
+                      {option.label}
+                    </span>
                   </li>
                 );
               })
@@ -206,7 +259,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
         <div className="hans-dropdown-selected">
           {selectedOptions.map((option) => (
             <span
-              key={option.value}
+              key={getOptionId(option)}
               className={`
                 hans-dropdown-chip
                 hans-dropdown-chip-${inputColor}
