@@ -287,6 +287,15 @@ describe('HansDropdown', () => {
     expect(screen.getByRole('listbox')).toBeInTheDocument();
   });
 
+  it('Should open dropdown on focus when enabled', () => {
+    render(<HansDropdown label="Dropdown" options={options} />);
+
+    const input = screen.getByPlaceholderText('Select an option');
+    fireEvent.focus(input);
+
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+  });
+
   it('Should toggle dropdown when clicking input twice', async () => {
     const user = userEvent.setup();
     render(<HansDropdown label="Dropdown" options={options} />);
@@ -296,6 +305,21 @@ describe('HansDropdown', () => {
     expect(screen.getByRole('listbox')).toBeInTheDocument();
 
     await user.click(input);
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  it('Should ignore focus right after closing with toggle', async () => {
+    const user = userEvent.setup();
+    render(<HansDropdown label="Dropdown" options={options} />);
+
+    const input = screen.getByPlaceholderText('Select an option');
+    await user.click(input);
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+
+    await user.click(input);
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+
+    fireEvent.focus(input);
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 
@@ -452,6 +476,13 @@ describe('HansDropdown', () => {
     const input = screen.getByPlaceholderText('Select an option');
     fireEvent.click(input);
 
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  it('Should not open dropdown on focus when disabled', () => {
+    render(<HansDropdown label="Disabled" options={options} disabled />);
+    const input = screen.getByPlaceholderText('Select an option');
+    fireEvent.focus(input);
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 

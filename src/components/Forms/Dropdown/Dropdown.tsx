@@ -154,21 +154,24 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     setIsOpen(false);
   };
 
-  const handleOpen = () => {
+  const setDropdownOpen = (nextOpen: boolean, source: 'focus' | 'toggle') => {
     if (disabled) return;
-    if (ignoreFocusRef.current) {
+    if (source === 'focus' && ignoreFocusRef.current) {
       ignoreFocusRef.current = false;
       return;
     }
-    setIsOpen(true);
+    if (source === 'toggle' && !nextOpen) {
+      ignoreFocusRef.current = true;
+    }
+    setIsOpen(nextOpen);
+  };
+
+  const handleOpen = () => {
+    setDropdownOpen(true, 'focus');
   };
 
   const handleToggle = () => {
-    if (disabled) return;
-    setIsOpen((prev) => {
-      if (prev) ignoreFocusRef.current = true;
-      return !prev;
-    });
+    setDropdownOpen(!isOpen, 'toggle');
   };
 
   const inputValue = enableAutocomplete ? searchTerm : selectedLabel;

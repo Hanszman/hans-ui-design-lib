@@ -1,2 +1,2 @@
--Criar componente de avatar
--Criar componente de tag removível para substituir as chips do multi-select
+-Criar componente de avatar (com vários tamanhos) e fallback
+-Criar componente de tag removível (com vários tamanhos) para substituir as chips do multi-select
