@@ -146,6 +146,7 @@ export const MultiSelect: Story = {
         enableAutocomplete
         options={options}
         inputColor="primary"
+        labelColor="primary"
       />
       <HansDropdown
         label="Multi Select 3"
@@ -153,6 +154,7 @@ export const MultiSelect: Story = {
         enableAutocomplete
         options={options}
         inputColor="secondary"
+        labelColor="secondary"
       />
     </div>
   ),
@@ -173,6 +175,7 @@ export const WithImages: Story = {
         enableAutocomplete
         selectionType="single"
         inputColor="primary"
+        labelColor="primary"
       />
       <HansDropdown
         label="With Avatars 3"
@@ -180,6 +183,7 @@ export const WithImages: Story = {
         enableAutocomplete
         selectionType="single"
         inputColor="secondary"
+        labelColor="secondary"
       />
     </div>
   ),
@@ -190,6 +194,7 @@ export const WithoutAutocomplete: Story = {
     <div className="flex flex-col gap-4 w-full pb-24">
       <HansDropdown
         label="Simple Dropdown 1"
+        labelColor="base"
         selectionType="single"
         enableAutocomplete={false}
         options={options}
@@ -200,6 +205,7 @@ export const WithoutAutocomplete: Story = {
         enableAutocomplete={false}
         options={options}
         inputColor="primary"
+        labelColor="primary"
       />
       <HansDropdown
         label="Simple Dropdown 3"
@@ -207,6 +213,7 @@ export const WithoutAutocomplete: Story = {
         enableAutocomplete={false}
         options={options}
         inputColor="secondary"
+        labelColor="secondary"
       />
     </div>
   ),

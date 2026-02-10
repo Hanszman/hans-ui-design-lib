@@ -287,6 +287,18 @@ describe('HansDropdown', () => {
     expect(screen.getByRole('listbox')).toBeInTheDocument();
   });
 
+  it('Should toggle dropdown when clicking input twice', async () => {
+    const user = userEvent.setup();
+    render(<HansDropdown label="Dropdown" options={options} />);
+
+    const input = screen.getByPlaceholderText('Select an option');
+    await user.click(input);
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+
+    await user.click(input);
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
   it('Should keep dropdown open when typing if already open', async () => {
     const user = userEvent.setup();
     render(<HansDropdown label="Dropdown" options={options} />);
@@ -395,9 +407,13 @@ describe('HansDropdown', () => {
 
   it('Should handle open measurement when list unmounts before RAF (Requested Animation Frame)', async () => {
     const user = userEvent.setup();
+    const rafCallbackRef = { current: null as FrameRequestCallback | null };
     const rafSpy = vi
       .spyOn(window, 'requestAnimationFrame')
-      .mockImplementation(() => 0);
+      .mockImplementation((cb) => {
+        rafCallbackRef.current = cb;
+        return 0;
+      });
     const cafSpy = vi
       .spyOn(window, 'cancelAnimationFrame')
       .mockImplementation(() => {});
@@ -407,6 +423,10 @@ describe('HansDropdown', () => {
     const input = screen.getByPlaceholderText('Select an option');
     await user.click(input);
     await user.click(document.body);
+
+    if (typeof rafCallbackRef.current === 'function') {
+      rafCallbackRef.current(0);
+    }
 
     rafSpy.mockRestore();
     cafSpy.mockRestore();

@@ -58,6 +58,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
+  const ignoreFocusRef = React.useRef(false);
 
   React.useEffect(() => {
     if (typeof value !== 'undefined') setInternalValue(value);
@@ -155,7 +156,19 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
 
   const handleOpen = () => {
     if (disabled) return;
+    if (ignoreFocusRef.current) {
+      ignoreFocusRef.current = false;
+      return;
+    }
     setIsOpen(true);
+  };
+
+  const handleToggle = () => {
+    if (disabled) return;
+    setIsOpen((prev) => {
+      if (prev) ignoreFocusRef.current = true;
+      return !prev;
+    });
   };
 
   const inputValue = enableAutocomplete ? searchTerm : selectedLabel;
@@ -174,7 +187,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
         </label>
       ) : null}
 
-      <div className="hans-dropdown-field" onMouseDown={handleOpen}>
+      <div className="hans-dropdown-field">
         <HansInput
           label=""
           message=""
@@ -187,7 +200,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
           value={inputValue}
           onChange={handleInputChange}
           onFocus={handleOpen}
-          onClick={handleOpen}
+          onMouseDown={handleToggle}
           readOnly={!enableAutocomplete}
           leftIcon={
             enableAutocomplete ? (
