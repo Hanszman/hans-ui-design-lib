@@ -17,10 +17,10 @@ const options: DropdownOption[] = [
 const optionsWithImages: DropdownOption[] = [
   {
     id: 'img-1',
-    label: 'Victor Hans',
+    label: 'Victor Hanszman',
     value: 'victor',
     imageSrc: logoBlue,
-    imageAlt: 'Victor Hans avatar',
+    imageAlt: 'Victor Hanszman avatar',
   },
   {
     id: 'img-2',
@@ -110,50 +110,76 @@ export const Primary: Story = {
 export const Colors: Story = {
   render: () => (
     <div className="flex flex-col gap-4 w-full">
-      {['base', 'primary', 'secondary', 'success', 'danger', 'warning', 'info'].map(
-        (color) => (
-          <HansDropdown
-            key={color}
-            label={`Color ${color}`}
-            inputColor={color as Color}
-            labelColor={color as Color}
-            options={options}
-          />
-        ),
-      )}
+      {[
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ].map((color) => (
+        <HansDropdown
+          key={color}
+          label={`Color ${color}`}
+          inputColor={color as Color}
+          labelColor={color as Color}
+          options={options}
+        />
+      ))}
     </div>
   ),
 };
 
 export const MultiSelect: Story = {
-  args: {
-    label: 'Multi Select',
-    selectionType: 'multi',
-    enableAutocomplete: true,
-    options,
-  },
+  render: () => (
+    <div className="flex flex-col gap-4 w-full pb-24">
+      <HansDropdown
+        label="Multi Select 1"
+        selectionType="multi"
+        enableAutocomplete
+        options={options}
+      />
+      <HansDropdown
+        label="Multi Select 2"
+        selectionType="multi"
+        enableAutocomplete
+        options={options}
+        inputColor="primary"
+      />
+      <HansDropdown
+        label="Multi Select 3"
+        selectionType="multi"
+        enableAutocomplete
+        options={options}
+        inputColor="secondary"
+      />
+    </div>
+  ),
 };
 
 export const WithImages: Story = {
   render: () => (
     <div className="flex flex-col gap-4 w-full pb-24">
       <HansDropdown
-        label="With Avatars"
+        label="With Avatars 1"
         options={optionsWithImages}
         enableAutocomplete
         selectionType="single"
       />
       <HansDropdown
-        label="Extra Example 1"
-        options={options}
+        label="With Avatars 2"
+        options={optionsWithImages}
         enableAutocomplete
         selectionType="single"
+        inputColor="primary"
       />
       <HansDropdown
-        label="Extra Example 2"
-        options={options}
+        label="With Avatars 3"
+        options={optionsWithImages}
         enableAutocomplete
         selectionType="single"
+        inputColor="secondary"
       />
     </div>
   ),
@@ -163,22 +189,24 @@ export const WithoutAutocomplete: Story = {
   render: () => (
     <div className="flex flex-col gap-4 w-full pb-24">
       <HansDropdown
-        label="Simple Dropdown"
+        label="Simple Dropdown 1"
         selectionType="single"
         enableAutocomplete={false}
         options={options}
       />
       <HansDropdown
-        label="Extra Example 1"
+        label="Simple Dropdown 2"
         selectionType="single"
         enableAutocomplete={false}
         options={options}
+        inputColor="primary"
       />
       <HansDropdown
-        label="Extra Example 2"
+        label="Simple Dropdown 3"
         selectionType="single"
         enableAutocomplete={false}
         options={options}
+        inputColor="secondary"
       />
     </div>
   ),

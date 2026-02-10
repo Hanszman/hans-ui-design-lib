@@ -5,19 +5,6 @@ import {
 } from '../../../types/Schema.types';
 import type { Size, Color } from '../../../types/Common.types';
 
-export type DropdownOption = {
-  id?: string;
-  label: string;
-  value: string;
-  imageSrc?: string;
-  imageAlt?: string;
-  disabled?: boolean;
-};
-
-export type DropdownSelectionType = 'single' | 'multi';
-
-export type DropdownValue = string | string[];
-
 const HansDropdownSchema = {
   label: 'string',
   labelColor: { type: 'custom', ref: {} as Color },
@@ -39,6 +26,19 @@ const HansDropdownSchema = {
   dropdownHoverColor: 'string',
 } as const;
 
+export type DropdownOption = {
+  id?: string;
+  label: string;
+  value: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  disabled?: boolean;
+};
+
+export type DropdownSelectionType = 'single' | 'multi';
+
+export type DropdownValue = string | string[];
+
 export type HansDropdownProps = InferPropsFromSchema<
   typeof HansDropdownSchema
 > &
@@ -46,8 +46,8 @@ export type HansDropdownProps = InferPropsFromSchema<
     React.InputHTMLAttributes<HTMLInputElement>,
     'value' | 'defaultValue' | 'onChange' | 'size' | 'type'
   > & {
-    onChange?: (value: DropdownValue) => void;
     onSearch?: (query: string) => void;
+    onChange?: (value: DropdownValue) => void;
     onInputChange?: React.ChangeEventHandler<HTMLInputElement>;
   };
 

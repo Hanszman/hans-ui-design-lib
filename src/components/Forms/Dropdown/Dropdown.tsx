@@ -36,8 +36,8 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     noOptionsText = 'No options',
     dropdownBackgroundColor = 'var(--white)',
     dropdownHoverColor = 'var(--gray-100)',
-    onChange,
     onSearch,
+    onChange,
     onInputChange,
     ...rest
   } = props;
@@ -48,11 +48,13 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     'down',
   );
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [internalValue, setInternalValue] = React.useState<DropdownValue>(() => {
-    if (typeof value !== 'undefined') return value;
-    if (typeof defaultValue !== 'undefined') return defaultValue;
-    return isMulti ? [] : '';
-  });
+  const [internalValue, setInternalValue] = React.useState<DropdownValue>(
+    () => {
+      if (typeof value !== 'undefined') return value;
+      if (typeof defaultValue !== 'undefined') return defaultValue;
+      return isMulti ? [] : '';
+    },
+  );
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
@@ -67,15 +69,13 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
 
   const selectedOptions = React.useMemo(
     () =>
-      options.filter((option) =>
-        selectedValues.includes(getOptionId(option)),
-      ),
+      options.filter((option) => selectedValues.includes(getOptionId(option))),
     [options, selectedValues],
   );
 
   const selectedLabel = isMulti
     ? selectedOptions.map((option) => option.label).join(', ')
-    : selectedOptions[0]?.label ?? '';
+    : (selectedOptions[0]?.label ?? '');
 
   React.useEffect(() => {
     if (!enableAutocomplete || isMulti) return;
@@ -158,9 +158,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     setIsOpen(true);
   };
 
-  const inputValue = enableAutocomplete
-    ? searchTerm
-    : selectedLabel;
+  const inputValue = enableAutocomplete ? searchTerm : selectedLabel;
 
   return (
     <div className="hans-dropdown" ref={containerRef}>

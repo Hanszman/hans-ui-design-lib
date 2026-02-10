@@ -393,7 +393,7 @@ describe('HansDropdown', () => {
     document.dispatchEvent(event);
   });
 
-  it('Should handle open measurement when list unmounts before RAF', async () => {
+  it('Should handle open measurement when list unmounts before RAF (Requested Animation Frame)', async () => {
     const user = userEvent.setup();
     const rafSpy = vi
       .spyOn(window, 'requestAnimationFrame')

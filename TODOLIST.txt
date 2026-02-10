@@ -1,3 +1,2 @@
--Verificar e entender a lógica que o CODEX fez no dropdown
--Corrigir stories pros dropdowns aparecerem melhor quando abrirem no storybook
--Criar component de avatar 
+-Criar componente de avatar
+-Criar componente de tag removível para substituir as chips do multi-select

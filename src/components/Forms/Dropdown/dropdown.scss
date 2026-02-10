@@ -16,12 +16,12 @@
 }
 
 .hans-dropdown-list[data-direction='down'] {
-  @apply mt-1;
+  @apply mt-[-4px];
   top: calc(100% + 0.25rem);
 }
 
 .hans-dropdown-list[data-direction='up'] {
-  @apply mb-1;
+  @apply mb-[-4px];
   bottom: calc(100% + 0.25rem);
 }
 
