@@ -23,17 +23,17 @@
 }
 
 .hans-avatar-icon {
-  @apply leading-none;
+  @apply leading-none w-full h-full;
 }
 
 .hans-avatar-small .hans-avatar-icon {
-  @apply text-base;
+  font-size: 22px;
 }
 
 .hans-avatar-medium .hans-avatar-icon {
-  @apply text-2xl;
+  font-size: 40px;
 }
 
 .hans-avatar-large .hans-avatar-icon {
-  @apply text-6xl;
+  font-size: 100px;
 }
