@@ -45,10 +45,6 @@
   @apply px-3 py-2 text-sm text-[var(--gray-500)];
 }
 
-.hans-dropdown-option-image {
-  @apply w-6 h-6 rounded-full object-cover;
-}
-
 .hans-dropdown-option-label {
   @apply flex-1;
 }

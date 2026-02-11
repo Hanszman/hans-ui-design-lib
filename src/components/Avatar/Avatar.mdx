@@ -1,0 +1,47 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansAvatarStories from './Avatar.stories';
+
+<Meta of={HansAvatarStories} />
+
+<Title />
+
+The **Avatar** component displays a circular profile image.
+If image loading fails (or no `src` is provided), it falls back to a user icon.
+
+## Usage
+
+```tsx
+import { HansAvatar } from 'hans-ui-design-lib';
+
+export const Example = () => (
+  <HansAvatar src="https://my-cdn.com/user.png" alt="User avatar" />
+);
+```
+
+Then, you can use the component in your template. Here is a basic example:
+
+<Primary />
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Fallback
+
+If no `src` is available, an icon is rendered.
+
+<Canvas of={HansAvatarStories.Fallback} />
+
+## Sizes
+
+Use `avatarSize` to control dimensions.
+
+<Canvas of={HansAvatarStories.Sizes} />

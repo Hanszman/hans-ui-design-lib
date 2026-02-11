@@ -6,6 +6,7 @@ import type {
 } from './Dropdown.types';
 import { HansInput } from '../Input/Input';
 import { HansIcon } from '../../Icon/Icon';
+import { HansAvatar } from '../../Avatar/Avatar';
 
 const normalizeToArray = (value: DropdownValue | undefined): string[] => {
   if (Array.isArray(value)) return value;
@@ -252,10 +253,10 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
                     onClick={() => handleSelectOption(option)}
                   >
                     {option.imageSrc ? (
-                      <img
-                        className="hans-dropdown-option-image"
+                      <HansAvatar
                         src={option.imageSrc}
                         alt={option.imageAlt ?? option.label}
+                        avatarSize="small"
                       />
                     ) : null}
                     <span className="hans-dropdown-option-label">

@@ -1,0 +1,27 @@
+.hans-avatar {
+  @apply inline-flex items-center justify-center rounded-full overflow-hidden border border-[var(--gray-300)] bg-[var(--gray-100)] text-[var(--gray-700)] shrink-0;
+}
+
+.hans-avatar-small {
+  @apply w-6 h-6;
+}
+
+.hans-avatar-medium {
+  @apply w-8 h-8;
+}
+
+.hans-avatar-large {
+  @apply w-10 h-10;
+}
+
+.hans-avatar-img {
+  @apply w-full h-full object-cover;
+}
+
+.hans-avatar-fallback {
+  @apply w-full h-full flex items-center justify-center;
+}
+
+.hans-avatar-icon {
+  @apply leading-none;
+}

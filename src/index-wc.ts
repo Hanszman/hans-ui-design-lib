@@ -15,6 +15,11 @@ import {
   type HansDropdownProps,
   HansDropdownPropsList,
 } from './components/Forms/Dropdown/Dropdown.types';
+import { HansAvatar } from './components/Avatar/Avatar';
+import {
+  type HansAvatarProps,
+  HansAvatarPropsList,
+} from './components/Avatar/Avatar.types';
 import { HansIcon } from './components/Icon/Icon';
 import {
   type HansIconProps,
@@ -35,6 +40,11 @@ registerReactAsWebComponent<HansDropdownProps>(
   'hans-dropdown',
   HansDropdown,
   HansDropdownPropsList,
+);
+registerReactAsWebComponent<HansAvatarProps>(
+  'hans-avatar',
+  HansAvatar,
+  HansAvatarPropsList,
 );
 registerReactAsWebComponent<HansIconProps>(
   'hans-icon',
