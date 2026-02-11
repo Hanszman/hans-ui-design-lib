@@ -3,15 +3,15 @@
 }
 
 .hans-avatar-small {
-  @apply w-6 h-6;
+  @apply w-[22px] h-[22px];
 }
 
 .hans-avatar-medium {
-  @apply w-8 h-8;
+  @apply w-[40px] h-[40px];
 }
 
 .hans-avatar-large {
-  @apply w-10 h-10;
+  @apply w-[100px] h-[100px];
 }
 
 .hans-avatar-img {
@@ -24,4 +24,16 @@
 
 .hans-avatar-icon {
   @apply leading-none;
+}
+
+.hans-avatar-small .hans-avatar-icon {
+  @apply text-base;
+}
+
+.hans-avatar-medium .hans-avatar-icon {
+  @apply text-2xl;
+}
+
+.hans-avatar-large .hans-avatar-icon {
+  @apply text-6xl;
 }

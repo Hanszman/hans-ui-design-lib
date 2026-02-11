@@ -14,7 +14,7 @@ export const HansAvatar = React.memo((props: HansAvatarProps) => {
     alt = 'Avatar',
     avatarSize = 'medium',
     customClasses = '',
-    fallbackIconName = 'FaUserCircle',
+    fallbackIconName = 'MdOutlineAccountCircle',
     ...rest
   } = props;
 
