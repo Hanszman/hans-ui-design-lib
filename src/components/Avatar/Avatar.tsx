@@ -2,12 +2,6 @@ import React from 'react';
 import { HansIcon } from '../Icon/Icon';
 import type { HansAvatarProps } from './Avatar.types';
 
-const iconSizeByAvatarSize = {
-  small: 'small',
-  medium: 'medium',
-  large: 'large',
-} as const;
-
 export const HansAvatar = React.memo((props: HansAvatarProps) => {
   const {
     src = '',
@@ -39,7 +33,7 @@ export const HansAvatar = React.memo((props: HansAvatarProps) => {
         <span className="hans-avatar-fallback" role="img" aria-hidden="true">
           <HansIcon
             name={fallbackIconName}
-            iconSize={iconSizeByAvatarSize[avatarSize]}
+            iconSize={avatarSize}
             customClasses="hans-avatar-icon"
           />
         </span>
