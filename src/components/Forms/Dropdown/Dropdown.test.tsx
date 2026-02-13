@@ -93,15 +93,40 @@ describe('HansDropdown', () => {
 
     expect(handleChange).toHaveBeenLastCalledWith(['alpha', 'beta']);
     const alphaMatches = screen.getAllByText('Alpha');
-    const alphaChip = alphaMatches.find((node) =>
+    const alphaTag = alphaMatches.find((node) =>
       node.closest('.hans-dropdown-selected'),
     );
-    expect(alphaChip).toBeDefined();
-    const chipContainer = (alphaChip as HTMLElement).closest(
+    expect(alphaTag).toBeDefined();
+    const chipContainer = (alphaTag as HTMLElement).closest(
       '.hans-dropdown-selected',
     ) as HTMLElement;
     expect(within(chipContainer).getByText('Alpha')).toBeInTheDocument();
     expect(within(chipContainer).getByText('Beta')).toBeInTheDocument();
+  });
+
+  it('Should remove selected option when clicking tag action', async () => {
+    const user = userEvent.setup();
+    const handleChange = vi.fn();
+
+    render(
+      <HansDropdown
+        label="Multi"
+        options={options}
+        selectionType="multi"
+        onChange={handleChange}
+      />,
+    );
+
+    const input = screen.getByPlaceholderText('Select an option');
+    await user.click(input);
+    await user.click(screen.getByText('Alpha'));
+
+    const removeButton = screen.getByRole('button', {
+      name: 'Action Alpha',
+    });
+    await user.click(removeButton);
+
+    expect(handleChange).toHaveBeenLastCalledWith([]);
   });
 
   it('Should toggle multi select values when clicking the same option', async () => {

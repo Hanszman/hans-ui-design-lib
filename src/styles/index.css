@@ -6,6 +6,7 @@
 @import '../components/Forms/Input/input.scss';
 @import '../components/Forms/Dropdown/dropdown.scss';
 @import '../components/Avatar/avatar.scss';
+@import '../components/Tag/tag.scss';
 @import '../components/Icon/icon.scss';
 
 /* Custom variables */

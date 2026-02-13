@@ -52,35 +52,3 @@
 .hans-dropdown-selected {
   @apply flex flex-wrap gap-2 mt-2;
 }
-
-.hans-dropdown-chip {
-  @apply px-2 py-1 rounded-full text-xs bg-[var(--gray-100)] text-[var(--text-color)];
-}
-
-.hans-dropdown-chip-base {
-  @apply bg-[var(--gray-100)] text-[var(--text-color)];
-}
-
-.hans-dropdown-chip-primary {
-  @apply bg-[var(--primary-neutral-color)] text-[var(--primary-strong-color)];
-}
-
-.hans-dropdown-chip-secondary {
-  @apply bg-[var(--secondary-neutral-color)] text-[var(--secondary-strong-color)];
-}
-
-.hans-dropdown-chip-success {
-  @apply bg-[var(--success-neutral-color)] text-[var(--success-strong-color)];
-}
-
-.hans-dropdown-chip-danger {
-  @apply bg-[var(--danger-neutral-color)] text-[var(--danger-strong-color)];
-}
-
-.hans-dropdown-chip-warning {
-  @apply bg-[var(--warning-neutral-color)] text-[var(--warning-strong-color)];
-}
-
-.hans-dropdown-chip-info {
-  @apply bg-[var(--info-neutral-color)] text-[var(--info-strong-color)];
-}

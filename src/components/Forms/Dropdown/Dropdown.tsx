@@ -7,6 +7,7 @@ import type {
 import { HansInput } from '../Input/Input';
 import { HansIcon } from '../../Icon/Icon';
 import { HansAvatar } from '../../Avatar/Avatar';
+import { HansTag } from '../../Tag/Tag';
 
 const normalizeToArray = (value: DropdownValue | undefined): string[] => {
   if (Array.isArray(value)) return value;
@@ -155,6 +156,14 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     setIsOpen(false);
   };
 
+  const handleRemoveSelected = (optionId: string) => {
+    const nextValues = selectedValues.filter(
+      (valueItem) => valueItem !== optionId,
+    );
+    if (typeof value === 'undefined') setInternalValue(nextValues);
+    if (onChange) onChange(nextValues);
+  };
+
   const setDropdownOpen = (nextOpen: boolean, source: 'focus' | 'toggle') => {
     if (disabled) return;
     if (source === 'focus' && ignoreFocusRef.current) {
@@ -273,15 +282,15 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
       {isMulti && selectedOptions.length > 0 ? (
         <div className="hans-dropdown-selected">
           {selectedOptions.map((option) => (
-            <span
+            <HansTag
               key={getOptionId(option)}
-              className={`
-                hans-dropdown-chip
-                hans-dropdown-chip-${inputColor}
-              `}
-            >
-              {option.label}
-            </span>
+              label={option.label}
+              tagSize="small"
+              tagColor="base"
+              actionIcon="IoIosCloseCircle"
+              onAction={() => handleRemoveSelected(getOptionId(option))}
+              disabled={disabled}
+            />
           ))}
         </div>
       ) : null}

@@ -1,0 +1,52 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansTagStories from './Tag.stories';
+
+<Meta of={HansTagStories} />
+
+<Title />
+
+The **Tag** component shows small labels with optional removable action.
+
+## Usage
+
+```tsx
+import { HansTag } from 'hans-ui-design-lib';
+
+export const Example = () => (
+  <HansTag label="Tag" actionIcon="MdClose" onAction={() => {}} />
+);
+```
+
+Then, you can use the component in your template. Here is a basic example:
+
+<Primary />
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Sizes
+
+Use `tagSize` to control dimensions.
+
+<Canvas of={HansTagStories.Sizes} />
+
+## Colors
+
+Use `tagColor` to style the tag.
+
+<Canvas of={HansTagStories.Colors} />
+
+## Removable
+
+Set `actionIcon` and `onAction` to enable remove action.
+
+<Canvas of={HansTagStories.Removable} />

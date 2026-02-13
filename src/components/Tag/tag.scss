@@ -1,0 +1,55 @@
+.hans-tag {
+  @apply inline-flex items-center gap-1 rounded-full;
+}
+
+.hans-tag-label {
+  @apply leading-none;
+}
+
+.hans-tag-action {
+  @apply inline-flex items-center justify-center rounded-full cursor-pointer bg-transparent p-0 border-none;
+}
+
+.hans-tag-action:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.hans-tag-small {
+  @apply px-3 py-2 text-xs;
+}
+
+.hans-tag-medium {
+  @apply px-4 py-3 text-sm;
+}
+
+.hans-tag-large {
+  @apply px-5 py-4 text-base;
+}
+
+.hans-tag-base {
+  @apply bg-[var(--gray-100)] text-[var(--text-color)];
+}
+
+.hans-tag-primary {
+  @apply bg-[var(--primary-neutral-color)] text-[var(--primary-strong-color)];
+}
+
+.hans-tag-secondary {
+  @apply bg-[var(--secondary-neutral-color)] text-[var(--secondary-strong-color)];
+}
+
+.hans-tag-success {
+  @apply bg-[var(--success-neutral-color)] text-[var(--success-strong-color)];
+}
+
+.hans-tag-danger {
+  @apply bg-[var(--danger-neutral-color)] text-[var(--danger-strong-color)];
+}
+
+.hans-tag-warning {
+  @apply bg-[var(--warning-neutral-color)] text-[var(--warning-strong-color)];
+}
+
+.hans-tag-info {
+  @apply bg-[var(--info-neutral-color)] text-[var(--info-strong-color)];
+}
