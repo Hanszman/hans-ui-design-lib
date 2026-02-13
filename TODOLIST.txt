@@ -1,2 +1,11 @@
--Criar componente de tag removível (com vários tamanhos) para substituir as chips do multi-select
--Continuar próximos componentes
+Continuar próximos componentes:
+-Loading (usar lib? - substituir no Icon e no Avatar)
+-Table
+-DatePicker (usar lib?)
+-Modal (usar lib?)
+-Tabs (usar lib?)
+-Toast (usar lib?)
+-Kanban (usar lib?)
+-Card (template de card / será usado como item do kanban / - usar lib?)
+-Chart (usar lib = Apache ECharts ou Chart.js?)
+-Translation?
