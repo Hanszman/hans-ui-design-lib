@@ -5,10 +5,21 @@ import {
 } from '../../types/Schema.types';
 import type { Color } from '../../types/Common.types';
 
-export type HansChartType = 'line' | 'bar' | 'pie' | 'doughnut' | 'mixed';
+export type HansChartType = HansChartSeriesType | 'mixed';
 
 export type HansChartSeriesType = 'line' | 'bar' | 'pie' | 'doughnut';
+
+export type HansChartColor = Color | string;
+
 export type HansChartThemeColor = Color;
+
+export type HansChartDataPoint = number | { name: string; value: number };
+
+export type HansChartPointEvent = {
+  name?: string;
+  value?: unknown;
+  seriesName?: string;
+};
 
 export type HansChartLabelPosition =
   | 'horizontal'
@@ -17,12 +28,15 @@ export type HansChartLabelPosition =
   | 'inside'
   | 'none';
 
-export type HansChartColor = Color | string;
-
-export type HansChartDataPoint = number | { name: string; value: number };
-
 export type HansChartSeriesLabel = {
   position?: HansChartLabelPosition;
+  formatter?: string;
+};
+
+export type HansChartSeriesLabelOption = {
+  show?: boolean;
+  position?: 'inside' | 'outside' | 'top';
+  rotate?: number;
   formatter?: string;
 };
 
@@ -34,11 +48,22 @@ export type HansChartSeries = {
   label?: HansChartSeriesLabel;
 };
 
-export type HansChartPointEvent = {
-  name?: string;
-  value?: unknown;
-  seriesName?: string;
+export const COLOR_TOKEN_MAP: Record<
+  HansChartThemeColor,
+  { cssVar: string; fallback: string }
+> = {
+  base: { cssVar: '--text-color', fallback: '#0e0e10' },
+  primary: { cssVar: '--primary-default-color', fallback: '#8257e5' },
+  secondary: { cssVar: '--secondary-default-color', fallback: '#3d8bff' },
+  success: { cssVar: '--success-default-color', fallback: '#04d361' },
+  danger: { cssVar: '--danger-default-color', fallback: '#e83f5b' },
+  warning: { cssVar: '--warning-default-color', fallback: '#f7b500' },
+  info: { cssVar: '--info-default-color', fallback: '#3d8bff' },
 };
+
+export const DEFAULT_COMBINATION_COLORS = Object.values(COLOR_TOKEN_MAP).map(
+  (token: { cssVar: string; fallback: string }) => token.fallback,
+);
 
 const HansChartSchema = {
   title: 'string',

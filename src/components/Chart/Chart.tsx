@@ -1,33 +1,19 @@
 import React from 'react';
 import * as echarts from 'echarts';
-import type {
-  HansChartColor,
-  HansChartDataPoint,
-  HansChartLabelPosition,
-  HansChartPointEvent,
-  HansChartProps,
-  HansChartSeries,
-  HansChartSeriesType,
-  HansChartThemeColor,
-  HansChartType,
+import {
+  type HansChartType,
+  type HansChartSeriesType,
+  type HansChartColor,
+  type HansChartThemeColor,
+  type HansChartDataPoint,
+  type HansChartPointEvent,
+  type HansChartLabelPosition,
+  type HansChartSeriesLabelOption,
+  type HansChartSeries,
+  type HansChartProps,
+  COLOR_TOKEN_MAP,
+  DEFAULT_COMBINATION_COLORS,
 } from './Chart.types';
-
-const COLOR_TOKEN_MAP: Record<
-  HansChartThemeColor,
-  { cssVar: string; fallback: string }
-> = {
-  base: { cssVar: '--text-color', fallback: '#0e0e10' },
-  primary: { cssVar: '--primary-default-color', fallback: '#8257e5' },
-  secondary: { cssVar: '--secondary-default-color', fallback: '#3d8bff' },
-  success: { cssVar: '--success-default-color', fallback: '#04d361' },
-  danger: { cssVar: '--danger-default-color', fallback: '#e83f5b' },
-  warning: { cssVar: '--warning-default-color', fallback: '#f7b500' },
-  info: { cssVar: '--info-default-color', fallback: '#3d8bff' },
-};
-
-const DEFAULT_COMBINATION_COLORS = Object.values(COLOR_TOKEN_MAP).map(
-  (token: { cssVar: string; fallback: string }) => token.fallback,
-);
 
 const readCssVar = (cssVar: string, fallback: string): string => {
   const value = window
@@ -37,16 +23,13 @@ const readCssVar = (cssVar: string, fallback: string): string => {
   return value || fallback;
 };
 
-const resolveTokenColor = (
-  colorKey: HansChartThemeColor,
-): string => {
+const resolveTokenColor = (colorKey: HansChartThemeColor): string => {
   const token = COLOR_TOKEN_MAP[colorKey];
   return readCssVar(token.cssVar, token.fallback);
 };
 
-const isChartColorKey = (
-  value: HansChartColor,
-): value is HansChartThemeColor => value in COLOR_TOKEN_MAP;
+const isChartColorKey = (value: HansChartColor): value is HansChartThemeColor =>
+  value in COLOR_TOKEN_MAP;
 
 const resolveColor = (color: HansChartColor): string => {
   if (isChartColorKey(color)) return resolveTokenColor(color);
@@ -74,17 +57,10 @@ const getLabelRotation = (position: HansChartLabelPosition): number => {
   return 0;
 };
 
-type SeriesLabelOption = {
-  show?: boolean;
-  position?: 'inside' | 'outside' | 'top';
-  rotate?: number;
-  formatter?: string;
-};
-
 const buildCartesianLabel = (
   position: HansChartLabelPosition | undefined,
   formatter?: string,
-): SeriesLabelOption | undefined => {
+): HansChartSeriesLabelOption | undefined => {
   if (!position || position === 'none') return { show: false };
   if (position === 'inside') {
     return { show: true, position: 'inside', formatter };
@@ -100,7 +76,7 @@ const buildCartesianLabel = (
 const buildPieLabel = (
   position: HansChartLabelPosition | undefined,
   formatter?: string,
-): SeriesLabelOption | undefined => {
+): HansChartSeriesLabelOption | undefined => {
   if (!position || position === 'none') return { show: false };
   if (position === 'inside') {
     return { show: true, position: 'inside', formatter };
