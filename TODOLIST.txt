@@ -1,5 +1,4 @@
 Continuar próximos componentes:
--Entender melhor o componente de Chart
 -Loading (usar lib? - substituir no Icon e no Avatar)
 -Table
 -DatePicker (usar lib?)
