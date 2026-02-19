@@ -8,6 +8,7 @@ import type { Color } from '../../types/Common.types';
 export type HansChartType = 'line' | 'bar' | 'pie' | 'doughnut' | 'mixed';
 
 export type HansChartSeriesType = 'line' | 'bar' | 'pie' | 'doughnut';
+export type HansChartThemeColor = Color;
 
 export type HansChartLabelPosition =
   | 'horizontal'

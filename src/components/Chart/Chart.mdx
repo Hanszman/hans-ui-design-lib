@@ -28,8 +28,18 @@ export const Example = () => (
     chartType="mixed"
     categories={['Jan', 'Feb', 'Mar']}
     series={[
-      { name: 'Orders', type: 'bar', data: [12, 18, 16], label: { position: 'inside' } },
-      { name: 'Revenue', type: 'line', data: [20, 24, 22], label: { position: 'diagonal' } },
+      {
+        name: 'Orders',
+        type: 'bar',
+        data: [12, 18, 16],
+        label: { position: 'inside' },
+      },
+      {
+        name: 'Revenue',
+        type: 'line',
+        data: [20, 24, 22],
+        label: { position: 'diagonal' },
+      },
     ]}
     colors={['primary', 'rgb(255, 140, 66)']}
   />
@@ -59,6 +69,7 @@ In `mixed`, use per-series `type` to combine bars and lines in one chart.
 Labels are configured **per series** with `series[].label`.
 
 Supported positions:
+
 - `horizontal`
 - `vertical`
 - `diagonal`
@@ -74,6 +85,7 @@ Examples with and without labels:
 ## Colors
 
 Color behavior:
+
 - Pass DS tokens (`primary`, `secondary`, `success`, etc.) to use active theme colors.
 - Pass custom colors (`rgb(...)`, hex, etc.) for custom palettes.
 - Pass `colors={[]}` to randomize from design-system combination colors.

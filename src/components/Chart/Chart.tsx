@@ -8,11 +8,12 @@ import type {
   HansChartProps,
   HansChartSeries,
   HansChartSeriesType,
+  HansChartThemeColor,
   HansChartType,
 } from './Chart.types';
 
 const COLOR_TOKEN_MAP: Record<
-  Exclude<HansChartColor, string>,
+  HansChartThemeColor,
   { cssVar: string; fallback: string }
 > = {
   base: { cssVar: '--text-color', fallback: '#0e0e10' },
@@ -25,7 +26,7 @@ const COLOR_TOKEN_MAP: Record<
 };
 
 const DEFAULT_COMBINATION_COLORS = Object.values(COLOR_TOKEN_MAP).map(
-  (token) => token.fallback,
+  (token: { cssVar: string; fallback: string }) => token.fallback,
 );
 
 const readCssVar = (cssVar: string, fallback: string): string => {
@@ -37,7 +38,7 @@ const readCssVar = (cssVar: string, fallback: string): string => {
 };
 
 const resolveTokenColor = (
-  colorKey: Exclude<HansChartColor, string>,
+  colorKey: HansChartThemeColor,
 ): string => {
   const token = COLOR_TOKEN_MAP[colorKey];
   return readCssVar(token.cssVar, token.fallback);
@@ -45,7 +46,7 @@ const resolveTokenColor = (
 
 const isChartColorKey = (
   value: HansChartColor,
-): value is Exclude<HansChartColor, string> => value in COLOR_TOKEN_MAP;
+): value is HansChartThemeColor => value in COLOR_TOKEN_MAP;
 
 const resolveColor = (color: HansChartColor): string => {
   if (isChartColorKey(color)) return resolveTokenColor(color);
@@ -73,10 +74,17 @@ const getLabelRotation = (position: HansChartLabelPosition): number => {
   return 0;
 };
 
+type SeriesLabelOption = {
+  show?: boolean;
+  position?: 'inside' | 'outside' | 'top';
+  rotate?: number;
+  formatter?: string;
+};
+
 const buildCartesianLabel = (
   position: HansChartLabelPosition | undefined,
   formatter?: string,
-): echarts.SeriesLabelOption | undefined => {
+): SeriesLabelOption | undefined => {
   if (!position || position === 'none') return { show: false };
   if (position === 'inside') {
     return { show: true, position: 'inside', formatter };
@@ -92,7 +100,7 @@ const buildCartesianLabel = (
 const buildPieLabel = (
   position: HansChartLabelPosition | undefined,
   formatter?: string,
-): echarts.SeriesLabelOption | undefined => {
+): SeriesLabelOption | undefined => {
   if (!position || position === 'none') return { show: false };
   if (position === 'inside') {
     return { show: true, position: 'inside', formatter };
