@@ -5,6 +5,16 @@ import {
 } from '../../../types/Schema.types';
 import type { Size, Color } from '../../../types/Common.types';
 
+export type InputType =
+  | 'text'
+  | 'number'
+  | 'email'
+  | 'password'
+  | 'checkbox'
+  | 'radio'
+  | 'file'
+  | 'hidden';
+
 const HansInputSchema = {
   label: 'string',
   labelColor: { type: 'custom', ref: {} as Color },
@@ -21,16 +31,6 @@ const HansInputSchema = {
   leftIcon: 'node',
   rightIcon: 'node',
 } as const;
-
-export type InputType =
-  | 'text'
-  | 'number'
-  | 'email'
-  | 'password'
-  | 'checkbox'
-  | 'radio'
-  | 'file'
-  | 'hidden';
 
 export type HansInputProps = InferPropsFromSchema<typeof HansInputSchema> &
   React.InputHTMLAttributes<HTMLInputElement>;

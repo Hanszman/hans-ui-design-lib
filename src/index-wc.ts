@@ -25,6 +25,11 @@ import {
   type HansTagProps,
   HansTagPropsList,
 } from './components/Tag/Tag.types';
+import { HansChart } from './components/Chart/Chart';
+import {
+  type HansChartProps,
+  HansChartPropsList,
+} from './components/Chart/Chart.types';
 import { HansIcon } from './components/Icon/Icon';
 import {
   type HansIconProps,
@@ -55,6 +60,11 @@ registerReactAsWebComponent<HansTagProps>(
   'hans-tag',
   HansTag,
   HansTagPropsList,
+);
+registerReactAsWebComponent<HansChartProps>(
+  'hans-chart',
+  HansChart,
+  HansChartPropsList,
 );
 registerReactAsWebComponent<HansIconProps>(
   'hans-icon',

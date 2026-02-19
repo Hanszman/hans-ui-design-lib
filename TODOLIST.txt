@@ -7,5 +7,4 @@ Continuar próximos componentes:
 -Toast (usar lib?)
 -Kanban (usar lib?)
 -Card (template de card / será usado como item do kanban / - usar lib?)
--Chart (usar lib = Apache ECharts ou Chart.js?)
 -Translation?

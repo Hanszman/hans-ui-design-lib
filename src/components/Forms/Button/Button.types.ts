@@ -5,6 +5,8 @@ import {
 } from '../../../types/Schema.types';
 import type { Size, Variant, Color } from '../../../types/Common.types';
 
+export type ButtonType = 'button' | 'submit' | 'reset';
+
 const HansButtonSchema = {
   label: 'string',
   buttonId: 'string',
@@ -15,8 +17,6 @@ const HansButtonSchema = {
   customClasses: 'string',
   disabled: 'boolean',
 } as const;
-
-export type ButtonType = 'button' | 'submit' | 'reset';
 
 export type HansButtonProps = InferPropsFromSchema<typeof HansButtonSchema> &
   React.ButtonHTMLAttributes<HTMLButtonElement>;

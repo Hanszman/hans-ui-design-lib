@@ -5,6 +5,19 @@ import {
 } from '../../../types/Schema.types';
 import type { Size, Color } from '../../../types/Common.types';
 
+export type DropdownOption = {
+  id?: string;
+  label: string;
+  value: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  disabled?: boolean;
+};
+
+export type DropdownSelectionType = 'single' | 'multi';
+
+export type DropdownValue = string | string[];
+
 const HansDropdownSchema = {
   label: 'string',
   labelColor: { type: 'custom', ref: {} as Color },
@@ -25,19 +38,6 @@ const HansDropdownSchema = {
   dropdownBackgroundColor: 'string',
   dropdownHoverColor: 'string',
 } as const;
-
-export type DropdownOption = {
-  id?: string;
-  label: string;
-  value: string;
-  imageSrc?: string;
-  imageAlt?: string;
-  disabled?: boolean;
-};
-
-export type DropdownSelectionType = 'single' | 'multi';
-
-export type DropdownValue = string | string[];
 
 export type HansDropdownProps = InferPropsFromSchema<
   typeof HansDropdownSchema

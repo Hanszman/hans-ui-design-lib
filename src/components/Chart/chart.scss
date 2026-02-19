@@ -1,0 +1,15 @@
+.hans-chart {
+  @apply w-full rounded-lg border border-[var(--gray-300)] bg-[var(--white)] p-3;
+}
+
+.hans-chart-canvas {
+  @apply w-full h-full min-h-[220px];
+}
+
+.hans-chart-empty {
+  @apply flex items-center justify-center;
+}
+
+.hans-chart-empty-text {
+  @apply text-sm text-[var(--gray-500)];
+}
