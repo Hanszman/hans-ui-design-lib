@@ -1,5 +1,6 @@
-Continuar próximos componentes:
--Loading (usar lib? - substituir no Icon e no Avatar)
+* Arrumar css de colors, criando mais combinations e mais opções de cores
+* Continuar próximos componentes:
+-Loading/Skeleton (substituir no Icon, no Avatar, no Chart, no Dropdown, etc) - Criar exemplos em cada componente usando loading
 -Table
 -DatePicker (usar lib?)
 -Modal (usar lib?)
