@@ -50,6 +50,8 @@ const meta: Meta<typeof HansDropdown> = {
     selectionType: 'single',
     enableAutocomplete: true,
     disabled: false,
+    message: '',
+    messageColor: 'base',
   },
   argTypes: {
     inputSize: { control: 'select', options: ['small', 'medium', 'large'] },
