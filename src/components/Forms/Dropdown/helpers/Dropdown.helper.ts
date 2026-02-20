@@ -1,7 +1,15 @@
 import type React from 'react';
 import type { DropdownOption, DropdownValue } from '../Dropdown.types';
+import type {
+  CreateHandleInputChangeParams,
+  CreateHandleRemoveSelectedParams,
+  CreateHandleSelectOptionParams,
+  CreateSetDropdownOpenParams,
+} from './Dropdown.helper.types';
 
-export const normalizeToArray = (value: DropdownValue | undefined): string[] => {
+export const normalizeToArray = (
+  value: DropdownValue | undefined,
+): string[] => {
   if (Array.isArray(value)) return value;
   if (typeof value === 'string' && value.length > 0) return [value];
   return [];
@@ -35,7 +43,9 @@ export const filterDropdownOptions = (
 ): DropdownOption[] => {
   if (!enableAutocomplete || searchTerm.trim().length === 0) return options;
   const search = searchTerm.toLowerCase();
-  return options.filter((option) => option.label.toLowerCase().includes(search));
+  return options.filter((option) =>
+    option.label.toLowerCase().includes(search),
+  );
 };
 
 export const getNextMultiValues = (
@@ -58,15 +68,6 @@ export const getOpenDirection = (
 ): 'up' | 'down' =>
   spaceBelow < listHeight && spaceAbove > listHeight ? 'up' : 'down';
 
-type CreateHandleInputChangeParams = {
-  enableAutocomplete: boolean;
-  isOpen: boolean;
-  setSearchTerm: (value: string) => void;
-  setIsOpen: (value: boolean) => void;
-  onSearch?: (term: string) => void;
-  onInputChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
 export const createHandleInputChange =
   (params: CreateHandleInputChangeParams) =>
   (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,18 +86,6 @@ export const createHandleInputChange =
     if (onSearch) onSearch(nextValue);
     if (onInputChange) onInputChange(event);
   };
-
-type CreateHandleSelectOptionParams = {
-  disabled: boolean;
-  isMulti: boolean;
-  selectedValues: string[];
-  value: DropdownValue | undefined;
-  enableAutocomplete: boolean;
-  setInternalValue: (next: DropdownValue) => void;
-  onChange?: (value: DropdownValue) => void;
-  setSearchTerm: (value: string) => void;
-  setIsOpen: (value: boolean) => void;
-};
 
 export const createHandleSelectOption =
   (params: CreateHandleSelectOptionParams) => (option: DropdownOption) => {
@@ -129,13 +118,6 @@ export const createHandleSelectOption =
     setIsOpen(false);
   };
 
-type CreateHandleRemoveSelectedParams = {
-  selectedValues: string[];
-  value: DropdownValue | undefined;
-  setInternalValue: (next: DropdownValue) => void;
-  onChange?: (value: DropdownValue) => void;
-};
-
 export const createHandleRemoveSelected =
   (params: CreateHandleRemoveSelectedParams) => (optionId: string) => {
     const { selectedValues, value, setInternalValue, onChange } = params;
@@ -143,12 +125,6 @@ export const createHandleRemoveSelected =
     if (typeof value === 'undefined') setInternalValue(nextValues);
     if (onChange) onChange(nextValues);
   };
-
-type CreateSetDropdownOpenParams = {
-  disabled: boolean;
-  ignoreFocusRef: React.MutableRefObject<boolean>;
-  setIsOpen: (value: boolean) => void;
-};
 
 export const createSetDropdownOpen =
   (params: CreateSetDropdownOpenParams) =>
