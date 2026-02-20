@@ -1,3 +1,4 @@
+* Refatorar e entender funções de Chart e Dropdown
 * Arrumar css de colors, criando mais combinations e mais opções de cores
 * Continuar próximos componentes:
 -Loading/Skeleton (substituir no Icon, no Avatar, no Chart, no Dropdown, etc) - Criar exemplos em cada componente usando loading
