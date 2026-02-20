@@ -1,21 +1,21 @@
 import React from 'react';
-import type {
-  DropdownOption,
-  DropdownValue,
-  HansDropdownProps,
-} from './Dropdown.types';
+import type { DropdownValue, HansDropdownProps } from './Dropdown.types';
 import { HansInput } from '../Input/Input';
 import { HansIcon } from '../../Icon/Icon';
 import { HansAvatar } from '../../Avatar/Avatar';
 import { HansTag } from '../../Tag/Tag';
 import {
+  createHandleInputChange,
+  createHandleOpen,
+  createHandleRemoveSelected,
+  createHandleSelectOption,
+  createHandleToggle,
+  createSetDropdownOpen,
   filterDropdownOptions,
   getInitialDropdownValue,
-  getNextMultiValues,
   getOpenDirection,
   getOptionId,
   getSelectedLabel,
-  getValuesAfterRemoval,
   normalizeToArray,
 } from './helpers/Dropdown.helper';
 
@@ -114,80 +114,54 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     return () => cancelAnimationFrame(frame);
   }, [isOpen, filteredOptions.length]);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!enableAutocomplete) return;
-    const nextValue = event.target.value;
-    setSearchTerm(nextValue);
-    if (!isOpen) setIsOpen(true);
-    if (onSearch) onSearch(nextValue);
-    if (onInputChange) onInputChange(event);
-  };
+  const handleInputChange = createHandleInputChange({
+    enableAutocomplete,
+    isOpen,
+    setSearchTerm,
+    setIsOpen,
+    onSearch,
+    onInputChange,
+  });
 
-  const handleSelectOption = (option: DropdownOption) => {
-    if (option.disabled || disabled) return;
-    const optionId = getOptionId(option);
+  const handleSelectOption = createHandleSelectOption({
+    disabled,
+    isMulti,
+    selectedValues,
+    value,
+    enableAutocomplete,
+    setInternalValue,
+    onChange,
+    setSearchTerm,
+    setIsOpen,
+  });
 
-    if (isMulti) {
-      const nextValues = getNextMultiValues(selectedValues, optionId);
+  const handleRemoveSelected = createHandleRemoveSelected({
+    selectedValues,
+    value,
+    setInternalValue,
+    onChange,
+  });
 
-      if (typeof value === 'undefined') setInternalValue(nextValues);
-      if (onChange) onChange(nextValues);
-      if (enableAutocomplete) setSearchTerm('');
-      return;
-    }
+  const setDropdownOpen = createSetDropdownOpen({
+    disabled,
+    ignoreFocusRef,
+    setIsOpen,
+  });
 
-    if (typeof value === 'undefined') setInternalValue(optionId);
-    if (onChange) onChange(optionId);
-    if (enableAutocomplete) setSearchTerm(option.label);
-    setIsOpen(false);
-  };
+  const handleOpen = createHandleOpen(setDropdownOpen);
 
-  const handleRemoveSelected = (optionId: string) => {
-    const nextValues = getValuesAfterRemoval(selectedValues, optionId);
-    if (typeof value === 'undefined') setInternalValue(nextValues);
-    if (onChange) onChange(nextValues);
-  };
-
-  const setDropdownOpen = (nextOpen: boolean, source: 'focus' | 'toggle') => {
-    if (disabled) return;
-    if (source === 'focus' && ignoreFocusRef.current) {
-      ignoreFocusRef.current = false;
-      return;
-    }
-    if (source === 'toggle' && !nextOpen) {
-      ignoreFocusRef.current = true;
-    }
-    setIsOpen(nextOpen);
-  };
-
-  const handleOpen = () => {
-    setDropdownOpen(true, 'focus');
-  };
-
-  const handleToggle = () => {
-    setDropdownOpen(!isOpen, 'toggle');
-  };
+  const handleToggle = createHandleToggle(setDropdownOpen, () => isOpen);
 
   const inputValue = enableAutocomplete ? searchTerm : selectedLabel;
 
   return (
     <div className="hans-dropdown" ref={containerRef}>
-      {label ? (
-        <label
-          htmlFor={inputId}
-          className={`
-            hans-input-label
-            hans-input-label-${labelColor}
-          `}
-        >
-          {label}
-        </label>
-      ) : null}
-
       <div className="hans-dropdown-field">
         <HansInput
-          label=""
-          message=""
+          label={label}
+          labelColor={labelColor}
+          message={message}
+          messageColor={messageColor}
           inputId={inputId}
           inputColor={inputColor}
           inputSize={inputSize}
@@ -277,17 +251,6 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
             />
           ))}
         </div>
-      ) : null}
-
-      {message ? (
-        <p
-          className={`
-            hans-input-message
-            hans-input-message-${messageColor}
-          `}
-        >
-          {message}
-        </p>
       ) : null}
     </div>
   );

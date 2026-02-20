@@ -1,6 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import type React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 import type { DropdownOption } from '../Dropdown.types';
 import {
+  createHandleInputChange,
+  createHandleOpen,
+  createHandleRemoveSelected,
+  createHandleSelectOption,
+  createHandleToggle,
+  createSetDropdownOpen,
   filterDropdownOptions,
   getInitialDropdownValue,
   getNextMultiValues,
@@ -57,5 +64,114 @@ describe('Dropdown.helper', () => {
   it('Should resolve dropdown open direction', () => {
     expect(getOpenDirection(20, 200, 100)).toBe('up');
     expect(getOpenDirection(200, 20, 100)).toBe('down');
+  });
+
+  it('Should create input change handler and process events', () => {
+    const setSearchTerm = vi.fn();
+    const setIsOpen = vi.fn();
+    const onSearch = vi.fn();
+    const onInputChange = vi.fn();
+    const event = {
+      target: { value: 'abc' },
+    } as unknown as React.ChangeEvent<HTMLInputElement>;
+
+    createHandleInputChange({
+      enableAutocomplete: false,
+      isOpen: false,
+      setSearchTerm,
+      setIsOpen,
+      onSearch,
+      onInputChange,
+    })(event);
+    expect(setSearchTerm).not.toHaveBeenCalled();
+
+    createHandleInputChange({
+      enableAutocomplete: true,
+      isOpen: false,
+      setSearchTerm,
+      setIsOpen,
+      onSearch,
+      onInputChange,
+    })(event);
+    expect(setSearchTerm).toHaveBeenCalledWith('abc');
+    expect(setIsOpen).toHaveBeenCalledWith(true);
+    expect(onSearch).toHaveBeenCalledWith('abc');
+    expect(onInputChange).toHaveBeenCalledWith(event);
+  });
+
+  it('Should create select option handler for single and multi', () => {
+    const setInternalValue = vi.fn();
+    const onChange = vi.fn();
+    const setSearchTerm = vi.fn();
+    const setIsOpen = vi.fn();
+
+    const single = createHandleSelectOption({
+      disabled: false,
+      isMulti: false,
+      selectedValues: [],
+      value: undefined,
+      enableAutocomplete: true,
+      setInternalValue,
+      onChange,
+      setSearchTerm,
+      setIsOpen,
+    });
+    single(options[0]);
+    expect(setInternalValue).toHaveBeenCalledWith('alpha');
+    expect(onChange).toHaveBeenCalledWith('alpha');
+    expect(setSearchTerm).toHaveBeenCalledWith('Alpha');
+    expect(setIsOpen).toHaveBeenCalledWith(false);
+
+    const multi = createHandleSelectOption({
+      disabled: false,
+      isMulti: true,
+      selectedValues: ['alpha'],
+      value: undefined,
+      enableAutocomplete: true,
+      setInternalValue,
+      onChange,
+      setSearchTerm,
+      setIsOpen,
+    });
+    multi(options[0]);
+    expect(onChange).toHaveBeenCalledWith([]);
+  });
+
+  it('Should create remove selected handler', () => {
+    const setInternalValue = vi.fn();
+    const onChange = vi.fn();
+    createHandleRemoveSelected({
+      selectedValues: ['alpha', 'beta'],
+      value: undefined,
+      setInternalValue,
+      onChange,
+    })('alpha');
+    expect(setInternalValue).toHaveBeenCalledWith(['beta']);
+    expect(onChange).toHaveBeenCalledWith(['beta']);
+  });
+
+  it('Should create open/toggle handlers', () => {
+    const setIsOpen = vi.fn();
+    const ignoreFocusRef = { current: false };
+    const setDropdownOpen = createSetDropdownOpen({
+      disabled: false,
+      ignoreFocusRef,
+      setIsOpen,
+    });
+
+    createHandleOpen(setDropdownOpen)();
+    expect(setIsOpen).toHaveBeenCalledWith(true);
+
+    const toggle = createHandleToggle(setDropdownOpen, () => true);
+    toggle();
+    expect(ignoreFocusRef.current).toBe(true);
+    expect(setIsOpen).toHaveBeenCalledWith(false);
+
+    createSetDropdownOpen({
+      disabled: true,
+      ignoreFocusRef,
+      setIsOpen,
+    })(true, 'focus');
+    expect(setIsOpen).toHaveBeenCalledTimes(2);
   });
 });
