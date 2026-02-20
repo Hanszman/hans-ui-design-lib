@@ -8,15 +8,16 @@ import { HansInput } from '../Input/Input';
 import { HansIcon } from '../../Icon/Icon';
 import { HansAvatar } from '../../Avatar/Avatar';
 import { HansTag } from '../../Tag/Tag';
-
-const normalizeToArray = (value: DropdownValue | undefined): string[] => {
-  if (Array.isArray(value)) return value;
-  if (typeof value === 'string' && value.length > 0) return [value];
-  return [];
-};
-
-const getOptionId = (option: DropdownOption): string =>
-  option.id ?? option.value;
+import {
+  filterDropdownOptions,
+  getInitialDropdownValue,
+  getNextMultiValues,
+  getOpenDirection,
+  getOptionId,
+  getSelectedLabel,
+  getValuesAfterRemoval,
+  normalizeToArray,
+} from './helpers/Dropdown.helper';
 
 export const HansDropdown = React.memo((props: HansDropdownProps) => {
   const {
@@ -51,11 +52,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
   );
   const [searchTerm, setSearchTerm] = React.useState('');
   const [internalValue, setInternalValue] = React.useState<DropdownValue>(
-    () => {
-      if (typeof value !== 'undefined') return value;
-      if (typeof defaultValue !== 'undefined') return defaultValue;
-      return isMulti ? [] : '';
-    },
+    () => getInitialDropdownValue(value, defaultValue, isMulti),
   );
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -76,9 +73,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     [options, selectedValues],
   );
 
-  const selectedLabel = isMulti
-    ? selectedOptions.map((option) => option.label).join(', ')
-    : (selectedOptions[0]?.label ?? '');
+  const selectedLabel = getSelectedLabel(isMulti, selectedOptions);
 
   React.useEffect(() => {
     if (!enableAutocomplete || isMulti) return;
@@ -100,13 +95,10 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     };
   }, []);
 
-  const filteredOptions = React.useMemo(() => {
-    if (!enableAutocomplete || searchTerm.trim().length === 0) return options;
-    const search = searchTerm.toLowerCase();
-    return options.filter((option) =>
-      option.label.toLowerCase().includes(search),
-    );
-  }, [enableAutocomplete, options, searchTerm]);
+  const filteredOptions = React.useMemo(
+    () => filterDropdownOptions(options, enableAutocomplete, searchTerm),
+    [enableAutocomplete, options, searchTerm],
+  );
 
   React.useEffect(() => {
     if (!isOpen) return;
@@ -116,11 +108,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
       const listRect = listRef.current.getBoundingClientRect();
       const spaceBelow = window.innerHeight - containerRect.bottom;
       const spaceAbove = containerRect.top;
-      if (spaceBelow < listRect.height && spaceAbove > listRect.height) {
-        setOpenDirection('up');
-      } else {
-        setOpenDirection('down');
-      }
+      setOpenDirection(getOpenDirection(spaceBelow, spaceAbove, listRect.height));
     });
 
     return () => cancelAnimationFrame(frame);
@@ -140,9 +128,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     const optionId = getOptionId(option);
 
     if (isMulti) {
-      const nextValues = selectedValues.includes(optionId)
-        ? selectedValues.filter((valueItem) => valueItem !== optionId)
-        : [...selectedValues, optionId];
+      const nextValues = getNextMultiValues(selectedValues, optionId);
 
       if (typeof value === 'undefined') setInternalValue(nextValues);
       if (onChange) onChange(nextValues);
@@ -157,9 +143,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
   };
 
   const handleRemoveSelected = (optionId: string) => {
-    const nextValues = selectedValues.filter(
-      (valueItem) => valueItem !== optionId,
-    );
+    const nextValues = getValuesAfterRemoval(selectedValues, optionId);
     if (typeof value === 'undefined') setInternalValue(nextValues);
     if (onChange) onChange(nextValues);
   };
