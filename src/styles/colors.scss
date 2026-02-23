@@ -1,28 +1,63 @@
 :root {
-  /* Purple */
-  --purple-900: #2e1a73;
-  --purple-500: #8257e5;
-  --purple-300: #bba7ff;
-
-  /* Blue */
-  --blue-900: #1b3c8e;
-  --blue-500: #3d8bff;
-  --blue-300: #a8c9ff;
+  /* Red */
+  --red-900: #b00020;
+  --red-500: #ff1744;
+  --red-300: #ff8a80;
 
   /* Green */
   --green-900: #027a43;
   --green-500: #04d361;
   --green-300: #a3f3c4;
 
-  /* Red */
-  --red-900: #8b1e34;
-  --red-500: #e83f5b;
-  --red-300: #ffa3b1;
+  /* Blue */
+  --blue-900: #1b3c8e;
+  --blue-500: #3d8bff;
+  --blue-300: #a8c9ff;
 
   /* Yellow */
-  --yellow-900: #ff8c42;
-  --yellow-500: #f7b500;
-  --yellow-300: #ffe9a3;
+  --yellow-900: #f7b500;
+  --yellow-500: #ffcc00;
+  --yellow-300: #ffe27a;
+
+  /* Orange */
+  --orange-900: #d94a00;
+  --orange-500: #ff6a00;
+  --oranger-100: #ff8c42;
+
+  /* Purple */
+  --purple-900: #2e1a73;
+  --purple-500: #8257e5;
+  --purple-300: #bba7ff;
+
+  /* Pink */
+  --pink-900: #9b145b;
+  --pink-500: #ff3d8d;
+  --pink-300: #ff9cc7;
+
+  /* Brown */
+  --brown-900: #3b2416;
+  --brown-500: #8b5e3c;
+  --brown-300: #d2b49c;
+
+  /* Lime */
+  --lime-900: #3f7d00;
+  --lime-500: #7cff00;
+  --lime-300: #cfff8f;
+
+  /* Aqua */
+  --aqua-900: #006d6f;
+  --aqua-500: #00c2c7;
+  --aqua-300: #8ff1f3;
+
+  /* Cyan */
+  --cyan-900: #005b8f;
+  --cyan-500: #00a7ff;
+  --cyan-300: #92dcff;
+
+  /* Indigo */
+  --indigo-900: #1e2a78;
+  --indigo-500: #4f6cff;
+  --indigo-300: #b7c2ff;
 
   /* Grays */
   --gray-900: #0e0e10;
@@ -34,6 +69,8 @@
   /* Base */
   --black: #000000;
   --white: #ffffff;
+
+  // TODO: Criar base colors
 
   /* Fallback Colors */
   --primary-strong-color: var(--purple-900);
