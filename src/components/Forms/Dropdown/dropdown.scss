@@ -11,7 +11,7 @@
 }
 
 .hans-dropdown-list {
-  @apply absolute z-[9999] w-full rounded-lg border border-[var(--gray-300)] bg-[var(--background-color)] shadow-md max-h-60 overflow-auto;
+  @apply absolute z-[9999] w-full rounded-lg border border-[var(--base-neutral-color)] bg-[var(--background-color)] shadow-md max-h-60 overflow-auto;
   background-color: var(--hans-dropdown-bg, var(--white));
 }
 
@@ -30,11 +30,11 @@
 }
 
 .hans-dropdown-option:hover {
-  background-color: var(--hans-dropdown-hover, var(--gray-100));
+  background-color: var(--hans-dropdown-hover, var(--base-neutral-color));
 }
 
 .hans-dropdown-option-selected {
-  @apply bg-[var(--gray-100)] font-bold;
+  @apply bg-[var(--base-neutral-color)] font-bold;
 }
 
 .hans-dropdown-option-disabled {

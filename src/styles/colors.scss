@@ -85,8 +85,6 @@
   --black: #000000;
   --white: #ffffff;
 
-  // TODO: Criar base colors
-
   /* Fallback Colors */
   --primary-strong-color: var(--purple-900);
   --primary-default-color: var(--purple-500);
@@ -106,6 +104,9 @@
   --info-strong-color: var(--blue-900);
   --info-default-color: var(--blue-500);
   --info-neutral-color: var(--blue-300);
+  --base-strong-color: var(--gray-900);
+  --base-default-color: var(--gray-700);
+  --base-neutral-color: var(--gray-300);
   --background-color: var(--gray-100);
   --text-color: var(--gray-900);
 }
@@ -127,9 +128,12 @@
   --warning-strong-color: var(--yellow-900);
   --warning-default-color: var(--yellow-500);
   --warning-neutral-color: var(--yellow-300);
-  --info-strong-color: var(--blue-900);
-  --info-default-color: var(--blue-500);
-  --info-neutral-color: var(--blue-300);
+  --info-strong-color: var(--aqua-900);
+  --info-default-color: var(--aqua-500);
+  --info-neutral-color: var(--aqua-300);
+  --base-strong-color: var(--gray-900);
+  --base-default-color: var(--gray-700);
+  --base-neutral-color: var(--gray-300);
   --background-color: var(--gray-100);
   --text-color: var(--gray-900);
 }
@@ -153,6 +157,9 @@
   --info-strong-color: var(--green-900);
   --info-default-color: var(--green-500);
   --info-neutral-color: var(--green-300);
+  --base-strong-color: var(--gray-900);
+  --base-default-color: var(--gray-700);
+  --base-neutral-color: var(--gray-300);
   --background-color: var(--gray-900);
   --text-color: var(--gray-100);
 }
@@ -176,6 +183,9 @@
   --info-strong-color: var(--yellow-900);
   --info-default-color: var(--yellow-500);
   --info-neutral-color: var(--yellow-300);
+  --base-strong-color: var(--gray-900);
+  --base-default-color: var(--gray-700);
+  --base-neutral-color: var(--gray-300);
   --background-color: var(--gray-100);
   --text-color: var(--gray-900);
 }

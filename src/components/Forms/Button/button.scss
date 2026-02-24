@@ -24,23 +24,23 @@
 }
 
 .hans-button-base.hans-button-strong {
-  @apply bg-[var(--text-color)] text-[var(--background-color)];
+  @apply bg-[var(--base-strong-color)] text-[var(--base-neutral-color)];
 }
 
 .hans-button-base.hans-button-default {
-  @apply bg-[var(--text-color)] text-[var(--white)];
+  @apply bg-[var(--base-default-color)] text-[var(--white)];
 }
 
 .hans-button-base.hans-button-neutral {
-  @apply bg-[var(--background-color)] text-[var(--text-color)];
+  @apply bg-[var(--base-neutral-color)] text-[var(--base-strong-color)];
 }
 
 .hans-button-base.hans-button-outline {
-  @apply bg-transparent text-[var(--text-color)] border-[var(--text-color)] outline;
+  @apply bg-transparent text-[var(--base-strong-color)] border-[var(--base-default-color)] outline;
 }
 
 .hans-button-base.hans-button-transparent {
-  @apply bg-transparent text-[var(--text-color)];
+  @apply bg-transparent text-[var(--base-default-color)];
 }
 
 .hans-button-primary.hans-button-strong {

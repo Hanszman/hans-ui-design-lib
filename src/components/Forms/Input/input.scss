@@ -44,7 +44,7 @@
 }
 
 .hans-input-icon-base {
-  @apply text-[var(--text-color)];
+  @apply text-[var(--base-default-color)];
 }
 
 .hans-input-icon-primary {
@@ -88,7 +88,7 @@
 }
 
 .hans-input-label-base {
-  @apply text-[var(--text-color)];
+  @apply text-[var(--base-default-color)];
 }
 
 .hans-input-label-primary {
@@ -116,7 +116,7 @@
 }
 
 .hans-input-base {
-  @apply border-[var(--gray-300)] focus:border-[var(--text-color)];
+  @apply border-[var(--base-neutral-color)] focus:border-[var(--base-default-color)];
 }
 
 .hans-input-primary {
@@ -144,7 +144,7 @@
 }
 
 .hans-input-message-base {
-  @apply text-[var(--text-color)];
+  @apply text-[var(--base-default-color)];
 }
 
 .hans-input-message-primary {
