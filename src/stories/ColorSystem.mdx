@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Color System" />
+
+# Hans UI Color System
+
+This page documents the color tokens from `src/styles/colors.scss`.
+
+## Structure
+
+Each color family is defined as a trio:
+
+- `900`: strong
+- `500`: default
+- `300`: neutral
+
+OBS: The Color Gray has five values: 900, 700, 500, 300, 100
+
+These trios are mapped to component variants via semantic tokens:
+
+- `--primary-*`
+- `--secondary-*`
+- `--success-*`
+- `--danger-*`
+- `--warning-*`
+- `--info-*`
+- `--base-*`
+
+## Base Palettes
+
+- `red`: `#9e0018`, `#ff002b`, `#ff5c5c`
+- `green`: `#027a43`, `#04d361`, `#a3f3c4`
+- `blue`: `#1b3c8e`, `#3d8bff`, `#a8c9ff`
+- `yellow`: `#f7b500`, `#ffcc00`, `#ffe27a`
+- `orange`: `#d94a00`, `#ff6a00`, `#ff8c42`
+- `pink`: `#9b145b`, `#ff3d8d`, `#ff9cc7`
+- `wine`: `#3d0015`, `#7a002a`, `#c45a7a`
+- `purple`: `#2e1a73`, `#8257e5`, `#bba7ff`
+- `lilac`: `#4a2c7a`, `#a07cff`, `#dbcfff`
+- `indigo`: `#1e2a78`, `#4f6cff`, `#b7c2ff`
+- `cyan`: `#005b8f`, `#00a7ff`, `#92dcff`
+- `aqua`: `#008f82`, `#00f6db`, `#84f3df`
+- `lime`: `#3f7d00`, `#7cff00`, `#cfff8f`
+- `beige`: `#7a4e1d`, `#d69d46`, `#f1c27d`
+- `brown`: `#3b2416`, `#8b5e3c`, `#d2b49c`
+- `gray`: `#0e0e10`, `#2d2d33`, `#7a7a85`, `#c7c7d1`, `#f2f2f5`
+- `black`: `#000000`
+- `white`: `#ffffff`
+
+## Fallback Theme
+
+`:root` defines fallback semantic values.  
+If no `data-theme` is set, components use this mapping.
+
+## Theme Combinations
+
+Themes are activated with:
+
+```html
+<body data-theme="combination3"></body>
+```
+
+Available combinations:
+
+- `combination1`
+- `combination2`
+- `combination3`
+- `combination4`
+- `combination5`
+
+Each combination remaps semantic tokens (`primary`, `secondary`, etc.) to different base trios.
+And we can also define the color for background and text in our combinations:
+
+- `--background-color`
+- `--text-color`
+
+## Usage Note
+
+Components should always consume semantic tokens (`--primary-default-color`, `--base-neutral-color`, etc.) instead of raw family tokens (`--purple-500`, etc.).  
+This keeps themes swappable without changing component SCSS.
