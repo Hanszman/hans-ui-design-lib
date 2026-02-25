@@ -183,3 +183,11 @@ export const Empty: Story = {
     emptyText: 'No chart data yet',
   },
 };
+
+export const Loading: Story = {
+  args: {
+    title: 'Loading',
+    isLoading: true,
+    loadingType: 'skeleton',
+  },
+};

@@ -4,6 +4,7 @@ import { HansInput } from '../Input/Input';
 import { HansIcon } from '../../Icon/Icon';
 import { HansAvatar } from '../../Avatar/Avatar';
 import { HansTag } from '../../Tag/Tag';
+import { HansLoading } from '../../Loading/Loading';
 import {
   createHandleInputChange,
   createHandleOpen,
@@ -39,6 +40,8 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     noOptionsText = 'No options',
     dropdownBackgroundColor = 'var(--white)',
     dropdownHoverColor = 'var(--gray-100)',
+    isLoadingOptions = false,
+    loadingOptionsText = 'Loading options...',
     onSearch,
     onChange,
     onInputChange,
@@ -179,10 +182,19 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
             ) : undefined
           }
           rightIcon={
-            <HansIcon
-              name={isOpen ? 'MdArrowDropUp' : 'MdArrowDropDown'}
-              iconSize="small"
-            />
+            isLoadingOptions ? (
+              <HansLoading
+                loadingType="spinner"
+                loadingSize="small"
+                customClasses="hans-dropdown-loading-icon"
+                ariaLabel="Loading dropdown options"
+              />
+            ) : (
+              <HansIcon
+                name={isOpen ? 'MdArrowDropUp' : 'MdArrowDropDown'}
+                iconSize="small"
+              />
+            )
           }
           {...rest}
         />
@@ -201,7 +213,17 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
               } as React.CSSProperties
             }
           >
-            {filteredOptions.length === 0 ? (
+            {isLoadingOptions ? (
+              <li className="hans-dropdown-loading">
+                <HansLoading
+                  loadingType="spinner"
+                  loadingSize="small"
+                  customClasses="hans-dropdown-loading-spinner"
+                  ariaLabel={loadingOptionsText}
+                />
+                <span>{loadingOptionsText}</span>
+              </li>
+            ) : filteredOptions.length === 0 ? (
               <li className="hans-dropdown-empty">{noOptionsText}</li>
             ) : (
               filteredOptions.map((option) => {

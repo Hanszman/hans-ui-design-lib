@@ -35,6 +35,11 @@ import {
   type HansIconProps,
   HansIconPropsList,
 } from './components/Icon/Icon.types';
+import { HansLoading } from './components/Loading/Loading';
+import {
+  type HansLoadingProps,
+  HansLoadingPropsList,
+} from './components/Loading/Loading.types';
 
 registerReactAsWebComponent<HansButtonProps>(
   'hans-button',
@@ -70,4 +75,9 @@ registerReactAsWebComponent<HansIconProps>(
   'hans-icon',
   HansIcon,
   HansIconPropsList,
+);
+registerReactAsWebComponent<HansLoadingProps>(
+  'hans-loading',
+  HansLoading,
+  HansLoadingPropsList,
 );

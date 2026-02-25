@@ -1,0 +1,38 @@
+.hans-loading {
+  @apply inline-flex items-center justify-center;
+}
+
+.hans-loading-spinner {
+  @apply rounded-full border-2 border-solid animate-spin;
+  border-color: var(--hans-loading-spinner-border, var(--base-neutral-color));
+  border-top-color: var(
+    --hans-loading-spinner-top,
+    var(--base-default-color)
+  );
+}
+
+.hans-loading-skeleton {
+  @apply block animate-pulse;
+  width: var(--hans-loading-width, 100%);
+  height: var(--hans-loading-height, 100%);
+  background-color: var(
+    --hans-loading-skeleton-color,
+    var(--base-neutral-color)
+  );
+}
+
+.hans-loading-rounded {
+  @apply rounded-md;
+}
+
+.hans-loading-small {
+  @apply w-4 h-4;
+}
+
+.hans-loading-medium {
+  @apply w-6 h-6;
+}
+
+.hans-loading-large {
+  @apply w-10 h-10;
+}

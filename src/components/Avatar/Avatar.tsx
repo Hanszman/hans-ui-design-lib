@@ -1,5 +1,6 @@
 import React from 'react';
 import { HansIcon } from '../Icon/Icon';
+import { HansLoading } from '../Loading/Loading';
 import type { HansAvatarProps } from './Avatar.types';
 
 export const HansAvatar = React.memo((props: HansAvatarProps) => {
@@ -7,6 +8,7 @@ export const HansAvatar = React.memo((props: HansAvatarProps) => {
     src = '',
     alt = 'Avatar',
     avatarSize = 'medium',
+    loading = false,
     customClasses = '',
     fallbackIconName = 'LuCircleUserRound',
     ...rest
@@ -29,7 +31,14 @@ export const HansAvatar = React.memo((props: HansAvatarProps) => {
       `}
       aria-label={alt}
     >
-      {showFallback ? (
+      {loading ? (
+        <HansLoading
+          loadingType="spinner"
+          loadingSize={avatarSize}
+          customClasses="hans-avatar-loading"
+          ariaLabel={`Loading avatar ${alt}`}
+        />
+      ) : showFallback ? (
         <span className="hans-avatar-fallback" role="img" aria-hidden="true">
           <HansIcon
             name={fallbackIconName}

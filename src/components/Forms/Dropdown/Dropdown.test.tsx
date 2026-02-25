@@ -518,4 +518,22 @@ describe('HansDropdown', () => {
     fireEvent.mouseDown(wrapper as Element);
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
+
+  it('Should render loading options state when isLoadingOptions is true', async () => {
+    const user = userEvent.setup();
+    render(
+      <HansDropdown
+        label="Dropdown"
+        options={options}
+        isLoadingOptions
+        loadingOptionsText="Loading list..."
+      />,
+    );
+
+    const input = screen.getByPlaceholderText('Select an option');
+    await user.click(input);
+
+    expect(screen.getByText('Loading list...')).toBeInTheDocument();
+    expect(screen.getByLabelText('Loading dropdown options')).toBeInTheDocument();
+  });
 });

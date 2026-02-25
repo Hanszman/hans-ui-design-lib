@@ -37,6 +37,8 @@ const HansDropdownSchema = {
   noOptionsText: 'string',
   dropdownBackgroundColor: 'string',
   dropdownHoverColor: 'string',
+  isLoadingOptions: 'boolean',
+  loadingOptionsText: 'string',
 } as const;
 
 export type HansDropdownProps = InferPropsFromSchema<

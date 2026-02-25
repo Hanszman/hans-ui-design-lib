@@ -27,6 +27,7 @@ export const DynamicIconImports: Record<string, () => Promise<IconLibrary>> = {
 const HansIconSchema = {
   name: 'string',
   iconSize: { type: 'custom', ref: {} as Size },
+  loading: 'boolean',
   customClasses: 'string',
 } as const;
 

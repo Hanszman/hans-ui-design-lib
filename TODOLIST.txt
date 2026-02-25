@@ -1,5 +1,5 @@
+*Loading: corrigir skeletons que não ocuparam toda a area e colocar mais exemplos no dropdown para visualizar melhor
 * Continuar próximos componentes:
--Loading/Skeleton (substituir no Icon, no Avatar, no Chart, no Dropdown, etc) - Criar exemplos em cada componente usando loading
 -Table
 -DatePicker (usar lib?)
 -Modal (usar lib?)

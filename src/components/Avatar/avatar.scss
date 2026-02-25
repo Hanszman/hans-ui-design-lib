@@ -10,6 +10,10 @@
   @apply w-full h-full flex items-center justify-center;
 }
 
+.hans-avatar-loading {
+  @apply w-full h-full;
+}
+
 .hans-avatar-small {
   @apply w-[22px] h-[22px];
 }

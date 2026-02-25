@@ -13,3 +13,7 @@
 .hans-chart-empty-text {
   @apply text-sm text-[var(--gray-500)];
 }
+
+.hans-chart-loading {
+  @apply overflow-hidden;
+}

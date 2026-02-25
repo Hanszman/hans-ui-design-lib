@@ -13,14 +13,18 @@ describe('HansAvatar', () => {
   it('Should render fallback icon when src is empty', () => {
     const { container } = render(<HansAvatar src="" alt="Fallback" />);
     expect(screen.queryByAltText('Fallback')).not.toBeInTheDocument();
-    expect(container.querySelector('.hans-avatar-fallback')).toBeInTheDocument();
+    expect(
+      container.querySelector('.hans-avatar-fallback'),
+    ).toBeInTheDocument();
   });
 
   it('Should render fallback icon on image error', () => {
     const { container } = render(<HansAvatar src="/broken.png" alt="Broken" />);
     const image = screen.getByAltText('Broken');
     fireEvent.error(image);
-    expect(container.querySelector('.hans-avatar-fallback')).toBeInTheDocument();
+    expect(
+      container.querySelector('.hans-avatar-fallback'),
+    ).toBeInTheDocument();
   });
 
   it('Should apply size and custom classes', () => {
@@ -51,5 +55,13 @@ describe('HansAvatar', () => {
 
     rerender(<HansAvatar src="/new.png" alt="B" />);
     expect(screen.getByAltText('B')).toBeInTheDocument();
+  });
+
+  it('Should render loading when loading prop is true', () => {
+    const { container } = render(
+      <HansAvatar src="/photo.png" alt="User photo" loading />,
+    );
+    expect(container.querySelector('.hans-avatar-loading')).toBeInTheDocument();
+    expect(screen.queryByAltText('User photo')).not.toBeInTheDocument();
   });
 });

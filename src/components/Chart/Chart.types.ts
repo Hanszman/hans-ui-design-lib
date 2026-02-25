@@ -4,6 +4,7 @@ import {
   type InferPropsFromSchema,
 } from '../../types/Schema.types';
 import type { Color } from '../../types/Common.types';
+import type { LoadingType } from '../Loading/Loading.types';
 
 export type HansChartType = HansChartSeriesType | 'mixed';
 
@@ -73,6 +74,8 @@ const HansChartSchema = {
   colors: { type: 'custom', ref: [] as HansChartColor[] },
   height: 'number',
   showLegend: 'boolean',
+  isLoading: 'boolean',
+  loadingType: { type: 'custom', ref: {} as LoadingType },
   customClasses: 'string',
   emptyText: 'string',
   optionOverrides: 'json',

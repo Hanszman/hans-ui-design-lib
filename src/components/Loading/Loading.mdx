@@ -1,0 +1,56 @@
+import { Meta, Title, Primary, Controls, Canvas } from '@storybook/addon-docs/blocks';
+import * as HansLoadingStories from './Loading.stories';
+
+<Meta of={HansLoadingStories} />
+
+<Title />
+
+The **Loading** component supports two modes:
+
+- `spinner`: circular, compact loading indicator
+- `skeleton`: block placeholder that can fill the parent area
+
+## Usage
+
+```tsx
+import { HansLoading } from 'hans-ui-design-lib';
+
+export const Example = () => (
+  <HansLoading loadingType="spinner" loadingColor="primary" />
+);
+```
+
+Then, you can use the component in your template. Here is a basic example:
+
+<Primary />
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Spinner Sizes
+
+Use `loadingSize` to control spinner dimensions.
+
+<Canvas of={HansLoadingStories.SpinnerSizes} />
+
+## Spinner Colors
+
+Use `loadingColor` to align with semantic design-system tokens.
+
+<Canvas of={HansLoadingStories.SpinnerColors} />
+
+## Skeleton Variants
+
+Use `skeletonWidth` and `skeletonHeight` for custom placeholders.
+
+<Canvas of={HansLoadingStories.SkeletonVariants} />
+
+## Full Area Skeleton
+
+Use skeleton mode to cover entire containers while content is loading.
+
+<Canvas of={HansLoadingStories.FullAreaSkeleton} />
+

@@ -55,3 +55,10 @@ export const MultipleIcons: Story = {
     </div>
   ),
 };
+
+export const Loading: Story = {
+  args: {
+    name: 'FaHome',
+    loading: true,
+  },
+};

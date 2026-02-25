@@ -49,3 +49,10 @@ export const Sizes: Story = {
     </div>
   ),
 };
+
+export const Loading: Story = {
+  args: {
+    loading: true,
+    src: logoBlue,
+  },
+};

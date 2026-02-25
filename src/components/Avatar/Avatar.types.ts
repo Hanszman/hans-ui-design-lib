@@ -9,6 +9,7 @@ const HansAvatarSchema = {
   src: 'string',
   alt: 'string',
   avatarSize: { type: 'custom', ref: {} as Size },
+  loading: 'boolean',
   customClasses: 'string',
   fallbackIconName: 'string',
 } as const;

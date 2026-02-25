@@ -4,6 +4,7 @@ import {
   type HansChartPointEvent,
   type HansChartProps,
 } from './Chart.types';
+import { HansLoading } from '../Loading/Loading';
 import {
   buildCartesianSeries,
   buildPieSeries,
@@ -22,6 +23,8 @@ export const HansChart = React.memo((props: HansChartProps) => {
     colors,
     height = 320,
     showLegend = true,
+    isLoading = false,
+    loadingType = 'skeleton',
     customClasses = '',
     emptyText = 'No data available',
     optionOverrides = {},
@@ -116,6 +119,20 @@ export const HansChart = React.memo((props: HansChartProps) => {
       instance.off('click');
     };
   }, [onPointClick]);
+
+  if (isLoading) {
+    return (
+      <div className={`hans-chart hans-chart-loading ${customClasses}`} style={{ height }} {...rest}>
+        <HansLoading
+          loadingType={loadingType}
+          loadingSize="large"
+          skeletonWidth="100%"
+          skeletonHeight="100%"
+          ariaLabel="Loading chart"
+        />
+      </div>
+    );
+  }
 
   if (series.length === 0) {
     return (

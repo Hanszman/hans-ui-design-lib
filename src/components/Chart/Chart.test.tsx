@@ -42,6 +42,22 @@ describe('HansChart', () => {
     expect(echartsMocks.mockInit).not.toHaveBeenCalled();
   });
 
+  it('Should render loading state and not initialize chart', () => {
+    const { container } = render(
+      <HansChart
+        title="Loading"
+        chartType="line"
+        categories={['Jan']}
+        series={[{ name: 'Revenue', data: [10] }]}
+        isLoading
+      />,
+    );
+
+    expect(container.querySelector('.hans-chart-loading')).toBeInTheDocument();
+    expect(screen.getByLabelText('Loading chart')).toBeInTheDocument();
+    expect(echartsMocks.mockInit).not.toHaveBeenCalled();
+  });
+
   it('Should initialize chart and set line option', () => {
     render(
       <HansChart

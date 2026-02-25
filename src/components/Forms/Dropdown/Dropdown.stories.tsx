@@ -230,3 +230,11 @@ export const Disabled: Story = {
     messageColor: 'warning',
   },
 };
+
+export const Loading: Story = {
+  args: {
+    label: 'Loading options',
+    isLoadingOptions: true,
+    loadingOptionsText: 'Searching options...',
+  },
+};

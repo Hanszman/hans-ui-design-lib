@@ -1,9 +1,16 @@
 import React from 'react';
 import { type HansIconProps, DynamicIconImports } from './Icon.types';
+import { HansLoading } from '../Loading/Loading';
 
 export const HansIcon: React.FC<HansIconProps> = React.memo(
   (props: HansIconProps) => {
-    const { name, iconSize = 'medium', customClasses = '', ...rest } = props;
+    const {
+      name,
+      iconSize = 'medium',
+      loading = false,
+      customClasses = '',
+      ...rest
+    } = props;
     const [IconComp, setIconComp] = React.useState<React.ComponentType<
       React.SVGProps<SVGSVGElement>
     > | null>(null);
@@ -31,7 +38,16 @@ export const HansIcon: React.FC<HansIconProps> = React.memo(
       };
     }, [name]);
 
-    if (!IconComp) return <span className="hans-icon-loading" />;
+    if (loading || !IconComp) {
+      return (
+        <HansLoading
+          loadingType="spinner"
+          loadingSize={iconSize}
+          customClasses={`hans-icon-loading ${customClasses}`}
+          ariaLabel={name ? `Loading icon ${name}` : 'Loading icon'}
+        />
+      );
+    }
 
     return (
       <IconComp

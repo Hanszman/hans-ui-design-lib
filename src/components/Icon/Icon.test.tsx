@@ -84,4 +84,9 @@ describe('HansIcon', () => {
     expect(await screen.findByTestId('icon-beer')).toBeInTheDocument();
     DynamicIconImports.Fa = originalFa;
   });
+
+  it('Should render loading state when loading prop is true', () => {
+    const { container } = render(<HansIcon name="FaHome" loading />);
+    expect(container.querySelector('.hans-icon-loading')).toBeInTheDocument();
+  });
 });
