@@ -15,6 +15,9 @@ const HansAvatarSchema = {
 } as const;
 
 export type HansAvatarProps = InferPropsFromSchema<typeof HansAvatarSchema> &
-  Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt' | 'size'>;
+  Omit<
+    React.ImgHTMLAttributes<HTMLImageElement>,
+    'src' | 'alt' | 'size' | 'loading'
+  >;
 
 export const HansAvatarPropsList = createPropsList(HansAvatarSchema);

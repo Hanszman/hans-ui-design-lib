@@ -232,9 +232,31 @@ export const Disabled: Story = {
 };
 
 export const Loading: Story = {
-  args: {
-    label: 'Loading options',
-    isLoadingOptions: true,
-    loadingOptionsText: 'Searching options...',
-  },
+  render: () => (
+    <div className="flex flex-col gap-4 w-full pb-24">
+      <HansDropdown
+        label="Loading options 1"
+        isLoadingOptions
+        loadingOptionsText="Searching options..."
+        options={options}
+      />
+      <HansDropdown
+        label="Loading options 2"
+        isLoadingOptions
+        loadingOptionsText="Loading users..."
+        options={optionsWithImages}
+        inputColor="primary"
+        labelColor="primary"
+      />
+      <HansDropdown
+        label="Loading options 3"
+        isLoadingOptions
+        loadingOptionsText="Fetching list..."
+        options={options}
+        enableAutocomplete={false}
+        inputColor="secondary"
+        labelColor="secondary"
+      />
+    </div>
+  ),
 };

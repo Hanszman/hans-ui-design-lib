@@ -1,10 +1,9 @@
-*Loading: corrigir skeletons que não ocuparam toda a area e colocar mais exemplos no dropdown para visualizar melhor
 * Continuar próximos componentes:
 -Table
+-Toast (usar lib?)
+-Tabs (usar lib?)
 -DatePicker (usar lib?)
 -Modal (usar lib?)
--Tabs (usar lib?)
--Toast (usar lib?)
 -Kanban (usar lib?)
 -Card (template de card / será usado como item do kanban / - usar lib?)
 -Translation?

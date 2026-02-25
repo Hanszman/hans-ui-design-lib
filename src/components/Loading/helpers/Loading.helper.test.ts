@@ -24,6 +24,12 @@ describe('Loading.helper', () => {
     );
   });
 
+  it('Should not apply size class for skeleton', () => {
+    const className = getLoadingClassName('skeleton', 'large', 'custom');
+    expect(className).toContain('hans-loading-skeleton');
+    expect(className).not.toContain('hans-loading-large');
+  });
+
   it('Should expose color tokens for all common colors', () => {
     expect(LOADING_COLOR_MAP.base.borderTop).toBe('var(--base-default-color)');
     expect(LOADING_COLOR_MAP.primary.skeleton).toBe(

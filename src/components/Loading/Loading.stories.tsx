@@ -62,15 +62,34 @@ export const SpinnerColors: Story = {
 
 export const SkeletonVariants: Story = {
   render: () => (
-    <div className="flex flex-col gap-4 w-full max-w-[420px]">
-      <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight={18} />
-      <HansLoading loadingType="skeleton" skeletonWidth="70%" skeletonHeight={18} />
-      <HansLoading loadingType="skeleton" skeletonWidth={80} skeletonHeight={80} />
+    <div className="flex flex-col gap-5 w-full max-w-[720px]">
+      <div className="flex flex-col gap-3">
+        <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight={14} />
+        <HansLoading loadingType="skeleton" skeletonWidth="85%" skeletonHeight={14} />
+        <HansLoading loadingType="skeleton" skeletonWidth="60%" skeletonHeight={14} />
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight={56} />
+        <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight={84} />
+        <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight={120} />
+      </div>
+      <div className="flex items-end gap-3">
+        <HansLoading loadingType="skeleton" skeletonWidth={18} skeletonHeight={40} rounded={false} />
+        <HansLoading loadingType="skeleton" skeletonWidth={18} skeletonHeight={72} rounded={false} />
+        <HansLoading loadingType="skeleton" skeletonWidth={18} skeletonHeight={96} rounded={false} />
+        <HansLoading loadingType="skeleton" skeletonWidth={18} skeletonHeight={56} rounded={false} />
+      </div>
       <HansLoading
         loadingType="skeleton"
         loadingColor="primary"
         skeletonWidth="100%"
         skeletonHeight={44}
+      />
+      <HansLoading
+        loadingType="skeleton"
+        loadingColor="secondary"
+        skeletonWidth="100%"
+        skeletonHeight={64}
         rounded={false}
       />
     </div>
@@ -79,7 +98,7 @@ export const SkeletonVariants: Story = {
 
 export const FullAreaSkeleton: Story = {
   render: () => (
-    <div className="w-full max-w-[520px] h-[180px] border border-[var(--gray-300)] rounded-lg p-3">
+    <div className="w-full max-w-[640px] h-[260px] border border-[var(--gray-300)] rounded-lg p-3">
       <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight="100%" />
     </div>
   ),

@@ -54,5 +54,8 @@ export const getLoadingClassName = (
   loadingType: 'spinner' | 'skeleton',
   loadingSize: Size,
   customClasses: string,
-): string =>
-  `hans-loading hans-loading-${loadingType} hans-loading-${loadingSize} ${customClasses}`;
+): string => {
+  const sizeClass =
+    loadingType === 'spinner' ? `hans-loading-${loadingSize}` : '';
+  return `hans-loading hans-loading-${loadingType} ${sizeClass} ${customClasses}`;
+};
