@@ -4,20 +4,16 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Hans UI Color System
 
-This page documents the color tokens from `src/styles/colors.scss`.
+This page documents `src/styles/colors.scss` and shows visual swatches for all palettes and all theme combinations.
 
 ## Structure
-
-Each color family is defined as a trio:
 
 - `900`: strong
 - `500`: default
 - `300`: neutral
+- `gray` also has `700` and `100`
 
-OBS: The Color Gray has five values: 900, 700, 500, 300, 100
-
-These trios are mapped to component variants via semantic tokens:
-
+Semantic tokens used by components:
 - `--primary-*`
 - `--secondary-*`
 - `--success-*`
@@ -28,53 +24,109 @@ These trios are mapped to component variants via semantic tokens:
 
 ## Base Palettes
 
-- `red`: `#9e0018`, `#ff002b`, `#ff5c5c`
-- `green`: `#027a43`, `#04d361`, `#a3f3c4`
-- `blue`: `#1b3c8e`, `#3d8bff`, `#a8c9ff`
-- `yellow`: `#f7b500`, `#ffcc00`, `#ffe27a`
-- `orange`: `#d94a00`, `#ff6a00`, `#ff8c42`
-- `pink`: `#9b145b`, `#ff3d8d`, `#ff9cc7`
-- `wine`: `#3d0015`, `#7a002a`, `#c45a7a`
-- `purple`: `#2e1a73`, `#8257e5`, `#bba7ff`
-- `lilac`: `#4a2c7a`, `#a07cff`, `#dbcfff`
-- `indigo`: `#1e2a78`, `#4f6cff`, `#b7c2ff`
-- `cyan`: `#005b8f`, `#00a7ff`, `#92dcff`
-- `aqua`: `#008f82`, `#00f6db`, `#84f3df`
-- `lime`: `#3f7d00`, `#7cff00`, `#cfff8f`
-- `beige`: `#7a4e1d`, `#d69d46`, `#f1c27d`
-- `brown`: `#3b2416`, `#8b5e3c`, `#d2b49c`
-- `gray`: `#0e0e10`, `#2d2d33`, `#7a7a85`, `#c7c7d1`, `#f2f2f5`
-- `black`: `#000000`
-- `white`: `#ffffff`
+<table>
+  <thead>
+    <tr>
+      <th>Family</th>
+      <th>900</th>
+      <th>500</th>
+      <th>300</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>red</td><td><span style={{display:'inline-block',width:14,height:14,background:'#9e0018',border:'1px solid #ccc',marginRight:6}}></span><code>#9e0018</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#ff002b',border:'1px solid #ccc',marginRight:6}}></span><code>#ff002b</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#ff5c5c',border:'1px solid #ccc',marginRight:6}}></span><code>#ff5c5c</code></td></tr>
+    <tr><td>green</td><td><span style={{display:'inline-block',width:14,height:14,background:'#027a43',border:'1px solid #ccc',marginRight:6}}></span><code>#027a43</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#04d361',border:'1px solid #ccc',marginRight:6}}></span><code>#04d361</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#a3f3c4',border:'1px solid #ccc',marginRight:6}}></span><code>#a3f3c4</code></td></tr>
+    <tr><td>blue</td><td><span style={{display:'inline-block',width:14,height:14,background:'#1b3c8e',border:'1px solid #ccc',marginRight:6}}></span><code>#1b3c8e</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#3d8bff',border:'1px solid #ccc',marginRight:6}}></span><code>#3d8bff</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#a8c9ff',border:'1px solid #ccc',marginRight:6}}></span><code>#a8c9ff</code></td></tr>
+    <tr><td>yellow</td><td><span style={{display:'inline-block',width:14,height:14,background:'#f7b500',border:'1px solid #ccc',marginRight:6}}></span><code>#f7b500</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#ffcc00',border:'1px solid #ccc',marginRight:6}}></span><code>#ffcc00</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#ffe27a',border:'1px solid #ccc',marginRight:6}}></span><code>#ffe27a</code></td></tr>
+    <tr><td>orange</td><td><span style={{display:'inline-block',width:14,height:14,background:'#d94a00',border:'1px solid #ccc',marginRight:6}}></span><code>#d94a00</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#ff6a00',border:'1px solid #ccc',marginRight:6}}></span><code>#ff6a00</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#ff8c42',border:'1px solid #ccc',marginRight:6}}></span><code>#ff8c42</code></td></tr>
+    <tr><td>pink</td><td><span style={{display:'inline-block',width:14,height:14,background:'#9b145b',border:'1px solid #ccc',marginRight:6}}></span><code>#9b145b</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#ff3d8d',border:'1px solid #ccc',marginRight:6}}></span><code>#ff3d8d</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#ff9cc7',border:'1px solid #ccc',marginRight:6}}></span><code>#ff9cc7</code></td></tr>
+    <tr><td>wine</td><td><span style={{display:'inline-block',width:14,height:14,background:'#3d0015',border:'1px solid #ccc',marginRight:6}}></span><code>#3d0015</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#7a002a',border:'1px solid #ccc',marginRight:6}}></span><code>#7a002a</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#c45a7a',border:'1px solid #ccc',marginRight:6}}></span><code>#c45a7a</code></td></tr>
+    <tr><td>purple</td><td><span style={{display:'inline-block',width:14,height:14,background:'#2e1a73',border:'1px solid #ccc',marginRight:6}}></span><code>#2e1a73</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#8257e5',border:'1px solid #ccc',marginRight:6}}></span><code>#8257e5</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#bba7ff',border:'1px solid #ccc',marginRight:6}}></span><code>#bba7ff</code></td></tr>
+    <tr><td>lilac</td><td><span style={{display:'inline-block',width:14,height:14,background:'#4a2c7a',border:'1px solid #ccc',marginRight:6}}></span><code>#4a2c7a</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#a07cff',border:'1px solid #ccc',marginRight:6}}></span><code>#a07cff</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#dbcfff',border:'1px solid #ccc',marginRight:6}}></span><code>#dbcfff</code></td></tr>
+    <tr><td>indigo</td><td><span style={{display:'inline-block',width:14,height:14,background:'#1e2a78',border:'1px solid #ccc',marginRight:6}}></span><code>#1e2a78</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#4f6cff',border:'1px solid #ccc',marginRight:6}}></span><code>#4f6cff</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#b7c2ff',border:'1px solid #ccc',marginRight:6}}></span><code>#b7c2ff</code></td></tr>
+    <tr><td>cyan</td><td><span style={{display:'inline-block',width:14,height:14,background:'#005b8f',border:'1px solid #ccc',marginRight:6}}></span><code>#005b8f</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#00a7ff',border:'1px solid #ccc',marginRight:6}}></span><code>#00a7ff</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#92dcff',border:'1px solid #ccc',marginRight:6}}></span><code>#92dcff</code></td></tr>
+    <tr><td>aqua</td><td><span style={{display:'inline-block',width:14,height:14,background:'#008f82',border:'1px solid #ccc',marginRight:6}}></span><code>#008f82</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#00f6db',border:'1px solid #ccc',marginRight:6}}></span><code>#00f6db</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#84f3df',border:'1px solid #ccc',marginRight:6}}></span><code>#84f3df</code></td></tr>
+    <tr><td>lime</td><td><span style={{display:'inline-block',width:14,height:14,background:'#3f7d00',border:'1px solid #ccc',marginRight:6}}></span><code>#3f7d00</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#7cff00',border:'1px solid #ccc',marginRight:6}}></span><code>#7cff00</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#cfff8f',border:'1px solid #ccc',marginRight:6}}></span><code>#cfff8f</code></td></tr>
+    <tr><td>beige</td><td><span style={{display:'inline-block',width:14,height:14,background:'#7a4e1d',border:'1px solid #ccc',marginRight:6}}></span><code>#7a4e1d</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#d69d46',border:'1px solid #ccc',marginRight:6}}></span><code>#d69d46</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#f1c27d',border:'1px solid #ccc',marginRight:6}}></span><code>#f1c27d</code></td></tr>
+    <tr><td>brown</td><td><span style={{display:'inline-block',width:14,height:14,background:'#3b2416',border:'1px solid #ccc',marginRight:6}}></span><code>#3b2416</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#8b5e3c',border:'1px solid #ccc',marginRight:6}}></span><code>#8b5e3c</code></td><td><span style={{display:'inline-block',width:14,height:14,background:'#d2b49c',border:'1px solid #ccc',marginRight:6}}></span><code>#d2b49c</code></td></tr>
+  </tbody>
+</table>
 
-## Fallback Theme
+### Gray Scale
 
-`:root` defines fallback semantic values.  
-If no `data-theme` is set, components use this mapping.
+<div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+  <span><span style={{display:'inline-block',width:14,height:14,background:'#0e0e10',border:'1px solid #ccc',marginRight:6}}></span><code>#0e0e10</code></span>
+  <span><span style={{display:'inline-block',width:14,height:14,background:'#2d2d33',border:'1px solid #ccc',marginRight:6}}></span><code>#2d2d33</code></span>
+  <span><span style={{display:'inline-block',width:14,height:14,background:'#7a7a85',border:'1px solid #ccc',marginRight:6}}></span><code>#7a7a85</code></span>
+  <span><span style={{display:'inline-block',width:14,height:14,background:'#c7c7d1',border:'1px solid #ccc',marginRight:6}}></span><code>#c7c7d1</code></span>
+  <span><span style={{display:'inline-block',width:14,height:14,background:'#f2f2f5',border:'1px solid #ccc',marginRight:6}}></span><code>#f2f2f5</code></span>
+</div>
+
+### Base
+
+<div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+  <span><span style={{display:'inline-block',width:14,height:14,background:'#000000',border:'1px solid #ccc',marginRight:6}}></span><code>#000000</code></span>
+  <span><span style={{display:'inline-block',width:14,height:14,background:'#ffffff',border:'1px solid #ccc',marginRight:6}}></span><code>#ffffff</code></span>
+</div>
 
 ## Theme Combinations
 
-Themes are activated with:
+Use:
 
 ```html
 <body data-theme="combination3"></body>
 ```
 
-Available combinations:
+### combination1
+- primary: `#2e1a73`, `#8257e5`, `#bba7ff`
+- secondary: `#1b3c8e`, `#3d8bff`, `#a8c9ff`
+- success: `#027a43`, `#04d361`, `#a3f3c4`
+- danger: `#9e0018`, `#ff002b`, `#ff5c5c`
+- warning: `#f7b500`, `#ffcc00`, `#ffe27a`
+- info: `#008f82`, `#00f6db`, `#84f3df`
+- base: `#0e0e10`, `#2d2d33`, `#c7c7d1`
+- background/text: `#f2f2f5` / `#0e0e10`
 
-- `combination1`
-- `combination2`
-- `combination3`
-- `combination4`
-- `combination5`
+### combination2
+- primary: `#005b8f`, `#00a7ff`, `#92dcff`
+- secondary: `#9b145b`, `#ff3d8d`, `#ff9cc7`
+- success: `#3f7d00`, `#7cff00`, `#cfff8f`
+- danger: `#3d0015`, `#7a002a`, `#c45a7a`
+- warning: `#d94a00`, `#ff6a00`, `#ff8c42`
+- info: `#1e2a78`, `#4f6cff`, `#b7c2ff`
+- base: `#0e0e10`, `#2d2d33`, `#c7c7d1`
+- background/text: `#0e0e10` / `#f2f2f5`
 
-Each combination remaps semantic tokens (`primary`, `secondary`, etc.) to different base trios.
-And we can also define the color for background and text in our combinations:
+### combination3
+- primary: `#7a4e1d`, `#d69d46`, `#f1c27d`
+- secondary: `#008f82`, `#00f6db`, `#84f3df`
+- success: `#027a43`, `#04d361`, `#a3f3c4`
+- danger: `#9e0018`, `#ff002b`, `#ff5c5c`
+- warning: `#f7b500`, `#ffcc00`, `#ffe27a`
+- info: `#4a2c7a`, `#a07cff`, `#dbcfff`
+- base: `#3b2416`, `#8b5e3c`, `#d2b49c`
+- background/text: `#f2f2f5` / `#0e0e10`
 
-- `--background-color`
-- `--text-color`
+### combination4
+- primary: `#1e2a78`, `#4f6cff`, `#b7c2ff`
+- secondary: `#d94a00`, `#ff6a00`, `#ff8c42`
+- success: `#008f82`, `#00f6db`, `#84f3df`
+- danger: `#9b145b`, `#ff3d8d`, `#ff9cc7`
+- warning: `#7a4e1d`, `#d69d46`, `#f1c27d`
+- info: `#1b3c8e`, `#3d8bff`, `#a8c9ff`
+- base: `#0e0e10`, `#2d2d33`, `#c7c7d1`
+- background/text: `#f2f2f5` / `#0e0e10`
+
+### combination5
+- primary: `#3d0015`, `#7a002a`, `#c45a7a`
+- secondary: `#4a2c7a`, `#a07cff`, `#dbcfff`
+- success: `#3f7d00`, `#7cff00`, `#cfff8f`
+- danger: `#9e0018`, `#ff002b`, `#ff5c5c`
+- warning: `#f7b500`, `#ffcc00`, `#ffe27a`
+- info: `#005b8f`, `#00a7ff`, `#92dcff`
+- base: `#0e0e10`, `#2d2d33`, `#c7c7d1`
+- background/text: `#0e0e10` / `#f2f2f5`
 
 ## Usage Note
 
-Components should always consume semantic tokens (`--primary-default-color`, `--base-neutral-color`, etc.) instead of raw family tokens (`--purple-500`, etc.).  
-This keeps themes swappable without changing component SCSS.
+Use semantic tokens in component SCSS (`--primary-default-color`, `--base-neutral-color`, etc.) instead of raw family tokens (`--purple-500`, etc.).
