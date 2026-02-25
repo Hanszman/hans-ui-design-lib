@@ -13,7 +13,6 @@ export default defineConfig([
     'storybook-static',
     'coverage',
     'html',
-    'src/stories/ColorSystem.mdx',
   ]),
   {
     files: ['**/*.{ts,tsx}'],
