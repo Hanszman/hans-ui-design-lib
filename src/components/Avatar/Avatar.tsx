@@ -8,7 +8,7 @@ export const HansAvatar = React.memo((props: HansAvatarProps) => {
     alt = 'Avatar',
     avatarSize = 'medium',
     customClasses = '',
-    fallbackIconName = 'MdOutlineAccountCircle',
+    fallbackIconName = 'LuCircleUserRound',
     ...rest
   } = props;
 

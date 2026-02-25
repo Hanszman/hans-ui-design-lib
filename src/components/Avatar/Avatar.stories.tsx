@@ -11,7 +11,7 @@ const meta: Meta<typeof HansAvatar> = {
     src: logoBlue,
     alt: 'User avatar',
     avatarSize: 'medium',
-    fallbackIconName: 'MdOutlineAccountCircle',
+    fallbackIconName: 'LuCircleUserRound',
   },
   argTypes: {
     avatarSize: { control: 'select', options: ['small', 'medium', 'large'] },
