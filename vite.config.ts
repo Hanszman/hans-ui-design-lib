@@ -44,6 +44,7 @@ export default defineConfig(({ mode }) => {
           '**/*.types.ts',
           '**/*.d.ts',
           '**/*.mdx',
+          'src/stories/*.tsx',
           '**/index.ts',
           '**/index-wc.ts',
           '**/config-cdn.ts',

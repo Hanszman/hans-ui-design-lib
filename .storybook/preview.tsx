@@ -25,6 +25,8 @@ export const globalTypes = {
         { value: 'combination1', title: 'Combination 1' },
         { value: 'combination2', title: 'Combination 2' },
         { value: 'combination3', title: 'Combination 3' },
+        { value: 'combination4', title: 'Combination 4' },
+        { value: 'combination5', title: 'Combination 5' },
       ],
       showName: true,
     },

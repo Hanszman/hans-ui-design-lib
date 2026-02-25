@@ -27,9 +27,9 @@
 }
 
 .hans-tag-base {
-  @apply bg-[var(--base-neutral-color)] text-[var(--base-strong-color)];
+  @apply bg-[var(--base-neutral-color)] text-[var(--text-color)];
   .hans-tag-icon {
-    @apply text-[var(--base-default-color)];
+    @apply text-[var(--base-strong-color)];
   }
 }
 
