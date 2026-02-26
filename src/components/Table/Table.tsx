@@ -11,6 +11,7 @@ import type {
 import {
   applyTableFilters,
   formatTableCellValue,
+  getDropdownFilterOptions,
   getFilterPlaceholder,
   getNextSortState,
   getTableStyleVars,
@@ -130,6 +131,8 @@ export const HansTable = React.memo((props: HansTableProps) => {
     borderColor,
     dividerColor,
     rowHoverColor,
+    showColumnDividers = false,
+    defaultDropdownFilterClearLabel = 'Clear filter',
     striped = false,
     initialSort,
     initialFilters,
@@ -211,7 +214,15 @@ export const HansTable = React.memo((props: HansTableProps) => {
   };
 
   return (
-    <div className={`hans-table-wrapper ${customClasses}`} style={styleVars} {...rest}>
+    <div
+      className={`
+        hans-table-wrapper
+        ${showColumnDividers ? 'hans-table-with-column-dividers' : ''}
+        ${customClasses}
+      `}
+      style={styleVars}
+      {...rest}
+    >
       <table className="hans-table">
         <HansTableHeader
           columns={columns}
@@ -222,12 +233,18 @@ export const HansTable = React.memo((props: HansTableProps) => {
           <tbody className="hans-table-filters">
             <tr>
               {columns.map((column) => (
-                <td key={`filter-${column.key}`}>
+                <td
+                  key={`filter-${column.key}`}
+                  className={getTextAlignClass(column.filterAlign ?? column.align)}
+                >
                   {column.filter ? (
                     column.filter.type === 'dropdown' ? (
                       <HansDropdown
                         label=""
-                        options={column.filter.options}
+                        options={getDropdownFilterOptions(
+                          column,
+                          defaultDropdownFilterClearLabel,
+                        )}
                         placeholder={getFilterPlaceholder(column)}
                         inputSize="small"
                         value={filters[column.key] ?? ''}

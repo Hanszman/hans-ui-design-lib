@@ -102,6 +102,29 @@ describe('HansTable', () => {
     expect(screen.queryByText('Active')).not.toBeInTheDocument();
   });
 
+  it('Should clear dropdown filter using clear option', async () => {
+    render(
+      <HansTable
+        columns={columns}
+        rows={rows}
+        defaultDropdownFilterClearLabel="Reset"
+      />,
+    );
+
+    const statusInput = screen.getByPlaceholderText('Select Status');
+    fireEvent.mouseDown(statusInput);
+    let listbox = await screen.findByRole('listbox');
+    fireEvent.click(within(listbox).getByText('Inactive'));
+    expect(screen.queryByText('Carlos')).not.toBeInTheDocument();
+
+    fireEvent.mouseDown(statusInput);
+    listbox = await screen.findByRole('listbox');
+    fireEvent.click(within(listbox).getByText('Reset'));
+
+    expect(screen.getByText('Carlos')).toBeInTheDocument();
+    expect(statusInput).toHaveValue('');
+  });
+
   it('Should render custom cell value with render function', () => {
     const customColumns: HansTableColumn[] = [
       {
@@ -154,6 +177,14 @@ describe('HansTable', () => {
 
     expect(wrapper).toHaveStyle('--hans-table-header-bg: rgb(10, 20, 30)');
     expect(stripedBody).toBeInTheDocument();
+  });
+
+  it('Should apply column divider class when enabled', () => {
+    const { container } = render(
+      <HansTable columns={columns} rows={rows} showColumnDividers />,
+    );
+
+    expect(container.querySelector('.hans-table-with-column-dividers')).toBeInTheDocument();
   });
 
   it('Should accept initial sort and filter changes from props', () => {

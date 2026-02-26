@@ -23,6 +23,7 @@ export type HansTableFilterConfig =
   | {
       type: 'dropdown';
       placeholder?: string;
+      clearLabel?: string;
       options: DropdownOption[];
       enableAutocomplete?: boolean;
     };
@@ -34,6 +35,7 @@ export type HansTableColumn = {
   filter?: HansTableFilterConfig;
   width?: string;
   align?: 'left' | 'center' | 'right';
+  filterAlign?: 'left' | 'center' | 'right';
   render?: (value: unknown, row: HansTableRow, rowIndex: number) => React.ReactNode;
 };
 
@@ -51,6 +53,8 @@ const HansTableSchema = {
   borderColor: 'string',
   dividerColor: 'string',
   rowHoverColor: 'string',
+  showColumnDividers: 'boolean',
+  defaultDropdownFilterClearLabel: 'string',
   striped: 'boolean',
 } as const;
 
@@ -63,4 +67,3 @@ export type HansTableProps = InferPropsFromSchema<typeof HansTableSchema> &
   };
 
 export const HansTablePropsList = createPropsList(HansTableSchema);
-

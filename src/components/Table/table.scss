@@ -10,7 +10,7 @@
 }
 
 .hans-table-head th {
-  @apply px-4 py-3 text-sm font-semibold border-b;
+  @apply px-4 py-3 text-sm font-semibold border-b align-middle;
   background: var(--hans-table-header-bg);
   color: var(--hans-table-header-text);
   border-color: var(--hans-table-divider);
@@ -34,7 +34,7 @@
 }
 
 .hans-table-filters td {
-  @apply px-3 py-2 border-b;
+  @apply px-3 py-2 border-b align-middle;
   border-color: var(--hans-table-divider);
   background: var(--hans-table-row-bg);
 }
@@ -48,7 +48,7 @@
 }
 
 .hans-table tbody td {
-  @apply px-4 py-3 text-sm border-b;
+  @apply px-4 py-3 text-sm border-b align-middle;
   color: var(--hans-table-row-text);
   border-color: var(--hans-table-divider);
   background: var(--hans-table-row-bg);
@@ -83,3 +83,13 @@
   @apply text-right;
 }
 
+.hans-table-with-column-dividers th,
+.hans-table-with-column-dividers td {
+  @apply border-r;
+  border-color: var(--hans-table-divider);
+}
+
+.hans-table-with-column-dividers th:last-child,
+.hans-table-with-column-dividers td:last-child {
+  @apply border-r-0;
+}

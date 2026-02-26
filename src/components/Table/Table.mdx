@@ -49,7 +49,8 @@ Set `sortable: true` on each column that should toggle ascending/descending orde
 
 ## Filterable
 
-Set `filter` per column using either `input` or `dropdown` mode.
+Set `filter` per column using either `input` or `dropdown` mode.  
+For dropdown filters, a clear option is added automatically. You can customize it with `clearLabel` (column) or `defaultDropdownFilterClearLabel` (table).
 
 <Canvas of={HansTableStories.Filterable} />
 
@@ -59,9 +60,26 @@ Customize header, body and border colors with token props or direct color values
 
 <Canvas of={HansTableStories.CustomColors} />
 
+## Column Dividers
+
+Enable vertical separators between columns with `showColumnDividers`.
+
+<Canvas of={HansTableStories.ColumnDividers} />
+
+## Alignments
+
+Use column `align` (and optional `filterAlign`) to set left, center or right alignment per column.
+
+<Canvas of={HansTableStories.Alignments} />
+
+## Color Themes
+
+Examples with default colors, token-based colors and fully custom palettes.
+
+<Canvas of={HansTableStories.ColorThemes} />
+
 ## Empty State
 
 Use `emptyText` to customize the message when there are no rows.
 
 <Canvas of={HansTableStories.Empty} />
-

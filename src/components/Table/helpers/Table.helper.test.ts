@@ -1,6 +1,7 @@
 import {
   applyTableFilters,
   formatTableCellValue,
+  getDropdownFilterOptions,
   getFilterPlaceholder,
   getNextSortState,
   getTableStyleVars,
@@ -121,6 +122,34 @@ describe('Table.helper', () => {
     ).toBe('Pick status');
   });
 
+  it('Should include clear option for dropdown filter options', () => {
+    const optionColumn: HansTableColumn = {
+      key: 'status',
+      header: 'Status',
+      filter: {
+        type: 'dropdown',
+        options: [{ id: 'active', label: 'Active', value: 'Active' }],
+      },
+    };
+
+    expect(getDropdownFilterOptions(optionColumn, 'Clear')).toEqual([
+      {
+        label: 'Clear',
+        value: '',
+      },
+      { id: 'active', label: 'Active', value: 'Active' },
+    ]);
+  });
+
+  it('Should return empty list when dropdown options are requested for non-dropdown column', () => {
+    expect(
+      getDropdownFilterOptions(
+        { key: 'name', header: 'Name', filter: { type: 'input' } },
+        'Clear',
+      ),
+    ).toEqual([]);
+  });
+
   it('Should map text align classes', () => {
     expect(getTextAlignClass('left')).toBe('hans-table-align-left');
     expect(getTextAlignClass('center')).toBe('hans-table-align-center');
@@ -135,8 +164,10 @@ describe('Table.helper', () => {
       borderColor: '#ddd',
     });
     expect(styles).toMatchObject({
-      '--hans-table-header-bg': 'var(--primary-neutral-color)',
-      '--hans-table-row-bg': 'var(--secondary-neutral-color)',
+      '--hans-table-header-bg': 'var(--primary-strong-color)',
+      '--hans-table-header-text': 'var(--white-color)',
+      '--hans-table-row-bg': 'var(--white-color)',
+      '--hans-table-row-text': 'var(--secondary-strong-color)',
       '--hans-table-border': '#ddd',
     });
   });

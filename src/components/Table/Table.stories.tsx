@@ -23,8 +23,6 @@ const meta: Meta<typeof HansTable> = {
   args: {
     columns,
     rows,
-    headerColor: 'base',
-    rowColor: 'base',
     emptyText: 'No records found',
   },
   parameters: {
@@ -64,6 +62,7 @@ export const Filterable: Story = {
         filter: {
           type: 'dropdown',
           placeholder: 'Select role',
+          clearLabel: 'Clear role',
           options: [
             { id: 'admin', label: 'Admin', value: 'Admin' },
             { id: 'editor', label: 'Editor', value: 'Editor' },
@@ -91,10 +90,52 @@ export const CustomColors: Story = {
   },
 };
 
+export const ColumnDividers: Story = {
+  args: {
+    showColumnDividers: true,
+  },
+};
+
+export const ColorThemes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <HansTable columns={columns} rows={rows} />
+      <HansTable
+        columns={columns}
+        rows={rows}
+        headerColor="primary"
+        rowColor="base"
+      />
+      <HansTable
+        columns={columns}
+        rows={rows}
+        headerBackgroundColor="rgb(21, 30, 56)"
+        headerTextColor="#ffffff"
+        rowBackgroundColor="#ffffff"
+        rowTextColor="rgb(24, 31, 46)"
+        borderColor="rgb(200, 209, 229)"
+        dividerColor="rgb(229, 234, 247)"
+        rowHoverColor="rgb(244, 247, 255)"
+        striped
+      />
+    </div>
+  ),
+};
+
+export const Alignments: Story = {
+  args: {
+    columns: [
+      { key: 'name', header: 'Name', align: 'left' },
+      { key: 'role', header: 'Role', align: 'center' },
+      { key: 'team', header: 'Team', align: 'center' },
+      { key: 'score', header: 'Score', align: 'right' },
+    ],
+  },
+};
+
 export const Empty: Story = {
   args: {
     rows: [],
     emptyText: 'No users available for this query',
   },
 };
-

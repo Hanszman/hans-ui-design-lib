@@ -94,6 +94,21 @@ export const getFilterPlaceholder = (
     : `Select ${column.header}`;
 };
 
+export const getDropdownFilterOptions = (
+  column: HansTableColumn,
+  clearLabel: string,
+) => {
+  if (!column.filter || column.filter.type !== 'dropdown') return [];
+
+  return [
+    {
+      label: column.filter.clearLabel ?? clearLabel,
+      value: '',
+    },
+    ...column.filter.options,
+  ];
+};
+
 export const getTextAlignClass = (
   align: HansTableColumn['align'],
 ): string => {
@@ -126,13 +141,12 @@ export const getTableStyleVars = ({
 >): React.CSSProperties =>
   ({
     '--hans-table-header-bg':
-      headerBackgroundColor ?? getTokenColor(headerColor, 'neutral'),
+      headerBackgroundColor ?? getTokenColor(headerColor, 'strong'),
     '--hans-table-header-text':
-      headerTextColor ?? getTokenColor(headerColor, 'strong'),
-    '--hans-table-row-bg': rowBackgroundColor ?? getTokenColor(rowColor, 'neutral'),
-    '--hans-table-row-text': rowTextColor ?? 'var(--text-color)',
+      headerTextColor ?? 'var(--white-color)',
+    '--hans-table-row-bg': rowBackgroundColor ?? 'var(--white-color)',
+    '--hans-table-row-text': rowTextColor ?? getTokenColor(rowColor, 'strong'),
     '--hans-table-border': borderColor ?? 'var(--gray-300)',
     '--hans-table-divider': dividerColor ?? 'var(--gray-100)',
-    '--hans-table-row-hover': rowHoverColor ?? 'var(--gray-100)',
+    '--hans-table-row-hover': rowHoverColor ?? 'var(--base-neutral-color)',
   }) as React.CSSProperties;
-

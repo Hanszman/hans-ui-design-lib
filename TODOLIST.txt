@@ -1,9 +1,11 @@
 * Continuar próximos componentes:
+-Table (Entender arquivos, finalizar customizações, cores usando variants (?), ajustar default, alinhamentos funcionando (?))
+-Toggle/checkbox
 -Tabs (usar lib?)
 -Toast (usar lib?)
--DatePicker (usar lib?)
+-DatePicker (usar lib?) (moment, luxon, alguma outra?)
 -Modal (usar lib?)
--Kanban (usar lib?)
+-Kanban (usar lib?) (cards com drag and drop)
 -Card (template de card / será usado como item do kanban / - usar lib?)
 -Translation?
 
