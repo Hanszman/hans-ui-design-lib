@@ -534,6 +534,8 @@ describe('HansDropdown', () => {
     await user.click(input);
 
     expect(screen.getByText('Loading list...')).toBeInTheDocument();
-    expect(screen.getByLabelText('Loading dropdown options')).toBeInTheDocument();
+    expect(
+      screen.getByLabelText('Loading dropdown options'),
+    ).toBeInTheDocument();
   });
 });

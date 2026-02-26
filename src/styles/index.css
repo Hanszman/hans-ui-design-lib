@@ -10,6 +10,7 @@
 @import '../components/Chart/chart.scss';
 @import '../components/Loading/loading.scss';
 @import '../components/Icon/icon.scss';
+@import '../components/Table/table.scss';
 
 /* Custom variables */
 @import './colors.scss';

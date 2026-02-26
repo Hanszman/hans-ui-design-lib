@@ -7,3 +7,11 @@
 -Kanban (usar lib?)
 -Card (template de card / será usado como item do kanban / - usar lib?)
 -Translation?
+
+Prompt:
+Show de bola, ficou ótimo! obrigado!
+Agora vamos seguir o mesmo padrão que estamos adotando de criação de componente, seguindo clean code, dry, srp, test:coverage 100%, código tem que passar nos builds e no lint, etc... com aquele mesmo padrão com os 6 arquivos (tsx,scss,types,test,mdx,stories) e com os helpers (e test) quando necessario.
+E vamos criar o componente: [COMPONENT]...
+na pasta que já criei com o nome dele...
+ele deve: ...
+enfim! faça o componente por favor, te dou acesso a todo o repo/workspace, pode editável conforme for necessário

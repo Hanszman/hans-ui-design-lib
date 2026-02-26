@@ -1,0 +1,67 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansTableStories from './Table.stories';
+
+<Meta of={HansTableStories} />
+
+<Title />
+
+The **Table** component renders reusable data grids with optional sorting and per-column filtering.
+
+## Usage
+
+```tsx
+import { HansTable } from 'hans-ui-design-lib';
+
+const columns = [
+  { key: 'name', header: 'Name', sortable: true },
+  { key: 'role', header: 'Role' },
+];
+
+const rows = [
+  { name: 'Ana', role: 'Editor' },
+  { name: 'Bruno', role: 'Viewer' },
+];
+
+export const Example = () => <HansTable columns={columns} rows={rows} />;
+```
+
+Then, you can use the component in your template. Here is a basic example:
+
+<Primary />
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Sortable
+
+Set `sortable: true` on each column that should toggle ascending/descending order.
+
+<Canvas of={HansTableStories.Sortable} />
+
+## Filterable
+
+Set `filter` per column using either `input` or `dropdown` mode.
+
+<Canvas of={HansTableStories.Filterable} />
+
+## Custom Colors
+
+Customize header, body and border colors with token props or direct color values.
+
+<Canvas of={HansTableStories.CustomColors} />
+
+## Empty State
+
+Use `emptyText` to customize the message when there are no rows.
+
+<Canvas of={HansTableStories.Empty} />
+

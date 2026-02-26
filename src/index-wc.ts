@@ -40,6 +40,11 @@ import {
   type HansLoadingProps,
   HansLoadingPropsList,
 } from './components/Loading/Loading.types';
+import { HansTable } from './components/Table/Table';
+import {
+  type HansTableProps,
+  HansTablePropsList,
+} from './components/Table/Table.types';
 
 registerReactAsWebComponent<HansButtonProps>(
   'hans-button',
@@ -80,4 +85,9 @@ registerReactAsWebComponent<HansLoadingProps>(
   'hans-loading',
   HansLoading,
   HansLoadingPropsList,
+);
+registerReactAsWebComponent<HansTableProps>(
+  'hans-table',
+  HansTable,
+  HansTablePropsList,
 );

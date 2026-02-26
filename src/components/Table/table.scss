@@ -1,0 +1,85 @@
+.hans-table-wrapper {
+  @apply w-full rounded-xl border;
+  border-color: var(--hans-table-border);
+  background: var(--hans-table-row-bg);
+  overflow-x: auto;
+}
+
+.hans-table {
+  @apply w-full border-separate border-spacing-0;
+}
+
+.hans-table-head th {
+  @apply px-4 py-3 text-sm font-semibold border-b;
+  background: var(--hans-table-header-bg);
+  color: var(--hans-table-header-text);
+  border-color: var(--hans-table-divider);
+}
+
+.hans-table-head-content {
+  @apply flex items-center gap-2;
+}
+
+.hans-table-sort-button {
+  @apply inline-flex items-center justify-center bg-transparent border-none cursor-pointer p-0;
+  color: currentColor;
+}
+
+.hans-table-sort-icon-active {
+  @apply opacity-100;
+}
+
+.hans-table-sort-button .hans-icon {
+  @apply opacity-60;
+}
+
+.hans-table-filters td {
+  @apply px-3 py-2 border-b;
+  border-color: var(--hans-table-divider);
+  background: var(--hans-table-row-bg);
+}
+
+.hans-table-filters .hans-input-div {
+  @apply w-full;
+}
+
+.hans-table-filter-dropdown .hans-input-div {
+  @apply w-full;
+}
+
+.hans-table tbody td {
+  @apply px-4 py-3 text-sm border-b;
+  color: var(--hans-table-row-text);
+  border-color: var(--hans-table-divider);
+  background: var(--hans-table-row-bg);
+}
+
+.hans-table tbody tr:hover td {
+  background: var(--hans-table-row-hover);
+}
+
+.hans-table-striped tr:nth-child(even) td {
+  @apply opacity-95;
+}
+
+.hans-table tbody tr:last-child td {
+  @apply border-b-0;
+}
+
+.hans-table-empty {
+  @apply text-center py-8 text-sm;
+  color: var(--gray-500);
+}
+
+.hans-table-align-left {
+  @apply text-left;
+}
+
+.hans-table-align-center {
+  @apply text-center;
+}
+
+.hans-table-align-right {
+  @apply text-right;
+}
+
