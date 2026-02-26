@@ -54,8 +54,8 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     'down',
   );
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [internalValue, setInternalValue] = React.useState<DropdownValue>(
-    () => getInitialDropdownValue(value, defaultValue, isMulti),
+  const [internalValue, setInternalValue] = React.useState<DropdownValue>(() =>
+    getInitialDropdownValue(value, defaultValue, isMulti),
   );
 
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -111,7 +111,9 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
       const listRect = listRef.current.getBoundingClientRect();
       const spaceBelow = window.innerHeight - containerRect.bottom;
       const spaceAbove = containerRect.top;
-      setOpenDirection(getOpenDirection(spaceBelow, spaceAbove, listRect.height));
+      setOpenDirection(
+        getOpenDirection(spaceBelow, spaceAbove, listRect.height),
+      );
     });
 
     return () => cancelAnimationFrame(frame);
@@ -191,7 +193,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
               />
             ) : (
               <HansIcon
-                name={isOpen ? 'MdArrowDropUp' : 'MdArrowDropDown'}
+                name={isOpen ? 'IoIosArrowUp' : 'IoIosArrowDown'}
                 iconSize="small"
               />
             )

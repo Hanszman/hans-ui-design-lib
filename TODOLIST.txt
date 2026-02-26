@@ -1,7 +1,7 @@
 * Continuar próximos componentes:
 -Table
--Toast (usar lib?)
 -Tabs (usar lib?)
+-Toast (usar lib?)
 -DatePicker (usar lib?)
 -Modal (usar lib?)
 -Kanban (usar lib?)
