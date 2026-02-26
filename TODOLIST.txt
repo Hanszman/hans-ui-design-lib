@@ -1,5 +1,4 @@
 * Continuar próximos componentes:
--Table
 -Tabs (usar lib?)
 -Toast (usar lib?)
 -DatePicker (usar lib?)

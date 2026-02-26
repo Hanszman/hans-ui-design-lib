@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import { vi } from 'vitest';
 import { HansTable } from './Table';
 import type { HansTableColumn, HansTableRow } from './Table.types';
 
@@ -32,6 +33,14 @@ describe('HansTable', () => {
     expect(screen.getByText('Name')).toBeInTheDocument();
     expect(screen.getByText('Carlos')).toBeInTheDocument();
     expect(screen.getByText('28')).toBeInTheDocument();
+  });
+
+  it('Should apply column width style when informed', () => {
+    const widthColumns: HansTableColumn[] = [
+      { key: 'name', header: 'Name', width: '240px' },
+    ];
+    render(<HansTable columns={widthColumns} rows={rows} />);
+    expect(screen.getByRole('columnheader')).toHaveStyle('width: 240px');
   });
 
   it('Should show empty state when no rows are available', () => {
@@ -86,10 +95,11 @@ describe('HansTable', () => {
 
     const statusInput = screen.getByPlaceholderText('Select Status');
     fireEvent.mouseDown(statusInput);
-    fireEvent.click(await screen.findByText('Inactive'));
+    const listbox = await screen.findByRole('listbox');
+    fireEvent.click(within(listbox).getByText('Inactive'));
 
-    expect(screen.getByText('Ana')).toBeInTheDocument();
-    expect(screen.queryByText('Carlos')).not.toBeInTheDocument();
+    expect(screen.getByDisplayValue('Inactive')).toBeInTheDocument();
+    expect(screen.queryByText('Active')).not.toBeInTheDocument();
   });
 
   it('Should render custom cell value with render function', () => {
@@ -102,6 +112,31 @@ describe('HansTable', () => {
     ];
     render(<HansTable columns={customColumns} rows={rows} />);
     expect(screen.getByText('User: Carlos')).toBeInTheDocument();
+  });
+
+  it('Should fallback autocomplete=true on dropdown filter config', async () => {
+    const autocompleteColumns: HansTableColumn[] = [
+      {
+        key: 'status',
+        header: 'Status',
+        filter: {
+          type: 'dropdown',
+          options: [
+            { id: 'active', label: 'Active', value: 'Active' },
+            { id: 'inactive', label: 'Inactive', value: 'Inactive' },
+          ],
+        },
+      },
+    ];
+
+    render(<HansTable columns={autocompleteColumns} rows={rows} />);
+    const statusInput = screen.getByPlaceholderText('Select Status');
+    fireEvent.change(statusInput, { target: { value: 'In' } });
+    const listbox = await screen.findByRole('listbox');
+    fireEvent.click(within(listbox).getByText('Inactive'));
+
+    expect(screen.getByDisplayValue('Inactive')).toBeInTheDocument();
+    expect(screen.queryByText('Active')).not.toBeInTheDocument();
   });
 
   it('Should apply custom styles and striped mode', () => {
@@ -147,4 +182,3 @@ describe('HansTable', () => {
     expect(screen.queryByText('Bruno')).not.toBeInTheDocument();
   });
 });
-

@@ -36,6 +36,14 @@ describe('Table.helper', () => {
     expect(next).toEqual({ columnKey: 'name', direction: 'asc' });
   });
 
+  it('Should return asc when current direction is desc for same column', () => {
+    const next = getNextSortState(
+      { columnKey: 'name', direction: 'desc' },
+      'name',
+    );
+    expect(next).toEqual({ columnKey: 'name', direction: 'asc' });
+  });
+
   it('Should format supported values', () => {
     expect(formatTableCellValue(undefined)).toBe('-');
     expect(formatTableCellValue(['a', 2])).toBe('a, 2');
@@ -47,6 +55,33 @@ describe('Table.helper', () => {
     const desc = sortTableRows(rows, { columnKey: 'age', direction: 'desc' });
     expect(asc[0].name).toBe('Ana');
     expect(desc[0].name).toBe('Bruno');
+  });
+
+  it('Should sort boolean fields and keep equality order when values match', () => {
+    const booleanRows: HansTableRow[] = [
+      { name: 'A', active: true },
+      { name: 'B', active: false },
+      { name: 'C', active: true },
+    ];
+    const sorted = sortTableRows(booleanRows, {
+      columnKey: 'active',
+      direction: 'asc',
+    });
+    expect(sorted[0].name).toBe('B');
+    expect(sorted[1].name).toBe('A');
+    expect(sorted[2].name).toBe('C');
+  });
+
+  it('Should sort rows when compared value is an object', () => {
+    const objectRows: HansTableRow[] = [
+      { name: 'Row 1', meta: { label: 'zeta' } },
+      { name: 'Row 2', meta: { label: 'alpha' } },
+    ];
+    const sorted = sortTableRows(objectRows, {
+      columnKey: 'meta',
+      direction: 'asc',
+    });
+    expect(sorted[0].name).toBe('Row 2');
   });
 
   it('Should return rows unchanged when no sort state exists', () => {
@@ -106,4 +141,3 @@ describe('Table.helper', () => {
     });
   });
 });
-

@@ -131,25 +131,27 @@ export const HansTable = React.memo((props: HansTableProps) => {
     dividerColor,
     rowHoverColor,
     striped = false,
-    initialSort = null,
-    initialFilters = {},
+    initialSort,
+    initialFilters,
     onSortChange,
     onFiltersChange,
     ...rest
   } = props;
 
   const [sortState, setSortState] = React.useState<HansTableSortState>(
-    initialSort,
+    initialSort ?? null,
   );
   const [filters, setFilters] = React.useState<Record<string, string>>(
-    initialFilters,
+    initialFilters ?? {},
   );
 
   React.useEffect(() => {
+    if (typeof initialSort === 'undefined') return;
     setSortState(initialSort);
   }, [initialSort]);
 
   React.useEffect(() => {
+    if (typeof initialFilters === 'undefined') return;
     setFilters(initialFilters);
   }, [initialFilters]);
 
@@ -195,7 +197,6 @@ export const HansTable = React.memo((props: HansTableProps) => {
   );
 
   const handleSort = (column: HansTableColumn) => {
-    if (!column.sortable) return;
     const nextSortState = getNextSortState(sortState, column.key);
     setSortState(nextSortState);
     if (onSortChange) onSortChange(nextSortState);
@@ -231,10 +232,7 @@ export const HansTable = React.memo((props: HansTableProps) => {
                         inputSize="small"
                         value={filters[column.key] ?? ''}
                         onChange={(nextValue) =>
-                          handleFilterChange(
-                            column.key,
-                            typeof nextValue === 'string' ? nextValue : '',
-                          )
+                          handleFilterChange(column.key, String(nextValue))
                         }
                         selectionType="single"
                         enableAutocomplete={
@@ -272,4 +270,3 @@ export const HansTable = React.memo((props: HansTableProps) => {
 });
 
 HansTable.displayName = 'HansTable';
-
