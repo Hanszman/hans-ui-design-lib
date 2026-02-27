@@ -16,7 +16,6 @@ export const HansTableHeader = React.memo((props: HansTableHeaderProps) => {
             <th
               key={column.key}
               className={getTextAlignClass(column.align)}
-              style={column.width ? { width: column.width } : undefined}
             >
               <div className="hans-table-head-content">
                 <span>{column.header}</span>

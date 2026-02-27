@@ -118,9 +118,7 @@ export const getTextAlignClass = (align: HansTableColumn['align']): string => {
 export const getTableStyleVars = ({
   headerColor = 'base',
   rowColor = 'base',
-  headerBackgroundColor,
   headerTextColor,
-  rowBackgroundColor,
   rowTextColor,
   borderColor,
   dividerColor,
@@ -129,21 +127,19 @@ export const getTableStyleVars = ({
   HansTableProps,
   | 'headerColor'
   | 'rowColor'
-  | 'headerBackgroundColor'
   | 'headerTextColor'
-  | 'rowBackgroundColor'
   | 'rowTextColor'
   | 'borderColor'
   | 'dividerColor'
   | 'rowHoverColor'
 >): React.CSSProperties =>
   ({
-    '--hans-table-header-bg':
-      headerBackgroundColor ?? getTokenColor(headerColor, 'strong'),
-    '--hans-table-header-text': headerTextColor ?? 'var(--white-color)',
-    '--hans-table-row-bg': rowBackgroundColor ?? 'var(--white-color)',
-    '--hans-table-row-text': rowTextColor ?? getTokenColor(rowColor, 'strong'),
-    '--hans-table-border': borderColor ?? 'var(--gray-300)',
-    '--hans-table-divider': dividerColor ?? 'var(--gray-100)',
-    '--hans-table-row-hover': rowHoverColor ?? 'var(--base-neutral-color)',
+    '--hans-table-header-bg': getTokenColor(headerColor, 'strong'),
+    '--hans-table-header-text': getTokenColor(headerTextColor ?? headerColor, 'neutral'),
+    '--hans-table-row-bg':
+      rowColor === 'base' ? 'var(--white-color)' : getTokenColor(rowColor, 'neutral'),
+    '--hans-table-row-text': getTokenColor(rowTextColor ?? rowColor, 'strong'),
+    '--hans-table-border': getTokenColor(borderColor ?? 'base', 'default'),
+    '--hans-table-divider': getTokenColor(dividerColor ?? 'base', 'neutral'),
+    '--hans-table-row-hover': getTokenColor(rowHoverColor ?? rowColor, 'default'),
   }) as React.CSSProperties;

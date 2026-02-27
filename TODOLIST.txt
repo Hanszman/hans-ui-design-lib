@@ -1,5 +1,4 @@
 * Continuar próximos componentes:
--Table (Entender arquivos, finalizar customizações, cores usando variants (?), ajustar default, alinhamentos funcionando (?), loading e scroll)
 -Toggle/checkbox
 -Tabs (usar lib?)
 -Toast (usar lib?)

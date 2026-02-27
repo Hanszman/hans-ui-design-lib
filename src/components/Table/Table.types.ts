@@ -5,6 +5,7 @@ import {
 } from '../../types/Schema.types';
 import type { Color } from '../../types/Common.types';
 import type { DropdownOption } from '../Forms/Dropdown/Dropdown.types';
+import type { HansLoadingProps } from '../Loading/Loading.types';
 
 export type HansTableSortDirection = 'asc' | 'desc';
 
@@ -50,15 +51,22 @@ const HansTableSchema = {
   rowColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',
   emptyText: 'string',
-  headerBackgroundColor: 'string',
-  headerTextColor: 'string',
-  rowBackgroundColor: 'string',
-  rowTextColor: 'string',
-  borderColor: 'string',
-  dividerColor: 'string',
-  rowHoverColor: 'string',
+  headerTextColor: { type: 'custom', ref: {} as Color },
+  rowTextColor: { type: 'custom', ref: {} as Color },
+  borderColor: { type: 'custom', ref: {} as Color },
+  dividerColor: { type: 'custom', ref: {} as Color },
+  rowHoverColor: { type: 'custom', ref: {} as Color },
   showColumnDividers: 'boolean',
   defaultDropdownFilterClearLabel: 'string',
+  isLoading: 'boolean',
+  loadingType: {
+    type: 'custom',
+    ref: {} as HansLoadingProps['loadingType'],
+  },
+  loadingColor: { type: 'custom', ref: {} as Color },
+  loadingAriaLabel: 'string',
+  maxHeight: 'string',
+  minWidth: 'string',
   striped: 'boolean',
 } as const;
 

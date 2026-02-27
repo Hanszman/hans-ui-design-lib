@@ -161,14 +161,14 @@ describe('Table.helper', () => {
     const styles = getTableStyleVars({
       headerColor: 'primary',
       rowColor: 'secondary',
-      borderColor: '#ddd',
+      borderColor: 'danger',
     });
     expect(styles).toMatchObject({
       '--hans-table-header-bg': 'var(--primary-strong-color)',
-      '--hans-table-header-text': 'var(--white-color)',
-      '--hans-table-row-bg': 'var(--white-color)',
+      '--hans-table-header-text': 'var(--primary-neutral-color)',
+      '--hans-table-row-bg': 'var(--secondary-neutral-color)',
       '--hans-table-row-text': 'var(--secondary-strong-color)',
-      '--hans-table-border': '#ddd',
+      '--hans-table-border': 'var(--danger-default-color)',
     });
   });
 });

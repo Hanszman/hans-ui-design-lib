@@ -6,7 +6,7 @@
 }
 
 .hans-table-head-content {
-  @apply flex items-center gap-2;
+  @apply flex items-center gap-2 w-full;
 }
 
 .hans-table-sort-button {
@@ -20,4 +20,16 @@
 
 .hans-table-sort-button .hans-icon {
   @apply opacity-60;
+}
+
+.hans-table-align-left .hans-table-head-content {
+  @apply justify-start;
+}
+
+.hans-table-align-center .hans-table-head-content {
+  @apply justify-center;
+}
+
+.hans-table-align-right .hans-table-head-content {
+  @apply justify-end;
 }

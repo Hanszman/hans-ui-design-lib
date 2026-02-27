@@ -56,7 +56,7 @@ For dropdown filters, a clear option is added automatically. You can customize i
 
 ## Custom Colors
 
-Customize header, body and border colors with token props or direct color values.
+Customize header, body and border colors with color tokens (`base`, `primary`, `secondary`, `success`, `danger`, `warning`, `info`).
 
 <Canvas of={HansTableStories.CustomColors} />
 
@@ -74,9 +74,27 @@ Use column `align` (and optional `filterAlign`) to set left, center or right ali
 
 ## Color Themes
 
-Examples with default colors, token-based colors and fully custom palettes.
+Examples with different token combinations.
 
 <Canvas of={HansTableStories.ColorThemes} />
+
+## Loading
+
+Use `isLoading` with `loadingType` to render skeleton or spinner while rows are loading.
+
+<Canvas of={HansTableStories.Loading} />
+
+## Vertical Scroll
+
+Use `maxHeight` when you have many rows.
+
+<Canvas of={HansTableStories.VerticalScroll} />
+
+## Horizontal Scroll
+
+Use column `width` plus `minWidth` for wide datasets with many columns.
+
+<Canvas of={HansTableStories.HorizontalScroll} />
 
 ## Empty State
 

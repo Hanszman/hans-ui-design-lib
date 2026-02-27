@@ -97,13 +97,13 @@ export const Filterable: Story = {
 
 export const CustomColors: Story = {
   args: {
-    headerBackgroundColor: 'rgb(23, 32, 56)',
-    headerTextColor: '#ffffff',
-    rowBackgroundColor: '#ffffff',
-    rowTextColor: 'rgb(22, 28, 45)',
-    borderColor: 'rgb(205, 214, 233)',
-    dividerColor: 'rgb(230, 236, 247)',
-    rowHoverColor: 'rgb(246, 248, 255)',
+    headerColor: 'secondary',
+    rowColor: 'base',
+    headerTextColor: 'base',
+    rowTextColor: 'base',
+    borderColor: 'secondary',
+    dividerColor: 'base',
+    rowHoverColor: 'info',
     striped: true,
   },
 };
@@ -123,17 +123,18 @@ export const ColorThemes: Story = {
         rows={rows}
         headerColor="primary"
         rowColor="base"
+        headerTextColor="base"
       />
       <HansTable
         columns={columns}
         rows={rows}
-        headerBackgroundColor="rgb(21, 30, 56)"
-        headerTextColor="#ffffff"
-        rowBackgroundColor="#ffffff"
-        rowTextColor="rgb(24, 31, 46)"
-        borderColor="rgb(200, 209, 229)"
-        dividerColor="rgb(229, 234, 247)"
-        rowHoverColor="rgb(244, 247, 255)"
+        headerColor="danger"
+        rowColor="warning"
+        headerTextColor="base"
+        rowTextColor="warning"
+        borderColor="danger"
+        dividerColor="warning"
+        rowHoverColor="danger"
         striped
       />
     </div>
@@ -143,11 +144,54 @@ export const ColorThemes: Story = {
 export const Alignments: Story = {
   args: {
     columns: [
-      { key: 'name', header: 'Name', align: 'left' },
-      { key: 'role', header: 'Role', align: 'center' },
+      { key: 'name', header: 'Name', align: 'left', sortable: true },
+      { key: 'role', header: 'Role', align: 'center', sortable: true },
       { key: 'team', header: 'Team', align: 'center' },
-      { key: 'score', header: 'Score', align: 'right' },
+      { key: 'score', header: 'Score', align: 'right', sortable: true },
     ],
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+    loadingType: 'skeleton',
+  },
+};
+
+export const VerticalScroll: Story = {
+  args: {
+    rows: Array.from({ length: 24 }, (_, index) => ({
+      id: `user-${index + 1}`,
+      name: `User ${index + 1}`,
+      role: index % 2 === 0 ? 'Editor' : 'Viewer',
+      team: index % 3 === 0 ? 'Platform' : 'Design',
+      score: 60 + (index % 40),
+    })),
+    maxHeight: '360px',
+  },
+};
+
+export const HorizontalScroll: Story = {
+  args: {
+    columns: [
+      { key: 'name', header: 'Name', width: '220px' },
+      { key: 'role', header: 'Role', width: '180px' },
+      { key: 'team', header: 'Team', width: '180px' },
+      { key: 'score', header: 'Score', width: '140px', align: 'right' },
+      { key: 'country', header: 'Country', width: '180px' },
+      { key: 'city', header: 'City', width: '200px' },
+      { key: 'department', header: 'Department', width: '220px' },
+      { key: 'status', header: 'Status', width: '180px' },
+    ],
+    rows: rows.map((row) => ({
+      ...row,
+      country: 'Brazil',
+      city: 'Sao Paulo',
+      department: 'Engineering',
+      status: 'Active',
+    })),
+    minWidth: '1500px',
   },
 };
 

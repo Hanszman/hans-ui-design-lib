@@ -3,7 +3,11 @@ import { HansDropdown } from '../Forms/Dropdown/Dropdown';
 import { HansInput } from '../Forms/Input/Input';
 import { HansTableBody } from './TableBody/TableBody';
 import { HansTableHeader } from './TableHeader/TableHeader';
-import type { HansTableColumn, HansTableProps, HansTableSortState } from './Table.types';
+import type {
+  HansTableColumn,
+  HansTableProps,
+  HansTableSortState,
+} from './Table.types';
 import {
   applyTableFilters,
   getDropdownFilterOptions,
@@ -22,15 +26,19 @@ export const HansTable = React.memo((props: HansTableProps) => {
     rowColor = 'base',
     customClasses = '',
     emptyText = 'No records found',
-    headerBackgroundColor,
     headerTextColor,
-    rowBackgroundColor,
     rowTextColor,
     borderColor,
     dividerColor,
     rowHoverColor,
     showColumnDividers = false,
     defaultDropdownFilterClearLabel = 'Clear filter',
+    isLoading = false,
+    loadingType = 'skeleton',
+    loadingColor = 'base',
+    loadingAriaLabel = 'Loading table data',
+    maxHeight,
+    minWidth,
     striped = false,
     initialSort,
     initialFilters,
@@ -76,9 +84,7 @@ export const HansTable = React.memo((props: HansTableProps) => {
       getTableStyleVars({
         headerColor,
         rowColor,
-        headerBackgroundColor,
         headerTextColor,
-        rowBackgroundColor,
         rowTextColor,
         borderColor,
         dividerColor,
@@ -87,14 +93,21 @@ export const HansTable = React.memo((props: HansTableProps) => {
     [
       borderColor,
       dividerColor,
-      headerBackgroundColor,
       headerColor,
       headerTextColor,
-      rowBackgroundColor,
       rowColor,
       rowHoverColor,
       rowTextColor,
     ],
+  );
+
+  const wrapperStyles = React.useMemo(
+    () => ({
+      ...styleVars,
+      '--hans-table-max-height': maxHeight ?? 'none',
+      '--hans-table-min-width': minWidth ?? '100%',
+    }) as React.CSSProperties,
+    [styleVars, maxHeight, minWidth],
   );
 
   const handleSort = (column: HansTableColumn) => {
@@ -118,10 +131,18 @@ export const HansTable = React.memo((props: HansTableProps) => {
         ${showColumnDividers ? 'hans-table-with-column-dividers' : ''}
         ${customClasses}
       `}
-      style={styleVars}
+      style={wrapperStyles}
       {...rest}
     >
       <table className="hans-table">
+        <colgroup>
+          {columns.map((column) => (
+            <col
+              key={`hans-table-col-${column.key}`}
+              style={column.width ? { width: column.width } : undefined}
+            />
+          ))}
+        </colgroup>
         <HansTableHeader
           columns={columns}
           sortState={sortState}
@@ -180,6 +201,10 @@ export const HansTable = React.memo((props: HansTableProps) => {
           rows={sortedRows}
           striped={striped}
           emptyText={emptyText}
+          isLoading={isLoading}
+          loadingType={loadingType}
+          loadingColor={loadingColor}
+          loadingAriaLabel={loadingAriaLabel}
         />
       </table>
     </div>

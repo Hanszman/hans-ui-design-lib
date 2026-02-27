@@ -6,10 +6,13 @@
   border-color: var(--hans-table-border);
   background: var(--hans-table-row-bg);
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: var(--hans-table-max-height);
 }
 
 .hans-table {
   @apply w-full border-separate border-spacing-0;
+  min-width: var(--hans-table-min-width);
 }
 
 .hans-table-filters td {

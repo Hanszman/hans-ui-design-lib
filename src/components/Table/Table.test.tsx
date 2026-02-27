@@ -39,8 +39,8 @@ describe('HansTable', () => {
     const widthColumns: HansTableColumn[] = [
       { key: 'name', header: 'Name', width: '240px' },
     ];
-    render(<HansTable columns={widthColumns} rows={rows} />);
-    expect(screen.getByRole('columnheader')).toHaveStyle('width: 240px');
+    const { container } = render(<HansTable columns={widthColumns} rows={rows} />);
+    expect(container.querySelector('col')).toHaveStyle('width: 240px');
   });
 
   it('Should show empty state when no rows are available', () => {
@@ -167,7 +167,7 @@ describe('HansTable', () => {
       <HansTable
         columns={columns}
         rows={rows}
-        headerBackgroundColor="rgb(10, 20, 30)"
+        headerColor="primary"
         striped
       />,
     );
@@ -175,8 +175,26 @@ describe('HansTable', () => {
     const wrapper = container.querySelector('.hans-table-wrapper');
     const stripedBody = container.querySelector('.hans-table-striped');
 
-    expect(wrapper).toHaveStyle('--hans-table-header-bg: rgb(10, 20, 30)');
+    expect(wrapper).toHaveStyle('--hans-table-header-bg: var(--primary-strong-color)');
     expect(stripedBody).toBeInTheDocument();
+  });
+
+  it('Should render loading state and scroll sizing props', () => {
+    const { container } = render(
+      <HansTable
+        columns={columns}
+        rows={rows}
+        isLoading
+        loadingType="spinner"
+        maxHeight="320px"
+        minWidth="900px"
+      />,
+    );
+
+    expect(screen.getByLabelText('Loading table data')).toBeInTheDocument();
+    const wrapper = container.querySelector('.hans-table-wrapper');
+    expect(wrapper).toHaveStyle('--hans-table-max-height: 320px');
+    expect(wrapper).toHaveStyle('--hans-table-min-width: 900px');
   });
 
   it('Should apply column divider class when enabled', () => {
