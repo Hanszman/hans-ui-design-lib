@@ -68,6 +68,7 @@ export const HansTable = React.memo((props: HansTableProps) => {
     () => columns.some((column) => Boolean(column.filter)),
     [columns],
   );
+  const showFilters = hasFilters && !isLoading;
 
   const filteredRows = React.useMemo(
     () => applyTableFilters(rows, columns, filters),
@@ -147,8 +148,12 @@ export const HansTable = React.memo((props: HansTableProps) => {
           columns={columns}
           sortState={sortState}
           onSort={handleSort}
+          isLoading={isLoading}
+          loadingType={loadingType}
+          loadingColor={loadingColor}
+          loadingAriaLabel={loadingAriaLabel}
         />
-        {hasFilters ? (
+        {showFilters ? (
           <tbody className="hans-table-filters">
             <tr>
               {columns.map((column) => (

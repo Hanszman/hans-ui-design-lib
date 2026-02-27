@@ -22,6 +22,10 @@
   @apply opacity-60;
 }
 
+.hans-table-header-loading {
+  @apply block;
+}
+
 .hans-table-align-left .hans-table-head-content {
   @apply justify-start;
 }

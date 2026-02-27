@@ -40,4 +40,20 @@ describe('HansTableHeader', () => {
       expect.objectContaining({ key: 'name' }),
     );
   });
+
+  it('Should render loading placeholders when header is loading', () => {
+    render(
+      <table>
+        <HansTableHeader
+          {...baseProps}
+          isLoading
+          loadingType="skeleton"
+          loadingAriaLabel="Loading header"
+        />
+      </table>,
+    );
+
+    expect(screen.getAllByLabelText('Loading header')).toHaveLength(2);
+    expect(screen.queryByLabelText('Sort by Name')).not.toBeInTheDocument();
+  });
 });

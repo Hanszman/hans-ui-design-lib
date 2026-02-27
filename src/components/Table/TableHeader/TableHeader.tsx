@@ -1,10 +1,43 @@
 import React from 'react';
 import { HansIcon } from '../../Icon/Icon';
+import { HansLoading } from '../../Loading/Loading';
 import { getTextAlignClass } from '../helpers/Table.helper';
 import type { HansTableHeaderProps } from './TableHeader.types';
 
 export const HansTableHeader = React.memo((props: HansTableHeaderProps) => {
-  const { columns, sortState, onSort } = props;
+  const {
+    columns,
+    sortState,
+    onSort,
+    isLoading = false,
+    loadingType = 'skeleton',
+    loadingColor = 'base',
+    loadingAriaLabel = 'Loading table header',
+  } = props;
+
+  if (isLoading) {
+    return (
+      <thead className="hans-table-head">
+        <tr>
+          {columns.map((column) => (
+            <th
+              key={column.key}
+              className={getTextAlignClass(column.align)}
+            >
+              <HansLoading
+                loadingType={loadingType}
+                loadingColor={loadingColor}
+                ariaLabel={loadingAriaLabel}
+                skeletonWidth="100%"
+                skeletonHeight="16px"
+                customClasses="hans-table-header-loading"
+              />
+            </th>
+          ))}
+        </tr>
+      </thead>
+    );
+  }
 
   return (
     <thead className="hans-table-head">

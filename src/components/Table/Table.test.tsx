@@ -191,7 +191,8 @@ describe('HansTable', () => {
       />,
     );
 
-    expect(screen.getByLabelText('Loading table data')).toBeInTheDocument();
+    expect(screen.getAllByLabelText('Loading table data').length).toBeGreaterThan(1);
+    expect(screen.queryByPlaceholderText('Filter Name')).not.toBeInTheDocument();
     const wrapper = container.querySelector('.hans-table-wrapper');
     expect(wrapper).toHaveStyle('--hans-table-max-height: 320px');
     expect(wrapper).toHaveStyle('--hans-table-min-width: 900px');
