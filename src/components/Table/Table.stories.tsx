@@ -4,10 +4,28 @@ import type { HansTableColumn, HansTableRow } from './Table.types';
 import DocsPage from './Table.mdx';
 
 const rows: HansTableRow[] = [
-  { id: 'usr-1', name: 'Carlos Mendes', role: 'Admin', team: 'Platform', score: 92 },
+  {
+    id: 'usr-1',
+    name: 'Carlos Mendes',
+    role: 'Admin',
+    team: 'Platform',
+    score: 92,
+  },
   { id: 'usr-2', name: 'Ana Souza', role: 'Editor', team: 'Design', score: 84 },
-  { id: 'usr-3', name: 'Bruno Lima', role: 'Viewer', team: 'Platform', score: 76 },
-  { id: 'usr-4', name: 'Marina Costa', role: 'Editor', team: 'Marketing', score: 88 },
+  {
+    id: 'usr-3',
+    name: 'Bruno Lima',
+    role: 'Viewer',
+    team: 'Platform',
+    score: 76,
+  },
+  {
+    id: 'usr-4',
+    name: 'Marina Costa',
+    role: 'Editor',
+    team: 'Marketing',
+    score: 88,
+  },
 ];
 
 const columns: HansTableColumn[] = [

@@ -1,0 +1,23 @@
+.hans-table-head th {
+  @apply px-4 py-3 text-sm font-semibold border-b align-middle;
+  background: var(--hans-table-header-bg);
+  color: var(--hans-table-header-text);
+  border-color: var(--hans-table-divider);
+}
+
+.hans-table-head-content {
+  @apply flex items-center gap-2;
+}
+
+.hans-table-sort-button {
+  @apply inline-flex items-center justify-center bg-transparent border-none cursor-pointer p-0;
+  color: currentColor;
+}
+
+.hans-table-sort-icon-active {
+  @apply opacity-100;
+}
+
+.hans-table-sort-button .hans-icon {
+  @apply opacity-60;
+}

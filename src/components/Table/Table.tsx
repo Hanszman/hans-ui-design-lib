@@ -1,16 +1,11 @@
 import React from 'react';
 import { HansDropdown } from '../Forms/Dropdown/Dropdown';
 import { HansInput } from '../Forms/Input/Input';
-import { HansIcon } from '../Icon/Icon';
-import type {
-  HansTableColumn,
-  HansTableProps,
-  HansTableRow,
-  HansTableSortState,
-} from './Table.types';
+import { HansTableBody } from './TableBody/TableBody';
+import { HansTableHeader } from './TableHeader/TableHeader';
+import type { HansTableColumn, HansTableProps, HansTableSortState } from './Table.types';
 import {
   applyTableFilters,
-  formatTableCellValue,
   getDropdownFilterOptions,
   getFilterPlaceholder,
   getNextSortState,
@@ -18,104 +13,6 @@ import {
   getTextAlignClass,
   sortTableRows,
 } from './helpers/Table.helper';
-
-type HansTableHeaderProps = {
-  columns: HansTableColumn[];
-  sortState: HansTableSortState;
-  onSort: (column: HansTableColumn) => void;
-};
-
-const HansTableHeader = React.memo((props: HansTableHeaderProps) => {
-  const { columns, sortState, onSort } = props;
-
-  return (
-    <thead className="hans-table-head">
-      <tr>
-        {columns.map((column) => {
-          const direction =
-            sortState?.columnKey === column.key ? sortState.direction : null;
-          return (
-            <th
-              key={column.key}
-              className={getTextAlignClass(column.align)}
-              style={column.width ? { width: column.width } : undefined}
-            >
-              <div className="hans-table-head-content">
-                <span>{column.header}</span>
-                {column.sortable ? (
-                  <button
-                    type="button"
-                    className="hans-table-sort-button"
-                    aria-label={`Sort by ${column.header}`}
-                    onClick={() => onSort(column)}
-                  >
-                    <HansIcon
-                      name={
-                        direction === 'asc' ? 'IoIosArrowUp' : 'IoIosArrowDown'
-                      }
-                      iconSize="small"
-                      customClasses={
-                        direction ? 'hans-table-sort-icon-active' : ''
-                      }
-                    />
-                  </button>
-                ) : null}
-              </div>
-            </th>
-          );
-        })}
-      </tr>
-    </thead>
-  );
-});
-
-HansTableHeader.displayName = 'HansTableHeader';
-
-type HansTableBodyProps = {
-  columns: HansTableColumn[];
-  rows: HansTableRow[];
-  striped: boolean;
-  emptyText: string;
-};
-
-const HansTableBody = React.memo((props: HansTableBodyProps) => {
-  const { columns, rows, striped, emptyText } = props;
-  if (rows.length === 0) {
-    return (
-      <tbody>
-        <tr>
-          <td className="hans-table-empty" colSpan={columns.length}>
-            {emptyText}
-          </td>
-        </tr>
-      </tbody>
-    );
-  }
-
-  return (
-    <tbody className={striped ? 'hans-table-striped' : ''}>
-      {rows.map((row, rowIndex) => (
-        <tr key={`hans-table-row-${rowIndex}`}>
-          {columns.map((column) => {
-            const value = row[column.key];
-            return (
-              <td
-                key={`${column.key}-${rowIndex}`}
-                className={getTextAlignClass(column.align)}
-              >
-                {column.render
-                  ? column.render(value, row, rowIndex)
-                  : formatTableCellValue(value)}
-              </td>
-            );
-          })}
-        </tr>
-      ))}
-    </tbody>
-  );
-});
-
-HansTableBody.displayName = 'HansTableBody';
 
 export const HansTable = React.memo((props: HansTableProps) => {
   const {
@@ -188,15 +85,15 @@ export const HansTable = React.memo((props: HansTableProps) => {
         rowHoverColor,
       }),
     [
-      headerColor,
-      rowColor,
-      headerBackgroundColor,
-      headerTextColor,
-      rowBackgroundColor,
-      rowTextColor,
       borderColor,
       dividerColor,
+      headerBackgroundColor,
+      headerColor,
+      headerTextColor,
+      rowBackgroundColor,
+      rowColor,
       rowHoverColor,
+      rowTextColor,
     ],
   );
 

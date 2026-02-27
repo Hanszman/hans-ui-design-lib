@@ -29,8 +29,10 @@ export const getNextSortState = (
 export const formatTableCellValue = (value: unknown): string => {
   if (value === null || typeof value === 'undefined') return '-';
   if (typeof value === 'string') return value;
-  if (typeof value === 'number' || typeof value === 'boolean') return `${value}`;
-  if (Array.isArray(value)) return value.map((item) => formatTableCellValue(item)).join(', ');
+  if (typeof value === 'number' || typeof value === 'boolean')
+    return `${value}`;
+  if (Array.isArray(value))
+    return value.map((item) => formatTableCellValue(item)).join(', ');
 
   return JSON.stringify(value);
 };
@@ -83,9 +85,7 @@ export const applyTableFilters = (
   );
 };
 
-export const getFilterPlaceholder = (
-  column: HansTableColumn,
-): string => {
+export const getFilterPlaceholder = (column: HansTableColumn): string => {
   if (!column.filter) return '';
   if (column.filter.placeholder) return column.filter.placeholder;
 
@@ -109,9 +109,7 @@ export const getDropdownFilterOptions = (
   ];
 };
 
-export const getTextAlignClass = (
-  align: HansTableColumn['align'],
-): string => {
+export const getTextAlignClass = (align: HansTableColumn['align']): string => {
   if (align === 'center') return 'hans-table-align-center';
   if (align === 'right') return 'hans-table-align-right';
   return 'hans-table-align-left';
@@ -142,8 +140,7 @@ export const getTableStyleVars = ({
   ({
     '--hans-table-header-bg':
       headerBackgroundColor ?? getTokenColor(headerColor, 'strong'),
-    '--hans-table-header-text':
-      headerTextColor ?? 'var(--white-color)',
+    '--hans-table-header-text': headerTextColor ?? 'var(--white-color)',
     '--hans-table-row-bg': rowBackgroundColor ?? 'var(--white-color)',
     '--hans-table-row-text': rowTextColor ?? getTokenColor(rowColor, 'strong'),
     '--hans-table-border': borderColor ?? 'var(--gray-300)',

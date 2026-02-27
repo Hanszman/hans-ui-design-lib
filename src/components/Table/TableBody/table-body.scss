@@ -1,0 +1,23 @@
+.hans-table tbody td {
+  @apply px-4 py-3 text-sm border-b align-middle;
+  color: var(--hans-table-row-text);
+  border-color: var(--hans-table-divider);
+  background: var(--hans-table-row-bg);
+}
+
+.hans-table tbody tr:hover td {
+  background: var(--hans-table-row-hover);
+}
+
+.hans-table-striped tr:nth-child(even) td {
+  @apply opacity-95;
+}
+
+.hans-table tbody tr:last-child td {
+  @apply border-b-0;
+}
+
+.hans-table-empty {
+  @apply text-center py-8 text-sm;
+  color: var(--gray-500);
+}

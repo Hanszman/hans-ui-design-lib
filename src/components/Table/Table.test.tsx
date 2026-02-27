@@ -184,7 +184,9 @@ describe('HansTable', () => {
       <HansTable columns={columns} rows={rows} showColumnDividers />,
     );
 
-    expect(container.querySelector('.hans-table-with-column-dividers')).toBeInTheDocument();
+    expect(
+      container.querySelector('.hans-table-with-column-dividers'),
+    ).toBeInTheDocument();
   });
 
   it('Should accept initial sort and filter changes from props', () => {
