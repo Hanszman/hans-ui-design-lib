@@ -51,9 +51,7 @@ const HansTableHeader = React.memo((props: HansTableHeaderProps) => {
                   >
                     <HansIcon
                       name={
-                        direction === 'asc'
-                          ? 'IoIosArrowUp'
-                          : 'IoIosArrowDown'
+                        direction === 'asc' ? 'IoIosArrowUp' : 'IoIosArrowDown'
                       }
                       iconSize="small"
                       customClasses={
@@ -101,7 +99,10 @@ const HansTableBody = React.memo((props: HansTableBodyProps) => {
           {columns.map((column) => {
             const value = row[column.key];
             return (
-              <td key={`${column.key}-${rowIndex}`} className={getTextAlignClass(column.align)}>
+              <td
+                key={`${column.key}-${rowIndex}`}
+                className={getTextAlignClass(column.align)}
+              >
                 {column.render
                   ? column.render(value, row, rowIndex)
                   : formatTableCellValue(value)}
@@ -235,7 +236,9 @@ export const HansTable = React.memo((props: HansTableProps) => {
               {columns.map((column) => (
                 <td
                   key={`filter-${column.key}`}
-                  className={getTextAlignClass(column.filterAlign ?? column.align)}
+                  className={getTextAlignClass(
+                    column.filterAlign ?? column.align,
+                  )}
                 >
                   {column.filter ? (
                     column.filter.type === 'dropdown' ? (

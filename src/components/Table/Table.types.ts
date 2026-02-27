@@ -6,8 +6,6 @@ import {
 import type { Color } from '../../types/Common.types';
 import type { DropdownOption } from '../Forms/Dropdown/Dropdown.types';
 
-export type HansTableRow = Record<string, unknown>;
-
 export type HansTableSortDirection = 'asc' | 'desc';
 
 export type HansTableSortState = {
@@ -28,6 +26,8 @@ export type HansTableFilterConfig =
       enableAutocomplete?: boolean;
     };
 
+export type HansTableRow = Record<string, unknown>;
+
 export type HansTableColumn = {
   key: string;
   header: string;
@@ -36,7 +36,11 @@ export type HansTableColumn = {
   width?: string;
   align?: 'left' | 'center' | 'right';
   filterAlign?: 'left' | 'center' | 'right';
-  render?: (value: unknown, row: HansTableRow, rowIndex: number) => React.ReactNode;
+  render?: (
+    value: unknown,
+    row: HansTableRow,
+    rowIndex: number,
+  ) => React.ReactNode;
 };
 
 const HansTableSchema = {
