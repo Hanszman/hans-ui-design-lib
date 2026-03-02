@@ -1,7 +1,12 @@
 import React from 'react';
 import type { HansToggleProps } from './Toggle.types';
 import {
+  buildToggleStyle,
+  getContentLength,
+  getSwitchWidth,
   getToggleColorClass,
+  handleOptionSelect,
+  handleSwitchToggle,
   normalizeToggleColor,
 } from './helpers/Toggle.helper';
 
@@ -43,46 +48,13 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
   const isSegmentedControlled = typeof value !== 'undefined';
   const selectedValue = isSegmentedControlled ? value : internalValue;
 
-  const getContentLength = (content: React.ReactNode): number => {
-    if (typeof content === 'string') return content.length;
-    if (typeof content === 'number') return content.toString().length;
-    return 0;
-  };
-
-  const maxTrackContentLength = Math.max(
-    getContentLength(onContent),
-    getContentLength(offContent),
-  );
+  const maxTrackContentLength = Math.max(getContentLength(onContent), getContentLength(offContent));
   const shouldExpandSwitch = maxTrackContentLength > 0;
-  const normalizedTrackLength = Math.min(maxTrackContentLength, 10);
-
-  const sizeConfig = {
-    small: { base: 42, max: 88, perChar: 7 },
-    medium: { base: 52, max: 112, perChar: 8 },
-    large: { base: 66, max: 140, perChar: 9 },
-  } as const;
-  const selectedSizeConfig = sizeConfig[toggleSize];
-  const computedWidth = shouldExpandSwitch
-    ? Math.min(
-        selectedSizeConfig.base + normalizedTrackLength * selectedSizeConfig.perChar,
-        selectedSizeConfig.max,
-      )
-    : undefined;
-  const computedStyle: React.CSSProperties = {
-    ...(rest.style as React.CSSProperties),
-    ...(computedWidth ? { width: `${computedWidth}px` } : {}),
-  };
-
-  const handleSwitchToggle = () => {
-    const nextValue = !isChecked;
-    if (!isSwitchControlled) setInternalChecked(nextValue);
-    if (onChange) onChange(nextValue);
-  };
-
-  const handleOptionSelect = (nextValue: string) => {
-    if (!isSegmentedControlled) setInternalValue(nextValue);
-    if (onValueChange) onValueChange(nextValue);
-  };
+  const computedWidth = getSwitchWidth(toggleSize, onContent, offContent);
+  const computedStyle = buildToggleStyle(
+    rest.style as React.CSSProperties | undefined,
+    computedWidth,
+  );
 
   if (toggleMode === 'segmented') {
     return (
@@ -115,7 +87,16 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
                   hans-toggle-segment
                   ${isSelected ? 'hans-toggle-segment-selected' : ''}
                 `}
-                onClick={() => handleOptionSelect(option.value)}
+                onClick={() =>
+                  handleOptionSelect({
+                    disabled,
+                    optionDisabled: option.disabled,
+                    nextValue: option.value,
+                    isControlled: isSegmentedControlled,
+                    setInternalValue,
+                    onValueChange,
+                  })
+                }
               >
                 {option.icon ? (
                   <span className="hans-toggle-segment-icon">{option.icon}</span>
@@ -158,7 +139,15 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
             ${shouldExpandSwitch ? 'hans-toggle-has-track-content' : ''}
             ${switchColorClass}
           `}
-          onClick={handleSwitchToggle}
+          onClick={() =>
+            handleSwitchToggle({
+              disabled,
+              isChecked,
+              isControlled: isSwitchControlled,
+              setInternalChecked,
+              onChange,
+            })
+          }
           {...rest}
           style={computedStyle}
         >

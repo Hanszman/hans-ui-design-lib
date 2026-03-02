@@ -133,8 +133,8 @@ export const WithContentAndIcons: Story = {
       <HansToggle
         defaultChecked={false}
         toggleColor="danger"
-        onContent={<HansIcon name="IoMdCheckmark" iconSize="small" />}
-        offContent={<HansIcon name="IoMdClose" iconSize="small" />}
+        onContent="✓"
+        offContent="✕"
         thumbContent={<HansIcon name="IoMdFlash" iconSize="small" />}
       />
     </div>
