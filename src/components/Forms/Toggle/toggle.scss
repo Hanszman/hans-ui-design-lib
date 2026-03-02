@@ -2,6 +2,14 @@
   @apply inline-flex flex-col gap-2;
 }
 
+.hans-toggle-loading-switch {
+  @apply inline-flex items-center justify-center;
+}
+
+.hans-toggle-loading-segmented {
+  @apply block w-full rounded-xl;
+}
+
 .hans-toggle-switch-row {
   @apply inline-flex items-center gap-2;
 }

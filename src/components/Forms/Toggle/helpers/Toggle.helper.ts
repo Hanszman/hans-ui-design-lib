@@ -21,6 +21,18 @@ const TOGGLE_SIZE_CONFIG = {
   large: { base: 66, max: 140, perChar: 9 },
 } as const;
 
+export const getLoadingSizeFromToggleSize = (toggleSize: Size): Size => {
+  if (toggleSize === 'small') return 'small';
+  if (toggleSize === 'large') return 'large';
+  return 'medium';
+};
+
+export const getSegmentedSkeletonHeight = (toggleSize: Size): string => {
+  if (toggleSize === 'small') return '32px';
+  if (toggleSize === 'large') return '52px';
+  return '40px';
+};
+
 export const getContentLength = (content: React.ReactNode): number => {
   if (typeof content === 'string') return content.length;
   if (typeof content === 'number') return content.toString().length;

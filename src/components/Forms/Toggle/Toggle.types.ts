@@ -22,6 +22,7 @@ const HansToggleSchema = {
   rightLabel: 'string',
   checked: 'boolean',
   defaultChecked: 'boolean',
+  loading: 'boolean',
   disabled: 'boolean',
   toggleColor: { type: 'custom', ref: {} as Color },
   toggleSize: { type: 'custom', ref: {} as Size },

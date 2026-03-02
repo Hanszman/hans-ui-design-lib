@@ -11,6 +11,7 @@ const meta: Meta<typeof HansToggle> = {
     label: 'Notifications',
     toggleMode: 'switch',
     defaultChecked: false,
+    loading: false,
     toggleColor: 'primary',
     toggleSize: 'medium',
     disabled: false,
@@ -219,5 +220,27 @@ export const Uncontrolled: Story = {
     label: 'Uncontrolled',
     defaultChecked: true,
     toggleColor: 'success',
+  },
+};
+
+export const LoadingSwitch: Story = {
+  args: {
+    label: 'Loading switch',
+    loading: true,
+    toggleMode: 'switch',
+    toggleColor: 'primary',
+  },
+};
+
+export const LoadingSegmented: Story = {
+  args: {
+    label: 'Loading segmented',
+    loading: true,
+    toggleMode: 'segmented',
+    toggleColor: 'secondary',
+    options: [
+      { label: 'Assistive', value: 'assistive' },
+      { label: 'Expert', value: 'expert' },
+    ],
   },
 };

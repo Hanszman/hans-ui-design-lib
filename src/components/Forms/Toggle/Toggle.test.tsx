@@ -184,4 +184,25 @@ describe('HansToggle', () => {
     expect(toggle).toHaveClass('hans-toggle-has-track-content');
     expect(toggle).toHaveStyle({ width: '88px' });
   });
+
+  it('Should render loading spinner for switch mode', () => {
+    render(<HansToggle toggleMode="switch" loading />);
+    expect(screen.getByLabelText('Loading switch toggle')).toBeInTheDocument();
+    expect(screen.queryByRole('switch')).not.toBeInTheDocument();
+  });
+
+  it('Should render loading skeleton for segmented mode', () => {
+    render(
+      <HansToggle
+        toggleMode="segmented"
+        loading
+        options={[
+          { label: 'A', value: 'a' },
+          { label: 'B', value: 'b' },
+        ]}
+      />,
+    );
+    expect(screen.getByLabelText('Loading segmented toggle')).toBeInTheDocument();
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+  });
 });

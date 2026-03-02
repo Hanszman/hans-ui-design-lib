@@ -1,5 +1,7 @@
 import {
   buildToggleStyle,
+  getLoadingSizeFromToggleSize,
+  getSegmentedSkeletonHeight,
   getContentLength,
   getSwitchWidth,
   getToggleColorClass,
@@ -141,5 +143,15 @@ describe('Toggle.helper', () => {
 
     expect(setInternalValue).not.toHaveBeenCalled();
     expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it('Should map loading helpers based on size', () => {
+    expect(getLoadingSizeFromToggleSize('small')).toBe('small');
+    expect(getLoadingSizeFromToggleSize('medium')).toBe('medium');
+    expect(getLoadingSizeFromToggleSize('large')).toBe('large');
+
+    expect(getSegmentedSkeletonHeight('small')).toBe('32px');
+    expect(getSegmentedSkeletonHeight('medium')).toBe('40px');
+    expect(getSegmentedSkeletonHeight('large')).toBe('52px');
   });
 });
