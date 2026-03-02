@@ -133,13 +133,34 @@ export const WithContentAndIcons: Story = {
       <HansToggle
         defaultChecked={false}
         toggleColor="danger"
-        onContent={
-          <HansIcon name="IoMdCheckmark" iconSize="small" iconColor="base" />
-        }
-        offContent={
-          <HansIcon name="IoMdClose" iconSize="small" iconColor="base" />
-        }
+        onContent={<HansIcon name="IoMdCheckmark" iconSize="small" />}
+        offContent={<HansIcon name="IoMdClose" iconSize="small" />}
         thumbContent={<HansIcon name="IoMdFlash" iconSize="small" />}
+      />
+    </div>
+  ),
+};
+
+export const ContentSizing: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <HansToggle
+        defaultChecked
+        toggleColor="primary"
+        onContent="ON"
+        offContent="OFF"
+      />
+      <HansToggle
+        defaultChecked
+        toggleColor="secondary"
+        onContent="Enabled"
+        offContent="Disabled"
+      />
+      <HansToggle
+        defaultChecked
+        toggleColor="info"
+        onContent="Very long text example"
+        offContent="Another very long text"
       />
     </div>
   ),

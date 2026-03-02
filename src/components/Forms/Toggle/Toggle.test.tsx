@@ -169,4 +169,19 @@ describe('HansToggle', () => {
 
     expect(screen.getByText('i')).toBeInTheDocument();
   });
+
+  it('Should handle numeric content and apply dynamic width limit', () => {
+    render(
+      <HansToggle
+        toggleSize="small"
+        defaultChecked
+        onContent={12345678901234}
+        offContent={0}
+      />,
+    );
+
+    const toggle = screen.getByRole('switch');
+    expect(toggle).toHaveClass('hans-toggle-has-track-content');
+    expect(toggle).toHaveStyle({ width: '76px' });
+  });
 });

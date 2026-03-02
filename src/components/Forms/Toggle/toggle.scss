@@ -28,7 +28,7 @@
 }
 
 .hans-toggle-track-content {
-  @apply absolute inset-0 flex items-center justify-center text-xs font-semibold pointer-events-none px-2;
+  @apply absolute inset-0 flex items-center justify-center text-xs font-semibold pointer-events-none px-2 whitespace-nowrap overflow-hidden text-ellipsis;
   color: var(--white);
 }
 
@@ -42,21 +42,22 @@
   @apply w-9 h-5;
   --hans-toggle-thumb-size: 0.875rem;
   --hans-toggle-thumb-x: 0.125rem;
-  --hans-toggle-thumb-on-x: 1rem;
 }
 
 .hans-toggle-medium {
   @apply w-11 h-6;
   --hans-toggle-thumb-size: 1rem;
   --hans-toggle-thumb-x: 0.125rem;
-  --hans-toggle-thumb-on-x: 1.5rem;
 }
 
 .hans-toggle-large {
   @apply w-14 h-8;
   --hans-toggle-thumb-size: 1.5rem;
   --hans-toggle-thumb-x: 0.125rem;
-  --hans-toggle-thumb-on-x: 1.875rem;
+}
+
+.hans-toggle-has-track-content {
+  @apply px-3;
 }
 
 .hans-toggle-small .hans-toggle-thumb,
@@ -72,7 +73,7 @@
 .hans-toggle-on-danger,
 .hans-toggle-on-warning,
 .hans-toggle-on-info {
-  --hans-toggle-thumb-x: var(--hans-toggle-thumb-on-x);
+  --hans-toggle-thumb-x: calc(100% - var(--hans-toggle-thumb-size) - 0.125rem);
 }
 
 .hans-toggle-off {
@@ -93,7 +94,7 @@
 
 .hans-toggle-on-disabled {
   @apply bg-[var(--base-default-color)];
-  --hans-toggle-thumb-x: var(--hans-toggle-thumb-on-x);
+  --hans-toggle-thumb-x: calc(100% - var(--hans-toggle-thumb-size) - 0.125rem);
 }
 
 .hans-toggle-on-primary {
