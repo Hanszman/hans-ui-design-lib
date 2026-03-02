@@ -57,9 +57,9 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
   const normalizedTrackLength = Math.min(maxTrackContentLength, 10);
 
   const sizeConfig = {
-    small: { base: 36, max: 76, perChar: 7 },
-    medium: { base: 44, max: 98, perChar: 8 },
-    large: { base: 56, max: 124, perChar: 9 },
+    small: { base: 42, max: 88, perChar: 7 },
+    medium: { base: 52, max: 112, perChar: 8 },
+    large: { base: 66, max: 140, perChar: 9 },
   } as const;
   const selectedSizeConfig = sizeConfig[toggleSize];
   const computedWidth = shouldExpandSwitch

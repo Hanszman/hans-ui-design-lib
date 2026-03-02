@@ -28,8 +28,10 @@
 }
 
 .hans-toggle-track-content {
-  @apply absolute inset-0 flex items-center justify-center text-xs font-semibold pointer-events-none px-2 whitespace-nowrap overflow-hidden text-ellipsis;
+  @apply absolute inset-0 flex items-center justify-center text-xs font-semibold pointer-events-none whitespace-nowrap overflow-hidden text-ellipsis;
   color: var(--white);
+  padding-left: calc(var(--hans-toggle-thumb-size) + 0.35rem);
+  padding-right: calc(var(--hans-toggle-thumb-size) + 0.35rem);
 }
 
 .hans-toggle-thumb {
@@ -57,7 +59,7 @@
 }
 
 .hans-toggle-has-track-content {
-  @apply px-3;
+  min-width: calc((var(--hans-toggle-thumb-size) * 2) + 1.5rem);
 }
 
 .hans-toggle-small .hans-toggle-thumb,

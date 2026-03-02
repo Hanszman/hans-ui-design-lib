@@ -182,6 +182,6 @@ describe('HansToggle', () => {
 
     const toggle = screen.getByRole('switch');
     expect(toggle).toHaveClass('hans-toggle-has-track-content');
-    expect(toggle).toHaveStyle({ width: '76px' });
+    expect(toggle).toHaveStyle({ width: '88px' });
   });
 });
