@@ -30,8 +30,16 @@
 .hans-toggle-track-content {
   @apply absolute inset-0 flex items-center justify-center text-xs font-semibold pointer-events-none whitespace-nowrap overflow-hidden text-ellipsis;
   color: var(--white);
-  padding-left: calc(var(--hans-toggle-thumb-size) + 0.35rem);
-  padding-right: calc(var(--hans-toggle-thumb-size) + 0.35rem);
+}
+
+.hans-toggle-track-content-on {
+  padding-left: 0.5rem;
+  padding-right: calc(var(--hans-toggle-thumb-size) + 0.4rem);
+}
+
+.hans-toggle-track-content-off {
+  padding-left: calc(var(--hans-toggle-thumb-size) + 0.4rem);
+  padding-right: 0.5rem;
 }
 
 .hans-toggle-thumb {

@@ -151,7 +151,12 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
           {...rest}
           style={computedStyle}
         >
-          <span className="hans-toggle-track-content">
+          <span
+            className={`
+              hans-toggle-track-content
+              ${isChecked ? 'hans-toggle-track-content-on' : 'hans-toggle-track-content-off'}
+            `}
+          >
             {isChecked ? onContent : offContent}
           </span>
           <span className="hans-toggle-thumb">{thumbContent}</span>
