@@ -1,0 +1,63 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansToggleStories from './Toggle.stories';
+
+<Meta of={HansToggleStories} />
+
+<Title />
+
+The **Toggle** component switches a single setting between on/off states.
+
+## Usage
+
+```tsx
+import { HansToggle } from 'hans-ui-design-lib';
+
+export const Example = () => (
+  <HansToggle
+    label="Enable notifications"
+    checked
+    toggleColor="primary"
+  />
+);
+```
+
+Then, you can use the component in your template. Here is a basic example:
+
+<Primary />
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Colors
+
+Use `toggleColor` to set the active track color.
+When `toggleColor="base"`, the component falls back to `primary`.
+
+<Canvas of={HansToggleStories.Colors} />
+
+## Sizes
+
+The toggle supports small, medium and large sizes.
+
+<Canvas of={HansToggleStories.Sizes} />
+
+## States
+
+Examples of on/off and disabled states.
+
+<Canvas of={HansToggleStories.States} />
+
+## Uncontrolled
+
+Use `defaultChecked` for internal state management.
+
+<Canvas of={HansToggleStories.Uncontrolled} />

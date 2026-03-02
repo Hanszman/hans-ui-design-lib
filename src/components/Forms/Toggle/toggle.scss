@@ -1,0 +1,127 @@
+.hans-toggle-wrapper {
+  @apply inline-flex items-center gap-2;
+}
+
+.hans-toggle-label {
+  @apply text-sm font-medium;
+}
+
+.hans-toggle {
+  @apply relative inline-flex shrink-0 rounded-full border-0 cursor-pointer transition-colors duration-200;
+}
+
+.hans-toggle:focus-visible {
+  @apply outline-none ring-2 ring-offset-1;
+  ring-color: var(--primary-default-color);
+}
+
+.hans-toggle:disabled {
+  @apply cursor-not-allowed;
+}
+
+.hans-toggle-thumb {
+  @apply absolute top-1/2 rounded-full bg-[var(--white-color)] shadow-sm transition-transform duration-200;
+  transform: translate(var(--hans-toggle-thumb-x), -50%);
+}
+
+.hans-toggle-small {
+  @apply w-9 h-5;
+  --hans-toggle-thumb-size: 0.875rem;
+  --hans-toggle-thumb-x: 0.25rem;
+  --hans-toggle-thumb-on-x: 1.25rem;
+}
+
+.hans-toggle-medium {
+  @apply w-11 h-6;
+  --hans-toggle-thumb-size: 1rem;
+  --hans-toggle-thumb-x: 0.25rem;
+  --hans-toggle-thumb-on-x: 1.5rem;
+}
+
+.hans-toggle-large {
+  @apply w-14 h-8;
+  --hans-toggle-thumb-size: 1.5rem;
+  --hans-toggle-thumb-x: 0.25rem;
+  --hans-toggle-thumb-on-x: 1.75rem;
+}
+
+.hans-toggle-small .hans-toggle-thumb,
+.hans-toggle-medium .hans-toggle-thumb,
+.hans-toggle-large .hans-toggle-thumb {
+  width: var(--hans-toggle-thumb-size);
+  height: var(--hans-toggle-thumb-size);
+}
+
+.hans-toggle-on-primary,
+.hans-toggle-on-secondary,
+.hans-toggle-on-success,
+.hans-toggle-on-danger,
+.hans-toggle-on-warning,
+.hans-toggle-on-info {
+  --hans-toggle-thumb-x: var(--hans-toggle-thumb-on-x);
+}
+
+.hans-toggle-off {
+  @apply bg-[var(--base-neutral-color)];
+}
+
+.hans-toggle-off-disabled {
+  @apply bg-[var(--base-neutral-color)] opacity-70;
+}
+
+.hans-toggle-on-disabled {
+  @apply bg-[var(--base-default-color)];
+  --hans-toggle-thumb-x: var(--hans-toggle-thumb-on-x);
+}
+
+.hans-toggle-on-primary {
+  @apply bg-[var(--primary-default-color)];
+}
+
+.hans-toggle-on-secondary {
+  @apply bg-[var(--secondary-default-color)];
+}
+
+.hans-toggle-on-success {
+  @apply bg-[var(--success-default-color)];
+}
+
+.hans-toggle-on-danger {
+  @apply bg-[var(--danger-default-color)];
+}
+
+.hans-toggle-on-warning {
+  @apply bg-[var(--warning-default-color)];
+}
+
+.hans-toggle-on-info {
+  @apply bg-[var(--info-default-color)];
+}
+
+.hans-toggle-label-base {
+  @apply text-[var(--base-strong-color)];
+}
+
+.hans-toggle-label-primary {
+  @apply text-[var(--primary-strong-color)];
+}
+
+.hans-toggle-label-secondary {
+  @apply text-[var(--secondary-strong-color)];
+}
+
+.hans-toggle-label-success {
+  @apply text-[var(--success-strong-color)];
+}
+
+.hans-toggle-label-danger {
+  @apply text-[var(--danger-strong-color)];
+}
+
+.hans-toggle-label-warning {
+  @apply text-[var(--warning-strong-color)];
+}
+
+.hans-toggle-label-info {
+  @apply text-[var(--info-strong-color)];
+}

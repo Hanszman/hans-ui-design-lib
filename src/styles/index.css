@@ -5,6 +5,7 @@
 @import '../components/Forms/Button/button.scss';
 @import '../components/Forms/Input/input.scss';
 @import '../components/Forms/Dropdown/dropdown.scss';
+@import '../components/Forms/Toggle/toggle.scss';
 @import '../components/Avatar/avatar.scss';
 @import '../components/Tag/tag.scss';
 @import '../components/Chart/chart.scss';

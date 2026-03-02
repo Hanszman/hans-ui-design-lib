@@ -15,6 +15,11 @@ import {
   type HansDropdownProps,
   HansDropdownPropsList,
 } from './components/Forms/Dropdown/Dropdown.types';
+import { HansToggle } from './components/Forms/Toggle/Toggle';
+import {
+  type HansToggleProps,
+  HansTogglePropsList,
+} from './components/Forms/Toggle/Toggle.types';
 import { HansAvatar } from './components/Avatar/Avatar';
 import {
   type HansAvatarProps,
@@ -60,6 +65,11 @@ registerReactAsWebComponent<HansDropdownProps>(
   'hans-dropdown',
   HansDropdown,
   HansDropdownPropsList,
+);
+registerReactAsWebComponent<HansToggleProps>(
+  'hans-toggle',
+  HansToggle,
+  HansTogglePropsList,
 );
 registerReactAsWebComponent<HansAvatarProps>(
   'hans-avatar',
