@@ -1,4 +1,8 @@
 .hans-toggle-wrapper {
+  @apply inline-flex flex-col gap-2;
+}
+
+.hans-toggle-switch-row {
   @apply inline-flex items-center gap-2;
 }
 
@@ -6,43 +10,53 @@
   @apply text-sm font-medium;
 }
 
+.hans-toggle-side-label {
+  @apply text-sm;
+}
+
 .hans-toggle {
-  @apply relative inline-flex shrink-0 rounded-full border-0 cursor-pointer transition-colors duration-200;
+  @apply relative inline-flex shrink-0 rounded-full border-0 cursor-pointer transition-colors duration-200 items-center justify-center;
 }
 
 .hans-toggle:focus-visible {
-  @apply outline-none ring-2 ring-offset-1;
-  ring-color: var(--primary-default-color);
+  @apply outline-none;
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--primary-default-color);
 }
 
 .hans-toggle:disabled {
   @apply cursor-not-allowed;
 }
 
+.hans-toggle-track-content {
+  @apply absolute inset-0 flex items-center justify-center text-xs font-semibold pointer-events-none px-2;
+  color: var(--white);
+}
+
 .hans-toggle-thumb {
-  @apply absolute top-1/2 rounded-full bg-[var(--white-color)] shadow-sm transition-transform duration-200;
-  transform: translate(var(--hans-toggle-thumb-x), -50%);
+  @apply absolute top-1/2 rounded-full shadow-sm transition-all duration-200 flex items-center justify-center bg-[var(--white)] text-[var(--base-strong-color)];
+  left: var(--hans-toggle-thumb-x);
+  transform: translateY(-50%);
 }
 
 .hans-toggle-small {
   @apply w-9 h-5;
   --hans-toggle-thumb-size: 0.875rem;
-  --hans-toggle-thumb-x: 0.25rem;
-  --hans-toggle-thumb-on-x: 1.25rem;
+  --hans-toggle-thumb-x: 0.125rem;
+  --hans-toggle-thumb-on-x: 1rem;
 }
 
 .hans-toggle-medium {
   @apply w-11 h-6;
   --hans-toggle-thumb-size: 1rem;
-  --hans-toggle-thumb-x: 0.25rem;
+  --hans-toggle-thumb-x: 0.125rem;
   --hans-toggle-thumb-on-x: 1.5rem;
 }
 
 .hans-toggle-large {
   @apply w-14 h-8;
   --hans-toggle-thumb-size: 1.5rem;
-  --hans-toggle-thumb-x: 0.25rem;
-  --hans-toggle-thumb-on-x: 1.75rem;
+  --hans-toggle-thumb-x: 0.125rem;
+  --hans-toggle-thumb-on-x: 1.875rem;
 }
 
 .hans-toggle-small .hans-toggle-thumb,
@@ -65,8 +79,16 @@
   @apply bg-[var(--base-neutral-color)];
 }
 
+.hans-toggle-off .hans-toggle-track-content {
+  color: var(--base-strong-color);
+}
+
 .hans-toggle-off-disabled {
   @apply bg-[var(--base-neutral-color)] opacity-70;
+}
+
+.hans-toggle-off-disabled .hans-toggle-track-content {
+  color: var(--base-default-color);
 }
 
 .hans-toggle-on-disabled {
@@ -124,4 +146,76 @@
 
 .hans-toggle-label-info {
   @apply text-[var(--info-strong-color)];
+}
+
+.hans-toggle-segmented {
+  @apply inline-flex rounded-xl border overflow-hidden;
+  border-color: var(--hans-toggle-segment-border);
+}
+
+.hans-toggle-segmented-small .hans-toggle-segment {
+  @apply px-3 py-1.5 text-xs;
+}
+
+.hans-toggle-segmented-medium .hans-toggle-segment {
+  @apply px-4 py-2 text-sm;
+}
+
+.hans-toggle-segmented-large .hans-toggle-segment {
+  @apply px-5 py-2.5 text-base;
+}
+
+.hans-toggle-segment {
+  @apply inline-flex items-center gap-2 font-medium bg-transparent border-0 transition-colors duration-200 cursor-pointer;
+  color: var(--hans-toggle-segment-text);
+}
+
+.hans-toggle-segment-selected {
+  @apply text-[var(--white)];
+  background: var(--hans-toggle-segment-selected-bg);
+}
+
+.hans-toggle-segment + .hans-toggle-segment {
+  @apply border-l;
+  border-color: var(--hans-toggle-segment-border);
+}
+
+.hans-toggle-segmented-disabled {
+  @apply opacity-60;
+}
+
+.hans-toggle-segmented-primary {
+  --hans-toggle-segment-selected-bg: var(--primary-default-color);
+  --hans-toggle-segment-border: var(--primary-default-color);
+  --hans-toggle-segment-text: var(--primary-default-color);
+}
+
+.hans-toggle-segmented-secondary {
+  --hans-toggle-segment-selected-bg: var(--secondary-default-color);
+  --hans-toggle-segment-border: var(--secondary-default-color);
+  --hans-toggle-segment-text: var(--secondary-default-color);
+}
+
+.hans-toggle-segmented-success {
+  --hans-toggle-segment-selected-bg: var(--success-default-color);
+  --hans-toggle-segment-border: var(--success-default-color);
+  --hans-toggle-segment-text: var(--success-default-color);
+}
+
+.hans-toggle-segmented-danger {
+  --hans-toggle-segment-selected-bg: var(--danger-default-color);
+  --hans-toggle-segment-border: var(--danger-default-color);
+  --hans-toggle-segment-text: var(--danger-default-color);
+}
+
+.hans-toggle-segmented-warning {
+  --hans-toggle-segment-selected-bg: var(--warning-default-color);
+  --hans-toggle-segment-border: var(--warning-default-color);
+  --hans-toggle-segment-text: var(--warning-default-color);
+}
+
+.hans-toggle-segmented-info {
+  --hans-toggle-segment-selected-bg: var(--info-default-color);
+  --hans-toggle-segment-border: var(--info-default-color);
+  --hans-toggle-segment-text: var(--info-default-color);
 }

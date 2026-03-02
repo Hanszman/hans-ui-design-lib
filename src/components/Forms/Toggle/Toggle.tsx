@@ -7,34 +7,97 @@ import {
 
 export const HansToggle = React.memo((props: HansToggleProps) => {
   const {
+    toggleMode = 'switch',
     label = '',
     labelColor = 'base',
+    leftLabel = '',
+    rightLabel = '',
     checked,
     defaultChecked = false,
     disabled = false,
     toggleColor = 'primary',
     toggleSize = 'medium',
+    onContent,
+    offContent,
+    thumbContent,
+    value,
+    defaultValue = '',
+    options = [],
     customClasses = '',
     inputId = 'hans-toggle',
     onChange,
+    onValueChange,
     ...rest
   } = props;
 
-  const [internalChecked, setInternalChecked] = React.useState(defaultChecked);
-  const isControlled = typeof checked !== 'undefined';
-  const isChecked = isControlled ? checked : internalChecked;
   const normalizedColor = normalizeToggleColor(toggleColor);
-  const colorClass = getToggleColorClass(
-    isChecked,
-    disabled,
-    normalizedColor,
-  );
 
-  const handleToggle = () => {
+  const [internalChecked, setInternalChecked] = React.useState(defaultChecked);
+  const isSwitchControlled = typeof checked !== 'undefined';
+  const isChecked = isSwitchControlled ? checked : internalChecked;
+  const switchColorClass = getToggleColorClass(isChecked, disabled, normalizedColor);
+
+  const [internalValue, setInternalValue] = React.useState(
+    defaultValue || options[0]?.value || '',
+  );
+  const isSegmentedControlled = typeof value !== 'undefined';
+  const selectedValue = isSegmentedControlled ? value : internalValue;
+
+  const handleSwitchToggle = () => {
     const nextValue = !isChecked;
-    if (!isControlled) setInternalChecked(nextValue);
+    if (!isSwitchControlled) setInternalChecked(nextValue);
     if (onChange) onChange(nextValue);
   };
+
+  const handleOptionSelect = (nextValue: string) => {
+    if (!isSegmentedControlled) setInternalValue(nextValue);
+    if (onValueChange) onValueChange(nextValue);
+  };
+
+  if (toggleMode === 'segmented') {
+    return (
+      <div className={`hans-toggle-wrapper ${customClasses}`}>
+        {label ? (
+          <span className={`hans-toggle-label hans-toggle-label-${labelColor}`}>
+            {label}
+          </span>
+        ) : null}
+        <div
+          role="tablist"
+          aria-disabled={disabled}
+          className={`
+            hans-toggle-segmented
+            hans-toggle-segmented-${toggleSize}
+            hans-toggle-segmented-${normalizedColor}
+            ${disabled ? 'hans-toggle-segmented-disabled' : ''}
+          `}
+        >
+          {options.map((option) => {
+            const isSelected = selectedValue === option.value;
+            return (
+              <button
+                key={`${inputId}-${option.value}`}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                disabled={disabled || option.disabled}
+                className={`
+                  hans-toggle-segment
+                  ${isSelected ? 'hans-toggle-segment-selected' : ''}
+                `}
+                onClick={() => handleOptionSelect(option.value)}
+              >
+                {option.icon ? (
+                  <span className="hans-toggle-segment-icon">{option.icon}</span>
+                ) : null}
+                <span>{option.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`hans-toggle-wrapper ${customClasses}`}>
@@ -46,23 +109,38 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
           {label}
         </label>
       ) : null}
-      <button
-        id={inputId}
-        type="button"
-        role="switch"
-        aria-checked={isChecked}
-        aria-disabled={disabled}
-        disabled={disabled}
-        className={`
-          hans-toggle
-          hans-toggle-${toggleSize}
-          ${colorClass}
-        `}
-        onClick={handleToggle}
-        {...rest}
-      >
-        <span className="hans-toggle-thumb" />
-      </button>
+      <div className="hans-toggle-switch-row">
+        {leftLabel ? (
+          <span className={`hans-toggle-side-label hans-toggle-label-${labelColor}`}>
+            {leftLabel}
+          </span>
+        ) : null}
+        <button
+          id={inputId}
+          type="button"
+          role="switch"
+          aria-checked={isChecked}
+          aria-disabled={disabled}
+          disabled={disabled}
+          className={`
+            hans-toggle
+            hans-toggle-${toggleSize}
+            ${switchColorClass}
+          `}
+          onClick={handleSwitchToggle}
+          {...rest}
+        >
+          <span className="hans-toggle-track-content">
+            {isChecked ? onContent : offContent}
+          </span>
+          <span className="hans-toggle-thumb">{thumbContent}</span>
+        </button>
+        {rightLabel ? (
+          <span className={`hans-toggle-side-label hans-toggle-label-${labelColor}`}>
+            {rightLabel}
+          </span>
+        ) : null}
+      </div>
     </div>
   );
 });

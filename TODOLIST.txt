@@ -1,5 +1,4 @@
 * Continuar próximos componentes:
--Toggle/checkbox
 -Tabs (usar lib?)
 -Toast (usar lib?)
 -DatePicker (usar lib?) (moment, luxon, alguma outra?)

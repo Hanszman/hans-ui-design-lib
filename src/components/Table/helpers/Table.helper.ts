@@ -137,7 +137,7 @@ export const getTableStyleVars = ({
     '--hans-table-header-bg': getTokenColor(headerColor, 'strong'),
     '--hans-table-header-text': getTokenColor(headerTextColor ?? headerColor, 'neutral'),
     '--hans-table-row-bg':
-      rowColor === 'base' ? 'var(--white-color)' : getTokenColor(rowColor, 'neutral'),
+      rowColor === 'base' ? 'var(--white)' : getTokenColor(rowColor, 'neutral'),
     '--hans-table-row-text': getTokenColor(rowTextColor ?? rowColor, 'strong'),
     '--hans-table-border': getTokenColor(borderColor ?? 'base', 'default'),
     '--hans-table-divider': getTokenColor(dividerColor ?? 'base', 'neutral'),

@@ -1,19 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import type { Color, Size } from '../../../types/Common.types';
 import { HansToggle } from './Toggle';
+import { HansIcon } from '../../Icon/Icon';
 import DocsPage from './Toggle.mdx';
 
 const meta: Meta<typeof HansToggle> = {
   title: 'Components/Forms/Toggle',
   component: HansToggle,
   args: {
-    label: 'Enable feature',
-    checked: true,
+    label: 'Notifications',
+    toggleMode: 'switch',
+    defaultChecked: false,
     toggleColor: 'primary',
     toggleSize: 'medium',
     disabled: false,
   },
   argTypes: {
+    toggleMode: { control: 'select', options: ['switch', 'segmented'] },
     toggleColor: {
       control: 'select',
       options: [
@@ -27,6 +30,18 @@ const meta: Meta<typeof HansToggle> = {
       ],
     },
     toggleSize: { control: 'select', options: ['small', 'medium', 'large'] },
+    labelColor: {
+      control: 'select',
+      options: [
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
+    },
   },
   parameters: {
     docs: {
@@ -38,7 +53,13 @@ const meta: Meta<typeof HansToggle> = {
 export default meta;
 type Story = StoryObj<typeof HansToggle>;
 
-export const Primary: Story = {};
+export const Primary: Story = {
+  args: {
+    defaultChecked: true,
+    toggleColor: 'primary',
+    label: 'Primary toggle',
+  },
+};
 
 export const Colors: Story = {
   render: () => (
@@ -52,12 +73,10 @@ export const Colors: Story = {
         'warning',
         'info',
       ].map((color) => (
-        <HansToggle
-          key={color}
-          label={`Color ${color}`}
-          checked
-          toggleColor={color as Color}
-        />
+        <div key={color} className="flex items-center gap-3">
+          <span className="w-28 text-sm">Color {color}</span>
+          <HansToggle defaultChecked toggleColor={color as Color} />
+        </div>
       ))}
     </div>
   ),
@@ -67,12 +86,10 @@ export const Sizes: Story = {
   render: () => (
     <div className="flex items-center gap-6">
       {['small', 'medium', 'large'].map((size) => (
-        <HansToggle
-          key={size}
-          label={size}
-          checked
-          toggleSize={size as Size}
-        />
+        <div key={size} className="flex items-center gap-2">
+          <span className="text-sm">{size}</span>
+          <HansToggle defaultChecked toggleSize={size as Size} />
+        </div>
       ))}
     </div>
   ),
@@ -80,19 +97,106 @@ export const Sizes: Story = {
 
 export const States: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
-      <HansToggle label="On" checked toggleColor="success" />
-      <HansToggle label="Off" checked={false} />
-      <HansToggle label="On disabled" checked disabled />
-      <HansToggle label="Off disabled" checked={false} disabled />
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-3">
+        <span className="w-24 text-sm">On</span>
+        <HansToggle defaultChecked toggleColor="success" />
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="w-24 text-sm">Off</span>
+        <HansToggle defaultChecked={false} />
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="w-24 text-sm">On disabled</span>
+        <HansToggle checked disabled />
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="w-24 text-sm">Off disabled</span>
+        <HansToggle checked={false} disabled />
+      </div>
     </div>
   ),
 };
 
+export const WithContentAndIcons: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <HansToggle
+        defaultChecked
+        toggleColor="success"
+        leftLabel="Off"
+        rightLabel="On"
+        onContent="ON"
+        offContent="OFF"
+        thumbContent={<HansIcon name="IoMdCheckmark" iconSize="small" />}
+      />
+      <HansToggle
+        defaultChecked={false}
+        toggleColor="danger"
+        onContent={
+          <HansIcon name="IoMdCheckmark" iconSize="small" iconColor="base" />
+        }
+        offContent={
+          <HansIcon name="IoMdClose" iconSize="small" iconColor="base" />
+        }
+        thumbContent={<HansIcon name="IoMdFlash" iconSize="small" />}
+      />
+    </div>
+  ),
+};
+
+export const SideLabels: Story = {
+  args: {
+    label: 'Mode',
+    leftLabel: 'Off',
+    rightLabel: 'On',
+    defaultChecked: true,
+  },
+};
+
+export const Segmented: Story = {
+  args: {
+    label: 'Mode',
+    toggleMode: 'segmented',
+    options: [
+      { label: 'Assistive', value: 'assistive' },
+      { label: 'Expert', value: 'expert' },
+    ],
+    defaultValue: 'assistive',
+    toggleColor: 'primary',
+  },
+};
+
+export const SegmentedWithIcons: Story = {
+  args: {
+    label: 'Theme',
+    toggleMode: 'segmented',
+    options: [
+      {
+        label: 'Day',
+        value: 'day',
+        icon: <HansIcon name="IoMdSunny" iconSize="small" />,
+      },
+      {
+        label: 'Night',
+        value: 'night',
+        icon: <HansIcon name="IoMdMoon" iconSize="small" />,
+      },
+      {
+        label: 'Auto',
+        value: 'auto',
+        icon: <HansIcon name="IoMdDesktop" iconSize="small" />,
+      },
+    ],
+    defaultValue: 'night',
+    toggleColor: 'secondary',
+  },
+};
+
 export const Uncontrolled: Story = {
   args: {
-    label: 'Uncontrolled toggle',
-    defaultChecked: false,
-    checked: undefined,
+    label: 'Uncontrolled',
+    defaultChecked: true,
+    toggleColor: 'success',
   },
 };

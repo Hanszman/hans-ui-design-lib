@@ -12,6 +12,7 @@ import * as HansToggleStories from './Toggle.stories';
 <Title />
 
 The **Toggle** component switches a single setting between on/off states.
+It also supports a segmented mode for selecting one option from multiple values.
 
 ## Usage
 
@@ -21,7 +22,7 @@ import { HansToggle } from 'hans-ui-design-lib';
 export const Example = () => (
   <HansToggle
     label="Enable notifications"
-    checked
+    defaultChecked
     toggleColor="primary"
   />
 );
@@ -55,6 +56,30 @@ The toggle supports small, medium and large sizes.
 Examples of on/off and disabled states.
 
 <Canvas of={HansToggleStories.States} />
+
+## Content And Icons
+
+Use `onContent`, `offContent` and `thumbContent` to place text or icons in the track and thumb.
+
+<Canvas of={HansToggleStories.WithContentAndIcons} />
+
+## Side Labels
+
+Use `leftLabel` and `rightLabel` for external labels.
+
+<Canvas of={HansToggleStories.SideLabels} />
+
+## Segmented
+
+Use `toggleMode="segmented"` with `options` for multi-option selection.
+
+<Canvas of={HansToggleStories.Segmented} />
+
+## Segmented With Icons
+
+Segment options can include icons and more than two choices.
+
+<Canvas of={HansToggleStories.SegmentedWithIcons} />
 
 ## Uncontrolled
 
