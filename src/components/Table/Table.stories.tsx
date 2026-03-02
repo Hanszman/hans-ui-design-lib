@@ -108,12 +108,6 @@ export const CustomColors: Story = {
   },
 };
 
-export const ColumnDividers: Story = {
-  args: {
-    showColumnDividers: true,
-  },
-};
-
 export const ColorThemes: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
@@ -141,6 +135,12 @@ export const ColorThemes: Story = {
   ),
 };
 
+export const ColumnDividers: Story = {
+  args: {
+    showColumnDividers: true,
+  },
+};
+
 export const Alignments: Story = {
   args: {
     columns: [
@@ -149,13 +149,6 @@ export const Alignments: Story = {
       { key: 'team', header: 'Team', align: 'center' },
       { key: 'score', header: 'Score', align: 'right', sortable: true },
     ],
-  },
-};
-
-export const Loading: Story = {
-  args: {
-    isLoading: true,
-    loadingType: 'skeleton',
   },
 };
 
@@ -199,5 +192,12 @@ export const Empty: Story = {
   args: {
     rows: [],
     emptyText: 'No users available for this query',
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+    loadingType: 'skeleton',
   },
 };
