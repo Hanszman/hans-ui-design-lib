@@ -19,7 +19,9 @@ describe('Toggle.helper', () => {
   });
 
   it('Should return off class for unchecked toggle', () => {
-    expect(getToggleColorClass(false, false, 'primary')).toBe('hans-toggle-off');
+    expect(getToggleColorClass(false, false, 'primary')).toBe(
+      'hans-toggle-off',
+    );
   });
 
   it('Should return off disabled class when unchecked and disabled', () => {

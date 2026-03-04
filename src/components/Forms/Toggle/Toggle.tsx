@@ -40,19 +40,23 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
   } = props;
 
   const normalizedColor = normalizeToggleColor(toggleColor);
-
   const [internalChecked, setInternalChecked] = React.useState(defaultChecked);
   const isSwitchControlled = typeof checked !== 'undefined';
   const isChecked = isSwitchControlled ? checked : internalChecked;
-  const switchColorClass = getToggleColorClass(isChecked, disabled, normalizedColor);
-
+  const switchColorClass = getToggleColorClass(
+    isChecked,
+    disabled,
+    normalizedColor,
+  );
   const [internalValue, setInternalValue] = React.useState(
     defaultValue || options[0]?.value || '',
   );
   const isSegmentedControlled = typeof value !== 'undefined';
   const selectedValue = isSegmentedControlled ? value : internalValue;
-
-  const maxTrackContentLength = Math.max(getContentLength(onContent), getContentLength(offContent));
+  const maxTrackContentLength = Math.max(
+    getContentLength(onContent),
+    getContentLength(offContent),
+  );
   const shouldExpandSwitch = maxTrackContentLength > 0;
   const computedWidth = getSwitchWidth(toggleSize, onContent, offContent);
   const computedStyle = buildToggleStyle(
@@ -115,7 +119,9 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
                   }
                 >
                   {option.icon ? (
-                    <span className="hans-toggle-segment-icon">{option.icon}</span>
+                    <span className="hans-toggle-segment-icon">
+                      {option.icon}
+                    </span>
                   ) : null}
                   <span>{option.label}</span>
                 </button>
@@ -139,7 +145,9 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
       ) : null}
       <div className="hans-toggle-switch-row">
         {leftLabel ? (
-          <span className={`hans-toggle-side-label hans-toggle-label-${labelColor}`}>
+          <span
+            className={`hans-toggle-side-label hans-toggle-label-${labelColor}`}
+          >
             {leftLabel}
           </span>
         ) : null}
@@ -189,7 +197,9 @@ export const HansToggle = React.memo((props: HansToggleProps) => {
           </button>
         )}
         {rightLabel ? (
-          <span className={`hans-toggle-side-label hans-toggle-label-${labelColor}`}>
+          <span
+            className={`hans-toggle-side-label hans-toggle-label-${labelColor}`}
+          >
             {rightLabel}
           </span>
         ) : null}

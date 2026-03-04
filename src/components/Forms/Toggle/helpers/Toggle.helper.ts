@@ -1,6 +1,12 @@
 import React from 'react';
 import type { Size, Color } from '../../../../types/Common.types';
 
+export const TOGGLE_SIZE_CONFIG = {
+  small: { base: 42, max: 88, perChar: 7 },
+  medium: { base: 52, max: 112, perChar: 8 },
+  large: { base: 66, max: 140, perChar: 9 },
+} as const;
+
 export const normalizeToggleColor = (toggleColor: Color): Color =>
   toggleColor === 'base' ? 'primary' : toggleColor;
 
@@ -14,12 +20,6 @@ export const getToggleColorClass = (
   if (checked && disabled) return 'hans-toggle-on-disabled';
   return `hans-toggle-on-${normalizedColor}`;
 };
-
-const TOGGLE_SIZE_CONFIG = {
-  small: { base: 42, max: 88, perChar: 7 },
-  medium: { base: 52, max: 112, perChar: 8 },
-  large: { base: 66, max: 140, perChar: 9 },
-} as const;
 
 export const getLoadingSizeFromToggleSize = (toggleSize: Size): Size => {
   if (toggleSize === 'small') return 'small';

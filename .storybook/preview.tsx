@@ -35,6 +35,11 @@ export const globalTypes = {
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        order: ['Getting Started', 'Color System', 'Components'],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

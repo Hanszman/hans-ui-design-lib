@@ -13,12 +13,7 @@ describe('HansToggle', () => {
 
   it('Should toggle uncontrolled state and call onChange', () => {
     const onChange = vi.fn();
-    render(
-      <HansToggle
-        defaultChecked={false}
-        onChange={onChange}
-      />,
-    );
+    render(<HansToggle defaultChecked={false} onChange={onChange} />);
     const toggle = screen.getByRole('switch');
     fireEvent.click(toggle);
     expect(toggle).toHaveAttribute('aria-checked', 'true');
@@ -202,7 +197,9 @@ describe('HansToggle', () => {
         ]}
       />,
     );
-    expect(screen.getByLabelText('Loading segmented toggle')).toBeInTheDocument();
+    expect(
+      screen.getByLabelText('Loading segmented toggle'),
+    ).toBeInTheDocument();
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
   });
 });

@@ -28,7 +28,9 @@
 
 .hans-toggle:focus-visible {
   @apply outline-none;
-  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--primary-default-color);
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 0 0 4px var(--primary-default-color);
 }
 
 .hans-toggle:disabled {
