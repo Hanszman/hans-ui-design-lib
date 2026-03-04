@@ -95,9 +95,34 @@ describe('HansTabs', () => {
 
   it('Should render loading state for headers and content', () => {
     render(<HansTabs tabs={tabs} loading />);
-    expect(screen.getAllByLabelText('Loading tab header')).toHaveLength(3);
+    expect(screen.getAllByLabelText('Loading tab header')).toHaveLength(1);
     expect(screen.getByLabelText('Loading tab content')).toBeInTheDocument();
     expect(screen.queryByRole('tab', { name: 'One' })).not.toBeInTheDocument();
+  });
+
+  it('Should apply per-tab color and variant on active tab and content', () => {
+    render(
+      <HansTabs
+        tabs={[
+          {
+            id: 'one',
+            title: 'One',
+            content: <p>Content one</p>,
+            tabColor: 'danger',
+            tabVariant: 'default',
+          },
+          { id: 'two', title: 'Two', content: <p>Content two</p> },
+        ]}
+        defaultActiveTabId="one"
+      />,
+    );
+
+    const activeTab = screen.getByRole('tab', { name: 'One' });
+    expect(activeTab.className).toContain('hans-tab-danger');
+    expect(activeTab.className).toContain('hans-tab-default');
+    expect(screen.getByRole('tabpanel').className).toContain(
+      'hans-tabs-content-danger',
+    );
   });
 
   it('Should close tab using keyboard on close action', () => {

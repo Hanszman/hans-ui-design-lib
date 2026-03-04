@@ -44,10 +44,21 @@ Tabs support `small`, `medium`, and `large` sizes.
 
 ## Colors
 
-Use `tabsColor` to style the active tab.
-When `tabsColor="base"`, it falls back to the primary style.
+Use `tabsColor` to style the active tab and content area.
 
 <Canvas of={HansTabsStories.Colors} />
+
+## Variants
+
+Use `tabsVariant` with the same variant logic used by `HansButton`.
+
+<Canvas of={HansTabsStories.Variants} />
+
+## Per Tab Colors
+
+Each item in `tabs` accepts `tabColor` and `tabVariant` to style tabs independently.
+
+<Canvas of={HansTabsStories.PerTabAppearance} />
 
 ## Closable Tabs
 

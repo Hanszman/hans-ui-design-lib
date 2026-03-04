@@ -1,50 +1,59 @@
 .hans-tabs-wrapper {
-  @apply flex w-full flex-col gap-3;
+  @apply flex w-full flex-col;
 }
 
 .hans-tabs-header {
-  @apply flex w-full flex-wrap items-center gap-2 border-b border-[var(--base-neutral-color)] pb-2;
+  @apply flex w-full flex-wrap items-end border-b border-[var(--base-neutral-color)];
 }
 
 .hans-tabs-header-small {
-  @apply gap-1.5;
+  @apply text-xs;
 }
 
 .hans-tabs-header-medium {
-  @apply gap-2;
+  @apply text-sm;
 }
 
 .hans-tabs-header-large {
-  @apply gap-2.5;
+  @apply text-base;
 }
 
 .hans-tab {
-  @apply inline-flex items-center gap-2 rounded-lg border border-transparent bg-transparent transition-colors duration-200;
+  @apply relative inline-flex cursor-pointer items-center justify-center gap-2 border transition-colors duration-200;
+  @apply rounded-t-xl rounded-b-none;
+  margin-right: -1px;
   color: var(--base-default-color);
+  border-color: transparent;
 }
 
 .hans-tab-small {
-  @apply px-2.5 py-1 text-xs;
+  @apply min-h-9 px-3 py-1.5;
 }
 
 .hans-tab-medium {
-  @apply px-3 py-1.5 text-sm;
+  @apply min-h-10 px-4 py-2;
 }
 
 .hans-tab-large {
-  @apply px-4 py-2 text-base;
-}
-
-.hans-tab:hover {
-  @apply bg-[var(--base-neutral-color)];
+  @apply min-h-11 px-5 py-2.5;
 }
 
 .hans-tab-active {
-  @apply font-semibold;
+  @apply z-10 font-semibold;
+  margin-bottom: -1px;
+  border-bottom-color: transparent;
 }
 
 .hans-tab-disabled {
   @apply cursor-not-allowed opacity-60;
+}
+
+.hans-tab:not(.hans-tab-active):not(.hans-tab-disabled) {
+  @apply opacity-80;
+}
+
+.hans-tab:not(.hans-tab-active):not(.hans-tab-disabled):hover {
+  @apply opacity-100;
 }
 
 .hans-tab-close-wrapper {
@@ -52,7 +61,8 @@
 }
 
 .hans-tab-close {
-  @apply inline-flex cursor-pointer items-center justify-center;
+  @apply inline-flex cursor-pointer items-center justify-center rounded-full;
+  @apply h-5 w-5;
 }
 
 .hans-tab-close .hans-icon {
@@ -63,39 +73,8 @@
   @apply whitespace-nowrap;
 }
 
-.hans-tab-primary.hans-tab-active {
-  @apply border-[var(--primary-default-color)] bg-[var(--primary-neutral-color)];
-  color: var(--primary-strong-color);
-}
-
-.hans-tab-secondary.hans-tab-active {
-  @apply border-[var(--secondary-default-color)] bg-[var(--secondary-neutral-color)];
-  color: var(--secondary-strong-color);
-}
-
-.hans-tab-success.hans-tab-active {
-  @apply border-[var(--success-default-color)] bg-[var(--success-neutral-color)];
-  color: var(--success-strong-color);
-}
-
-.hans-tab-danger.hans-tab-active {
-  @apply border-[var(--danger-default-color)] bg-[var(--danger-neutral-color)];
-  color: var(--danger-strong-color);
-}
-
-.hans-tab-warning.hans-tab-active {
-  @apply border-[var(--warning-default-color)] bg-[var(--warning-neutral-color)];
-  color: var(--warning-strong-color);
-}
-
-.hans-tab-info.hans-tab-active {
-  @apply border-[var(--info-default-color)] bg-[var(--info-neutral-color)];
-  color: var(--info-strong-color);
-}
-
 .hans-tabs-content {
-  @apply rounded-xl border border-[var(--base-neutral-color)] bg-[var(--white)] p-4;
-  color: var(--base-strong-color);
+  @apply rounded-b-xl rounded-t-none border p-4;
 }
 
 .hans-tabs-empty {
@@ -104,9 +83,184 @@
 }
 
 .hans-tabs-header-loading {
-  @apply rounded-lg;
+  @apply rounded-t-xl rounded-b-none;
 }
 
 .hans-tabs-content-loading {
-  @apply rounded-lg;
+  @apply rounded-b-xl rounded-t-none;
+}
+
+.hans-tab-base.hans-tab-strong,
+.hans-tabs-content-base.hans-tabs-content-strong {
+  @apply border-[var(--base-strong-color)] bg-[var(--base-strong-color)] text-[var(--base-neutral-color)];
+}
+
+.hans-tab-base.hans-tab-default,
+.hans-tabs-content-base.hans-tabs-content-default {
+  @apply border-[var(--base-default-color)] bg-[var(--base-default-color)] text-[var(--white)];
+}
+
+.hans-tab-base.hans-tab-neutral,
+.hans-tabs-content-base.hans-tabs-content-neutral {
+  @apply border-[var(--base-neutral-color)] bg-[var(--base-neutral-color)] text-[var(--base-strong-color)];
+}
+
+.hans-tab-base.hans-tab-outline,
+.hans-tabs-content-base.hans-tabs-content-outline {
+  @apply border-[var(--base-default-color)] bg-[var(--white)] text-[var(--text-color)];
+}
+
+.hans-tab-base.hans-tab-transparent,
+.hans-tabs-content-base.hans-tabs-content-transparent {
+  @apply border-transparent bg-transparent text-[var(--text-color)];
+}
+
+.hans-tab-primary.hans-tab-strong,
+.hans-tabs-content-primary.hans-tabs-content-strong {
+  @apply border-[var(--primary-strong-color)] bg-[var(--primary-strong-color)] text-[var(--primary-neutral-color)];
+}
+
+.hans-tab-primary.hans-tab-default,
+.hans-tabs-content-primary.hans-tabs-content-default {
+  @apply border-[var(--primary-default-color)] bg-[var(--primary-default-color)] text-[var(--white)];
+}
+
+.hans-tab-primary.hans-tab-neutral,
+.hans-tabs-content-primary.hans-tabs-content-neutral {
+  @apply border-[var(--primary-neutral-color)] bg-[var(--primary-neutral-color)] text-[var(--primary-strong-color)];
+}
+
+.hans-tab-primary.hans-tab-outline,
+.hans-tabs-content-primary.hans-tabs-content-outline {
+  @apply border-[var(--primary-default-color)] bg-[var(--white)] text-[var(--primary-strong-color)];
+}
+
+.hans-tab-primary.hans-tab-transparent,
+.hans-tabs-content-primary.hans-tabs-content-transparent {
+  @apply border-transparent bg-transparent text-[var(--primary-default-color)];
+}
+
+.hans-tab-secondary.hans-tab-strong,
+.hans-tabs-content-secondary.hans-tabs-content-strong {
+  @apply border-[var(--secondary-strong-color)] bg-[var(--secondary-strong-color)] text-[var(--secondary-neutral-color)];
+}
+
+.hans-tab-secondary.hans-tab-default,
+.hans-tabs-content-secondary.hans-tabs-content-default {
+  @apply border-[var(--secondary-default-color)] bg-[var(--secondary-default-color)] text-[var(--white)];
+}
+
+.hans-tab-secondary.hans-tab-neutral,
+.hans-tabs-content-secondary.hans-tabs-content-neutral {
+  @apply border-[var(--secondary-neutral-color)] bg-[var(--secondary-neutral-color)] text-[var(--secondary-strong-color)];
+}
+
+.hans-tab-secondary.hans-tab-outline,
+.hans-tabs-content-secondary.hans-tabs-content-outline {
+  @apply border-[var(--secondary-default-color)] bg-[var(--white)] text-[var(--secondary-strong-color)];
+}
+
+.hans-tab-secondary.hans-tab-transparent,
+.hans-tabs-content-secondary.hans-tabs-content-transparent {
+  @apply border-transparent bg-transparent text-[var(--secondary-default-color)];
+}
+
+.hans-tab-success.hans-tab-strong,
+.hans-tabs-content-success.hans-tabs-content-strong {
+  @apply border-[var(--success-strong-color)] bg-[var(--success-strong-color)] text-[var(--success-neutral-color)];
+}
+
+.hans-tab-success.hans-tab-default,
+.hans-tabs-content-success.hans-tabs-content-default {
+  @apply border-[var(--success-default-color)] bg-[var(--success-default-color)] text-[var(--white)];
+}
+
+.hans-tab-success.hans-tab-neutral,
+.hans-tabs-content-success.hans-tabs-content-neutral {
+  @apply border-[var(--success-neutral-color)] bg-[var(--success-neutral-color)] text-[var(--success-strong-color)];
+}
+
+.hans-tab-success.hans-tab-outline,
+.hans-tabs-content-success.hans-tabs-content-outline {
+  @apply border-[var(--success-default-color)] bg-[var(--white)] text-[var(--success-strong-color)];
+}
+
+.hans-tab-success.hans-tab-transparent,
+.hans-tabs-content-success.hans-tabs-content-transparent {
+  @apply border-transparent bg-transparent text-[var(--success-default-color)];
+}
+
+.hans-tab-danger.hans-tab-strong,
+.hans-tabs-content-danger.hans-tabs-content-strong {
+  @apply border-[var(--danger-strong-color)] bg-[var(--danger-strong-color)] text-[var(--danger-neutral-color)];
+}
+
+.hans-tab-danger.hans-tab-default,
+.hans-tabs-content-danger.hans-tabs-content-default {
+  @apply border-[var(--danger-default-color)] bg-[var(--danger-default-color)] text-[var(--white)];
+}
+
+.hans-tab-danger.hans-tab-neutral,
+.hans-tabs-content-danger.hans-tabs-content-neutral {
+  @apply border-[var(--danger-neutral-color)] bg-[var(--danger-neutral-color)] text-[var(--danger-strong-color)];
+}
+
+.hans-tab-danger.hans-tab-outline,
+.hans-tabs-content-danger.hans-tabs-content-outline {
+  @apply border-[var(--danger-default-color)] bg-[var(--white)] text-[var(--danger-strong-color)];
+}
+
+.hans-tab-danger.hans-tab-transparent,
+.hans-tabs-content-danger.hans-tabs-content-transparent {
+  @apply border-transparent bg-transparent text-[var(--danger-default-color)];
+}
+
+.hans-tab-warning.hans-tab-strong,
+.hans-tabs-content-warning.hans-tabs-content-strong {
+  @apply border-[var(--warning-strong-color)] bg-[var(--warning-strong-color)] text-[var(--warning-neutral-color)];
+}
+
+.hans-tab-warning.hans-tab-default,
+.hans-tabs-content-warning.hans-tabs-content-default {
+  @apply border-[var(--warning-default-color)] bg-[var(--warning-default-color)] text-[var(--white)];
+}
+
+.hans-tab-warning.hans-tab-neutral,
+.hans-tabs-content-warning.hans-tabs-content-neutral {
+  @apply border-[var(--warning-neutral-color)] bg-[var(--warning-neutral-color)] text-[var(--warning-strong-color)];
+}
+
+.hans-tab-warning.hans-tab-outline,
+.hans-tabs-content-warning.hans-tabs-content-outline {
+  @apply border-[var(--warning-default-color)] bg-[var(--white)] text-[var(--warning-strong-color)];
+}
+
+.hans-tab-warning.hans-tab-transparent,
+.hans-tabs-content-warning.hans-tabs-content-transparent {
+  @apply border-transparent bg-transparent text-[var(--warning-default-color)];
+}
+
+.hans-tab-info.hans-tab-strong,
+.hans-tabs-content-info.hans-tabs-content-strong {
+  @apply border-[var(--info-strong-color)] bg-[var(--info-strong-color)] text-[var(--info-neutral-color)];
+}
+
+.hans-tab-info.hans-tab-default,
+.hans-tabs-content-info.hans-tabs-content-default {
+  @apply border-[var(--info-default-color)] bg-[var(--info-default-color)] text-[var(--white)];
+}
+
+.hans-tab-info.hans-tab-neutral,
+.hans-tabs-content-info.hans-tabs-content-neutral {
+  @apply border-[var(--info-neutral-color)] bg-[var(--info-neutral-color)] text-[var(--info-strong-color)];
+}
+
+.hans-tab-info.hans-tab-outline,
+.hans-tabs-content-info.hans-tabs-content-outline {
+  @apply border-[var(--info-default-color)] bg-[var(--white)] text-[var(--info-strong-color)];
+}
+
+.hans-tab-info.hans-tab-transparent,
+.hans-tabs-content-info.hans-tabs-content-transparent {
+  @apply border-transparent bg-transparent text-[var(--info-default-color)];
 }

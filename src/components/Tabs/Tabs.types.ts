@@ -3,7 +3,7 @@ import {
   createPropsList,
   type InferPropsFromSchema,
 } from '../../types/Schema.types';
-import type { Color, Size } from '../../types/Common.types';
+import type { Color, Size, Variant } from '../../types/Common.types';
 
 export type HansTabItem = {
   id: string;
@@ -11,6 +11,8 @@ export type HansTabItem = {
   content: React.ReactNode;
   disabled?: boolean;
   closable?: boolean;
+  tabColor?: Color;
+  tabVariant?: Variant;
 };
 
 const HansTabsSchema = {
@@ -18,6 +20,7 @@ const HansTabsSchema = {
   activeTabId: 'string',
   defaultActiveTabId: 'string',
   tabsColor: { type: 'custom', ref: {} as Color },
+  tabsVariant: { type: 'custom', ref: {} as Variant },
   tabsSize: { type: 'custom', ref: {} as Size },
   showCloseButton: 'boolean',
   loading: 'boolean',

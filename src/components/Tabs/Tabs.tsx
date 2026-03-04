@@ -3,10 +3,13 @@ import { HansIcon } from '../Icon/Icon';
 import { HansLoading } from '../Loading/Loading';
 import type { HansTabsProps } from './Tabs.types';
 import {
+  getHeaderLoadingHeight,
   getInitialActiveTabId,
-  getNextActiveTabIdAfterClose,
+  getResolvedTabAppearance,
   getResolvedActiveTabId,
   getTabsColorClass,
+  handleCloseTabAction,
+  handleTabClickAction,
 } from './helpers/Tabs.helper';
 
 export const HansTabs = React.memo((props: HansTabsProps) => {
@@ -14,7 +17,8 @@ export const HansTabs = React.memo((props: HansTabsProps) => {
     tabs = [],
     activeTabId,
     defaultActiveTabId = '',
-    tabsColor = 'primary',
+    tabsColor = 'base',
+    tabsVariant = 'outline',
     tabsSize = 'medium',
     showCloseButton = false,
     loading = false,
@@ -54,36 +58,37 @@ export const HansTabs = React.memo((props: HansTabsProps) => {
     internalTabs,
   );
   const activeTab = internalTabs.find((tab) => tab.id === resolvedActiveTabId);
-  const headerLoadingHeightBySize = {
-    small: '28px',
-    medium: '34px',
-    large: '34px',
-  } as const;
-  const headerLoadingHeight = headerLoadingHeightBySize[tabsSize];
+  const headerLoadingHeight = getHeaderLoadingHeight(tabsSize);
+  const isControlled = typeof activeTabId !== 'undefined';
+  const activeTabAppearance = activeTab
+    ? getResolvedTabAppearance(activeTab, normalizedColor, tabsVariant)
+    : null;
 
   const handleTabClick = (tabId: string) => {
-    if (typeof activeTabId === 'undefined') setInternalActiveTabId(tabId);
-    if (onTabChange) onTabChange(tabId);
+    handleTabClickAction({
+      tabId,
+      isControlled,
+      setInternalActiveTabId,
+      onTabChange,
+    });
   };
 
   const handleCloseTab = (
     event: React.MouseEvent<HTMLElement>,
     tabId: string,
   ) => {
-    event.stopPropagation();
-    const remainingTabs = internalTabs.filter((tab) => tab.id !== tabId);
-    const nextActiveTabId = getNextActiveTabIdAfterClose(
+    handleCloseTabAction({
+      event,
       tabId,
+      internalTabs,
       resolvedActiveTabId,
-      remainingTabs,
-    );
-
-    setInternalTabs(remainingTabs);
-    if (typeof activeTabId === 'undefined')
-      setInternalActiveTabId(nextActiveTabId);
-    if (onTabsChange) onTabsChange(remainingTabs);
-    if (onTabClose) onTabClose(tabId);
-    if (nextActiveTabId && onTabChange) onTabChange(nextActiveTabId);
+      isControlled,
+      setInternalTabs,
+      setInternalActiveTabId,
+      onTabsChange,
+      onTabClose,
+      onTabChange,
+    });
   };
 
   return (
@@ -107,6 +112,11 @@ export const HansTabs = React.memo((props: HansTabsProps) => {
         ) : (
           internalTabs.map((tab) => {
             const isActive = tab.id === resolvedActiveTabId;
+            const { color, variant } = getResolvedTabAppearance(
+              tab,
+              normalizedColor,
+              tabsVariant,
+            );
             const canClose = showCloseButton || tab.closable;
             return (
               <button
@@ -118,7 +128,8 @@ export const HansTabs = React.memo((props: HansTabsProps) => {
                 className={`
                   hans-tab
                   hans-tab-${tabsSize}
-                  hans-tab-${normalizedColor}
+                  hans-tab-${color}
+                  hans-tab-${variant}
                   ${isActive ? 'hans-tab-active' : ''}
                   ${tab.disabled ? 'hans-tab-disabled' : ''}
                 `}
@@ -144,7 +155,7 @@ export const HansTabs = React.memo((props: HansTabsProps) => {
                         }
                       }}
                     >
-                      <HansIcon name="IoIosCloseCircle" iconSize="small" />
+                      <HansIcon name="IoIosCloseCircle" iconSize="medium" />
                     </span>
                   </span>
                 ) : null}
@@ -154,7 +165,17 @@ export const HansTabs = React.memo((props: HansTabsProps) => {
         )}
       </div>
 
-      <div className="hans-tabs-content" role="tabpanel">
+      <div
+        className={`
+          hans-tabs-content
+          ${
+            activeTabAppearance
+              ? `hans-tabs-content-${activeTabAppearance.color} hans-tabs-content-${activeTabAppearance.variant}`
+              : ''
+          }
+        `}
+        role="tabpanel"
+      >
         {loading ? (
           <HansLoading
             loadingType="skeleton"

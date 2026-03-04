@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { Color, Size } from '../../types/Common.types';
+import type { Color, Size, Variant } from '../../types/Common.types';
 import { HansTabs } from './Tabs';
 import DocsPage from './Tabs.mdx';
 
@@ -26,7 +26,8 @@ const meta: Meta<typeof HansTabs> = {
   component: HansTabs,
   args: {
     tabs: tabsBase,
-    tabsColor: 'primary',
+    tabsColor: 'base',
+    tabsVariant: 'outline',
     tabsSize: 'medium',
     showCloseButton: false,
     loading: false,
@@ -47,6 +48,10 @@ const meta: Meta<typeof HansTabs> = {
     tabsSize: {
       control: 'select',
       options: ['small', 'medium', 'large'],
+    },
+    tabsVariant: {
+      control: 'select',
+      options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
     },
   },
   parameters: {
@@ -101,6 +106,54 @@ export const Colors: Story = {
       ))}
     </div>
   ),
+};
+
+export const Variants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {['strong', 'default', 'neutral', 'outline', 'transparent'].map(
+        (variant) => (
+          <HansTabs
+            key={variant}
+            tabsColor="primary"
+            tabsVariant={variant as Variant}
+            tabs={tabsBase}
+            inputId={`tabs-variant-${variant}`}
+          />
+        ),
+      )}
+    </div>
+  ),
+};
+
+export const PerTabAppearance: Story = {
+  args: {
+    tabsColor: 'base',
+    tabsVariant: 'outline',
+    tabs: [
+      {
+        id: 'overview',
+        title: 'Overview',
+        content: <p>Overview content</p>,
+        tabColor: 'primary',
+        tabVariant: 'default',
+      },
+      {
+        id: 'details',
+        title: 'Details',
+        content: <p>Details content</p>,
+        tabColor: 'success',
+        tabVariant: 'neutral',
+      },
+      {
+        id: 'settings',
+        title: 'Settings',
+        content: <p>Settings content</p>,
+        tabColor: 'danger',
+        tabVariant: 'outline',
+      },
+    ],
+  },
 };
 
 export const ClosableTabs: Story = {
