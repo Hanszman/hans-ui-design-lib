@@ -36,11 +36,11 @@
 }
 
 .hans-button-base.hans-button-outline {
-  @apply bg-transparent text-[var(--base-strong-color)] border-[var(--base-default-color)] outline;
+  @apply bg-transparent text-[var(--text-color)] border-[var(--base-default-color)] outline;
 }
 
 .hans-button-base.hans-button-transparent {
-  @apply bg-transparent text-[var(--base-strong-color)];
+  @apply bg-transparent text-[var(--text-color)];
 }
 
 .hans-button-primary.hans-button-strong {
