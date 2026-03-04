@@ -6,7 +6,7 @@ import type {
   HansTableSortState,
 } from '../Table.types';
 
-const getTokenColor = (
+export const getTokenColor = (
   color: NonNullable<HansTableProps['headerColor']>,
   tone: 'strong' | 'default' | 'neutral',
 ): string => `var(--${color}-${tone}-color)`;
@@ -37,7 +37,7 @@ export const formatTableCellValue = (value: unknown): string => {
   return JSON.stringify(value);
 };
 
-const getComparableValue = (value: unknown): string | number => {
+export const getComparableValue = (value: unknown): string | number => {
   if (typeof value === 'number') return value;
   if (typeof value === 'string') return value.toLowerCase();
   if (typeof value === 'boolean') return Number(value);
@@ -135,11 +135,17 @@ export const getTableStyleVars = ({
 >): React.CSSProperties =>
   ({
     '--hans-table-header-bg': getTokenColor(headerColor, 'strong'),
-    '--hans-table-header-text': getTokenColor(headerTextColor ?? headerColor, 'neutral'),
+    '--hans-table-header-text': getTokenColor(
+      headerTextColor ?? headerColor,
+      'neutral',
+    ),
     '--hans-table-row-bg':
       rowColor === 'base' ? 'var(--white)' : getTokenColor(rowColor, 'neutral'),
     '--hans-table-row-text': getTokenColor(rowTextColor ?? rowColor, 'strong'),
     '--hans-table-border': getTokenColor(borderColor ?? 'base', 'default'),
     '--hans-table-divider': getTokenColor(dividerColor ?? 'base', 'neutral'),
-    '--hans-table-row-hover': getTokenColor(rowHoverColor ?? rowColor, 'default'),
+    '--hans-table-row-hover': getTokenColor(
+      rowHoverColor ?? rowColor,
+      'default',
+    ),
   }) as React.CSSProperties;

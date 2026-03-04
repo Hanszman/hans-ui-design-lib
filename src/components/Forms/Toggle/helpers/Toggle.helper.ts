@@ -1,5 +1,9 @@
-import React from 'react';
+import type React from 'react';
 import type { Size, Color } from '../../../../types/Common.types';
+import type {
+  OptionSelectHandlerParams,
+  SwitchToggleHandlerParams,
+} from './Toggle.helper.types';
 
 export const TOGGLE_SIZE_CONFIG = {
   small: { base: 42, max: 88, perChar: 7 },
@@ -67,14 +71,6 @@ export const buildToggleStyle = (
   ...(computedWidth ? { width: `${computedWidth}px` } : {}),
 });
 
-type SwitchToggleHandlerParams = {
-  disabled: boolean;
-  isChecked: boolean;
-  isControlled: boolean;
-  setInternalChecked: React.Dispatch<React.SetStateAction<boolean>>;
-  onChange?: (checked: boolean) => void;
-};
-
 export const handleSwitchToggle = ({
   disabled,
   isChecked,
@@ -86,15 +82,6 @@ export const handleSwitchToggle = ({
   const nextValue = !isChecked;
   if (!isControlled) setInternalChecked(nextValue);
   if (onChange) onChange(nextValue);
-};
-
-type OptionSelectHandlerParams = {
-  disabled: boolean;
-  optionDisabled?: boolean;
-  nextValue: string;
-  isControlled: boolean;
-  setInternalValue: React.Dispatch<React.SetStateAction<string>>;
-  onValueChange?: (value: string) => void;
 };
 
 export const handleOptionSelect = ({

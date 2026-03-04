@@ -10,8 +10,11 @@
 Prompt:
 Show de bola, ficou ótimo! obrigado!
 Agora vamos seguir o mesmo padrão que estamos adotando de criação de componente, seguindo clean code, dry, srp, test:coverage 100%, código tem que passar nos builds e no lint, etc... com aquele mesmo padrão com os 6 arquivos (tsx,scss,types,test,mdx,stories) e com os helpers (e test) quando necessario.
-e vamos criar o componente: [COMPONENT]...
-na pasta que já criei com o nome dele...
-ele deve: ...
-Documente bem e coloque exemplo de todos os casos e cenários no mdx/stories.
-enfim! faça o componente por favor, te dou acesso a todo o repo/workspace, pode editável conforme for necessário
+Algumas observações:
+-Documente bem e coloque exemplo de todos os casos e cenários no mdx/stories.
+-Se o componente ficar muito grande, passe a lógica específica para um helper ou um subcomponente (ai no subcomponente crie uma pasta dentro do componente pai pra ele e dentro dela crie cada um dos arquivos necessários: tsx, scss, test, types)
+-Se o helper ou algum componente filho precisar de tipos específicos, lembre de separar desse arquivo e criar um arquivo de types específico para ele
+Siga o padrão acima e vamos criar o componente: [COMPONENT]...
+na pasta que já criei com o nome dele.
+Ele deve: ...
+Enfim! faça o componente por favor, te dou acesso a todo o repo/workspace, pode editável conforme for necessário
