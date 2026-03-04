@@ -12,6 +12,7 @@
 @import '../components/Loading/loading.scss';
 @import '../components/Icon/icon.scss';
 @import '../components/Table/table.scss';
+@import '../components/Tabs/tabs.scss';
 
 /* Custom variables */
 @import './colors.scss';

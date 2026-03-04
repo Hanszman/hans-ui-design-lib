@@ -13,6 +13,7 @@ export * from './components/Chart/Chart';
 export * from './components/Icon/Icon';
 export * from './components/Loading/Loading';
 export * from './components/Table/Table';
+export * from './components/Tabs/Tabs';
 
 // Types:
 export * from './components/Forms/Button/Button.types';
@@ -24,3 +25,4 @@ export * from './components/Chart/Chart.types';
 export * from './components/Icon/Icon.types';
 export * from './components/Loading/Loading.types';
 export * from './components/Table/Table.types';
+export * from './components/Tabs/Tabs.types';

@@ -1,0 +1,80 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansTabsStories from './Tabs.stories';
+
+<Meta of={HansTabsStories} />
+
+<Title />
+
+The **Tabs** component organizes content by sections and lets users switch between them.
+
+## Usage
+
+```tsx
+import { HansTabs } from 'hans-ui-design-lib';
+
+const tabs = [
+  { id: 'overview', title: 'Overview', content: <p>Overview content</p> },
+  { id: 'details', title: 'Details', content: <p>Details content</p> },
+];
+
+export const Example = () => <HansTabs tabs={tabs} />;
+```
+
+Then, you can use the component in your template. Here is a basic example:
+
+<Primary />
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Sizes
+
+Tabs support `small`, `medium`, and `large` sizes.
+
+<Canvas of={HansTabsStories.Sizes} />
+
+## Colors
+
+Use `tabsColor` to style the active tab.
+When `tabsColor="base"`, it falls back to the primary style.
+
+<Canvas of={HansTabsStories.Colors} />
+
+## Closable Tabs
+
+Enable `showCloseButton` to show the close icon (`IoIosCloseCircle`) on each tab.
+
+<Canvas of={HansTabsStories.ClosableTabs} />
+
+## Per Tab Close
+
+Use `closable: true` in specific tabs to make close optional per tab.
+
+<Canvas of={HansTabsStories.PerTabClosable} />
+
+## Disabled Tabs
+
+Disabled tabs stay visible but cannot be selected.
+
+<Canvas of={HansTabsStories.DisabledTab} />
+
+## Empty State
+
+If no tabs are provided, the component shows `emptyText`.
+
+<Canvas of={HansTabsStories.EmptyState} />
+
+## Loading
+
+Use `loading` to render skeleton placeholders in tab headers and content.
+
+<Canvas of={HansTabsStories.Loading} />

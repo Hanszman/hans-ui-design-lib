@@ -50,6 +50,11 @@ import {
   type HansTableProps,
   HansTablePropsList,
 } from './components/Table/Table.types';
+import { HansTabs } from './components/Tabs/Tabs';
+import {
+  type HansTabsProps,
+  HansTabsPropsList,
+} from './components/Tabs/Tabs.types';
 
 registerReactAsWebComponent<HansButtonProps>(
   'hans-button',
@@ -100,4 +105,9 @@ registerReactAsWebComponent<HansTableProps>(
   'hans-table',
   HansTable,
   HansTablePropsList,
+);
+registerReactAsWebComponent<HansTabsProps>(
+  'hans-tabs',
+  HansTabs,
+  HansTabsPropsList,
 );

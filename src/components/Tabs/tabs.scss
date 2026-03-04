@@ -1,0 +1,112 @@
+.hans-tabs-wrapper {
+  @apply flex w-full flex-col gap-3;
+}
+
+.hans-tabs-header {
+  @apply flex w-full flex-wrap items-center gap-2 border-b border-[var(--base-neutral-color)] pb-2;
+}
+
+.hans-tabs-header-small {
+  @apply gap-1.5;
+}
+
+.hans-tabs-header-medium {
+  @apply gap-2;
+}
+
+.hans-tabs-header-large {
+  @apply gap-2.5;
+}
+
+.hans-tab {
+  @apply inline-flex items-center gap-2 rounded-lg border border-transparent bg-transparent transition-colors duration-200;
+  color: var(--base-default-color);
+}
+
+.hans-tab-small {
+  @apply px-2.5 py-1 text-xs;
+}
+
+.hans-tab-medium {
+  @apply px-3 py-1.5 text-sm;
+}
+
+.hans-tab-large {
+  @apply px-4 py-2 text-base;
+}
+
+.hans-tab:hover {
+  @apply bg-[var(--base-neutral-color)];
+}
+
+.hans-tab-active {
+  @apply font-semibold;
+}
+
+.hans-tab-disabled {
+  @apply cursor-not-allowed opacity-60;
+}
+
+.hans-tab-close-wrapper {
+  @apply inline-flex items-center;
+}
+
+.hans-tab-close {
+  @apply inline-flex cursor-pointer items-center justify-center;
+}
+
+.hans-tab-close .hans-icon {
+  color: inherit;
+}
+
+.hans-tab-title {
+  @apply whitespace-nowrap;
+}
+
+.hans-tab-primary.hans-tab-active {
+  @apply border-[var(--primary-default-color)] bg-[var(--primary-neutral-color)];
+  color: var(--primary-strong-color);
+}
+
+.hans-tab-secondary.hans-tab-active {
+  @apply border-[var(--secondary-default-color)] bg-[var(--secondary-neutral-color)];
+  color: var(--secondary-strong-color);
+}
+
+.hans-tab-success.hans-tab-active {
+  @apply border-[var(--success-default-color)] bg-[var(--success-neutral-color)];
+  color: var(--success-strong-color);
+}
+
+.hans-tab-danger.hans-tab-active {
+  @apply border-[var(--danger-default-color)] bg-[var(--danger-neutral-color)];
+  color: var(--danger-strong-color);
+}
+
+.hans-tab-warning.hans-tab-active {
+  @apply border-[var(--warning-default-color)] bg-[var(--warning-neutral-color)];
+  color: var(--warning-strong-color);
+}
+
+.hans-tab-info.hans-tab-active {
+  @apply border-[var(--info-default-color)] bg-[var(--info-neutral-color)];
+  color: var(--info-strong-color);
+}
+
+.hans-tabs-content {
+  @apply rounded-xl border border-[var(--base-neutral-color)] bg-[var(--white)] p-4;
+  color: var(--base-strong-color);
+}
+
+.hans-tabs-empty {
+  @apply text-sm;
+  color: var(--base-default-color);
+}
+
+.hans-tabs-header-loading {
+  @apply rounded-lg;
+}
+
+.hans-tabs-content-loading {
+  @apply rounded-lg;
+}
