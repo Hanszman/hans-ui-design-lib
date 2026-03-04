@@ -1,6 +1,7 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import Markdown from 'markdown-to-jsx';
 import README from '../../README.md?raw';
+import './getting-started.scss';
 
 <Meta title="Getting Started" />
 
@@ -8,4 +9,6 @@ import README from '../../README.md?raw';
 
 The Hans UI Design Library is a collection of reusable components, styles, services, models and guidelines for building web applications.
 
-<Markdown>{README}</Markdown>
+<div className="getting-started-markdown">
+  <Markdown>{README}</Markdown>
+</div>
