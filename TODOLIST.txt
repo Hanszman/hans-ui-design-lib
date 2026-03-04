@@ -15,3 +15,10 @@ na pasta que já criei com o nome dele...
 ele deve: ...
 Documente bem e coloque exemplo de todos os casos e cenários no mdx/stories.
 enfim! faça o componente por favor, te dou acesso a todo o repo/workspace, pode editável conforme for necessário
+
+tabs:
+-cor tem q ser igual button
+-cores diferentes entre tabs (cada cor vai ter a sua)
+-espaço entre elas tem q ser menor
+-remover functions e consts do tsx e passar pro helper
+-tamanho do botão de close tem q ser maior (igual ao das tags do dropdown)
