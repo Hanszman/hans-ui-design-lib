@@ -22,3 +22,4 @@ tabs:
 -espaço entre elas tem q ser menor
 -remover functions e consts do tsx e passar pro helper
 -tamanho do botão de close tem q ser maior (igual ao das tags do dropdown)
+-hover cursor pointer na aba também, não só no botão de close
