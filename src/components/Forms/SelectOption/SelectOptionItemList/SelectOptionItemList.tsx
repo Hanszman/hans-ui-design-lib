@@ -1,15 +1,21 @@
 import React from 'react';
-import { HansAvatar } from '../../../Avatar/Avatar';
-import { HansIcon } from '../../../Icon/Icon';
 import { HansLoading } from '../../../Loading/Loading';
 import { HansPopupItemList } from '../../../Popup/PopupItemList/PopupItemList';
+import type { HansPopupItemListItemState } from '../../../Popup/PopupItemList/PopupItemList.types';
 import { getOptionId } from '../helpers/SelectOption.helper';
+import type { SelectOptionItem } from '../SelectOption.types';
 import type { HansSelectOptionItemListProps } from './SelectOptionItemList.types';
+
+const getSelectOptionItemClassName = (state: HansPopupItemListItemState): string => `
+  hans-select-option-option
+  ${state.isSelected ? 'hans-select-option-option-selected' : ''}
+  ${state.isDisabled ? 'hans-select-option-option-disabled' : ''}
+`;
 
 export const HansSelectOptionItemList = React.memo(
   (props: HansSelectOptionItemListProps) => {
     const {
-      options,
+      items,
       selectedValues,
       isMulti,
       openDirection,
@@ -17,24 +23,24 @@ export const HansSelectOptionItemList = React.memo(
       noOptionsText,
       isLoadingOptions,
       loadingOptionsText,
-      onSelectOption,
+      onSelectItem,
       listId,
     } = props;
 
-    return (
-      <ul
-        id={listId}
-        className="hans-select-option-list"
-        role="listbox"
-        aria-multiselectable={isMulti}
-        data-direction={openDirection}
-        style={
-          {
-            '--hans-select-option-hover': dropdownHoverColor,
-          } as React.CSSProperties
-        }
-      >
-        {isLoadingOptions ? (
+    if (isLoadingOptions) {
+      return (
+        <ul
+          id={listId}
+          className="hans-select-option-list"
+          role="listbox"
+          aria-multiselectable={isMulti}
+          data-direction={openDirection}
+          style={
+            {
+              '--hans-select-option-hover': dropdownHoverColor,
+            } as React.CSSProperties
+          }
+        >
           <li className="hans-select-option-loading">
             <HansLoading
               loadingType="spinner"
@@ -44,48 +50,32 @@ export const HansSelectOptionItemList = React.memo(
             />
             <span>{loadingOptionsText}</span>
           </li>
-        ) : (
-          <HansPopupItemList
-            as="none"
-            hasItems={options.length > 0}
-            emptyText={noOptionsText}
-            emptyAs="li"
-            emptyClassName="hans-select-option-empty"
-          >
-            {options.map((option) => {
-              const optionId = getOptionId(option);
-              const isSelected = selectedValues.includes(optionId);
-              return (
-                <li
-                  key={optionId}
-                  role="option"
-                  aria-selected={isSelected}
-                  className={`
-                    hans-select-option-option
-                    ${isSelected ? 'hans-select-option-option-selected' : ''}
-                    ${option.disabled ? 'hans-select-option-option-disabled' : ''}
-                  `}
-                  onClick={() => onSelectOption(option)}
-                >
-                  {option.imageSrc ? (
-                    <HansAvatar
-                      src={option.imageSrc}
-                      alt={option.imageAlt ?? option.label}
-                      avatarSize="small"
-                    />
-                  ) : null}
-                  {option.iconName ? (
-                    <HansIcon name={option.iconName} iconSize="small" />
-                  ) : null}
-                  <span className="hans-select-option-option-label">
-                    {option.label}
-                  </span>
-                </li>
-              );
-            })}
-          </HansPopupItemList>
-        )}
-      </ul>
+        </ul>
+      );
+    }
+
+    return (
+      <HansPopupItemList
+        id={listId}
+        className="hans-select-option-list"
+        role="listbox"
+        itemRole="option"
+        ariaMultiselectable={isMulti}
+        dataDirection={openDirection}
+        style={
+          {
+            '--hans-select-option-hover': dropdownHoverColor,
+          } as React.CSSProperties
+        }
+        items={items}
+        emptyText={noOptionsText}
+        emptyClassName="hans-select-option-empty"
+        itemClassName={getSelectOptionItemClassName}
+        itemLabelClassName="hans-select-option-option-label"
+        selectedItemIds={selectedValues}
+        resolveItemId={(item) => getOptionId(item as SelectOptionItem)}
+        onItemClick={(item) => onSelectItem(item as SelectOptionItem)}
+      />
     );
   },
 );

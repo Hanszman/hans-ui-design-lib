@@ -1,15 +1,23 @@
 import React from 'react';
 import { HansIcon } from '../../../Icon/Icon';
+import { HansPopupItemList } from '../../../Popup/PopupItemList/PopupItemList';
+import type { HansPopupItemListItemState } from '../../../Popup/PopupItemList/PopupItemList.types';
 import type { DropdownItem } from '../Dropdown.types';
 import {
-  createDropdownItemPath,
   getDropdownSubmenuArrowName,
-  hasNestedDropdownItems,
-  resolveDropdownItemId,
   shouldShowDropdownSubmenu,
 } from '../helpers/Dropdown.helper';
 import type { HansDropdownItemListProps } from './DropdownItemList.types';
-import { HansPopupItemList } from '../../../Popup/PopupItemList/PopupItemList';
+
+const getDropdownItemClassName = (
+  state: HansPopupItemListItemState,
+  submenuDirection: 'left' | 'right',
+): string => `
+  hans-dropdown-option
+  ${state.isDisabled ? 'hans-dropdown-option-disabled' : ''}
+  ${state.hasChildren ? 'hans-dropdown-option-parent' : ''}
+  ${state.hasChildren ? `hans-dropdown-option-parent-${submenuDirection}` : ''}
+`;
 
 export const HansDropdownItemList = React.memo(
   (props: HansDropdownItemListProps) => {
@@ -22,6 +30,7 @@ export const HansDropdownItemList = React.memo(
       nested = false,
       popupId,
       onItemEnter,
+      onListEnter,
       onListLeave,
       onSelect,
     } = props;
@@ -31,66 +40,51 @@ export const HansDropdownItemList = React.memo(
         id={nested ? undefined : popupId}
         className={`hans-dropdown-list ${nested ? 'hans-dropdown-list-nested' : ''}`}
         role="menu"
+        itemRole="menuitem"
+        items={items}
+        parentPath={parentPath}
+        nested={nested}
         emptyText={noOptionsText}
-        hasItems={items.length > 0}
-        onMouseLeave={() => onListLeave?.(parentPath)}
-      >
-        {items.map((item, index) => {
-          const itemPath = createDropdownItemPath(parentPath, index);
-          const hasChildren = hasNestedDropdownItems(item);
-          const itemId = resolveDropdownItemId({ item, itemPath });
-          const showSubmenu = shouldShowDropdownSubmenu(hoveredPath, itemPath);
-          const submenuDirection = submenuDirections[itemPath] ?? 'right';
+        itemClassName={(state) => {
+          const submenuDirection = submenuDirections[state.itemPath] ?? 'right';
+          return getDropdownItemClassName(state, submenuDirection);
+        }}
+        onItemEnter={(state, target) => onItemEnter(state.itemPath, target)}
+        onListMouseEnter={onListEnter}
+        onListMouseLeave={onListLeave}
+        onItemClick={(item) => onSelect(item as DropdownItem)}
+        renderTrailing={(state) => {
+          if (!state.hasChildren) return null;
+          const submenuDirection = submenuDirections[state.itemPath] ?? 'right';
+          return (
+            <HansIcon
+              name={getDropdownSubmenuArrowName(submenuDirection)}
+              iconSize="small"
+              customClasses="hans-dropdown-option-arrow"
+            />
+          );
+        }}
+        renderChildren={(state) => {
+          if (!state.hasChildren) return null;
+          const showSubmenu = shouldShowDropdownSubmenu(hoveredPath, state.itemPath);
+          if (!showSubmenu) return null;
 
           return (
-            <li
-              key={itemId}
-              role="menuitem"
-              aria-disabled={item.disabled}
-              className={`
-                  hans-dropdown-option
-                  ${item.disabled ? 'hans-dropdown-option-disabled' : ''}
-                  ${hasChildren ? 'hans-dropdown-option-parent' : ''}
-                  ${hasChildren ? `hans-dropdown-option-parent-${submenuDirection}` : ''}
-                `}
-              onMouseEnter={(event) =>
-                onItemEnter(itemPath, event.currentTarget as HTMLElement)
-              }
-              onClick={() => onSelect(item)}
-            >
-              {item.imageSrc ? (
-                <img
-                  src={item.imageSrc}
-                  alt={item.imageAlt ?? item.label}
-                  className="hans-dropdown-option-image"
-                />
-              ) : null}
-              {item.iconName ? <HansIcon name={item.iconName} iconSize="small" /> : null}
-              <span>{item.label}</span>
-              {hasChildren ? (
-                <HansIcon
-                  name={getDropdownSubmenuArrowName(submenuDirection)}
-                  iconSize="small"
-                  customClasses="hans-dropdown-option-arrow"
-                />
-              ) : null}
-              {hasChildren && showSubmenu ? (
-                <HansDropdownItemList
-                  items={item.children as DropdownItem[]}
-                  noOptionsText={noOptionsText}
-                  hoveredPath={hoveredPath}
-                  submenuDirections={submenuDirections}
-                  parentPath={itemPath}
-                  nested
-                  onItemEnter={onItemEnter}
-                  onListLeave={onListLeave}
-                  onSelect={onSelect}
-                />
-              ) : null}
-            </li>
+            <HansDropdownItemList
+              items={state.item.children as DropdownItem[]}
+              noOptionsText={noOptionsText}
+              hoveredPath={hoveredPath}
+              submenuDirections={submenuDirections}
+              parentPath={state.itemPath}
+              nested
+              onItemEnter={onItemEnter}
+              onListEnter={onListEnter}
+              onListLeave={onListLeave}
+              onSelect={onSelect}
+            />
           );
-        })}
-      </HansPopupItemList>
+        }}
+      />
     );
   },
 );

@@ -48,6 +48,15 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     setOpen,
     onSelect,
   });
+  const listLeaveTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
+  const clearListLeaveTimeout = React.useCallback(() => {
+    if (!listLeaveTimeoutRef.current) return;
+    clearTimeout(listLeaveTimeoutRef.current);
+    listLeaveTimeoutRef.current = null;
+  }, []);
+
   const setSubmenuDirection = React.useCallback(
     (path: string, direction: 'left' | 'right') => {
       setSubmenuDirections((prev) => {
@@ -57,24 +66,39 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     [],
   );
   const handleListLeave = React.useCallback((parentPath: string) => {
-    setHoveredPath(getHoveredPathOnListLeave(parentPath));
-  }, []);
+    if (parentPath.length === 0) return;
+    clearListLeaveTimeout();
+    listLeaveTimeoutRef.current = setTimeout(() => {
+      setHoveredPath(getHoveredPathOnListLeave(parentPath));
+    }, 100);
+  }, [clearListLeaveTimeout]);
 
   React.useEffect(() => {
     if (!isOpen) {
+      clearListLeaveTimeout();
       setHoveredPath(null);
       setSubmenuDirections({});
     }
-  }, [isOpen]);
+  }, [clearListLeaveTimeout, isOpen]);
   
-  const handleDropdownItemEnter = React.useMemo(
-    () => createHandleDropdownItemEnter({
+  React.useEffect(
+    () => () => {
+      clearListLeaveTimeout();
+    },
+    [clearListLeaveTimeout],
+  );
+  
+  const handleDropdownItemEnter = React.useMemo(() => {
+    const handleItemEnter = createHandleDropdownItemEnter({
       setHoveredPath,
       setSubmenuDirection,
       submenuWidth: 240,
-    }),
-    [setSubmenuDirection],
-  );
+    });
+    return (path: string, target: HTMLElement): void => {
+      clearListLeaveTimeout();
+      handleItemEnter(path, target);
+    };
+  }, [clearListLeaveTimeout, setSubmenuDirection]);
 
   return (
     <div className={`hans-dropdown ${customClasses}`} {...rest}>
@@ -135,6 +159,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
             hoveredPath={hoveredPath}
             submenuDirections={submenuDirections}
             onItemEnter={handleDropdownItemEnter}
+            onListEnter={clearListLeaveTimeout}
             onListLeave={handleListLeave}
             onSelect={handleSelect}
           />

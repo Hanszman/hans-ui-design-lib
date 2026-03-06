@@ -1,7 +1,7 @@
 import type { SelectOptionItem } from '../SelectOption.types';
 
 export type HansSelectOptionItemListProps = {
-  options: SelectOptionItem[];
+  items: SelectOptionItem[];
   selectedValues: string[];
   isMulti: boolean;
   openDirection: 'up' | 'down';
@@ -9,6 +9,6 @@ export type HansSelectOptionItemListProps = {
   noOptionsText: string;
   isLoadingOptions: boolean;
   loadingOptionsText: string;
-  onSelectOption: (option: SelectOptionItem) => void;
+  onSelectItem: (item: SelectOptionItem) => void;
   listId?: string;
 };

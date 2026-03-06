@@ -9,11 +9,11 @@
 }
 
 .hans-dropdown-option-parent-right .hans-dropdown-list-nested {
-  @apply left-full ml-1;
+  @apply left-full;
 }
 
 .hans-dropdown-option-parent-left .hans-dropdown-list-nested {
-  @apply right-full mr-1;
+  @apply right-full;
 }
 
 .hans-dropdown-option {
@@ -34,8 +34,4 @@
 
 .hans-dropdown-option-arrow {
   @apply ml-auto;
-}
-
-.hans-dropdown-option-image {
-  @apply w-5 h-5 rounded-full object-cover shrink-0;
 }

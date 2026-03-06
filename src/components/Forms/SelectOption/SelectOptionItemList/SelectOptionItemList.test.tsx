@@ -7,7 +7,7 @@ describe('HansSelectOptionItemList', () => {
   it('Should render empty state when there are no options', () => {
     render(
       <HansSelectOptionItemList
-        options={[]}
+        items={[]}
         selectedValues={[]}
         isMulti={false}
         openDirection="down"
@@ -15,7 +15,7 @@ describe('HansSelectOptionItemList', () => {
         noOptionsText="No options"
         isLoadingOptions={false}
         loadingOptionsText="Loading..."
-        onSelectOption={vi.fn()}
+        onSelectItem={vi.fn()}
       />,
     );
 
@@ -25,7 +25,7 @@ describe('HansSelectOptionItemList', () => {
   it('Should render loading state when loading is true', () => {
     render(
       <HansSelectOptionItemList
-        options={[{ id: '1', value: '1', label: 'One' }]}
+        items={[{ id: '1', value: '1', label: 'One' }]}
         selectedValues={[]}
         isMulti={false}
         openDirection="down"
@@ -33,7 +33,7 @@ describe('HansSelectOptionItemList', () => {
         noOptionsText="No options"
         isLoadingOptions
         loadingOptionsText="Loading options..."
-        onSelectOption={vi.fn()}
+        onSelectItem={vi.fn()}
       />,
     );
 
@@ -42,10 +42,10 @@ describe('HansSelectOptionItemList', () => {
   });
 
   it('Should render options and select item on click', () => {
-    const onSelectOption = vi.fn();
+    const onSelectItem = vi.fn();
     render(
       <HansSelectOptionItemList
-        options={[
+        items={[
           { id: '1', value: '1', label: 'One' },
           { id: '2', value: '2', label: 'Two', disabled: true },
         ]}
@@ -56,7 +56,7 @@ describe('HansSelectOptionItemList', () => {
         noOptionsText="No options"
         isLoadingOptions={false}
         loadingOptionsText="Loading..."
-        onSelectOption={onSelectOption}
+        onSelectItem={onSelectItem}
       />,
     );
 
@@ -65,6 +65,6 @@ describe('HansSelectOptionItemList', () => {
     fireEvent.click(one);
     fireEvent.click(screen.getByText('Two'));
 
-    expect(onSelectOption).toHaveBeenCalledTimes(2);
+    expect(onSelectItem).toHaveBeenCalledTimes(2);
   });
 });

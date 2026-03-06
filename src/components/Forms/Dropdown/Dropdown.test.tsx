@@ -166,7 +166,9 @@ describe('HansDropdown', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     fireEvent.mouseLeave(screen.getByRole('menu'));
-    fireEvent.mouseEnter(screen.getByText('Parent').closest('li') as HTMLElement);
+    fireEvent.mouseEnter(
+      screen.getByText('Parent').closest('li') as HTMLElement,
+    );
     expect(screen.getByText('Leaf')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Parent'));
@@ -205,5 +207,77 @@ describe('HansDropdown', () => {
     expect(screen.getByRole('button', { name: /menu/i })).toHaveClass(
       'hans-button-square',
     );
+  });
+
+  it('Should keep nested submenu open while moving mouse to child panel', () => {
+    vi.useFakeTimers();
+    try {
+      render(
+        <HansDropdown
+          triggerLabel="Nested"
+          options={[
+            {
+              id: 'parent',
+              label: 'Parent',
+              value: 'parent',
+              children: [{ id: 'child', label: 'Child', value: 'child' }],
+            },
+          ]}
+        />,
+      );
+
+      fireEvent.click(screen.getByRole('button', { name: /nested/i }));
+      fireEvent.mouseEnter(
+        screen.getByText('Parent').closest('li') as HTMLElement,
+      );
+      expect(screen.getByText('Child')).toBeInTheDocument();
+
+      const nestedMenu = screen.getAllByRole('menu')[1];
+      fireEvent.mouseLeave(nestedMenu);
+      fireEvent.mouseEnter(nestedMenu);
+      vi.advanceTimersByTime(120);
+
+      expect(screen.getByText('Child')).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('Should close nested submenu after delayed list leave', () => {
+    const setTimeoutSpy = vi.spyOn(global, 'setTimeout').mockImplementation(((
+      callback: TimerHandler,
+    ) => {
+      if (typeof callback === 'function') callback();
+      return 1 as unknown as ReturnType<typeof setTimeout>;
+    }) as typeof setTimeout);
+
+    try {
+      render(
+        <HansDropdown
+          triggerLabel="Nested delayed"
+          options={[
+            {
+              id: 'parent',
+              label: 'Parent',
+              value: 'parent',
+              children: [{ id: 'child', label: 'Child', value: 'child' }],
+            },
+          ]}
+        />,
+      );
+
+      fireEvent.click(screen.getByRole('button', { name: /nested delayed/i }));
+      fireEvent.mouseEnter(
+        screen.getByText('Parent').closest('li') as HTMLElement,
+      );
+      expect(screen.getByText('Child')).toBeInTheDocument();
+
+      const nestedMenu = screen.getAllByRole('menu')[1];
+      fireEvent.mouseLeave(nestedMenu);
+
+      expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 100);
+    } finally {
+      setTimeoutSpy.mockRestore();
+    }
   });
 });

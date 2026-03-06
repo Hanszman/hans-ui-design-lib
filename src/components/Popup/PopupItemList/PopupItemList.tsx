@@ -1,42 +1,111 @@
 import React from 'react';
-import type { HansPopupItemListProps } from './PopupItemList.types';
+import { HansAvatar } from '../../Avatar/Avatar';
+import { HansIcon } from '../../Icon/Icon';
+import type {
+  HansPopupItemListItemState,
+  HansPopupItemListProps,
+} from './PopupItemList.types';
+
+const resolveItemPath = (parentPath: string, index: number): string =>
+  parentPath.length > 0 ? `${parentPath}.${index}` : `${index}`;
+
+const resolveItemClassName = (
+  itemClassName: HansPopupItemListProps['itemClassName'] = '',
+  state: HansPopupItemListItemState,
+): string =>
+  typeof itemClassName === 'function' ? itemClassName(state) : itemClassName;
 
 export const HansPopupItemList = React.memo((props: HansPopupItemListProps) => {
   const {
-    as = 'ul',
+    items,
     id,
     className = '',
     role = 'listbox',
-    hasItems,
+    itemRole = 'option',
+    style,
+    dataDirection,
+    ariaMultiselectable,
+    parentPath = '',
+    nested = false,
     emptyText,
     emptyClassName = 'hans-popup-item-list-empty',
-    emptyAs = 'li',
-    onMouseLeave,
-    children,
+    itemClassName = '',
+    itemLabelClassName = '',
+    selectedItemIds = [],
+    resolveItemId,
+    onItemClick,
+    onItemEnter,
+    onListMouseEnter,
+    onListMouseLeave,
+    renderLeading,
+    renderTrailing,
+    renderChildren,
   } = props;
 
-  const emptyNode =
-    emptyAs === 'div' ? (
-      <div className={emptyClassName}>{emptyText}</div>
-    ) : (
-      <li className={emptyClassName}>{emptyText}</li>
-    );
-
-  if (as === 'none') {
-    return <>{hasItems ? children : emptyNode}</>;
-  }
-
-  if (as === 'div') {
-    return (
-      <div id={id} className={className} role={role} onMouseLeave={onMouseLeave}>
-        {hasItems ? children : emptyNode}
-      </div>
-    );
-  }
-
   return (
-    <ul id={id} className={className} role={role} onMouseLeave={onMouseLeave}>
-      {hasItems ? children : emptyNode}
+    <ul
+      id={id}
+      className={className}
+      role={role}
+      style={style}
+      data-direction={dataDirection}
+      aria-multiselectable={ariaMultiselectable}
+      onMouseEnter={() => onListMouseEnter?.(parentPath)}
+      onMouseLeave={() => onListMouseLeave?.(parentPath)}
+    >
+      {items.length === 0 ? (
+        <li className={emptyClassName}>{emptyText}</li>
+      ) : (
+        items.map((item, index) => {
+          const itemPath = resolveItemPath(parentPath, index);
+          const itemId = resolveItemId
+            ? resolveItemId(item, itemPath)
+            : (item.id ?? `${item.value}-${itemPath}`);
+          const isSelected = selectedItemIds.includes(itemId);
+          const isDisabled = Boolean(item.disabled);
+          const hasChildren =
+            Array.isArray(item.children) && item.children.length > 0;
+          const state: HansPopupItemListItemState = {
+            item,
+            itemPath,
+            itemId,
+            index,
+            nested,
+            isSelected,
+            isDisabled,
+            hasChildren,
+          };
+
+          return (
+            <li
+              key={itemId}
+              role={itemRole}
+              aria-selected={itemRole === 'option' ? isSelected : undefined}
+              aria-disabled={isDisabled}
+              className={resolveItemClassName(itemClassName, state)}
+              onMouseEnter={(event) =>
+                onItemEnter?.(state, event.currentTarget as HTMLElement)
+              }
+              onClick={() => onItemClick?.(item, state)}
+            >
+              {item.imageSrc ? (
+                <HansAvatar
+                  src={item.imageSrc}
+                  alt={item.imageAlt ?? item.label}
+                  avatarSize="small"
+                />
+              ) : null}
+              {item.iconName ? (
+                <HansIcon name={item.iconName} iconSize="small" />
+              ) : null}
+              {renderLeading?.(state)}
+              <span className={itemLabelClassName}>{item.label}</span>
+              {renderTrailing?.(state)}
+              {renderChildren?.(state)}
+            </li>
+          );
+        })
+      )}
     </ul>
   );
 });

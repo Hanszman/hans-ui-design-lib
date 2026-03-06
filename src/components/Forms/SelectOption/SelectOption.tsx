@@ -189,7 +189,7 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
       >
         <HansSelectOptionItemList
           listId={`${inputId}-list`}
-          options={filteredOptions}
+          items={filteredOptions}
           selectedValues={selectedValues}
           isMulti={isMulti}
           openDirection={openDirection}
@@ -197,7 +197,7 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
           noOptionsText={noOptionsText}
           isLoadingOptions={isLoadingOptions}
           loadingOptionsText={loadingOptionsText}
-          onSelectOption={handleSelectOption}
+          onSelectItem={handleSelectOption}
         />
       </HansPopup>
 
