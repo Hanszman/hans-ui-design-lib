@@ -86,11 +86,12 @@ describe('HansButton', () => {
     expect(screen.queryByText('Primary')).not.toBeInTheDocument();
   });
 
-  it('Should render button as skeleton and disable it when loading is true', () => {
+  it('Should render HansLoading skeleton when loading is true', () => {
     render(<HansButton label="Load" loading />);
-    const button = screen.getByRole('button');
-    expect(button).toBeDisabled();
-    expect(button).toHaveClass('hans-button-loading');
+    const loading = screen.getByLabelText('Loading button');
+    expect(loading).toBeInTheDocument();
+    expect(loading).toHaveClass('hans-button-loading', 'hans-loading-skeleton');
     expect(screen.queryByText('Load')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });

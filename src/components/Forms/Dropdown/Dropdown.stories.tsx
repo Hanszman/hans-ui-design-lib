@@ -65,7 +65,15 @@ const nestedOptions = [
         label: 'Templates',
         value: 'templates',
         children: [
-          { id: 'template-web', label: 'Web app', value: 'template-web' },
+          {
+            id: 'template-web',
+            label: 'Web app',
+            value: 'template-web',
+            children: [
+              { id: 'template-web-react', label: 'React starter', value: 'template-web-react' },
+              { id: 'template-web-vue', label: 'Vue starter', value: 'template-web-vue' },
+            ],
+          },
           { id: 'template-api', label: 'API service', value: 'template-api' },
         ],
       },
@@ -285,6 +293,43 @@ const ControlledOpenExample = ({
         onOpenChange={setOpened}
       />
       <span>Open: {opened ? 'true' : 'false'}</span>
+    </div>
+  );
+};
+
+export const OptionActions: Story = {
+  render: () => <OptionActionsExample />,
+};
+
+const OptionActionsExample = () => {
+  const [lastAction, setLastAction] = useState('none');
+
+  const actionOptions = [
+    {
+      id: 'action-one',
+      label: 'Action One',
+      value: 'action-one',
+      iconName: 'IoMdFlash',
+      action: () => setLastAction('Action One'),
+    },
+    {
+      id: 'action-two',
+      label: 'Action Two',
+      value: 'action-two',
+      iconName: 'IoMdSettings',
+      action: () => setLastAction('Action Two'),
+    },
+  ];
+
+  return (
+    <div className="flex flex-col gap-3">
+      <HansDropdown
+        triggerLabel="Actions callback"
+        triggerColor="primary"
+        triggerVariant="default"
+        options={actionOptions}
+      />
+      <span>Last action: {lastAction}</span>
     </div>
   );
 };

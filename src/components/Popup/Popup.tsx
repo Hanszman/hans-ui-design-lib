@@ -78,7 +78,13 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
           }
         >
           <div className={`hans-popup-panel-content ${panelClassName}`}>
-            {hasContent ? children : <div className="hans-popup-empty">{noContentText}</div>}
+            {hasContent ? (
+              children
+            ) : (
+              <div className="hans-popup-empty">
+                <span>{noContentText}</span>
+              </div>
+            )}
           </div>
         </div>
       ) : null}

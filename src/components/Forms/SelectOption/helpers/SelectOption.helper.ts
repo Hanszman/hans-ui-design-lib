@@ -133,6 +133,7 @@ export const createHandleSelectOption =
     } = params;
 
     if (option.disabled || disabled) return;
+    if (option.action) option.action(option);
     const optionId = getOptionId(option);
 
     if (isMulti) {

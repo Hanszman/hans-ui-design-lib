@@ -4,7 +4,10 @@ import {
   createDropdownOpenSetter,
   createHandleDropdownItemEnter,
   createHandleDropdownSelect,
+  getDropdownSubmenuArrowName,
   getDropdownSelection,
+  getHoveredPathOnListLeave,
+  getNextDropdownSubmenuDirections,
   hasCustomDropdownContent,
   hasNestedDropdownItems,
   resolveDropdownItemId,
@@ -35,11 +38,14 @@ describe('Dropdown.helper', () => {
 
   it('Should dispatch selection only for enabled items', () => {
     const onSelect = vi.fn();
-    getDropdownSelection({ label: 'A', value: 'a' }, onSelect);
-    expect(onSelect).toHaveBeenCalledWith({ label: 'A', value: 'a' });
+    const action = vi.fn();
+    getDropdownSelection({ label: 'A', value: 'a', action }, onSelect);
+    expect(onSelect).toHaveBeenCalledWith({ label: 'A', value: 'a', action });
+    expect(action).toHaveBeenCalledWith({ label: 'A', value: 'a', action });
 
     getDropdownSelection({ label: 'B', value: 'b', disabled: true }, onSelect);
     expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(action).toHaveBeenCalledTimes(1);
   });
 
   it('Should create dropdown open setter', () => {
@@ -76,6 +82,8 @@ describe('Dropdown.helper', () => {
   it('Should handle nested dropdown helpers', () => {
     expect(createDropdownItemPath('', 0)).toBe('0');
     expect(createDropdownItemPath('0', 1)).toBe('0.1');
+    expect(getHoveredPathOnListLeave('')).toBeNull();
+    expect(getHoveredPathOnListLeave('0')).toBe('0');
     expect(hasNestedDropdownItems({ label: 'A', value: 'a' })).toBe(false);
     expect(
       hasNestedDropdownItems({
@@ -88,8 +96,55 @@ describe('Dropdown.helper', () => {
     expect(shouldShowDropdownSubmenu('0.1', '0.2')).toBe(false);
 
     const setHoveredPath = vi.fn();
-    const handleItemEnter = createHandleDropdownItemEnter({ setHoveredPath });
-    handleItemEnter('0.1');
+    const setSubmenuDirection = vi.fn();
+    const handleItemEnter = createHandleDropdownItemEnter({
+      setHoveredPath,
+      setSubmenuDirection,
+      submenuWidth: 200,
+    });
+    const target = document.createElement('div');
+    vi.spyOn(target, 'getBoundingClientRect').mockReturnValue({
+      x: 200,
+      y: 0,
+      width: 100,
+      height: 20,
+      top: 0,
+      right: 300,
+      bottom: 20,
+      left: 200,
+      toJSON: () => {},
+    } as DOMRect);
+    Object.defineProperty(window, 'innerWidth', { value: 320, writable: true });
+    handleItemEnter('0.1', target);
     expect(setHoveredPath).toHaveBeenCalledWith('0.1');
+    expect(setSubmenuDirection).toHaveBeenCalledWith('0.1', 'left');
+
+    Object.defineProperty(window, 'innerWidth', { value: 900, writable: true });
+    handleItemEnter('0.2', target);
+    expect(setSubmenuDirection).toHaveBeenCalledWith('0.2', 'right');
+
+    const originalWindow = globalThis.window;
+    Object.defineProperty(globalThis, 'window', {
+      value: undefined,
+      configurable: true,
+    });
+    handleItemEnter('0.3', target);
+    expect(setSubmenuDirection).toHaveBeenCalledTimes(2);
+    Object.defineProperty(globalThis, 'window', {
+      value: originalWindow,
+      configurable: true,
+    });
+
+    const sameDirectionSource: Record<string, 'left' | 'right'> = {
+      '0.1': 'left',
+    };
+    const sameDirection = getNextDropdownSubmenuDirections(
+      sameDirectionSource,
+      '0.1',
+      'left',
+    );
+    expect(sameDirection).toBe(sameDirectionSource);
+    expect(getDropdownSubmenuArrowName('left')).toBe('IoIosArrowBack');
+    expect(getDropdownSubmenuArrowName('right')).toBe('IoIosArrowForward');
   });
 });

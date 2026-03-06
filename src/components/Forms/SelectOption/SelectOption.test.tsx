@@ -246,6 +246,35 @@ describe('HansSelectOption', () => {
     expect(screen.getByText('Icon option')).toBeInTheDocument();
   });
 
+  it('Should call option action when selecting enabled option', async () => {
+    const user = userEvent.setup();
+    const action = vi.fn();
+    render(
+      <HansSelectOption
+        label="With action"
+        options={[
+          {
+            id: 'action-option',
+            label: 'Action option',
+            value: 'action-option',
+            action,
+          },
+        ]}
+      />,
+    );
+
+    const input = screen.getByPlaceholderText('Select an option');
+    await user.click(input);
+    await user.click(screen.getByText('Action option'));
+
+    expect(action).toHaveBeenCalledWith({
+      id: 'action-option',
+      label: 'Action option',
+      value: 'action-option',
+      action,
+    });
+  });
+
   it('Should fallback image alt to label when not provided', async () => {
     const user = userEvent.setup();
     render(

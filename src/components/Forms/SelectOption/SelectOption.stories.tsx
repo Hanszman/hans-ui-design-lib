@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import type { Color } from '../../../types/Common.types';
 import { HansSelectOption } from './SelectOption';
 import DocsPage from './SelectOption.mdx';
@@ -347,4 +348,35 @@ export const Loading: Story = {
       />
     </div>
   ),
+};
+
+export const OptionActions: Story = {
+  render: () => <OptionActionsExample />,
+};
+
+const OptionActionsExample = () => {
+  const [lastAction, setLastAction] = useState('none');
+  const optionsWithAction: SelectOptionItem[] = [
+    {
+      id: 'action-dashboard',
+      label: 'Dashboard',
+      value: 'dashboard',
+      iconName: 'IoMdApps',
+      action: () => setLastAction('Dashboard'),
+    },
+    {
+      id: 'action-settings',
+      label: 'Settings',
+      value: 'settings',
+      iconName: 'IoMdSettings',
+      action: () => setLastAction('Settings'),
+    },
+  ];
+
+  return (
+    <div className="flex flex-col gap-3 w-full pb-24">
+      <HansSelectOption label="Action callback" options={optionsWithAction} />
+      <span>Last action: {lastAction}</span>
+    </div>
+  );
 };

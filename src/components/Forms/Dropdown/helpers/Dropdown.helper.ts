@@ -24,17 +24,35 @@ export const createDropdownItemPath = (
   index: number,
 ): string => (parentPath.length > 0 ? `${parentPath}.${index}` : `${index}`);
 
+export const getHoveredPathOnListLeave = (parentPath: string): string | null =>
+  parentPath.length > 0 ? parentPath : null;
+
 export const shouldShowDropdownSubmenu = (
   hoveredPath: string | null,
   currentPath: string,
 ): boolean => hoveredPath === currentPath;
 
+export const getNextDropdownSubmenuDirections = (
+  previousDirections: Record<string, 'left' | 'right'>,
+  path: string,
+  direction: 'left' | 'right',
+): Record<string, 'left' | 'right'> => {
+  if (previousDirections[path] === direction) return previousDirections;
+  return { ...previousDirections, [path]: direction };
+};
+
+export const getDropdownSubmenuArrowName = (
+  direction: 'left' | 'right',
+): 'IoIosArrowBack' | 'IoIosArrowForward' =>
+  direction === 'left' ? 'IoIosArrowBack' : 'IoIosArrowForward';
+
 export const getDropdownSelection = (
   item: DropdownItem,
   onSelect?: (item: DropdownItem) => void,
 ): void => {
-  if (item.disabled || !onSelect) return;
-  onSelect(item);
+  if (item.disabled) return;
+  if (item.action) item.action(item);
+  if (onSelect) onSelect(item);
 };
 
 export const createDropdownOpenSetter =
@@ -57,7 +75,16 @@ export const createHandleDropdownSelect =
   };
 
 export const createHandleDropdownItemEnter =
-  ({ setHoveredPath }: CreateHandleDropdownItemEnterParams) =>
-  (path: string): void => {
+  ({
+    setHoveredPath,
+    setSubmenuDirection,
+    submenuWidth = 240,
+  }: CreateHandleDropdownItemEnterParams) =>
+  (path: string, target: HTMLElement): void => {
     setHoveredPath(path);
+    if (typeof window === 'undefined') return;
+    const targetRect = target.getBoundingClientRect();
+    const availableSpaceRight = window.innerWidth - targetRect.right;
+    const direction = availableSpaceRight < submenuWidth ? 'left' : 'right';
+    setSubmenuDirection(path, direction);
   };

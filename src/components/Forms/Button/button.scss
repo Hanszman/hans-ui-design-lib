@@ -20,7 +20,7 @@
 }
 
 .hans-button-loading {
-  @apply pointer-events-none animate-pulse text-transparent border-transparent bg-[var(--base-neutral-color)];
+  @apply inline-flex;
 }
 
 .hans-button-small {

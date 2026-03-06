@@ -3,7 +3,7 @@
 }
 
 .hans-popup-panel {
-  @apply absolute left-0 right-0 z-[9999];
+  @apply absolute left-0 z-[9999] min-w-full;
 }
 
 .hans-popup-panel[data-direction='down'] {

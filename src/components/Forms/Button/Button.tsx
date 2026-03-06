@@ -1,5 +1,6 @@
 import React from 'react';
 import type { HansButtonProps } from './Button.types';
+import { HansLoading } from '../../Loading/Loading';
 
 export const HansButton = React.memo((props: HansButtonProps) => {
   const {
@@ -17,6 +18,27 @@ export const HansButton = React.memo((props: HansButtonProps) => {
     ...rest
   } = props;
   const isDisabled = disabled || loading;
+  const loadingSizeByButtonSize = {
+    small: { width: '72px', height: '32px' },
+    medium: { width: '88px', height: '40px' },
+    large: { width: '104px', height: '48px' },
+  } as const;
+
+  if (loading) {
+    const loadingSize = loadingSizeByButtonSize[buttonSize];
+    return (
+      <HansLoading
+        id={buttonId}
+        loadingType="skeleton"
+        loadingSize={buttonSize}
+        skeletonWidth={loadingSize.width}
+        skeletonHeight={loadingSize.height}
+        rounded={buttonShape === 'rounded'}
+        customClasses={`hans-button-loading ${customClasses}`}
+        ariaLabel="Loading button"
+      />
+    );
+  }
 
   return (
     <button
@@ -29,12 +51,11 @@ export const HansButton = React.memo((props: HansButtonProps) => {
         hans-button-${buttonColor}
         hans-button-${buttonVariant}
         hans-button-${buttonShape}
-        ${loading ? 'hans-button-loading' : ''}
         ${customClasses}
       `}
       {...rest}
     >
-      <slot>{loading ? null : children ?? (label && <span>{label}</span>)}</slot>
+      <slot>{children ?? (label && <span>{label}</span>)}</slot>
     </button>
   );
 });

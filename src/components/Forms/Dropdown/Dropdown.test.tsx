@@ -152,7 +152,13 @@ describe('HansDropdown', () => {
             id: 'parent',
             label: 'Parent',
             value: 'parent',
-            children: [{ id: 'child', label: 'Child', value: 'child' }],
+            children: [
+              {
+                id: 'leaf',
+                label: 'Leaf',
+                value: 'leaf',
+              },
+            ],
           },
         ]}
       />,
@@ -160,17 +166,37 @@ describe('HansDropdown', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     fireEvent.mouseLeave(screen.getByRole('menu'));
-    fireEvent.mouseEnter(screen.getByText('Parent'));
-    expect(screen.getByText('Child')).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByText('Parent').closest('li') as HTMLElement);
+    expect(screen.getByText('Leaf')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Parent'));
     expect(onSelect).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByText('Child'));
+    fireEvent.click(screen.getByText('Leaf'));
     expect(onSelect).toHaveBeenCalledWith({
-      id: 'child',
-      label: 'Child',
-      value: 'child',
+      id: 'leaf',
+      label: 'Leaf',
+      value: 'leaf',
+    });
+  });
+
+  it('Should call option action when selecting enabled option', () => {
+    const action = vi.fn();
+    render(
+      <HansDropdown
+        triggerLabel="Menu"
+        options={[{ id: 'action', label: 'Action', value: 'action', action }]}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /menu/i }));
+    fireEvent.click(screen.getByText('Action'));
+
+    expect(action).toHaveBeenCalledWith({
+      id: 'action',
+      label: 'Action',
+      value: 'action',
+      action,
     });
   });
 

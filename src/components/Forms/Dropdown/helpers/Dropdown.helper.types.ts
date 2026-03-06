@@ -18,4 +18,6 @@ export type CreateHandleDropdownSelectParams = {
 
 export type CreateHandleDropdownItemEnterParams = {
   setHoveredPath: (nextPath: string | null) => void;
+  setSubmenuDirection: (path: string, direction: 'left' | 'right') => void;
+  submenuWidth?: number;
 };

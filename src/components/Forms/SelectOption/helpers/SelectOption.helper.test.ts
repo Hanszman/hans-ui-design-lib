@@ -53,9 +53,7 @@ describe('SelectOption.helper', () => {
   it('Should filter options with autocomplete search', () => {
     expect(filterSelectOptionItens(options, false, 'a')).toEqual(options);
     expect(filterSelectOptionItens(options, true, '   ')).toEqual(options);
-    expect(filterSelectOptionItens(options, true, 'alp')).toEqual([
-      options[0],
-    ]);
+    expect(filterSelectOptionItens(options, true, 'alp')).toEqual([options[0]]);
   });
 
   it('Should toggle and remove values in multiselect', () => {
@@ -86,7 +84,10 @@ describe('SelectOption.helper', () => {
     container.appendChild(label);
     container.appendChild(message);
 
-    expect(getSelectOptionPopupOffsets(container)).toEqual({ up: 25, down: 21 });
+    expect(getSelectOptionPopupOffsets(container)).toEqual({
+      up: 25,
+      down: 21,
+    });
     expect(getSelectOptionPopupOffsets(null)).toEqual({ up: 0, down: 0 });
   });
 
@@ -161,6 +162,29 @@ describe('SelectOption.helper', () => {
     expect(onChange).toHaveBeenCalledWith([]);
   });
 
+  it('Should trigger option action when selecting enabled option', () => {
+    const action = vi.fn();
+    const single = createHandleSelectOption({
+      disabled: false,
+      isMulti: false,
+      selectedValues: [],
+      value: undefined,
+      enableAutocomplete: true,
+      setInternalValue: vi.fn(),
+      onChange: vi.fn(),
+      setSearchTerm: vi.fn(),
+      setIsOpen: vi.fn(),
+    });
+
+    single({ id: 'x', label: 'X', value: 'x', action });
+    expect(action).toHaveBeenCalledWith({
+      id: 'x',
+      label: 'X',
+      value: 'x',
+      action,
+    });
+  });
+
   it('Should create remove selected handler', () => {
     const setInternalValue = vi.fn();
     const onChange = vi.fn();
@@ -199,5 +223,3 @@ describe('SelectOption.helper', () => {
     expect(setIsOpen).toHaveBeenCalledTimes(2);
   });
 });
-
-

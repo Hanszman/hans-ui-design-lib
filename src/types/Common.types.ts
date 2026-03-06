@@ -22,5 +22,6 @@ export type OptionItem = {
   iconName?: string;
   imageSrc?: string;
   imageAlt?: string;
+  action?: (item: OptionItem) => void;
   children?: OptionItem[];
 };
