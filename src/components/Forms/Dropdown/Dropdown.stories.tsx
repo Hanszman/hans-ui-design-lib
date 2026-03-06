@@ -11,8 +11,18 @@ const options = [
     value: 'issue',
     iconName: 'IoMdRadioButtonOn',
   },
-  { id: 'repo', label: 'New repository', value: 'repo', iconName: 'IoMdDesktop' },
-  { id: 'org', label: 'New organization', value: 'org', iconName: 'IoMdBusiness' },
+  {
+    id: 'repo',
+    label: 'New repository',
+    value: 'repo',
+    iconName: 'IoMdDesktop',
+  },
+  {
+    id: 'org',
+    label: 'New organization',
+    value: 'org',
+    iconName: 'IoMdBusiness',
+  },
 ];
 
 const meta: Meta<typeof HansDropdown> = {
@@ -34,7 +44,25 @@ const meta: Meta<typeof HansDropdown> = {
 export default meta;
 type Story = StoryObj<typeof HansDropdown>;
 
-export const Primary: Story = {};
+export const Primary: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <HansDropdown triggerLabel="Dropdown 1" options={options} />
+      <HansDropdown
+        triggerLabel="Dropdown 2"
+        triggerColor="primary"
+        triggerVariant="default"
+        options={options}
+      />
+      <HansDropdown
+        triggerLabel="Dropdown 3"
+        triggerColor="secondary"
+        triggerVariant="strong"
+        options={options}
+      />
+    </div>
+  ),
+};
 
 export const WithOptions: Story = {
   render: () => (
@@ -106,15 +134,43 @@ export const CustomContent: Story = {
 };
 
 export const ControlledOpen: Story = {
-  render: () => <ControlledOpenExample />,
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <ControlledOpenExample
+        triggerLabel="Controlled 1"
+        triggerColor="base"
+        triggerVariant="outline"
+      />
+      <ControlledOpenExample
+        triggerLabel="Controlled 2"
+        triggerColor="primary"
+        triggerVariant="default"
+      />
+      <ControlledOpenExample
+        triggerLabel="Controlled 3"
+        triggerColor="secondary"
+        triggerVariant="strong"
+      />
+    </div>
+  ),
 };
 
-const ControlledOpenExample = () => {
+const ControlledOpenExample = ({
+  triggerLabel,
+  triggerColor,
+  triggerVariant,
+}: {
+  triggerLabel: string;
+  triggerColor: 'base' | 'primary' | 'secondary';
+  triggerVariant: 'outline' | 'default' | 'strong';
+}) => {
   const [opened, setOpened] = useState(false);
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-row gap-3">
       <HansDropdown
-        triggerLabel="Controlled"
+        triggerLabel={triggerLabel}
+        triggerColor={triggerColor}
+        triggerVariant={triggerVariant}
         options={options}
         onOpenChange={setOpened}
       />

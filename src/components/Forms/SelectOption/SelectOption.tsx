@@ -16,7 +16,7 @@ import {
   createHandleSelectOption,
   createHandleToggle,
   createSetSelectOptionOpen,
-  filterSelectOptionOptions,
+  filterSelectOptionItens,
   getInitialSelectOptionValue,
   getOptionId,
   getSelectedLabel,
@@ -82,7 +82,7 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   }, [enableAutocomplete, isMulti, selectedLabel]);
 
   const filteredOptions = React.useMemo(
-    () => filterSelectOptionOptions(options, enableAutocomplete, searchTerm),
+    () => filterSelectOptionItens(options, enableAutocomplete, searchTerm),
     [enableAutocomplete, options, searchTerm],
   );
 
@@ -122,6 +122,18 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
 
   return (
     <div className="hans-select-option">
+      {label ? (
+        <label
+          htmlFor={inputId}
+          className={`
+            hans-input-label
+            hans-input-label-${labelColor}
+          `}
+        >
+          {label}
+        </label>
+      ) : null}
+
       <HansPopup
         isOpen={isOpen}
         disabled={disabled}
@@ -133,10 +145,6 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
         onDirectionChange={setOpenDirection}
         renderTrigger={() => (
           <HansInput
-            label={label}
-            labelColor={labelColor}
-            message={message}
-            messageColor={messageColor}
             inputId={inputId}
             inputColor={inputColor}
             inputSize={inputSize}
@@ -228,6 +236,17 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
         </ul>
       </HansPopup>
 
+      {message ? (
+        <p
+          className={`
+            hans-input-message
+            hans-input-message-${messageColor}
+          `}
+        >
+          {message}
+        </p>
+      ) : null}
+
       {isMulti && selectedOptions.length > 0 ? (
         <div className="hans-select-option-selected">
           {selectedOptions.map((option) => (
@@ -248,3 +267,4 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
 });
 
 HansSelectOption.displayName = 'HansSelectOption';
+

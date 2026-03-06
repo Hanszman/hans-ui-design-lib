@@ -61,4 +61,17 @@ describe('HansPopup', () => {
     fireEvent.click(screen.getByText('Open'));
     expect(onOpenChange).not.toHaveBeenCalled();
   });
+
+  it('Should render default no-content message when children are empty', () => {
+    render(
+      <HansPopup
+        isOpen
+        renderTrigger={() => <button type="button">Trigger</button>}
+      >
+        {null}
+      </HansPopup>,
+    );
+
+    expect(screen.getByText('No content')).toBeInTheDocument();
+  });
 });

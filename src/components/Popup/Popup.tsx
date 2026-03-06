@@ -11,6 +11,7 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
     isOpen = false,
     disabled = false,
     popupBackgroundColor = 'var(--white)',
+    noContentText = 'No content',
     popupClassName = '',
     panelClassName = '',
     customClasses = '',
@@ -24,6 +25,7 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [direction, setDirection] = React.useState<PopupDirection>('down');
+  const hasContent = React.Children.count(children) > 0;
 
   const setOpen = createPopupOpenSetter({ disabled, onOpenChange });
   const open = React.useCallback(() => setOpen(true), [setOpen]);
@@ -75,7 +77,7 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
           }
         >
           <div className={`hans-popup-panel-content ${panelClassName}`}>
-            {children}
+            {hasContent ? children : <div className="hans-popup-empty">{noContentText}</div>}
           </div>
         </div>
       ) : null}

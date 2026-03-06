@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import type { CSSProperties, KeyboardEvent } from 'react';
 import { HansButton } from '../Forms/Button/Button';
+import { HansInput } from '../Forms/Input/Input';
+import { HansIcon } from '../Icon/Icon';
 import { HansPopup } from './Popup';
 import DocsPage from './Popup.mdx';
 
@@ -14,6 +17,17 @@ const meta: Meta<typeof HansPopup> = {
 
 export default meta;
 type Story = StoryObj<typeof HansPopup>;
+const popupContentStyle: CSSProperties = { padding: '6px' };
+
+const shouldToggleForKeyboard = (
+  event: KeyboardEvent<HTMLElement>,
+  toggle: () => void,
+) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    toggle();
+  }
+};
 
 const PopupList = ({
   label,
@@ -38,10 +52,10 @@ const PopupList = ({
         />
       )}
     >
-      <ul className="p-4 flex flex-col gap-2">
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
+      <ul style={popupContentStyle} className="flex flex-col gap-2">
+        <li className="px-2 py-1">Item 1</li>
+        <li className="px-2 py-1">Item 2</li>
+        <li className="px-2 py-1">Item 3</li>
       </ul>
     </HansPopup>
   );
@@ -81,7 +95,7 @@ const CustomContentExample = () => {
           />
         )}
       >
-        <div className="p-4 flex flex-col gap-2">
+        <div style={popupContentStyle} className="flex flex-col gap-2">
           <strong>Custom area</strong>
           <p>You can render any content here.</p>
         </div>
@@ -99,7 +113,7 @@ const CustomContentExample = () => {
           />
         )}
       >
-        <div className="p-4 flex flex-col gap-3">
+        <div style={popupContentStyle} className="flex flex-col gap-3">
           <strong>Quick actions</strong>
           <button type="button" className="text-left">
             Edit profile
@@ -121,9 +135,90 @@ const CustomContentExample = () => {
           />
         )}
       >
-        <div className="p-4 flex flex-col gap-2">
+        <div style={popupContentStyle} className="flex flex-col gap-2">
           <strong>Status</strong>
           <span>All systems operational.</span>
+        </div>
+      </HansPopup>
+    </div>
+  );
+};
+
+export const TriggerElements: Story = {
+  render: () => <TriggerElementsExample />,
+};
+
+const TriggerElementsExample = () => {
+  const [inputOpen, setInputOpen] = useState(false);
+  const [iconOpen, setIconOpen] = useState(false);
+  const [customOpen, setCustomOpen] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-4">
+      <HansPopup
+        isOpen={inputOpen}
+        onOpenChange={setInputOpen}
+        renderTrigger={({ toggle }) => (
+          <div
+            role="button"
+            tabIndex={0}
+            className="w-[260px]"
+            onClick={toggle}
+            onKeyDown={(event) => shouldToggleForKeyboard(event, toggle)}
+          >
+            <HansInput
+              placeholder="Input trigger"
+              inputColor="primary"
+              readOnly
+              value="Click to open popup"
+            />
+          </div>
+        )}
+      >
+        <div style={popupContentStyle} className="flex flex-col gap-2">
+          <strong>Input trigger content</strong>
+          <span>Popup opened from an input trigger.</span>
+        </div>
+      </HansPopup>
+
+      <HansPopup
+        isOpen={iconOpen}
+        onOpenChange={setIconOpen}
+        renderTrigger={({ toggle }) => (
+          <button
+            type="button"
+            className="flex items-center gap-2 px-3 py-2 rounded-md border border-[var(--base-default-color)]"
+            onClick={toggle}
+          >
+            <HansIcon name="IoMdSettings" iconSize="small" />
+            <span>Icon trigger</span>
+          </button>
+        )}
+      >
+        <div style={popupContentStyle} className="flex flex-col gap-2">
+          <strong>Icon trigger content</strong>
+          <span>Popup opened from a custom button.</span>
+        </div>
+      </HansPopup>
+
+      <HansPopup
+        isOpen={customOpen}
+        onOpenChange={setCustomOpen}
+        renderTrigger={({ toggle }) => (
+          <span
+            role="button"
+            tabIndex={0}
+            className="underline cursor-pointer text-[var(--secondary-default-color)]"
+            onClick={toggle}
+            onKeyDown={(event) => shouldToggleForKeyboard(event, toggle)}
+          >
+            Text link trigger
+          </span>
+        )}
+      >
+        <div style={popupContentStyle} className="flex flex-col gap-2">
+          <strong>Link trigger content</strong>
+          <span>Popup opened from plain text trigger.</span>
         </div>
       </HansPopup>
     </div>

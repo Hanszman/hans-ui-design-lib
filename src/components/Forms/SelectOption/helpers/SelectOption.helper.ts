@@ -39,7 +39,7 @@ export const getSelectedLabel = (
   return selectedOptions[0]?.label ?? '';
 };
 
-export const filterSelectOptionOptions = (
+export const filterSelectOptionItens = (
   options: SelectOptionItem[],
   enableAutocomplete: boolean,
   searchTerm: string,
@@ -158,6 +158,7 @@ export const createHandleToggle =
   () => {
     setSelectOptionOpen(!getIsOpen(), 'toggle');
   };
+
 
 
 

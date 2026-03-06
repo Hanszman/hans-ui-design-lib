@@ -8,7 +8,7 @@ import {
   createHandleSelectOption,
   createHandleToggle,
   createSetSelectOptionOpen,
-  filterSelectOptionOptions,
+  filterSelectOptionItens,
   getInitialSelectOptionValue,
   getNextMultiValues,
   getOpenDirection,
@@ -50,9 +50,9 @@ describe('SelectOption.helper', () => {
   });
 
   it('Should filter options with autocomplete search', () => {
-    expect(filterSelectOptionOptions(options, false, 'a')).toEqual(options);
-    expect(filterSelectOptionOptions(options, true, '   ')).toEqual(options);
-    expect(filterSelectOptionOptions(options, true, 'alp')).toEqual([
+    expect(filterSelectOptionItens(options, false, 'a')).toEqual(options);
+    expect(filterSelectOptionItens(options, true, '   ')).toEqual(options);
+    expect(filterSelectOptionItens(options, true, 'alp')).toEqual([
       options[0],
     ]);
   });
@@ -177,4 +177,5 @@ describe('SelectOption.helper', () => {
     expect(setIsOpen).toHaveBeenCalledTimes(2);
   });
 });
+
 

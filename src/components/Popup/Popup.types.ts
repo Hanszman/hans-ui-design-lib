@@ -10,6 +10,7 @@ const HansPopupSchema = {
   isOpen: 'boolean',
   disabled: 'boolean',
   popupBackgroundColor: 'string',
+  noContentText: 'string',
   popupClassName: 'string',
   panelClassName: 'string',
   customClasses: 'string',

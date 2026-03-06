@@ -6,6 +6,7 @@ import * as PopupStories from './Popup.stories';
 <Title />
 
 The **Popup** component centralizes floating panel behavior (outside click, layering and up/down direction).
+It is used internally by both **SelectOption** and **Dropdown** components.
 
 ## Usage
 
@@ -24,6 +25,12 @@ import { HansPopup } from 'hans-ui-design-lib';
 Use any custom children inside the popup panel.
 
 <Canvas of={PopupStories.CustomContent} />
+
+## Trigger Elements
+
+Popup supports different trigger elements (button, input-like trigger, icon trigger, text trigger).
+
+<Canvas of={PopupStories.TriggerElements} />
 
 ## No Content
 

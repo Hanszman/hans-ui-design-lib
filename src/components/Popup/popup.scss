@@ -19,3 +19,7 @@
   @apply max-h-56;
   background-color: var(--hans-popup-bg);
 }
+
+.hans-popup-empty {
+  @apply px-3 py-2 text-sm text-[var(--gray-500)];
+}
