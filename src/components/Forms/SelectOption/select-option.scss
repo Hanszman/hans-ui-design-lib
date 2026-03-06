@@ -22,6 +22,10 @@
   bottom: calc(100% - var(--hans-select-option-up-offset, 0px));
 }
 
+.hans-select-option-field .hans-popup-panel[data-direction='down'] {
+  top: calc(100% - var(--hans-select-option-down-offset, 0px));
+}
+
 .hans-select-option-list {
   @apply w-full max-h-60 overflow-auto rounded-lg;
 }

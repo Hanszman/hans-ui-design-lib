@@ -119,16 +119,14 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   const handleOpen = createHandleOpen(setSelectOptionOpen);
   const handleToggle = createHandleToggle(setSelectOptionOpen, () => isOpen);
   const inputValue = enableAutocomplete ? searchTerm : selectedLabel;
-  const popupFieldStyle = React.useMemo(
-    () => {
-      const labelOffset = label ? 28 : 0;
-      const messageOffset = message ? 20 : 0;
-      return {
-        '--hans-select-option-up-offset': `${labelOffset + messageOffset}px`,
-      } as React.CSSProperties;
-    },
-    [label, message],
-  );
+  const popupFieldStyle = React.useMemo(() => {
+    const labelOffset = label ? 28 : 0;
+    const messageOffset = message ? 20 : 0;
+    return {
+      '--hans-select-option-up-offset': `${labelOffset}px`,
+      '--hans-select-option-down-offset': `${messageOffset}px`,
+    } as React.CSSProperties;
+  }, [label, message]);
 
   return (
     <div className="hans-select-option">
@@ -259,4 +257,3 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
 });
 
 HansSelectOption.displayName = 'HansSelectOption';
-
