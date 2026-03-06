@@ -20,6 +20,7 @@
 .hans-popup-panel-content.hans-dropdown-popup-content {
   @apply p-0;
   overflow: visible;
+  max-height: none;
 }
 
 .hans-dropdown-popup-content > .hans-dropdown-list {

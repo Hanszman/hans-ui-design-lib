@@ -1,8 +1,8 @@
 import type React from 'react';
-import type { OptionItem } from '../../../types/Common.types';
+import type { PopupOptionItem } from '../Popup.types';
 
 export type HansPopupItemListItemState = {
-  item: OptionItem;
+  item: PopupOptionItem;
   itemPath: string;
   itemId: string;
   index: number;
@@ -13,7 +13,7 @@ export type HansPopupItemListItemState = {
 };
 
 export type HansPopupItemListProps = {
-  items: OptionItem[];
+  items: PopupOptionItem[];
   id?: string;
   className?: string;
   role?: 'listbox' | 'menu';
@@ -28,14 +28,17 @@ export type HansPopupItemListProps = {
   itemClassName?: string | ((state: HansPopupItemListItemState) => string);
   itemLabelClassName?: string;
   selectedItemIds?: string[];
-  resolveItemId?: (item: OptionItem, itemPath: string) => string;
-  onItemClick?: (item: OptionItem, state: HansPopupItemListItemState) => void;
+  resolveItemId?: (item: PopupOptionItem, itemPath: string) => string;
+  onItemClick?: (
+    item: PopupOptionItem,
+    state: HansPopupItemListItemState,
+  ) => void;
   onItemEnter?: (
     state: HansPopupItemListItemState,
     target: HTMLElement,
   ) => void;
-  onListMouseEnter?: (parentPath: string) => void;
-  onListMouseLeave?: (parentPath: string) => void;
+  onListMouseEnter?: (parentPath: string, event: React.MouseEvent) => void;
+  onListMouseLeave?: (parentPath: string, event: React.MouseEvent) => void;
   renderLeading?: (state: HansPopupItemListItemState) => React.ReactNode;
   renderTrailing?: (state: HansPopupItemListItemState) => React.ReactNode;
   renderChildren?: (state: HansPopupItemListItemState) => React.ReactNode;

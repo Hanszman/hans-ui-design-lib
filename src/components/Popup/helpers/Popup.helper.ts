@@ -1,6 +1,10 @@
 import React from 'react';
 import type { PopupDirection } from '../Popup.types';
 import type {
+  HansPopupItemListItemState,
+  HansPopupItemListProps,
+} from '../PopupItemList/PopupItemList.types';
+import type {
   CreatePopupOpenSetterParams,
   GetPopupDirectionParams,
   HandlePopupOutsideClickParams,
@@ -50,3 +54,12 @@ export const hasPopupRenderableContent = (children: React.ReactNode): boolean =>
     if (typeof child === 'string') return child.trim().length > 0;
     return true;
   });
+
+export const resolvePopupItemPath = (parentPath: string, index: number): string =>
+  parentPath.length > 0 ? `${parentPath}.${index}` : `${index}`;
+
+export const resolvePopupItemClassName = (
+  itemClassName: HansPopupItemListProps['itemClassName'] = '',
+  state: HansPopupItemListItemState,
+): string =>
+  typeof itemClassName === 'function' ? itemClassName(state) : itemClassName;

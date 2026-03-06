@@ -13,6 +13,7 @@ import {
   getNextMultiValues,
   getOpenDirection,
   getOptionId,
+  getSelectOptionItemClassName,
   getSelectOptionPopupOffsets,
   getSelectedLabel,
   getValuesAfterRemoval,
@@ -89,6 +90,34 @@ describe('SelectOption.helper', () => {
       down: 21,
     });
     expect(getSelectOptionPopupOffsets(null)).toEqual({ up: 0, down: 0 });
+  });
+
+  it('Should resolve class names for select option list items', () => {
+    expect(
+      getSelectOptionItemClassName({
+        item: options[0],
+        itemPath: '0',
+        itemId: 'alpha',
+        index: 0,
+        nested: false,
+        isSelected: true,
+        isDisabled: false,
+        hasChildren: false,
+      }),
+    ).toContain('hans-select-option-option-selected');
+
+    expect(
+      getSelectOptionItemClassName({
+        item: options[1],
+        itemPath: '1',
+        itemId: 'beta',
+        index: 1,
+        nested: false,
+        isSelected: false,
+        isDisabled: true,
+        hasChildren: false,
+      }),
+    ).toContain('hans-select-option-option-disabled');
   });
 
   it('Should create input change handler and process events', () => {

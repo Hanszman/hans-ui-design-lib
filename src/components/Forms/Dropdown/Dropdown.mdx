@@ -1,4 +1,10 @@
-import { Meta, Title, Primary, Controls, Canvas } from '@storybook/addon-docs/blocks';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
 import * as HansDropdownStories from './Dropdown.stories';
 
 <Meta of={HansDropdownStories} />
@@ -53,7 +59,7 @@ Use `onOpenChange` to observe open/close state.
 
 ## Option Actions
 
-Use `action` in each `OptionItem` to execute custom callbacks when the option is selected.
+Use `action` in each `PopupOptionItem` to execute custom callbacks when the option is selected.
 
 <Canvas of={HansDropdownStories.OptionActions} />
 

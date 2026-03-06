@@ -1,5 +1,6 @@
 import type React from 'react';
 import type { DropdownItem } from '../Dropdown.types';
+import type { HansPopupItemListItemState } from '../../../Popup/PopupItemList/PopupItemList.types';
 import type {
   CreateHandleDropdownItemEnterParams,
   CreateDropdownOpenSetterParams,
@@ -51,6 +52,16 @@ export const getDropdownSubmenuArrowName = (
   direction: 'left' | 'right',
 ): 'IoIosArrowBack' | 'IoIosArrowForward' =>
   direction === 'left' ? 'IoIosArrowBack' : 'IoIosArrowForward';
+
+export const getDropdownItemClassName = (
+  state: HansPopupItemListItemState,
+  submenuDirection: 'left' | 'right',
+): string => `
+  hans-dropdown-option
+  ${state.isDisabled ? 'hans-dropdown-option-disabled' : ''}
+  ${state.hasChildren ? 'hans-dropdown-option-parent' : ''}
+  ${state.hasChildren ? `hans-dropdown-option-parent-${submenuDirection}` : ''}
+`;
 
 export const getDropdownSelection = (
   item: DropdownItem,

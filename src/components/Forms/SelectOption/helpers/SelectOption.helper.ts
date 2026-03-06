@@ -1,4 +1,5 @@
 import type React from 'react';
+import type { HansPopupItemListItemState } from '../../../Popup/PopupItemList/PopupItemList.types';
 import type {
   SelectOptionItem,
   SelectOptionValue,
@@ -66,6 +67,14 @@ export const filterSelectOptionItens = (
     option.label.toLowerCase().includes(search),
   );
 };
+
+export const getSelectOptionItemClassName = (
+  state: HansPopupItemListItemState,
+): string => `
+  hans-select-option-option
+  ${state.isSelected ? 'hans-select-option-option-selected' : ''}
+  ${state.isDisabled ? 'hans-select-option-option-disabled' : ''}
+`;
 
 export const getNextMultiValues = (
   selectedValues: string[],

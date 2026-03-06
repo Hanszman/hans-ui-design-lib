@@ -1,23 +1,13 @@
 import React from 'react';
 import { HansIcon } from '../../../Icon/Icon';
 import { HansPopupItemList } from '../../../Popup/PopupItemList/PopupItemList';
-import type { HansPopupItemListItemState } from '../../../Popup/PopupItemList/PopupItemList.types';
 import type { DropdownItem } from '../Dropdown.types';
 import {
   getDropdownSubmenuArrowName,
+  getDropdownItemClassName,
   shouldShowDropdownSubmenu,
 } from '../helpers/Dropdown.helper';
 import type { HansDropdownItemListProps } from './DropdownItemList.types';
-
-const getDropdownItemClassName = (
-  state: HansPopupItemListItemState,
-  submenuDirection: 'left' | 'right',
-): string => `
-  hans-dropdown-option
-  ${state.isDisabled ? 'hans-dropdown-option-disabled' : ''}
-  ${state.hasChildren ? 'hans-dropdown-option-parent' : ''}
-  ${state.hasChildren ? `hans-dropdown-option-parent-${submenuDirection}` : ''}
-`;
 
 export const HansDropdownItemList = React.memo(
   (props: HansDropdownItemListProps) => {

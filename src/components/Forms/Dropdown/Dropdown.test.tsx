@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import { HansDropdown } from './Dropdown';
 
@@ -244,13 +244,7 @@ describe('HansDropdown', () => {
   });
 
   it('Should close nested submenu after delayed list leave', () => {
-    const setTimeoutSpy = vi.spyOn(global, 'setTimeout').mockImplementation(((
-      callback: TimerHandler,
-    ) => {
-      if (typeof callback === 'function') callback();
-      return 1 as unknown as ReturnType<typeof setTimeout>;
-    }) as typeof setTimeout);
-
+    vi.useFakeTimers();
     try {
       render(
         <HansDropdown
@@ -273,11 +267,49 @@ describe('HansDropdown', () => {
       expect(screen.getByText('Child')).toBeInTheDocument();
 
       const nestedMenu = screen.getAllByRole('menu')[1];
-      fireEvent.mouseLeave(nestedMenu);
-
-      expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 100);
+      fireEvent.mouseLeave(nestedMenu, { relatedTarget: document.body });
+      act(() => {
+        vi.advanceTimersByTime(241);
+      });
+      expect(screen.queryByText('Child')).not.toBeInTheDocument();
     } finally {
-      setTimeoutSpy.mockRestore();
+      vi.useRealTimers();
+    }
+  });
+
+  it('Should ignore delayed close when moving mouse to another dropdown list', () => {
+    vi.useFakeTimers();
+    try {
+      render(
+        <HansDropdown
+          triggerLabel="Nested keep"
+          options={[
+            {
+              id: 'parent',
+              label: 'Parent',
+              value: 'parent',
+              children: [{ id: 'child', label: 'Child', value: 'child' }],
+            },
+          ]}
+        />,
+      );
+
+      fireEvent.click(screen.getByRole('button', { name: /nested keep/i }));
+      fireEvent.mouseEnter(
+        screen.getByText('Parent').closest('li') as HTMLElement,
+      );
+      expect(screen.getByText('Child')).toBeInTheDocument();
+
+      const menus = screen.getAllByRole('menu');
+      const rootMenu = menus[0];
+      const nestedMenu = menus[1];
+      fireEvent.mouseLeave(nestedMenu, { relatedTarget: rootMenu });
+      act(() => {
+        vi.advanceTimersByTime(241);
+      });
+      expect(screen.getByText('Child')).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
     }
   });
 });

@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { DropdownItem } from '../Dropdown.types';
 
 export type HansDropdownItemListProps = {
@@ -9,7 +10,7 @@ export type HansDropdownItemListProps = {
   nested?: boolean;
   popupId?: string;
   onItemEnter: (path: string, target: HTMLElement) => void;
-  onListEnter?: (parentPath: string) => void;
-  onListLeave?: (parentPath: string) => void;
+  onListEnter?: (parentPath: string, event: React.MouseEvent) => void;
+  onListLeave?: (parentPath: string, event: React.MouseEvent) => void;
   onSelect: (item: DropdownItem) => void;
 };

@@ -1,16 +1,12 @@
 import React from 'react';
 import { HansLoading } from '../../../Loading/Loading';
 import { HansPopupItemList } from '../../../Popup/PopupItemList/PopupItemList';
-import type { HansPopupItemListItemState } from '../../../Popup/PopupItemList/PopupItemList.types';
-import { getOptionId } from '../helpers/SelectOption.helper';
+import {
+  getOptionId,
+  getSelectOptionItemClassName,
+} from '../helpers/SelectOption.helper';
 import type { SelectOptionItem } from '../SelectOption.types';
 import type { HansSelectOptionItemListProps } from './SelectOptionItemList.types';
-
-const getSelectOptionItemClassName = (state: HansPopupItemListItemState): string => `
-  hans-select-option-option
-  ${state.isSelected ? 'hans-select-option-option-selected' : ''}
-  ${state.isDisabled ? 'hans-select-option-option-disabled' : ''}
-`;
 
 export const HansSelectOptionItemList = React.memo(
   (props: HansSelectOptionItemListProps) => {

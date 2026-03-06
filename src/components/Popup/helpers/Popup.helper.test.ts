@@ -5,6 +5,8 @@ import {
   getPopupDirection,
   hasPopupRenderableContent,
   handlePopupOutsideClick,
+  resolvePopupItemClassName,
+  resolvePopupItemPath,
   resolvePopupDirection,
 } from './Popup.helper';
 
@@ -85,5 +87,39 @@ describe('Popup.helper', () => {
     expect(hasPopupRenderableContent('   ')).toBe(false);
     expect(hasPopupRenderableContent(React.createElement('span', null, 'content'))).toBe(true);
     expect(hasPopupRenderableContent('content')).toBe(true);
+  });
+
+  it('Should resolve popup item helpers', () => {
+    expect(resolvePopupItemPath('', 1)).toBe('1');
+    expect(resolvePopupItemPath('1', 2)).toBe('1.2');
+
+    expect(
+      resolvePopupItemClassName('fixed', {
+        item: { label: 'A', value: 'a' },
+        itemPath: '0',
+        itemId: 'a',
+        index: 0,
+        nested: false,
+        isSelected: false,
+        isDisabled: false,
+        hasChildren: false,
+      }),
+    ).toBe('fixed');
+
+    expect(
+      resolvePopupItemClassName(
+        (state) => (state.isDisabled ? 'disabled' : 'enabled'),
+        {
+          item: { label: 'B', value: 'b' },
+          itemPath: '1',
+          itemId: 'b',
+          index: 1,
+          nested: false,
+          isSelected: false,
+          isDisabled: true,
+          hasChildren: false,
+        },
+      ),
+    ).toBe('disabled');
   });
 });

@@ -5,6 +5,7 @@ import {
   createHandleDropdownItemEnter,
   createHandleDropdownSelect,
   getDropdownSubmenuArrowName,
+  getDropdownItemClassName,
   getHoveredPathOnListLeave,
   getDropdownSelection,
   getNextDropdownSubmenuDirections,
@@ -147,5 +148,23 @@ describe('Dropdown.helper', () => {
     expect(getHoveredPathOnListLeave('')).toBeNull();
     expect(getHoveredPathOnListLeave('0')).toBeNull();
     expect(getHoveredPathOnListLeave('0.1.2')).toBe('0.1');
+  });
+
+  it('Should resolve dropdown item class names', () => {
+    expect(
+      getDropdownItemClassName(
+        {
+          item: { label: 'A', value: 'a' },
+          itemPath: '0',
+          itemId: 'a',
+          index: 0,
+          nested: false,
+          isSelected: false,
+          isDisabled: true,
+          hasChildren: true,
+        },
+        'left',
+      ),
+    ).toContain('hans-dropdown-option-parent-left');
   });
 });

@@ -1,19 +1,14 @@
 import React from 'react';
 import { HansAvatar } from '../../Avatar/Avatar';
 import { HansIcon } from '../../Icon/Icon';
+import {
+  resolvePopupItemClassName,
+  resolvePopupItemPath,
+} from '../helpers/Popup.helper';
 import type {
   HansPopupItemListItemState,
   HansPopupItemListProps,
 } from './PopupItemList.types';
-
-const resolveItemPath = (parentPath: string, index: number): string =>
-  parentPath.length > 0 ? `${parentPath}.${index}` : `${index}`;
-
-const resolveItemClassName = (
-  itemClassName: HansPopupItemListProps['itemClassName'] = '',
-  state: HansPopupItemListItemState,
-): string =>
-  typeof itemClassName === 'function' ? itemClassName(state) : itemClassName;
 
 export const HansPopupItemList = React.memo((props: HansPopupItemListProps) => {
   const {
@@ -50,14 +45,14 @@ export const HansPopupItemList = React.memo((props: HansPopupItemListProps) => {
       style={style}
       data-direction={dataDirection}
       aria-multiselectable={ariaMultiselectable}
-      onMouseEnter={() => onListMouseEnter?.(parentPath)}
-      onMouseLeave={() => onListMouseLeave?.(parentPath)}
+      onMouseEnter={(event) => onListMouseEnter?.(parentPath, event)}
+      onMouseLeave={(event) => onListMouseLeave?.(parentPath, event)}
     >
       {items.length === 0 ? (
         <li className={emptyClassName}>{emptyText}</li>
       ) : (
         items.map((item, index) => {
-          const itemPath = resolveItemPath(parentPath, index);
+          const itemPath = resolvePopupItemPath(parentPath, index);
           const itemId = resolveItemId
             ? resolveItemId(item, itemPath)
             : (item.id ?? `${item.value}-${itemPath}`);
@@ -82,7 +77,7 @@ export const HansPopupItemList = React.memo((props: HansPopupItemListProps) => {
               role={itemRole}
               aria-selected={itemRole === 'option' ? isSelected : undefined}
               aria-disabled={isDisabled}
-              className={resolveItemClassName(itemClassName, state)}
+              className={resolvePopupItemClassName(itemClassName, state)}
               onMouseEnter={(event) =>
                 onItemEnter?.(state, event.currentTarget as HTMLElement)
               }

@@ -65,12 +65,26 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     },
     [],
   );
-  const handleListLeave = React.useCallback((parentPath: string) => {
+  const handleListEnter = React.useCallback(() => {
+    clearListLeaveTimeout();
+  }, [clearListLeaveTimeout]);
+  const handleListLeave = React.useCallback((
+    parentPath: string,
+    event: React.MouseEvent,
+  ) => {
     if (parentPath.length === 0) return;
+    const relatedTarget = event.relatedTarget;
+    if (
+      relatedTarget instanceof Element &&
+      relatedTarget.closest('.hans-dropdown-list')
+    ) {
+      clearListLeaveTimeout();
+      return;
+    }
     clearListLeaveTimeout();
     listLeaveTimeoutRef.current = setTimeout(() => {
       setHoveredPath(getHoveredPathOnListLeave(parentPath));
-    }, 100);
+    }, 240);
   }, [clearListLeaveTimeout]);
 
   React.useEffect(() => {
@@ -159,7 +173,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
             hoveredPath={hoveredPath}
             submenuDirections={submenuDirections}
             onItemEnter={handleDropdownItemEnter}
-            onListEnter={clearListLeaveTimeout}
+            onListEnter={handleListEnter}
             onListLeave={handleListLeave}
             onSelect={handleSelect}
           />

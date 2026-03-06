@@ -3,9 +3,10 @@ import {
   createPropsList,
   type InferPropsFromSchema,
 } from '../../../types/Schema.types';
-import type { Size, Color, OptionItem } from '../../../types/Common.types';
+import type { Size, Color } from '../../../types/Common.types';
+import type { PopupOptionItem } from '../../Popup/Popup.types';
 
-export type SelectOptionItem = OptionItem;
+export type SelectOptionItem = PopupOptionItem;
 
 export type SelectOptionSelectionType = 'single' | 'multi';
 
@@ -22,7 +23,7 @@ const HansSelectOptionSchema = {
   messageColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',
   disabled: 'boolean',
-  options: { type: 'custom', ref: {} as OptionItem[] },
+  options: { type: 'custom', ref: {} as PopupOptionItem[] },
   selectionType: { type: 'custom', ref: {} as SelectOptionSelectionType },
   enableAutocomplete: 'boolean',
   value: { type: 'custom', ref: {} as SelectOptionValue },

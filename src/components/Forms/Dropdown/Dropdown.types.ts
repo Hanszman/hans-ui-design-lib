@@ -7,11 +7,11 @@ import type {
   Color,
   Size,
   Variant,
-  OptionItem,
 } from '../../../types/Common.types';
+import type { PopupOptionItem } from '../../Popup/Popup.types';
 import type { ButtonShape } from '../Button/Button.types';
 
-export type DropdownItem = OptionItem;
+export type DropdownItem = PopupOptionItem;
 
 const HansDropdownSchema = {
   triggerLabel: 'string',
@@ -25,7 +25,7 @@ const HansDropdownSchema = {
   disabled: 'boolean',
   loading: 'boolean',
   loadingColor: { type: 'custom', ref: {} as Color },
-  options: { type: 'custom', ref: {} as OptionItem[] },
+  options: { type: 'custom', ref: {} as PopupOptionItem[] },
   customClasses: 'string',
   noOptionsText: 'string',
 } as const;

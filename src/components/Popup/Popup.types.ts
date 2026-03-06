@@ -6,6 +6,18 @@ import {
 
 export type PopupDirection = 'up' | 'down';
 
+export type PopupOptionItem = {
+  id?: string;
+  label: string;
+  value: string;
+  disabled?: boolean;
+  iconName?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  action?: (item: PopupOptionItem) => void;
+  children?: PopupOptionItem[];
+};
+
 const HansPopupSchema = {
   isOpen: 'boolean',
   disabled: 'boolean',
