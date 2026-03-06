@@ -1,0 +1,26 @@
+import { Meta, Title, Primary, Controls, Canvas } from '@storybook/addon-docs/blocks';
+import * as PopupStories from './Popup.stories';
+
+<Meta of={PopupStories} />
+
+<Title />
+
+The **Popup** component centralizes floating panel behavior (outside click, layering and up/down direction).
+
+## Usage
+
+```tsx
+import { HansPopup } from 'hans-ui-design-lib';
+```
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Custom Content
+
+Use any custom children inside the popup panel.
+
+<Canvas of={PopupStories.CustomContent} />

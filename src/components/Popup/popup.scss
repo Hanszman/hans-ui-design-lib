@@ -1,0 +1,21 @@
+.hans-popup {
+  @apply relative w-full;
+}
+
+.hans-popup-panel {
+  @apply absolute left-0 right-0 z-[9999];
+}
+
+.hans-popup-panel[data-direction='down'] {
+  @apply top-full mt-1;
+}
+
+.hans-popup-panel[data-direction='up'] {
+  @apply bottom-full mb-1;
+}
+
+.hans-popup-panel-content {
+  @apply overflow-auto rounded-lg border border-[var(--base-neutral-color)] shadow-md;
+  @apply max-h-56;
+  background-color: var(--hans-popup-bg);
+}

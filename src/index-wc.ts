@@ -15,6 +15,11 @@ import {
   type HansDropdownProps,
   HansDropdownPropsList,
 } from './components/Forms/Dropdown/Dropdown.types';
+import { HansSelectOption } from './components/Forms/SelectOption/SelectOption';
+import {
+  type HansSelectOptionProps,
+  HansSelectOptionPropsList,
+} from './components/Forms/SelectOption/SelectOption.types';
 import { HansToggle } from './components/Forms/Toggle/Toggle';
 import {
   type HansToggleProps,
@@ -45,6 +50,11 @@ import {
   type HansLoadingProps,
   HansLoadingPropsList,
 } from './components/Loading/Loading.types';
+import { HansPopup } from './components/Popup/Popup';
+import {
+  type HansPopupProps,
+  HansPopupPropsList,
+} from './components/Popup/Popup.types';
 import { HansTable } from './components/Table/Table';
 import {
   type HansTableProps,
@@ -70,6 +80,11 @@ registerReactAsWebComponent<HansDropdownProps>(
   'hans-dropdown',
   HansDropdown,
   HansDropdownPropsList,
+);
+registerReactAsWebComponent<HansSelectOptionProps>(
+  'hans-select-option',
+  HansSelectOption,
+  HansSelectOptionPropsList,
 );
 registerReactAsWebComponent<HansToggleProps>(
   'hans-toggle',
@@ -100,6 +115,11 @@ registerReactAsWebComponent<HansLoadingProps>(
   'hans-loading',
   HansLoading,
   HansLoadingPropsList,
+);
+registerReactAsWebComponent<HansPopupProps>(
+  'hans-popup',
+  HansPopup,
+  HansPopupPropsList,
 );
 registerReactAsWebComponent<HansTableProps>(
   'hans-table',

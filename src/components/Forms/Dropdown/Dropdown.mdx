@@ -1,79 +1,45 @@
-import {
-  Meta,
-  Title,
-  Primary,
-  Controls,
-  Canvas,
-} from '@storybook/addon-docs/blocks';
+import { Meta, Title, Primary, Controls, Canvas } from '@storybook/addon-docs/blocks';
 import * as HansDropdownStories from './Dropdown.stories';
 
 <Meta of={HansDropdownStories} />
 
 <Title />
 
-The **Dropdown** component can work as a simple select, a multi-select, and an
-autocomplete input depending on its configuration.
-Options can include an `id` for selection values and an optional `imageSrc` to
-display an avatar in the list.
+The **Dropdown** component is a button-triggered popup menu.  
+It supports option lists by default and custom content through `children`.
 
 ## Usage
 
 ```tsx
 import { HansDropdown } from 'hans-ui-design-lib';
-
-const options = [
-  { id: 'opt-1', label: 'Option 1', value: 'opt-1' },
-  { id: 'opt-2', label: 'Option 2', value: 'opt-2' },
-];
-
-export const Example = () => (
-  <HansDropdown
-    label="Dropdown"
-    options={options}
-    selectionType="single"
-    enableAutocomplete
-  />
-);
 ```
+
+<Primary />
 
 ## Properties
 
-The component accepts the following properties:
-
 <Controls />
 
-## Colors
+## Options Menu
 
-Use the color props to style label, border, and icons.
+Use `options` for the standard dropdown menu behavior.
 
-<Canvas of={HansDropdownStories.Colors} />
+<Canvas of={HansDropdownStories.WithOptions} />
 
-## Multi Select
+## Custom Content
 
-Enable `selectionType="multi"` to select multiple options.
+Pass any custom content in `children` (including other components).
 
-<Canvas of={HansDropdownStories.MultiSelect} />
+<Canvas of={HansDropdownStories.CustomContent} />
 
-## With Images
+## Controlled Open
 
-Provide `imageSrc` on options to render avatars.
+Use `onOpenChange` to observe open/close state.
 
-<Canvas of={HansDropdownStories.WithImages} />
-
-## Without Autocomplete
-
-Disable `enableAutocomplete` for a classic dropdown experience.
-
-<Canvas of={HansDropdownStories.WithoutAutocomplete} />
-
-## Disabled
-
-Use `disabled` to prevent interaction.
-
-<Canvas of={HansDropdownStories.Disabled} />
+<Canvas of={HansDropdownStories.ControlledOpen} />
 
 ## Loading
 
-Use `isLoadingOptions` while options are being fetched asynchronously.
+Use `loading` to render a loading state inside popup content.
 
 <Canvas of={HansDropdownStories.Loading} />

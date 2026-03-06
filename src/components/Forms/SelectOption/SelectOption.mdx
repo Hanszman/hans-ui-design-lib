@@ -1,0 +1,80 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansSelectOptionStories from './SelectOption.stories';
+
+<Meta of={HansSelectOptionStories} />
+
+<Title />
+
+The **SelectOption** component can work as a simple select, a multi-select, and an
+autocomplete input depending on its configuration.
+Options can include an `id` for selection values and an optional `imageSrc` to
+display an avatar in the list.
+
+## Usage
+
+```tsx
+import { HansSelectOption } from 'hans-ui-design-lib';
+
+const options = [
+  { id: 'opt-1', label: 'Option 1', value: 'opt-1' },
+  { id: 'opt-2', label: 'Option 2', value: 'opt-2' },
+];
+
+export const Example = () => (
+  <HansSelectOption
+    label="Select Option"
+    options={options}
+    selectionType="single"
+    enableAutocomplete
+  />
+);
+```
+
+## Properties
+
+The component accepts the following properties:
+
+<Controls />
+
+## Colors
+
+Use the color props to style label, border, and icons.
+
+<Canvas of={HansSelectOptionStories.Colors} />
+
+## Multi Select
+
+Enable `selectionType="multi"` to select multiple options.
+
+<Canvas of={HansSelectOptionStories.MultiSelect} />
+
+## With Images
+
+Provide `imageSrc` on options to render avatars.
+
+<Canvas of={HansSelectOptionStories.WithImages} />
+
+## Without Autocomplete
+
+Disable `enableAutocomplete` for a classic dropdown experience.
+
+<Canvas of={HansSelectOptionStories.WithoutAutocomplete} />
+
+## Disabled
+
+Use `disabled` to prevent interaction.
+
+<Canvas of={HansSelectOptionStories.Disabled} />
+
+## Loading
+
+Use `isLoadingOptions` while options are being fetched asynchronously.
+
+<Canvas of={HansSelectOptionStories.Loading} />
+

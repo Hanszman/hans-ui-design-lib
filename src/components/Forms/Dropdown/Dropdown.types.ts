@@ -3,54 +3,37 @@ import {
   createPropsList,
   type InferPropsFromSchema,
 } from '../../../types/Schema.types';
-import type { Size, Color } from '../../../types/Common.types';
+import type { Color, Size, Variant } from '../../../types/Common.types';
 
-export type DropdownOption = {
+export type DropdownItem = {
   id?: string;
   label: string;
   value: string;
-  imageSrc?: string;
-  imageAlt?: string;
   disabled?: boolean;
+  iconName?: string;
 };
 
-export type DropdownSelectionType = 'single' | 'multi';
-
-export type DropdownValue = string | string[];
-
 const HansDropdownSchema = {
-  label: 'string',
-  labelColor: { type: 'custom', ref: {} as Color },
-  placeholder: 'string',
-  inputId: 'string',
-  inputColor: { type: 'custom', ref: {} as Color },
-  inputSize: { type: 'custom', ref: {} as Size },
-  message: 'string',
-  messageColor: { type: 'custom', ref: {} as Color },
-  customClasses: 'string',
+  triggerLabel: 'string',
+  triggerColor: { type: 'custom', ref: {} as Color },
+  triggerVariant: { type: 'custom', ref: {} as Variant },
+  triggerSize: { type: 'custom', ref: {} as Size },
+  popupId: 'string',
+  popupBackgroundColor: 'string',
+  closeOnSelect: 'boolean',
   disabled: 'boolean',
-  options: { type: 'custom', ref: {} as DropdownOption[] },
-  selectionType: { type: 'custom', ref: {} as DropdownSelectionType },
-  enableAutocomplete: 'boolean',
-  value: { type: 'custom', ref: {} as DropdownValue },
-  defaultValue: { type: 'custom', ref: {} as DropdownValue },
+  loading: 'boolean',
+  loadingColor: { type: 'custom', ref: {} as Color },
+  options: { type: 'custom', ref: {} as DropdownItem[] },
+  customClasses: 'string',
   noOptionsText: 'string',
-  dropdownBackgroundColor: 'string',
-  dropdownHoverColor: 'string',
-  isLoadingOptions: 'boolean',
-  loadingOptionsText: 'string',
 } as const;
 
-export type HansDropdownProps = InferPropsFromSchema<
-  typeof HansDropdownSchema
-> &
-  Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    'value' | 'defaultValue' | 'onChange' | 'size' | 'type'
-  > & {
-    onSearch?: (query: string) => void;
-    onChange?: (value: DropdownValue) => void;
-    onInputChange?: React.ChangeEventHandler<HTMLInputElement>;
+export type HansDropdownProps = InferPropsFromSchema<typeof HansDropdownSchema> &
+  Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> & {
+    children?: React.ReactNode;
+    onSelect?: (item: DropdownItem) => void;
+    onOpenChange?: (open: boolean) => void;
   };
 
 export const HansDropdownPropsList = createPropsList(HansDropdownSchema);

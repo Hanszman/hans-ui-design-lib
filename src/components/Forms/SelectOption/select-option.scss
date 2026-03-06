@@ -1,0 +1,60 @@
+.hans-select-option {
+  @apply w-full flex flex-col overflow-visible;
+}
+
+.hans-select-option-field {
+  @apply w-full overflow-visible;
+}
+
+.hans-select-option-input {
+  @apply w-full;
+}
+
+.hans-select-option-popup {
+  @apply w-full;
+}
+
+.hans-select-option-popup-content {
+  @apply p-0;
+}
+
+.hans-select-option-list {
+  @apply w-full max-h-60 overflow-auto rounded-lg;
+}
+
+.hans-select-option-option {
+  @apply px-3 py-2 cursor-pointer flex items-center gap-2;
+}
+
+.hans-select-option-option:hover {
+  background-color: var(--hans-select-option-hover, var(--base-neutral-color));
+}
+
+.hans-select-option-option-selected {
+  @apply bg-[var(--base-neutral-color)] font-bold;
+}
+
+.hans-select-option-option-disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.hans-select-option-empty {
+  @apply px-3 py-2 text-sm text-[var(--gray-500)];
+}
+
+.hans-select-option-loading {
+  @apply px-3 py-2 text-sm text-[var(--gray-500)] flex items-center gap-2;
+}
+
+.hans-select-option-loading-icon {
+  @apply shrink-0;
+}
+
+.hans-select-option-option-label {
+  @apply flex-1;
+}
+
+.hans-select-option-selected {
+  @apply flex flex-wrap gap-2 mt-2;
+}
+

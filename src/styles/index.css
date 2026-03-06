@@ -5,12 +5,14 @@
 @import '../components/Forms/Button/button.scss';
 @import '../components/Forms/Input/input.scss';
 @import '../components/Forms/Dropdown/dropdown.scss';
+@import '../components/Forms/SelectOption/select-option.scss';
 @import '../components/Forms/Toggle/toggle.scss';
 @import '../components/Avatar/avatar.scss';
 @import '../components/Tag/tag.scss';
 @import '../components/Chart/chart.scss';
 @import '../components/Loading/loading.scss';
 @import '../components/Icon/icon.scss';
+@import '../components/Popup/popup.scss';
 @import '../components/Table/table.scss';
 @import '../components/Tabs/tabs.scss';
 

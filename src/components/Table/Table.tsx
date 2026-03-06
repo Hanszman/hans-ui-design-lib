@@ -1,5 +1,5 @@
 import React from 'react';
-import { HansDropdown } from '../Forms/Dropdown/Dropdown';
+import { HansSelectOption } from '../Forms/SelectOption/SelectOption';
 import { HansInput } from '../Forms/Input/Input';
 import { HansTableBody } from './TableBody/TableBody';
 import { HansTableHeader } from './TableHeader/TableHeader';
@@ -165,7 +165,7 @@ export const HansTable = React.memo((props: HansTableProps) => {
                 >
                   {column.filter ? (
                     column.filter.type === 'dropdown' ? (
-                      <HansDropdown
+                      <HansSelectOption
                         label=""
                         options={getDropdownFilterOptions(
                           column,
