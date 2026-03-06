@@ -5,9 +5,9 @@
 @import '../components/Forms/Button/button.scss';
 @import '../components/Forms/Input/input.scss';
 @import '../components/Forms/Dropdown/dropdown.scss';
-@import '../components/Forms/Dropdown/DropdownOptionList/dropdown-option-list.scss';
+@import '../components/Forms/Dropdown/DropdownItemList/dropdown-item-list.scss';
 @import '../components/Forms/SelectOption/select-option.scss';
-@import '../components/Forms/SelectOption/SelectOptionOptionList/select-option-option-list.scss';
+@import '../components/Forms/SelectOption/SelectOptionItemList/select-option-item-list.scss';
 @import '../components/Forms/Toggle/toggle.scss';
 @import '../components/Avatar/avatar.scss';
 @import '../components/Tag/tag.scss';
@@ -15,7 +15,7 @@
 @import '../components/Loading/loading.scss';
 @import '../components/Icon/icon.scss';
 @import '../components/Popup/popup.scss';
-@import '../components/Popup/PopupOptionList/popup-option-list.scss';
+@import '../components/Popup/PopupItemList/popup-item-list.scss';
 @import '../components/Table/table.scss';
 @import '../components/Tabs/tabs.scss';
 

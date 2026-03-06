@@ -1,6 +1,6 @@
 import type React from 'react';
 
-export type HansPopupOptionListProps = {
+export type HansPopupItemListProps = {
   as?: 'ul' | 'div' | 'none';
   id?: string;
   className?: string;

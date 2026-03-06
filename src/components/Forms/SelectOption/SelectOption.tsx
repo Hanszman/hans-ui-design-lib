@@ -8,7 +8,7 @@ import { HansIcon } from '../../Icon/Icon';
 import { HansTag } from '../../Tag/Tag';
 import { HansLoading } from '../../Loading/Loading';
 import { HansPopup } from '../../Popup/Popup';
-import { HansSelectOptionOptionList } from './SelectOptionOptionList/SelectOptionOptionList';
+import { HansSelectOptionItemList } from './SelectOptionItemList/SelectOptionItemList';
 import {
   createHandleInputChange,
   createHandleOpen,
@@ -187,7 +187,7 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
           />
         )}
       >
-        <HansSelectOptionOptionList
+        <HansSelectOptionItemList
           listId={`${inputId}-list`}
           options={filteredOptions}
           selectedValues={selectedValues}

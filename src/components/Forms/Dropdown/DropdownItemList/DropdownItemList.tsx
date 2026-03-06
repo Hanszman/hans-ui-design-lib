@@ -8,11 +8,11 @@ import {
   resolveDropdownItemId,
   shouldShowDropdownSubmenu,
 } from '../helpers/Dropdown.helper';
-import type { HansDropdownOptionListProps } from './DropdownOptionList.types';
-import { HansPopupOptionList } from '../../../Popup/PopupOptionList/PopupOptionList';
+import type { HansDropdownItemListProps } from './DropdownItemList.types';
+import { HansPopupItemList } from '../../../Popup/PopupItemList/PopupItemList';
 
-export const HansDropdownOptionList = React.memo(
-  (props: HansDropdownOptionListProps) => {
+export const HansDropdownItemList = React.memo(
+  (props: HansDropdownItemListProps) => {
     const {
       items,
       noOptionsText,
@@ -27,7 +27,7 @@ export const HansDropdownOptionList = React.memo(
     } = props;
 
     return (
-      <HansPopupOptionList
+      <HansPopupItemList
         id={nested ? undefined : popupId}
         className={`hans-dropdown-list ${nested ? 'hans-dropdown-list-nested' : ''}`}
         role="menu"
@@ -75,7 +75,7 @@ export const HansDropdownOptionList = React.memo(
                 />
               ) : null}
               {hasChildren && showSubmenu ? (
-                <HansDropdownOptionList
+                <HansDropdownItemList
                   items={item.children as DropdownItem[]}
                   noOptionsText={noOptionsText}
                   hoveredPath={hoveredPath}
@@ -90,9 +90,9 @@ export const HansDropdownOptionList = React.memo(
             </li>
           );
         })}
-      </HansPopupOptionList>
+      </HansPopupItemList>
     );
   },
 );
 
-HansDropdownOptionList.displayName = 'HansDropdownOptionList';
+HansDropdownItemList.displayName = 'HansDropdownItemList';

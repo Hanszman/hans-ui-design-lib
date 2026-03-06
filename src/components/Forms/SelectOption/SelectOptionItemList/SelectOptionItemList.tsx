@@ -2,12 +2,12 @@ import React from 'react';
 import { HansAvatar } from '../../../Avatar/Avatar';
 import { HansIcon } from '../../../Icon/Icon';
 import { HansLoading } from '../../../Loading/Loading';
-import { HansPopupOptionList } from '../../../Popup/PopupOptionList/PopupOptionList';
+import { HansPopupItemList } from '../../../Popup/PopupItemList/PopupItemList';
 import { getOptionId } from '../helpers/SelectOption.helper';
-import type { HansSelectOptionOptionListProps } from './SelectOptionOptionList.types';
+import type { HansSelectOptionItemListProps } from './SelectOptionItemList.types';
 
-export const HansSelectOptionOptionList = React.memo(
-  (props: HansSelectOptionOptionListProps) => {
+export const HansSelectOptionItemList = React.memo(
+  (props: HansSelectOptionItemListProps) => {
     const {
       options,
       selectedValues,
@@ -45,7 +45,7 @@ export const HansSelectOptionOptionList = React.memo(
             <span>{loadingOptionsText}</span>
           </li>
         ) : (
-          <HansPopupOptionList
+          <HansPopupItemList
             as="none"
             hasItems={options.length > 0}
             emptyText={noOptionsText}
@@ -83,11 +83,11 @@ export const HansSelectOptionOptionList = React.memo(
                 </li>
               );
             })}
-          </HansPopupOptionList>
+          </HansPopupItemList>
         )}
       </ul>
     );
   },
 );
 
-HansSelectOptionOptionList.displayName = 'HansSelectOptionOptionList';
+HansSelectOptionItemList.displayName = 'HansSelectOptionItemList';

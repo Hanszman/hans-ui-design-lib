@@ -1,6 +1,6 @@
 import type { DropdownItem } from '../Dropdown.types';
 
-export type HansDropdownOptionListProps = {
+export type HansDropdownItemListProps = {
   items: DropdownItem[];
   noOptionsText: string;
   hoveredPath: string | null;

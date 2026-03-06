@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import { HansSelectOptionOptionList } from './SelectOptionOptionList';
+import { HansSelectOptionItemList } from './SelectOptionItemList';
 
-describe('HansSelectOptionOptionList', () => {
+describe('HansSelectOptionItemList', () => {
   it('Should render empty state when there are no options', () => {
     render(
-      <HansSelectOptionOptionList
+      <HansSelectOptionItemList
         options={[]}
         selectedValues={[]}
         isMulti={false}
@@ -24,7 +24,7 @@ describe('HansSelectOptionOptionList', () => {
 
   it('Should render loading state when loading is true', () => {
     render(
-      <HansSelectOptionOptionList
+      <HansSelectOptionItemList
         options={[{ id: '1', value: '1', label: 'One' }]}
         selectedValues={[]}
         isMulti={false}
@@ -44,7 +44,7 @@ describe('HansSelectOptionOptionList', () => {
   it('Should render options and select item on click', () => {
     const onSelectOption = vi.fn();
     render(
-      <HansSelectOptionOptionList
+      <HansSelectOptionItemList
         options={[
           { id: '1', value: '1', label: 'One' },
           { id: '2', value: '2', label: 'Two', disabled: true },

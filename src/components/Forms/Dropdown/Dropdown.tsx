@@ -3,7 +3,7 @@ import { HansButton } from '../Button/Button';
 import { HansIcon } from '../../Icon/Icon';
 import { HansLoading } from '../../Loading/Loading';
 import { HansPopup } from '../../Popup/Popup';
-import { HansDropdownOptionList } from './DropdownOptionList/DropdownOptionList';
+import { HansDropdownItemList } from './DropdownItemList/DropdownItemList';
 import type { HansDropdownProps } from './Dropdown.types';
 import {
   createDropdownOpenSetter,
@@ -128,7 +128,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
             {children}
           </div>
         ) : (
-          <HansDropdownOptionList
+          <HansDropdownItemList
             popupId={popupId}
             items={options}
             noOptionsText={noOptionsText}

@@ -1,6 +1,6 @@
 import type { SelectOptionItem } from '../SelectOption.types';
 
-export type HansSelectOptionOptionListProps = {
+export type HansSelectOptionItemListProps = {
   options: SelectOptionItem[];
   selectedValues: string[];
   isMulti: boolean;

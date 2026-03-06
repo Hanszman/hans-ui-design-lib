@@ -1,14 +1,14 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import { HansPopupOptionList } from './PopupOptionList';
+import { HansPopupItemList } from './PopupItemList';
 
-describe('HansPopupOptionList', () => {
+describe('HansPopupItemList', () => {
   it('Should render children when hasItems is true', () => {
     render(
-      <HansPopupOptionList hasItems emptyText="No content" role="menu">
+      <HansPopupItemList hasItems emptyText="No content" role="menu">
         <li>Item A</li>
-      </HansPopupOptionList>,
+      </HansPopupItemList>,
     );
 
     expect(screen.getByText('Item A')).toBeInTheDocument();
@@ -18,7 +18,7 @@ describe('HansPopupOptionList', () => {
 
   it('Should render empty state when hasItems is false', () => {
     render(
-      <HansPopupOptionList hasItems={false} emptyText="No content" />,
+      <HansPopupItemList hasItems={false} emptyText="No content" />,
     );
 
     expect(screen.getByText('No content')).toBeInTheDocument();
@@ -27,7 +27,7 @@ describe('HansPopupOptionList', () => {
   it('Should render as div and call onMouseLeave', () => {
     const onMouseLeave = vi.fn();
     render(
-      <HansPopupOptionList
+      <HansPopupItemList
         as="div"
         role="menu"
         hasItems
@@ -35,7 +35,7 @@ describe('HansPopupOptionList', () => {
         onMouseLeave={onMouseLeave}
       >
         <div>Content</div>
-      </HansPopupOptionList>,
+      </HansPopupItemList>,
     );
 
     fireEvent.mouseLeave(screen.getByRole('menu'));
@@ -45,7 +45,7 @@ describe('HansPopupOptionList', () => {
   it('Should render as fragment with custom empty element', () => {
     render(
       <ul>
-        <HansPopupOptionList
+        <HansPopupItemList
           as="none"
           hasItems={false}
           emptyText="No content"
@@ -59,7 +59,7 @@ describe('HansPopupOptionList', () => {
 
   it('Should render empty div when emptyAs is div', () => {
     render(
-      <HansPopupOptionList
+      <HansPopupItemList
         as="div"
         hasItems={false}
         emptyText="No content"

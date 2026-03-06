@@ -17,13 +17,14 @@
   right: auto;
 }
 
-.hans-dropdown-popup-content {
-  @apply p-0 overflow-visible;
+.hans-popup-panel-content.hans-dropdown-popup-content {
+  @apply p-0;
+  overflow: visible;
 }
 
 .hans-dropdown-popup-content > .hans-dropdown-list {
-  @apply max-h-56 overflow-y-auto;
-  overflow-x: visible;
+  overflow: visible;
+  max-height: none;
 }
 
 .hans-dropdown-custom-content {

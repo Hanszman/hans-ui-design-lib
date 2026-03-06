@@ -1,7 +1,7 @@
 import React from 'react';
-import type { HansPopupOptionListProps } from './PopupOptionList.types';
+import type { HansPopupItemListProps } from './PopupItemList.types';
 
-export const HansPopupOptionList = React.memo((props: HansPopupOptionListProps) => {
+export const HansPopupItemList = React.memo((props: HansPopupItemListProps) => {
   const {
     as = 'ul',
     id,
@@ -9,7 +9,7 @@ export const HansPopupOptionList = React.memo((props: HansPopupOptionListProps) 
     role = 'listbox',
     hasItems,
     emptyText,
-    emptyClassName = 'hans-popup-option-list-empty',
+    emptyClassName = 'hans-popup-item-list-empty',
     emptyAs = 'li',
     onMouseLeave,
     children,
@@ -41,4 +41,4 @@ export const HansPopupOptionList = React.memo((props: HansPopupOptionListProps) 
   );
 });
 
-HansPopupOptionList.displayName = 'HansPopupOptionList';
+HansPopupItemList.displayName = 'HansPopupItemList';

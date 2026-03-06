@@ -1,12 +1,12 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import { HansDropdownOptionList } from './DropdownOptionList';
+import { HansDropdownItemList } from './DropdownItemList';
 
-describe('HansDropdownOptionList', () => {
+describe('HansDropdownItemList', () => {
   it('Should render empty state when there are no items', () => {
     render(
-      <HansDropdownOptionList
+      <HansDropdownItemList
         items={[]}
         noOptionsText="No options"
         hoveredPath={null}
@@ -25,7 +25,7 @@ describe('HansDropdownOptionList', () => {
     const onListLeave = vi.fn();
     const onSelect = vi.fn();
     render(
-      <HansDropdownOptionList
+      <HansDropdownItemList
         items={[
           {
             id: 'parent',
