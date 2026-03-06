@@ -119,21 +119,19 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   const handleOpen = createHandleOpen(setSelectOptionOpen);
   const handleToggle = createHandleToggle(setSelectOptionOpen, () => isOpen);
   const inputValue = enableAutocomplete ? searchTerm : selectedLabel;
+  const popupFieldStyle = React.useMemo(
+    () => {
+      const labelOffset = label ? 28 : 0;
+      const messageOffset = message ? 20 : 0;
+      return {
+        '--hans-select-option-up-offset': `${labelOffset + messageOffset}px`,
+      } as React.CSSProperties;
+    },
+    [label, message],
+  );
 
   return (
     <div className="hans-select-option">
-      {label ? (
-        <label
-          htmlFor={inputId}
-          className={`
-            hans-input-label
-            hans-input-label-${labelColor}
-          `}
-        >
-          {label}
-        </label>
-      ) : null}
-
       <HansPopup
         isOpen={isOpen}
         disabled={disabled}
@@ -142,9 +140,14 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
         customClasses="hans-select-option-field"
         popupClassName="hans-select-option-popup"
         panelClassName="hans-select-option-popup-content"
+        style={popupFieldStyle}
         onDirectionChange={setOpenDirection}
         renderTrigger={() => (
           <HansInput
+            label={label}
+            labelColor={labelColor}
+            message={message}
+            messageColor={messageColor}
             inputId={inputId}
             inputColor={inputColor}
             inputSize={inputSize}
@@ -235,17 +238,6 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
           )}
         </ul>
       </HansPopup>
-
-      {message ? (
-        <p
-          className={`
-            hans-input-message
-            hans-input-message-${messageColor}
-          `}
-        >
-          {message}
-        </p>
-      ) : null}
 
       {isMulti && selectedOptions.length > 0 ? (
         <div className="hans-select-option-selected">

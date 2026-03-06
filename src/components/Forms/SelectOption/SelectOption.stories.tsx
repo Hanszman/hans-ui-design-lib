@@ -221,6 +221,35 @@ export const WithoutAutocomplete: Story = {
   ),
 };
 
+export const WithMessage: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4 w-full pb-24">
+      <HansSelectOption
+        label="Message 1"
+        options={options}
+        message="Helper message for this select option"
+        messageColor="base"
+      />
+      <HansSelectOption
+        label="Message 2"
+        options={options}
+        inputColor="primary"
+        labelColor="primary"
+        message="Primary helper message"
+        messageColor="primary"
+      />
+      <HansSelectOption
+        label="Message 3"
+        options={options}
+        inputColor="secondary"
+        labelColor="secondary"
+        message="Secondary helper message"
+        messageColor="secondary"
+      />
+    </div>
+  ),
+};
+
 export const Disabled: Story = {
   args: {
     label: 'Disabled',
@@ -287,5 +316,3 @@ export const Loading: Story = {
     </div>
   ),
 };
-
-

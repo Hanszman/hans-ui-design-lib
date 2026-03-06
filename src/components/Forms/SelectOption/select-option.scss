@@ -18,6 +18,10 @@
   @apply p-0;
 }
 
+.hans-select-option-field .hans-popup-panel[data-direction='up'] {
+  bottom: calc(100% - var(--hans-select-option-up-offset, 0px));
+}
+
 .hans-select-option-list {
   @apply w-full max-h-60 overflow-auto rounded-lg;
 }
