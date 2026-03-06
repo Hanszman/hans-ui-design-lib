@@ -97,15 +97,6 @@ export const VariantsAndColors: Story = {
   ),
 };
 
-export const WithChildren: Story = {
-  render: () => (
-    <HansButton>
-      <HansIcon name="FaHome" />
-      <span>Child Text</span>
-    </HansButton>
-  ),
-};
-
 export const Shapes: Story = {
   render: () => (
     <div className="flex items-center gap-3 flex-wrap">
@@ -118,6 +109,15 @@ export const Shapes: Story = {
         buttonVariant="outline"
       />
     </div>
+  ),
+};
+
+export const WithChildren: Story = {
+  render: () => (
+    <HansButton>
+      <HansIcon name="FaHome" />
+      <span>Child Text</span>
+    </HansButton>
   ),
 };
 
