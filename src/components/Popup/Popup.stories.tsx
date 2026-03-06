@@ -17,7 +17,7 @@ const meta: Meta<typeof HansPopup> = {
 
 export default meta;
 type Story = StoryObj<typeof HansPopup>;
-const popupContentStyle: CSSProperties = { padding: '6px' };
+const popupContentStyle: CSSProperties = { padding: '8px' };
 
 const shouldToggleForKeyboard = (
   event: KeyboardEvent<HTMLElement>,
@@ -52,7 +52,10 @@ const PopupList = ({
         />
       )}
     >
-      <ul style={popupContentStyle} className="flex flex-col gap-2">
+      <ul
+        style={popupContentStyle}
+        className="m-0 list-none flex flex-col gap-2"
+      >
         <li className="px-2 py-1">Item 1</li>
         <li className="px-2 py-1">Item 2</li>
         <li className="px-2 py-1">Item 3</li>

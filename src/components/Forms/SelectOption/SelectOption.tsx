@@ -17,6 +17,7 @@ import {
   createHandleToggle,
   createSetSelectOptionOpen,
   filterSelectOptionItens,
+  getSelectOptionPopupOffsets,
   getInitialSelectOptionValue,
   getOptionId,
   getSelectedLabel,
@@ -56,11 +57,13 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   const [openDirection, setOpenDirection] = React.useState<'down' | 'up'>(
     'down',
   );
+  const [popupOffsets, setPopupOffsets] = React.useState({ up: 0, down: 0 });
   const [searchTerm, setSearchTerm] = React.useState('');
   const [internalValue, setInternalValue] = React.useState<SelectOptionValue>(
     () => getInitialSelectOptionValue(value, defaultValue, isMulti),
   );
   const ignoreFocusRef = React.useRef(false);
+  const selectOptionRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (typeof value !== 'undefined') setInternalValue(value);
@@ -119,17 +122,20 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   const handleOpen = createHandleOpen(setSelectOptionOpen);
   const handleToggle = createHandleToggle(setSelectOptionOpen, () => isOpen);
   const inputValue = enableAutocomplete ? searchTerm : selectedLabel;
+
+  React.useEffect(() => {
+    setPopupOffsets(getSelectOptionPopupOffsets(selectOptionRef.current));
+  }, [label, message, inputSize, labelColor, messageColor]);
+
   const popupFieldStyle = React.useMemo(() => {
-    const labelOffset = label ? 28 : 0;
-    const messageOffset = message ? 20 : 0;
     return {
-      '--hans-select-option-up-offset': `${labelOffset}px`,
-      '--hans-select-option-down-offset': `${messageOffset}px`,
+      '--hans-select-option-up-offset': `${popupOffsets.up}px`,
+      '--hans-select-option-down-offset': `${popupOffsets.down}px`,
     } as React.CSSProperties;
-  }, [label, message]);
+  }, [popupOffsets.down, popupOffsets.up]);
 
   return (
-    <div className="hans-select-option">
+    <div className="hans-select-option" ref={selectOptionRef}>
       <HansPopup
         isOpen={isOpen}
         disabled={disabled}

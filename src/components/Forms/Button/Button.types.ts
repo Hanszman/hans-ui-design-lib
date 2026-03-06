@@ -6,6 +6,7 @@ import {
 import type { Size, Variant, Color } from '../../../types/Common.types';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
+export type ButtonShape = 'rounded' | 'square';
 
 const HansButtonSchema = {
   label: 'string',
@@ -13,9 +14,11 @@ const HansButtonSchema = {
   buttonSize: { type: 'custom', ref: {} as Size },
   buttonColor: { type: 'custom', ref: {} as Color },
   buttonVariant: { type: 'custom', ref: {} as Variant },
+  buttonShape: { type: 'custom', ref: {} as ButtonShape },
   buttonType: { type: 'custom', ref: {} as ButtonType },
   customClasses: 'string',
   disabled: 'boolean',
+  loading: 'boolean',
 } as const;
 
 export type HansButtonProps = InferPropsFromSchema<typeof HansButtonSchema> &

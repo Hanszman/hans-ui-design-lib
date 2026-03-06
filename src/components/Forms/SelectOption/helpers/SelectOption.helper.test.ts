@@ -13,6 +13,7 @@ import {
   getNextMultiValues,
   getOpenDirection,
   getOptionId,
+  getSelectOptionPopupOffsets,
   getSelectedLabel,
   getValuesAfterRemoval,
   normalizeToArray,
@@ -66,6 +67,27 @@ describe('SelectOption.helper', () => {
   it('Should resolve dropdown open direction', () => {
     expect(getOpenDirection(20, 200, 100)).toBe('up');
     expect(getOpenDirection(200, 20, 100)).toBe('down');
+  });
+
+  it('Should resolve popup offsets from label and message elements', () => {
+    const container = document.createElement('div');
+    const label = document.createElement('label');
+    label.className = 'hans-input-label';
+    Object.defineProperty(label, 'offsetHeight', { value: 20 });
+    label.style.marginTop = '2px';
+    label.style.marginBottom = '3px';
+
+    const message = document.createElement('p');
+    message.className = 'hans-input-message';
+    Object.defineProperty(message, 'offsetHeight', { value: 16 });
+    message.style.marginTop = '1px';
+    message.style.marginBottom = '4px';
+
+    container.appendChild(label);
+    container.appendChild(message);
+
+    expect(getSelectOptionPopupOffsets(container)).toEqual({ up: 25, down: 21 });
+    expect(getSelectOptionPopupOffsets(null)).toEqual({ up: 0, down: 0 });
   });
 
   it('Should create input change handler and process events', () => {

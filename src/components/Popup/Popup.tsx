@@ -2,6 +2,7 @@ import React from 'react';
 import type { HansPopupProps, PopupDirection } from './Popup.types';
 import {
   createPopupOpenSetter,
+  hasPopupRenderableContent,
   handlePopupOutsideClick,
   resolvePopupDirection,
 } from './helpers/Popup.helper';
@@ -25,7 +26,7 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [direction, setDirection] = React.useState<PopupDirection>('down');
-  const hasContent = React.Children.count(children) > 0;
+  const hasContent = hasPopupRenderableContent(children);
 
   const setOpen = createPopupOpenSetter({ disabled, onOpenChange });
   const open = React.useCallback(() => setOpen(true), [setOpen]);

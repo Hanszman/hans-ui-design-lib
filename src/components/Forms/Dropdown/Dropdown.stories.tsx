@@ -32,6 +32,7 @@ const meta: Meta<typeof HansDropdown> = {
     triggerLabel: 'Dropdown',
     triggerColor: 'base',
     triggerVariant: 'outline',
+    triggerShape: 'square',
     triggerSize: 'medium',
     options,
     loading: false,
@@ -58,6 +59,7 @@ export const Primary: Story = {
         triggerLabel="Dropdown 3"
         triggerColor="secondary"
         triggerVariant="strong"
+        triggerShape="rounded"
         options={options}
       />
     </div>

@@ -12,10 +12,13 @@ const meta: Meta<typeof HansButton> = {
     buttonSize: 'medium',
     buttonColor: 'primary',
     buttonVariant: 'default',
+    buttonShape: 'rounded',
     disabled: false,
+    loading: false,
   },
   argTypes: {
     buttonSize: { control: 'select', options: ['small', 'medium', 'large'] },
+    buttonShape: { control: 'select', options: ['rounded', 'square'] },
     buttonColor: {
       control: 'select',
       options: [
@@ -100,5 +103,41 @@ export const WithChildren: Story = {
       <HansIcon name="FaHome" />
       <span>Child Text</span>
     </HansButton>
+  ),
+};
+
+export const Shapes: Story = {
+  render: () => (
+    <div className="flex items-center gap-3 flex-wrap">
+      <HansButton label="Rounded" buttonShape="rounded" />
+      <HansButton label="Square" buttonShape="square" />
+      <HansButton
+        label="Square Outline"
+        buttonShape="square"
+        buttonColor="base"
+        buttonVariant="outline"
+      />
+    </div>
+  ),
+};
+
+export const Loading: Story = {
+  render: () => (
+    <div className="flex items-center gap-3 flex-wrap">
+      <HansButton loading label="Loading" />
+      <HansButton
+        loading
+        buttonColor="secondary"
+        buttonVariant="strong"
+        buttonShape="square"
+      />
+      <HansButton
+        loading
+        buttonColor="success"
+        buttonVariant="outline"
+        buttonShape="square"
+        buttonSize="large"
+      />
+    </div>
   ),
 };

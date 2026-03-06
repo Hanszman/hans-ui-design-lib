@@ -1,5 +1,13 @@
 .hans-button {
-  @apply rounded-full cursor-pointer flex items-center gap-1;
+  @apply cursor-pointer flex items-center justify-center gap-1;
+}
+
+.hans-button-rounded {
+  @apply rounded-full;
+}
+
+.hans-button-square {
+  @apply rounded-md;
 }
 
 .hans-button:disabled,
@@ -8,6 +16,10 @@
 }
 
 .hans-button:disabled > * {
+  @apply pointer-events-none;
+}
+
+.hans-button-loading {
   @apply pointer-events-none;
 }
 

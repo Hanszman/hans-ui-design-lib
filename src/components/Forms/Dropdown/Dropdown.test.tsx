@@ -103,4 +103,11 @@ describe('HansDropdown', () => {
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     expect(screen.getByText('With icon')).toBeInTheDocument();
   });
+
+  it('Should use square button shape by default', () => {
+    render(<HansDropdown triggerLabel="Menu" options={options} />);
+    expect(screen.getByRole('button', { name: /menu/i })).toHaveClass(
+      'hans-button-square',
+    );
+  });
 });

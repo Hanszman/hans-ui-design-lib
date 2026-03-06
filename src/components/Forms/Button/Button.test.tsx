@@ -23,6 +23,7 @@ describe('HansButton', () => {
     expect(button).toHaveClass('hans-button-large');
     expect(button).toHaveClass('hans-button-danger');
     expect(button).toHaveClass('hans-button-outline');
+    expect(button).toHaveClass('hans-button-rounded');
   });
 
   it('Should render with all props combined', () => {
@@ -32,6 +33,7 @@ describe('HansButton', () => {
         buttonSize="small"
         buttonColor="success"
         buttonVariant="strong"
+        buttonShape="square"
         disabled
         customClasses="custom-test"
       />,
@@ -43,6 +45,7 @@ describe('HansButton', () => {
       'hans-button-small',
       'hans-button-success',
       'hans-button-strong',
+      'hans-button-square',
       'custom-test',
     );
     expect(button).toBeDisabled();
@@ -81,5 +84,13 @@ describe('HansButton', () => {
     );
     expect(screen.getByText('Custom Child')).toBeInTheDocument();
     expect(screen.queryByText('Primary')).not.toBeInTheDocument();
+  });
+
+  it('Should render loading skeleton and disable button when loading is true', () => {
+    render(<HansButton label="Load" loading />);
+    const button = screen.getByRole('button');
+    expect(button).toBeDisabled();
+    expect(screen.getByLabelText('Loading button')).toBeInTheDocument();
+    expect(screen.queryByText('Load')).not.toBeInTheDocument();
   });
 });

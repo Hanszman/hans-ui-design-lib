@@ -10,6 +10,22 @@ import type {
   CreateSetSelectOptionOpenParams,
 } from './SelectOption.helper.types';
 
+export const parsePx = (value: string): number => {
+  const parsed = Number.parseFloat(value);
+  return Number.isNaN(parsed) ? 0 : parsed;
+};
+
+export const getElementOuterHeight = (element: Element | null): number => {
+  if (!(element instanceof HTMLElement) || typeof window === 'undefined')
+    return 0;
+  const styles = window.getComputedStyle(element);
+  return (
+    element.offsetHeight +
+    parsePx(styles.marginTop) +
+    parsePx(styles.marginBottom)
+  );
+};
+
 export const normalizeToArray = (
   value: SelectOptionValue | undefined,
 ): string[] => {
@@ -70,6 +86,18 @@ export const getOpenDirection = (
   listHeight: number,
 ): 'up' | 'down' =>
   spaceBelow < listHeight && spaceAbove > listHeight ? 'up' : 'down';
+
+export const getSelectOptionPopupOffsets = (
+  container: HTMLElement | null,
+): { up: number; down: number } => {
+  if (!container) return { up: 0, down: 0 };
+  const label = container.querySelector('.hans-input-label');
+  const message = container.querySelector('.hans-input-message');
+  return {
+    up: getElementOuterHeight(label),
+    down: getElementOuterHeight(message),
+  };
+};
 
 export const createHandleInputChange =
   (params: CreateHandleInputChangeParams) =>
@@ -145,20 +173,24 @@ export const createSetSelectOptionOpen =
   };
 
 export const createHandleOpen =
-  (setSelectOptionOpen: (nextOpen: boolean, source: 'focus' | 'toggle') => void) =>
+  (
+    setSelectOptionOpen: (
+      nextOpen: boolean,
+      source: 'focus' | 'toggle',
+    ) => void,
+  ) =>
   () => {
     setSelectOptionOpen(true, 'focus');
   };
 
 export const createHandleToggle =
   (
-    setSelectOptionOpen: (nextOpen: boolean, source: 'focus' | 'toggle') => void,
+    setSelectOptionOpen: (
+      nextOpen: boolean,
+      source: 'focus' | 'toggle',
+    ) => void,
     getIsOpen: () => boolean,
   ) =>
   () => {
     setSelectOptionOpen(!getIsOpen(), 'toggle');
   };
-
-
-
-

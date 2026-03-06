@@ -1,3 +1,4 @@
+import React from 'react';
 import type { PopupDirection } from '../Popup.types';
 import type {
   CreatePopupOpenSetterParams,
@@ -43,3 +44,9 @@ export const resolvePopupDirection = ({
     panelHeight: panelRect.height,
   });
 };
+
+export const hasPopupRenderableContent = (children: React.ReactNode): boolean =>
+  React.Children.toArray(children).some((child) => {
+    if (typeof child === 'string') return child.trim().length > 0;
+    return true;
+  });

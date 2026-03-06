@@ -16,6 +16,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     triggerLabel = 'Dropdown',
     triggerColor = 'base',
     triggerVariant = 'outline',
+    triggerShape = 'square',
     triggerSize = 'medium',
     popupId = 'hans-dropdown',
     popupBackgroundColor = 'var(--white)',
@@ -55,6 +56,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
           <HansButton
             buttonColor={triggerColor}
             buttonVariant={triggerVariant}
+            buttonShape={triggerShape}
             buttonSize={triggerSize}
             disabled={disabled}
             customClasses="hans-dropdown-trigger"

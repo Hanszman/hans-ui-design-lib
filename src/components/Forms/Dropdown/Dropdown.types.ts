@@ -4,6 +4,7 @@ import {
   type InferPropsFromSchema,
 } from '../../../types/Schema.types';
 import type { Color, Size, Variant } from '../../../types/Common.types';
+import type { ButtonShape } from '../Button/Button.types';
 
 export type DropdownItem = {
   id?: string;
@@ -17,6 +18,7 @@ const HansDropdownSchema = {
   triggerLabel: 'string',
   triggerColor: { type: 'custom', ref: {} as Color },
   triggerVariant: { type: 'custom', ref: {} as Variant },
+  triggerShape: { type: 'custom', ref: {} as ButtonShape },
   triggerSize: { type: 'custom', ref: {} as Size },
   popupId: 'string',
   popupBackgroundColor: 'string',

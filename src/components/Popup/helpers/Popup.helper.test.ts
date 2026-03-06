@@ -1,7 +1,9 @@
+import React from 'react';
 import { vi } from 'vitest';
 import {
   createPopupOpenSetter,
   getPopupDirection,
+  hasPopupRenderableContent,
   handlePopupOutsideClick,
   resolvePopupDirection,
 } from './Popup.helper';
@@ -74,5 +76,14 @@ describe('Popup.helper', () => {
     expect(
       resolvePopupDirection({ container: null, panel, viewportHeight: 360 }),
     ).toBeNull();
+  });
+
+  it('Should detect popup renderable content correctly', () => {
+    expect(hasPopupRenderableContent(null)).toBe(false);
+    expect(hasPopupRenderableContent(undefined)).toBe(false);
+    expect(hasPopupRenderableContent(false)).toBe(false);
+    expect(hasPopupRenderableContent('   ')).toBe(false);
+    expect(hasPopupRenderableContent(React.createElement('span', null, 'content'))).toBe(true);
+    expect(hasPopupRenderableContent('content')).toBe(true);
   });
 });
