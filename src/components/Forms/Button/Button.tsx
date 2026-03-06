@@ -1,6 +1,5 @@
 import React from 'react';
 import type { HansButtonProps } from './Button.types';
-import { HansLoading } from '../../Loading/Loading';
 
 export const HansButton = React.memo((props: HansButtonProps) => {
   const {
@@ -18,11 +17,6 @@ export const HansButton = React.memo((props: HansButtonProps) => {
     ...rest
   } = props;
   const isDisabled = disabled || loading;
-  const loadingHeightBySize = {
-    small: '12px',
-    medium: '14px',
-    large: '16px',
-  } as const;
 
   return (
     <button
@@ -40,19 +34,7 @@ export const HansButton = React.memo((props: HansButtonProps) => {
       `}
       {...rest}
     >
-      <slot>
-        {loading ? (
-          <HansLoading
-            loadingType="skeleton"
-            loadingColor={buttonColor}
-            skeletonWidth="72px"
-            skeletonHeight={loadingHeightBySize[buttonSize]}
-            ariaLabel="Loading button"
-          />
-        ) : (
-          children ?? (label && <span>{label}</span>)
-        )}
-      </slot>
+      <slot>{loading ? null : children ?? (label && <span>{label}</span>)}</slot>
     </button>
   );
 });

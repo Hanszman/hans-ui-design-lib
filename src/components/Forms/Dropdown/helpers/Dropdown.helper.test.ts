@@ -1,10 +1,14 @@
 import { vi } from 'vitest';
 import {
+  createDropdownItemPath,
   createDropdownOpenSetter,
+  createHandleDropdownItemEnter,
   createHandleDropdownSelect,
   getDropdownSelection,
   hasCustomDropdownContent,
+  hasNestedDropdownItems,
   resolveDropdownItemId,
+  shouldShowDropdownSubmenu,
 } from './Dropdown.helper';
 
 describe('Dropdown.helper', () => {
@@ -12,13 +16,13 @@ describe('Dropdown.helper', () => {
     expect(
       resolveDropdownItemId({
         item: { id: 'x', label: 'X', value: 'x' },
-        index: 1,
+        itemPath: '1',
       }),
     ).toBe('x');
     expect(
       resolveDropdownItemId({
         item: { label: 'Y', value: 'y' },
-        index: 2,
+        itemPath: '2',
       }),
     ).toBe('y-2');
   });
@@ -64,5 +68,28 @@ describe('Dropdown.helper', () => {
 
     handleSelect({ label: 'B', value: 'b', disabled: true });
     expect(setOpen).toHaveBeenCalledTimes(1);
+
+    handleSelect({ label: 'C', value: 'c', children: [{ label: 'C1', value: 'c1' }] });
+    expect(onSelect).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should handle nested dropdown helpers', () => {
+    expect(createDropdownItemPath('', 0)).toBe('0');
+    expect(createDropdownItemPath('0', 1)).toBe('0.1');
+    expect(hasNestedDropdownItems({ label: 'A', value: 'a' })).toBe(false);
+    expect(
+      hasNestedDropdownItems({
+        label: 'B',
+        value: 'b',
+        children: [{ label: 'B1', value: 'b1' }],
+      }),
+    ).toBe(true);
+    expect(shouldShowDropdownSubmenu('0.1', '0.1')).toBe(true);
+    expect(shouldShowDropdownSubmenu('0.1', '0.2')).toBe(false);
+
+    const setHoveredPath = vi.fn();
+    const handleItemEnter = createHandleDropdownItemEnter({ setHoveredPath });
+    handleItemEnter('0.1');
+    expect(setHoveredPath).toHaveBeenCalledWith('0.1');
   });
 });

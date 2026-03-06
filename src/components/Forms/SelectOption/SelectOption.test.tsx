@@ -225,6 +225,27 @@ describe('HansSelectOption', () => {
     expect(screen.getByAltText('Avatar image')).toBeInTheDocument();
   });
 
+  it('Should render option icons when provided', async () => {
+    const user = userEvent.setup();
+    render(
+      <HansSelectOption
+        label="WithIcon"
+        options={[
+          {
+            id: 'icon-option',
+            label: 'Icon option',
+            value: 'icon-option',
+            iconName: 'IoMdSettings',
+          },
+        ]}
+      />,
+    );
+
+    const input = screen.getByPlaceholderText('Select an option');
+    await user.click(input);
+    expect(screen.getByText('Icon option')).toBeInTheDocument();
+  });
+
   it('Should fallback image alt to label when not provided', async () => {
     const user = userEvent.setup();
     render(

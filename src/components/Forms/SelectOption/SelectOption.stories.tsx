@@ -38,6 +38,12 @@ const optionsWithImages: SelectOptionItem[] = [
   },
 ];
 
+const optionsWithIcons: SelectOptionItem[] = [
+  { id: 'icon-1', label: 'Dashboard', value: 'dashboard', iconName: 'IoMdApps' },
+  { id: 'icon-2', label: 'Repositories', value: 'repositories', iconName: 'IoMdDesktop' },
+  { id: 'icon-3', label: 'Settings', value: 'settings', iconName: 'IoMdSettings' },
+];
+
 const meta: Meta<typeof HansSelectOption> = {
   title: 'Components/Forms/SelectOption',
   component: HansSelectOption,
@@ -184,6 +190,32 @@ export const WithImages: Story = {
         options={optionsWithImages}
         enableAutocomplete
         selectionType="single"
+        inputColor="secondary"
+        labelColor="secondary"
+      />
+    </div>
+  ),
+};
+
+export const WithIconsAndImages: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4 w-full pb-24">
+      <HansSelectOption
+        label="With icons 1"
+        options={optionsWithIcons}
+        enableAutocomplete
+      />
+      <HansSelectOption
+        label="With images 2"
+        options={optionsWithImages}
+        enableAutocomplete
+        inputColor="primary"
+        labelColor="primary"
+      />
+      <HansSelectOption
+        label="Mixed 3"
+        options={[optionsWithIcons[0], optionsWithImages[0], optionsWithImages[1]]}
+        enableAutocomplete
         inputColor="secondary"
         labelColor="secondary"
       />

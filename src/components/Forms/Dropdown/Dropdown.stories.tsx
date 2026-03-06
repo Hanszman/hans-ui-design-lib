@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { HansDropdown } from './Dropdown';
 import DocsPage from './Dropdown.mdx';
 import { HansTabs } from '../../Tabs/Tabs';
+import logoBlue from '../../../assets/img/logo/vh_logo_blue.png';
+import logoPurple from '../../../assets/img/logo/vh_logo_purple.png';
+import logoRed from '../../../assets/img/logo/vh_logo_red.png';
 
 const options = [
   {
@@ -22,6 +25,57 @@ const options = [
     label: 'New organization',
     value: 'org',
     iconName: 'IoMdBusiness',
+  },
+];
+
+const optionsWithImages = [
+  {
+    id: 'victor',
+    label: 'Victor Hanszman',
+    value: 'victor',
+    imageSrc: logoBlue,
+    imageAlt: 'Victor avatar',
+  },
+  {
+    id: 'hans-ui',
+    label: 'Hans UI',
+    value: 'hans-ui',
+    imageSrc: logoPurple,
+    imageAlt: 'Hans UI avatar',
+  },
+  {
+    id: 'red-team',
+    label: 'Red Team',
+    value: 'red-team',
+    imageSrc: logoRed,
+    imageAlt: 'Red team avatar',
+  },
+];
+
+const nestedOptions = [
+  {
+    id: 'projects',
+    label: 'Projects',
+    value: 'projects',
+    iconName: 'IoMdFolderOpen',
+    children: [
+      { id: 'new-project', label: 'New project', value: 'new-project' },
+      {
+        id: 'templates',
+        label: 'Templates',
+        value: 'templates',
+        children: [
+          { id: 'template-web', label: 'Web app', value: 'template-web' },
+          { id: 'template-api', label: 'API service', value: 'template-api' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    value: 'settings',
+    iconName: 'IoMdSettings',
   },
 ];
 
@@ -86,6 +140,60 @@ export const WithOptions: Story = {
         triggerColor="success"
         triggerVariant="strong"
         options={options}
+      />
+    </div>
+  ),
+};
+
+export const WithIconsAndImages: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <HansDropdown
+        triggerLabel="Icons 1"
+        triggerColor="base"
+        triggerVariant="outline"
+        options={options}
+      />
+      <HansDropdown
+        triggerLabel="Images 2"
+        triggerColor="primary"
+        triggerVariant="default"
+        options={optionsWithImages}
+      />
+      <HansDropdown
+        triggerLabel="Mixed 3"
+        triggerColor="secondary"
+        triggerVariant="strong"
+        options={[
+          { id: 'icon-item', label: 'Icon item', value: 'icon-item', iconName: 'IoMdDesktop' },
+          optionsWithImages[0],
+          optionsWithImages[1],
+        ]}
+      />
+    </div>
+  ),
+};
+
+export const NestedOptions: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <HansDropdown
+        triggerLabel="Nested 1"
+        triggerColor="base"
+        triggerVariant="outline"
+        options={nestedOptions}
+      />
+      <HansDropdown
+        triggerLabel="Nested 2"
+        triggerColor="primary"
+        triggerVariant="default"
+        options={nestedOptions}
+      />
+      <HansDropdown
+        triggerLabel="Nested 3"
+        triggerColor="secondary"
+        triggerVariant="strong"
+        options={nestedOptions}
       />
     </div>
   ),

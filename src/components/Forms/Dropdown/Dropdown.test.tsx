@@ -104,6 +104,76 @@ describe('HansDropdown', () => {
     expect(screen.getByText('With icon')).toBeInTheDocument();
   });
 
+  it('Should render option image when imageSrc is provided', () => {
+    render(
+      <HansDropdown
+        triggerLabel="Menu"
+        options={[
+          {
+            id: 'with-image',
+            label: 'With image',
+            value: 'x',
+            imageSrc: '/avatar.png',
+            imageAlt: 'Avatar',
+          },
+        ]}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /menu/i }));
+    expect(screen.getByAltText('Avatar')).toBeInTheDocument();
+  });
+
+  it('Should fallback image alt to option label', () => {
+    render(
+      <HansDropdown
+        triggerLabel="Menu"
+        options={[
+          {
+            id: 'with-image-no-alt',
+            label: 'With image no alt',
+            value: 'x',
+            imageSrc: '/avatar.png',
+          },
+        ]}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /menu/i }));
+    expect(screen.getByAltText('With image no alt')).toBeInTheDocument();
+  });
+
+  it('Should open nested submenu on hover and only select leaf item', () => {
+    const onSelect = vi.fn();
+    render(
+      <HansDropdown
+        triggerLabel="Menu"
+        onSelect={onSelect}
+        options={[
+          {
+            id: 'parent',
+            label: 'Parent',
+            value: 'parent',
+            children: [{ id: 'child', label: 'Child', value: 'child' }],
+          },
+        ]}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /menu/i }));
+    fireEvent.mouseLeave(screen.getByRole('menu'));
+    fireEvent.mouseEnter(screen.getByText('Parent'));
+    expect(screen.getByText('Child')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Parent'));
+    expect(onSelect).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByText('Child'));
+    expect(onSelect).toHaveBeenCalledWith({
+      id: 'child',
+      label: 'Child',
+      value: 'child',
+    });
+  });
+
   it('Should use square button shape by default', () => {
     render(<HansDropdown triggerLabel="Menu" options={options} />);
     expect(screen.getByRole('button', { name: /menu/i })).toHaveClass(

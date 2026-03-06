@@ -2,7 +2,7 @@ import type { DropdownItem } from '../Dropdown.types';
 
 export type ResolveDropdownItemIdParams = {
   item: DropdownItem;
-  index: number;
+  itemPath: string;
 };
 
 export type CreateDropdownOpenSetterParams = {
@@ -14,4 +14,8 @@ export type CreateHandleDropdownSelectParams = {
   closeOnSelect: boolean;
   setOpen: (nextOpen: boolean) => void;
   onSelect?: (item: DropdownItem) => void;
+};
+
+export type CreateHandleDropdownItemEnterParams = {
+  setHoveredPath: (nextPath: string | null) => void;
 };

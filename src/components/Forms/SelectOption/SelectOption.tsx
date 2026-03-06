@@ -233,6 +233,9 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
                       avatarSize="small"
                     />
                   ) : null}
+                  {option.iconName ? (
+                    <HansIcon name={option.iconName} iconSize="small" />
+                  ) : null}
                   <span className="hans-select-option-option-label">
                     {option.label}
                   </span>

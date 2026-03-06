@@ -22,8 +22,12 @@
   @apply py-1;
 }
 
+.hans-dropdown-list-nested {
+  @apply absolute left-full top-0 ml-1 min-w-[220px] rounded-lg border border-[var(--base-neutral-color)] bg-[var(--white)] shadow-md z-10;
+}
+
 .hans-dropdown-option {
-  @apply px-3 py-2 flex items-center gap-2 cursor-pointer;
+  @apply px-3 py-2 flex items-center gap-2 cursor-pointer relative whitespace-nowrap;
 }
 
 .hans-dropdown-option:hover {
@@ -44,4 +48,16 @@
 
 .hans-dropdown-loading {
   @apply p-3 min-w-[220px];
+}
+
+.hans-dropdown-option-parent {
+  @apply pr-8;
+}
+
+.hans-dropdown-option-arrow {
+  @apply ml-auto;
+}
+
+.hans-dropdown-option-image {
+  @apply w-5 h-5 rounded-full object-cover shrink-0;
 }

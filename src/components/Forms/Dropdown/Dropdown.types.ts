@@ -3,16 +3,15 @@ import {
   createPropsList,
   type InferPropsFromSchema,
 } from '../../../types/Schema.types';
-import type { Color, Size, Variant } from '../../../types/Common.types';
+import type {
+  Color,
+  Size,
+  Variant,
+  OptionItem,
+} from '../../../types/Common.types';
 import type { ButtonShape } from '../Button/Button.types';
 
-export type DropdownItem = {
-  id?: string;
-  label: string;
-  value: string;
-  disabled?: boolean;
-  iconName?: string;
-};
+export type DropdownItem = OptionItem;
 
 const HansDropdownSchema = {
   triggerLabel: 'string',
@@ -26,7 +25,7 @@ const HansDropdownSchema = {
   disabled: 'boolean',
   loading: 'boolean',
   loadingColor: { type: 'custom', ref: {} as Color },
-  options: { type: 'custom', ref: {} as DropdownItem[] },
+  options: { type: 'custom', ref: {} as OptionItem[] },
   customClasses: 'string',
   noOptionsText: 'string',
 } as const;
