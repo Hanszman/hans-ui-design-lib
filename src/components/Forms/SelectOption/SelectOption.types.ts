@@ -5,7 +5,7 @@ import {
 } from '../../../types/Schema.types';
 import type { Size, Color } from '../../../types/Common.types';
 
-export type SelectOptionOption = {
+export type SelectOptionItem = {
   id?: string;
   label: string;
   value: string;
@@ -29,7 +29,7 @@ const HansSelectOptionSchema = {
   messageColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',
   disabled: 'boolean',
-  options: { type: 'custom', ref: {} as SelectOptionOption[] },
+  options: { type: 'custom', ref: {} as SelectOptionItem[] },
   selectionType: { type: 'custom', ref: {} as SelectOptionSelectionType },
   enableAutocomplete: 'boolean',
   value: { type: 'custom', ref: {} as SelectOptionValue },

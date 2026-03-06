@@ -2,19 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { Color } from '../../../types/Common.types';
 import { HansSelectOption } from './SelectOption';
 import DocsPage from './SelectOption.mdx';
-import type { SelectOptionOption } from './SelectOption.types';
+import type { SelectOptionItem } from './SelectOption.types';
 import logoBlue from '../../../assets/img/logo/vh_logo_blue.png';
 import logoPurple from '../../../assets/img/logo/vh_logo_purple.png';
 import logoRed from '../../../assets/img/logo/vh_logo_red.png';
 
-const options: SelectOptionOption[] = [
+const options: SelectOptionItem[] = [
   { id: 'opt-1', label: 'Option 1', value: 'opt-1' },
   { id: 'opt-2', label: 'Option 2', value: 'opt-2' },
   { id: 'opt-3', label: 'Option 3', value: 'opt-3' },
   { id: 'opt-4', label: 'Option 4', value: 'opt-4', disabled: true },
 ];
 
-const optionsWithImages: SelectOptionOption[] = [
+const optionsWithImages: SelectOptionItem[] = [
   {
     id: 'img-1',
     label: 'Victor Hanszman',
@@ -231,6 +231,33 @@ export const Disabled: Story = {
   },
 };
 
+export const NoOptions: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4 w-full pb-24">
+      <HansSelectOption
+        label="No options 1"
+        options={[]}
+        noOptionsText="No options available"
+      />
+      <HansSelectOption
+        label="No options 2"
+        options={[]}
+        noOptionsText="No users found"
+        inputColor="primary"
+        labelColor="primary"
+      />
+      <HansSelectOption
+        label="No options 3"
+        options={[]}
+        noOptionsText="Nothing to display"
+        inputColor="secondary"
+        labelColor="secondary"
+        enableAutocomplete={false}
+      />
+    </div>
+  ),
+};
+
 export const Loading: Story = {
   render: () => (
     <div className="flex flex-col gap-4 w-full pb-24">
@@ -260,4 +287,5 @@ export const Loading: Story = {
     </div>
   ),
 };
+
 

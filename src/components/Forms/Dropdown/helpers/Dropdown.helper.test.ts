@@ -1,5 +1,7 @@
 import { vi } from 'vitest';
 import {
+  createDropdownOpenSetter,
+  createHandleDropdownSelect,
   getDropdownSelection,
   hasCustomDropdownContent,
   resolveDropdownItemId,
@@ -34,5 +36,33 @@ describe('Dropdown.helper', () => {
 
     getDropdownSelection({ label: 'B', value: 'b', disabled: true }, onSelect);
     expect(onSelect).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should create dropdown open setter', () => {
+    const setIsOpen = vi.fn();
+    const onOpenChange = vi.fn();
+    const setOpen = createDropdownOpenSetter({ setIsOpen, onOpenChange });
+
+    setOpen(true);
+
+    expect(setIsOpen).toHaveBeenCalledWith(true);
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+  });
+
+  it('Should create dropdown select handler and close menu when required', () => {
+    const onSelect = vi.fn();
+    const setOpen = vi.fn();
+    const handleSelect = createHandleDropdownSelect({
+      closeOnSelect: true,
+      setOpen,
+      onSelect,
+    });
+
+    handleSelect({ label: 'A', value: 'a' });
+    expect(onSelect).toHaveBeenCalledWith({ label: 'A', value: 'a' });
+    expect(setOpen).toHaveBeenCalledWith(false);
+
+    handleSelect({ label: 'B', value: 'b', disabled: true });
+    expect(setOpen).toHaveBeenCalledTimes(1);
   });
 });

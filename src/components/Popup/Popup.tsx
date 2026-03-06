@@ -1,6 +1,10 @@
 import React from 'react';
 import type { HansPopupProps, PopupDirection } from './Popup.types';
-import { getPopupDirection } from './helpers/Popup.helper';
+import {
+  createPopupOpenSetter,
+  handlePopupOutsideClick,
+  resolvePopupDirection,
+} from './helpers/Popup.helper';
 
 export const HansPopup = React.memo((props: HansPopupProps) => {
   const {
@@ -21,22 +25,18 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [direction, setDirection] = React.useState<PopupDirection>('down');
 
-  const setOpen = React.useCallback(
-    (nextOpen: boolean) => {
-      if (disabled) return;
-      if (onOpenChange) onOpenChange(nextOpen);
-    },
-    [disabled, onOpenChange],
-  );
+  const setOpen = createPopupOpenSetter({ disabled, onOpenChange });
   const open = React.useCallback(() => setOpen(true), [setOpen]);
   const close = React.useCallback(() => setOpen(false), [setOpen]);
   const toggle = React.useCallback(() => setOpen(!isOpen), [isOpen, setOpen]);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node | null;
-      if (!containerRef.current || !target) return;
-      if (!containerRef.current.contains(target)) close();
+      handlePopupOutsideClick({
+        container: containerRef.current,
+        target: event.target as Node | null,
+        close,
+      });
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -46,14 +46,12 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
   React.useEffect(() => {
     if (!isOpen) return;
     const frame = requestAnimationFrame(() => {
-      if (!containerRef.current || !panelRef.current) return;
-      const containerRect = containerRef.current.getBoundingClientRect();
-      const panelRect = panelRef.current.getBoundingClientRect();
-      const nextDirection = getPopupDirection({
-        spaceBelow: window.innerHeight - containerRect.bottom,
-        spaceAbove: containerRect.top,
-        panelHeight: panelRect.height,
+      const nextDirection = resolvePopupDirection({
+        container: containerRef.current,
+        panel: panelRef.current,
+        viewportHeight: window.innerHeight,
       });
+      if (!nextDirection) return;
       setDirection(nextDirection);
       if (onDirectionChange) onDirectionChange(nextDirection);
     });

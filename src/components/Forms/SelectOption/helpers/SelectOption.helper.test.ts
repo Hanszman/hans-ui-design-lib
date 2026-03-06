@@ -1,6 +1,6 @@
 import type React from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import type { SelectOptionOption } from '../SelectOption.types';
+import type { SelectOptionItem } from '../SelectOption.types';
 import {
   createHandleInputChange,
   createHandleOpen,
@@ -18,7 +18,7 @@ import {
   normalizeToArray,
 } from './SelectOption.helper';
 
-const options: SelectOptionOption[] = [
+const options: SelectOptionItem[] = [
   { id: 'alpha', label: 'Alpha', value: 'a' },
   { label: 'Beta', value: 'b' },
 ];
@@ -177,3 +177,4 @@ describe('SelectOption.helper', () => {
     expect(setIsOpen).toHaveBeenCalledTimes(2);
   });
 });
+

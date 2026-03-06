@@ -1,6 +1,6 @@
 import type React from 'react';
 import type {
-  SelectOptionOption,
+  SelectOptionItem,
   SelectOptionValue,
 } from '../SelectOption.types';
 import type {
@@ -18,7 +18,7 @@ export const normalizeToArray = (
   return [];
 };
 
-export const getOptionId = (option: SelectOptionOption): string =>
+export const getOptionId = (option: SelectOptionItem): string =>
   option.id ?? option.value;
 
 export const getInitialSelectOptionValue = (
@@ -33,17 +33,17 @@ export const getInitialSelectOptionValue = (
 
 export const getSelectedLabel = (
   isMulti: boolean,
-  selectedOptions: SelectOptionOption[],
+  selectedOptions: SelectOptionItem[],
 ): string => {
   if (isMulti) return selectedOptions.map((option) => option.label).join(', ');
   return selectedOptions[0]?.label ?? '';
 };
 
 export const filterSelectOptionOptions = (
-  options: SelectOptionOption[],
+  options: SelectOptionItem[],
   enableAutocomplete: boolean,
   searchTerm: string,
-): SelectOptionOption[] => {
+): SelectOptionItem[] => {
   if (!enableAutocomplete || searchTerm.trim().length === 0) return options;
   const search = searchTerm.toLowerCase();
   return options.filter((option) =>
@@ -91,7 +91,7 @@ export const createHandleInputChange =
   };
 
 export const createHandleSelectOption =
-  (params: CreateHandleSelectOptionParams) => (option: SelectOptionOption) => {
+  (params: CreateHandleSelectOptionParams) => (option: SelectOptionItem) => {
     const {
       disabled,
       isMulti,
@@ -158,5 +158,6 @@ export const createHandleToggle =
   () => {
     setSelectOptionOpen(!getIsOpen(), 'toggle');
   };
+
 
 

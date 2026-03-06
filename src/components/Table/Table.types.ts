@@ -4,7 +4,7 @@ import {
   type InferPropsFromSchema,
 } from '../../types/Schema.types';
 import type { Color } from '../../types/Common.types';
-import type { SelectOptionOption } from '../Forms/SelectOption/SelectOption.types';
+import type { SelectOptionItem } from '../Forms/SelectOption/SelectOption.types';
 import type { HansLoadingProps } from '../Loading/Loading.types';
 
 export type HansTableSortDirection = 'asc' | 'desc';
@@ -23,7 +23,7 @@ export type HansTableFilterConfig =
       type: 'dropdown';
       placeholder?: string;
       clearLabel?: string;
-      options: SelectOptionOption[];
+      options: SelectOptionItem[];
       enableAutocomplete?: boolean;
     };
 
@@ -79,3 +79,4 @@ export type HansTableProps = InferPropsFromSchema<typeof HansTableSchema> &
   };
 
 export const HansTablePropsList = createPropsList(HansTableSchema);
+

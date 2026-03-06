@@ -3,9 +3,9 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { HansSelectOption } from './SelectOption';
-import type { SelectOptionOption } from './SelectOption.types';
+import type { SelectOptionItem } from './SelectOption.types';
 
-const options: SelectOptionOption[] = [
+const options: SelectOptionItem[] = [
   { id: 'alpha', label: 'Alpha', value: 'a' },
   { id: 'beta', label: 'Beta', value: 'b' },
   { id: 'gamma', label: 'Gamma', value: 'c', disabled: true },
@@ -543,3 +543,4 @@ describe('HansSelectOption', () => {
     expect(screen.getByLabelText('Loading select options')).toBeInTheDocument();
   });
 });
+

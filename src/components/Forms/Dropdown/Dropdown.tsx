@@ -3,9 +3,10 @@ import { HansButton } from '../Button/Button';
 import { HansIcon } from '../../Icon/Icon';
 import { HansLoading } from '../../Loading/Loading';
 import { HansPopup } from '../../Popup/Popup';
-import type { DropdownItem, HansDropdownProps } from './Dropdown.types';
+import type { HansDropdownProps } from './Dropdown.types';
 import {
-  getDropdownSelection,
+  createDropdownOpenSetter,
+  createHandleDropdownSelect,
   hasCustomDropdownContent,
   resolveDropdownItemId,
 } from './helpers/Dropdown.helper';
@@ -33,15 +34,12 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
 
   const [isOpen, setIsOpen] = React.useState(false);
   const hasCustomContent = hasCustomDropdownContent(children);
-
-  const setOpen = (nextOpen: boolean) => {
-    setIsOpen(nextOpen);
-    if (onOpenChange) onOpenChange(nextOpen);
-  };
-  const handleSelect = (item: DropdownItem) => {
-    getDropdownSelection(item, onSelect);
-    if (closeOnSelect && !item.disabled) setOpen(false);
-  };
+  const setOpen = createDropdownOpenSetter({ setIsOpen, onOpenChange });
+  const handleSelect = createHandleDropdownSelect({
+    closeOnSelect,
+    setOpen,
+    onSelect,
+  });
 
   return (
     <div className={`hans-dropdown ${customClasses}`} {...rest}>

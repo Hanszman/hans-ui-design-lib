@@ -1,6 +1,10 @@
 import type React from 'react';
 import type { DropdownItem } from '../Dropdown.types';
-import type { ResolveDropdownItemIdParams } from './Dropdown.helper.types';
+import type {
+  CreateDropdownOpenSetterParams,
+  CreateHandleDropdownSelectParams,
+  ResolveDropdownItemIdParams,
+} from './Dropdown.helper.types';
 
 export const resolveDropdownItemId = ({
   item,
@@ -18,3 +22,21 @@ export const getDropdownSelection = (
   if (item.disabled || !onSelect) return;
   onSelect(item);
 };
+
+export const createDropdownOpenSetter =
+  ({ setIsOpen, onOpenChange }: CreateDropdownOpenSetterParams) =>
+  (nextOpen: boolean): void => {
+    setIsOpen(nextOpen);
+    if (onOpenChange) onOpenChange(nextOpen);
+  };
+
+export const createHandleDropdownSelect =
+  ({
+    closeOnSelect,
+    setOpen,
+    onSelect,
+  }: CreateHandleDropdownSelectParams) =>
+  (item: DropdownItem): void => {
+    getDropdownSelection(item, onSelect);
+    if (closeOnSelect && !item.disabled) setOpen(false);
+  };
