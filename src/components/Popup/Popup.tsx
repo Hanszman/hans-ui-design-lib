@@ -28,7 +28,6 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
     },
     [disabled, onOpenChange],
   );
-
   const open = React.useCallback(() => setOpen(true), [setOpen]);
   const close = React.useCallback(() => setOpen(false), [setOpen]);
   const toggle = React.useCallback(() => setOpen(!isOpen), [isOpen, setOpen]);

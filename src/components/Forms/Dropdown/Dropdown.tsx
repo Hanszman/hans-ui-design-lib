@@ -38,7 +38,6 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     setIsOpen(nextOpen);
     if (onOpenChange) onOpenChange(nextOpen);
   };
-
   const handleSelect = (item: DropdownItem) => {
     getDropdownSelection(item, onSelect);
     if (closeOnSelect && !item.disabled) setOpen(false);

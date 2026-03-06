@@ -69,12 +69,11 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   const selectedValues = normalizeToArray(
     typeof value !== 'undefined' ? value : internalValue,
   );
-
   const selectedOptions = React.useMemo(
-    () => options.filter((option) => selectedValues.includes(getOptionId(option))),
+    () =>
+      options.filter((option) => selectedValues.includes(getOptionId(option))),
     [options, selectedValues],
   );
-
   const selectedLabel = getSelectedLabel(isMulti, selectedOptions);
 
   React.useEffect(() => {
@@ -95,7 +94,6 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
     onSearch,
     onInputChange,
   });
-
   const handleSelectOption = createHandleSelectOption({
     disabled,
     isMulti,
@@ -107,14 +105,12 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
     setSearchTerm,
     setIsOpen,
   });
-
   const handleRemoveSelected = createHandleRemoveSelected({
     selectedValues,
     value,
     setInternalValue,
     onChange,
   });
-
   const setSelectOptionOpen = createSetSelectOptionOpen({
     disabled,
     ignoreFocusRef,
@@ -122,7 +118,6 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   });
   const handleOpen = createHandleOpen(setSelectOptionOpen);
   const handleToggle = createHandleToggle(setSelectOptionOpen, () => isOpen);
-
   const inputValue = enableAutocomplete ? searchTerm : selectedLabel;
 
   return (
@@ -253,5 +248,3 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
 });
 
 HansSelectOption.displayName = 'HansSelectOption';
-
-
