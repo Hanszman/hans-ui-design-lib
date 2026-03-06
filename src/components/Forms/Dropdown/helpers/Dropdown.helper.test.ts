@@ -5,8 +5,8 @@ import {
   createHandleDropdownItemEnter,
   createHandleDropdownSelect,
   getDropdownSubmenuArrowName,
-  getDropdownSelection,
   getHoveredPathOnListLeave,
+  getDropdownSelection,
   getNextDropdownSubmenuDirections,
   hasCustomDropdownContent,
   hasNestedDropdownItems,
@@ -82,8 +82,6 @@ describe('Dropdown.helper', () => {
   it('Should handle nested dropdown helpers', () => {
     expect(createDropdownItemPath('', 0)).toBe('0');
     expect(createDropdownItemPath('0', 1)).toBe('0.1');
-    expect(getHoveredPathOnListLeave('')).toBeNull();
-    expect(getHoveredPathOnListLeave('0')).toBe('0');
     expect(hasNestedDropdownItems({ label: 'A', value: 'a' })).toBe(false);
     expect(
       hasNestedDropdownItems({
@@ -146,5 +144,8 @@ describe('Dropdown.helper', () => {
     expect(sameDirection).toBe(sameDirectionSource);
     expect(getDropdownSubmenuArrowName('left')).toBe('IoIosArrowBack');
     expect(getDropdownSubmenuArrowName('right')).toBe('IoIosArrowForward');
+    expect(getHoveredPathOnListLeave('')).toBeNull();
+    expect(getHoveredPathOnListLeave('0')).toBeNull();
+    expect(getHoveredPathOnListLeave('0.1.2')).toBe('0.1');
   });
 });

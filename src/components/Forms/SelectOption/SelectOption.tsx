@@ -5,10 +5,10 @@ import type {
 } from './SelectOption.types';
 import { HansInput } from '../Input/Input';
 import { HansIcon } from '../../Icon/Icon';
-import { HansAvatar } from '../../Avatar/Avatar';
 import { HansTag } from '../../Tag/Tag';
 import { HansLoading } from '../../Loading/Loading';
 import { HansPopup } from '../../Popup/Popup';
+import { HansSelectOptionOptionList } from './SelectOptionOptionList/SelectOptionOptionList';
 import {
   createHandleInputChange,
   createHandleOpen,
@@ -187,63 +187,18 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
           />
         )}
       >
-        <ul
-          className="hans-select-option-list"
-          role="listbox"
-          aria-multiselectable={isMulti}
-          data-direction={openDirection}
-          style={
-            {
-              '--hans-select-option-hover': dropdownHoverColor,
-            } as React.CSSProperties
-          }
-        >
-          {isLoadingOptions ? (
-            <li className="hans-select-option-loading">
-              <HansLoading
-                loadingType="spinner"
-                loadingSize="small"
-                customClasses="hans-select-option-loading-spinner"
-                ariaLabel={loadingOptionsText}
-              />
-              <span>{loadingOptionsText}</span>
-            </li>
-          ) : filteredOptions.length === 0 ? (
-            <li className="hans-select-option-empty">{noOptionsText}</li>
-          ) : (
-            filteredOptions.map((option) => {
-              const optionId = getOptionId(option);
-              const isSelected = selectedValues.includes(optionId);
-              return (
-                <li
-                  key={optionId}
-                  role="option"
-                  aria-selected={isSelected}
-                  className={`
-                    hans-select-option-option
-                    ${isSelected ? 'hans-select-option-option-selected' : ''}
-                    ${option.disabled ? 'hans-select-option-option-disabled' : ''}
-                  `}
-                  onClick={() => handleSelectOption(option)}
-                >
-                  {option.imageSrc ? (
-                    <HansAvatar
-                      src={option.imageSrc}
-                      alt={option.imageAlt ?? option.label}
-                      avatarSize="small"
-                    />
-                  ) : null}
-                  {option.iconName ? (
-                    <HansIcon name={option.iconName} iconSize="small" />
-                  ) : null}
-                  <span className="hans-select-option-option-label">
-                    {option.label}
-                  </span>
-                </li>
-              );
-            })
-          )}
-        </ul>
+        <HansSelectOptionOptionList
+          listId={`${inputId}-list`}
+          options={filteredOptions}
+          selectedValues={selectedValues}
+          isMulti={isMulti}
+          openDirection={openDirection}
+          dropdownHoverColor={dropdownHoverColor}
+          noOptionsText={noOptionsText}
+          isLoadingOptions={isLoadingOptions}
+          loadingOptionsText={loadingOptionsText}
+          onSelectOption={handleSelectOption}
+        />
       </HansPopup>
 
       {isMulti && selectedOptions.length > 0 ? (

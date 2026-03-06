@@ -24,13 +24,19 @@ export const createDropdownItemPath = (
   index: number,
 ): string => (parentPath.length > 0 ? `${parentPath}.${index}` : `${index}`);
 
-export const getHoveredPathOnListLeave = (parentPath: string): string | null =>
-  parentPath.length > 0 ? parentPath : null;
-
 export const shouldShowDropdownSubmenu = (
   hoveredPath: string | null,
   currentPath: string,
 ): boolean => hoveredPath === currentPath;
+
+export const getHoveredPathOnListLeave = (
+  parentPath: string,
+): string | null => {
+  if (parentPath.length === 0) return null;
+  const lastDotIndex = parentPath.lastIndexOf('.');
+  if (lastDotIndex < 0) return null;
+  return parentPath.slice(0, lastDotIndex);
+};
 
 export const getNextDropdownSubmenuDirections = (
   previousDirections: Record<string, 'left' | 'right'>,

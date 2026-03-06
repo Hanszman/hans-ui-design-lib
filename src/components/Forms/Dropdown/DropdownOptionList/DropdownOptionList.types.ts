@@ -9,6 +9,6 @@ export type HansDropdownOptionListProps = {
   nested?: boolean;
   popupId?: string;
   onItemEnter: (path: string, target: HTMLElement) => void;
-  onListLeave: (parentPath: string) => void;
+  onListLeave?: (parentPath: string) => void;
   onSelect: (item: DropdownItem) => void;
 };
