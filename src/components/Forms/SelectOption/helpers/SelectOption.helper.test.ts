@@ -52,7 +52,9 @@ describe('SelectOption.helper', () => {
   it('Should filter options with autocomplete search', () => {
     expect(filterSelectOptionOptions(options, false, 'a')).toEqual(options);
     expect(filterSelectOptionOptions(options, true, '   ')).toEqual(options);
-    expect(filterSelectOptionOptions(options, true, 'alp')).toEqual([options[0]]);
+    expect(filterSelectOptionOptions(options, true, 'alp')).toEqual([
+      options[0],
+    ]);
   });
 
   it('Should toggle and remove values in multiselect', () => {
@@ -175,5 +177,3 @@ describe('SelectOption.helper', () => {
     expect(setIsOpen).toHaveBeenCalledTimes(2);
   });
 });
-
-

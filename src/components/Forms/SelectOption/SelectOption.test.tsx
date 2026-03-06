@@ -540,9 +540,6 @@ describe('HansSelectOption', () => {
     await user.click(input);
 
     expect(screen.getByText('Loading list...')).toBeInTheDocument();
-    expect(
-      screen.getByLabelText('Loading select options'),
-    ).toBeInTheDocument();
+    expect(screen.getByLabelText('Loading select options')).toBeInTheDocument();
   });
 });
-

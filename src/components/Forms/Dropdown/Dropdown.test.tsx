@@ -12,7 +12,13 @@ const options = [
 describe('HansDropdown', () => {
   it('Should open popup and select option', () => {
     const onSelect = vi.fn();
-    render(<HansDropdown triggerLabel="Menu" options={options} onSelect={onSelect} />);
+    render(
+      <HansDropdown
+        triggerLabel="Menu"
+        options={options}
+        onSelect={onSelect}
+      />,
+    );
 
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     fireEvent.click(screen.getByText('One'));
@@ -22,7 +28,13 @@ describe('HansDropdown', () => {
 
   it('Should not select disabled option', () => {
     const onSelect = vi.fn();
-    render(<HansDropdown triggerLabel="Menu" options={options} onSelect={onSelect} />);
+    render(
+      <HansDropdown
+        triggerLabel="Menu"
+        options={options}
+        onSelect={onSelect}
+      />,
+    );
 
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     fireEvent.click(screen.getByText('Three'));
@@ -44,7 +56,9 @@ describe('HansDropdown', () => {
   it('Should render loading content', () => {
     render(<HansDropdown triggerLabel="Menu" loading />);
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
-    expect(screen.getByLabelText('Loading dropdown content')).toBeInTheDocument();
+    expect(
+      screen.getByLabelText('Loading dropdown content'),
+    ).toBeInTheDocument();
   });
 
   it('Should call onOpenChange when opening and closing', () => {
@@ -65,7 +79,9 @@ describe('HansDropdown', () => {
   });
 
   it('Should render empty text when options are missing', () => {
-    render(<HansDropdown triggerLabel="Menu" options={[]} noOptionsText="Nothing" />);
+    render(
+      <HansDropdown triggerLabel="Menu" options={[]} noOptionsText="Nothing" />,
+    );
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     expect(screen.getByText('Nothing')).toBeInTheDocument();
   });
@@ -74,7 +90,14 @@ describe('HansDropdown', () => {
     render(
       <HansDropdown
         triggerLabel="Menu"
-        options={[{ id: 'with-icon', label: 'With icon', value: 'x', iconName: 'IoIosCloseCircle' }]}
+        options={[
+          {
+            id: 'with-icon',
+            label: 'With icon',
+            value: 'x',
+            iconName: 'IoIosCloseCircle',
+          },
+        ]}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));

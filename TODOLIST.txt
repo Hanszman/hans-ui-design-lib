@@ -1,5 +1,4 @@
 * Continuar próximos componentes:
--Renomear Dropdown para SelectOption e Criar um novo Dropdown Button com Options customizáveis (reutilizando lógicas iguais quando necessário)
 -Toast (usar lib?)
 -DatePicker (usar lib?) (moment, luxon, alguma outra?)
 -Modal (usar lib?)
