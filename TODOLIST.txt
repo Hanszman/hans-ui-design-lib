@@ -1,5 +1,5 @@
 * Continuar próximos componentes:
--Popups: Corrigir Nesting, Revisar Refactoração de Arquivos
+-Popups: Corrigir Nesting
 -Toast (usar lib?)
 -DatePicker (usar lib?) (moment, luxon, alguma outra?)
 -Modal (usar lib?)
@@ -7,7 +7,7 @@
 -Card (template de card / será usado como item do kanban / - usar lib?)
 -Translation?
 
-Prompt:
+Creation Prompt:
 Show de bola, ficou ótimo! obrigado!
 Agora vamos seguir o mesmo padrão que estamos adotando de criação de componente, seguindo clean code, dry, srp, test:coverage 100%, código tem que passar nos builds e no lint, etc... com aquele mesmo padrão com os 6 arquivos (tsx,scss,types,test,mdx,stories) e com os helpers (e test) quando necessario.
 Algumas observações:
@@ -18,3 +18,8 @@ Siga o padrão acima e vamos criar o componente: [COMPONENT]...
 na pasta que já criei com o nome dele.
 Ele deve: ...
 Enfim! faça o componente por favor, te dou acesso a todo o repo/workspace, pode editável conforme for necessário
+
+Recap Prompt:
+Fala GPT! Bom dia, tudo bem?
+Dê uma olhada nesse meu projeto, ele é uma lib pra react que também pode ser exportada com module federation para ser usado em outras aplicações js, como angular por exemplo, via cdn. Esses exports estão nos arquivos de index (wc, ts, css).
+Além disso, essa lib segue alguns padrões, então precisamos utilizar clean code, dry, srp, solid, passar com 100% de coverage nos tests, deve utilizar tailwind nos scss, passar no lint e nos builds, além de funcionar perfeitamente no storybook.
