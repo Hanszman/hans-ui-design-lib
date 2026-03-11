@@ -92,6 +92,7 @@ describe('Dropdown.helper', () => {
       }),
     ).toBe(true);
     expect(shouldShowDropdownSubmenu('0.1', '0.1')).toBe(true);
+    expect(shouldShowDropdownSubmenu('0.1.2', '0.1')).toBe(true);
     expect(shouldShowDropdownSubmenu('0.1', '0.2')).toBe(false);
 
     const setHoveredPath = vi.fn();

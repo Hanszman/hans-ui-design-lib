@@ -312,4 +312,46 @@ describe('HansDropdown', () => {
       vi.useRealTimers();
     }
   });
+
+  it('Should keep ancestor submenu open while hovering nested descendants', () => {
+    render(
+      <HansDropdown
+        triggerLabel="Nested tree"
+        options={[
+          {
+            id: 'projects',
+            label: 'Projects',
+            value: 'projects',
+            children: [
+              {
+                id: 'templates',
+                label: 'Templates',
+                value: 'templates',
+                children: [
+                  {
+                    id: 'marketing',
+                    label: 'Marketing',
+                    value: 'marketing',
+                  },
+                ],
+              },
+            ],
+          },
+        ]}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /nested tree/i }));
+    fireEvent.mouseEnter(
+      screen.getByText('Projects').closest('li') as HTMLElement,
+    );
+    expect(screen.getByText('Templates')).toBeInTheDocument();
+
+    fireEvent.mouseEnter(
+      screen.getByText('Templates').closest('li') as HTMLElement,
+    );
+
+    expect(screen.getByText('Marketing')).toBeInTheDocument();
+    expect(screen.getByText('Templates')).toBeInTheDocument();
+  });
 });

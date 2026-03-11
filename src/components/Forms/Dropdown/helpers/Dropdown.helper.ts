@@ -28,7 +28,9 @@ export const createDropdownItemPath = (
 export const shouldShowDropdownSubmenu = (
   hoveredPath: string | null,
   currentPath: string,
-): boolean => hoveredPath === currentPath;
+): boolean =>
+  hoveredPath === currentPath ||
+  hoveredPath?.startsWith(`${currentPath}.`) === true;
 
 export const getHoveredPathOnListLeave = (
   parentPath: string,
