@@ -1,5 +1,4 @@
 * Continuar próximos componentes:
--Popups: Corrigir Nesting
 -Toast (usar lib?)
 -DatePicker (usar lib?) (moment, luxon, alguma outra?)
 -Modal (usar lib?)
