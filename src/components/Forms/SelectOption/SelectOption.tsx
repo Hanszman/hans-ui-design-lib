@@ -14,12 +14,16 @@ import {
   createHandleOpen,
   createHandleRemoveSelected,
   createHandleSelectOption,
+  createSyncAutocompleteSearchTerm,
+  createSyncPopupOffsets,
+  createSyncSelectOptionValue,
   createHandleToggle,
   createSetSelectOptionOpen,
   filterSelectOptionItens,
-  getSelectOptionPopupOffsets,
+  getSelectOptionFieldStyle,
   getInitialSelectOptionValue,
   getOptionId,
+  getSelectedOptions,
   getSelectedLabel,
   normalizeToArray,
 } from './helpers/SelectOption.helper';
@@ -66,22 +70,25 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   const selectOptionRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    if (typeof value !== 'undefined') setInternalValue(value);
+    createSyncSelectOptionValue({ value, setInternalValue })();
   }, [value]);
 
   const selectedValues = normalizeToArray(
     typeof value !== 'undefined' ? value : internalValue,
   );
   const selectedOptions = React.useMemo(
-    () =>
-      options.filter((option) => selectedValues.includes(getOptionId(option))),
+    () => getSelectedOptions(options, selectedValues),
     [options, selectedValues],
   );
   const selectedLabel = getSelectedLabel(isMulti, selectedOptions);
 
   React.useEffect(() => {
-    if (!enableAutocomplete || isMulti) return;
-    setSearchTerm(selectedLabel);
+    createSyncAutocompleteSearchTerm({
+      enableAutocomplete,
+      isMulti,
+      selectedLabel,
+      setSearchTerm,
+    })();
   }, [enableAutocomplete, isMulti, selectedLabel]);
 
   const filteredOptions = React.useMemo(
@@ -124,15 +131,13 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   const inputValue = enableAutocomplete ? searchTerm : selectedLabel;
 
   React.useEffect(() => {
-    setPopupOffsets(getSelectOptionPopupOffsets(selectOptionRef.current));
+    createSyncPopupOffsets({ selectOptionRef, setPopupOffsets })();
   }, [label, message, inputSize, labelColor, messageColor]);
 
-  const popupFieldStyle = React.useMemo(() => {
-    return {
-      '--hans-select-option-up-offset': `${popupOffsets.up}px`,
-      '--hans-select-option-down-offset': `${popupOffsets.down}px`,
-    } as React.CSSProperties;
-  }, [popupOffsets.down, popupOffsets.up]);
+  const popupFieldStyle = React.useMemo(
+    () => getSelectOptionFieldStyle(popupOffsets),
+    [popupOffsets],
+  );
 
   return (
     <div className="hans-select-option" ref={selectOptionRef}>

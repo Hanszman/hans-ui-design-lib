@@ -35,4 +35,21 @@ export type CreateSetSelectOptionOpenParams = {
   setIsOpen: (value: boolean) => void;
 };
 
+export type CreateSyncSelectOptionValueParams = {
+  value: SelectOptionValue | undefined;
+  setInternalValue: (next: SelectOptionValue) => void;
+};
+
+export type CreateSyncAutocompleteSearchTermParams = {
+  enableAutocomplete: boolean;
+  isMulti: boolean;
+  selectedLabel: string;
+  setSearchTerm: (value: string) => void;
+};
+
+export type CreateSyncPopupOffsetsParams = {
+  selectOptionRef: React.RefObject<HTMLDivElement | null>;
+  setPopupOffsets: (offsets: { up: number; down: number }) => void;
+};
+
 

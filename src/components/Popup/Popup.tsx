@@ -1,10 +1,12 @@
 import React from 'react';
 import type { HansPopupProps, PopupDirection } from './Popup.types';
 import {
+  createPopupDirectionFrameHandler,
   createPopupOpenSetter,
+  createPopupOutsideMouseDownHandler,
+  createPopupStateHandlers,
+  getPopupPanelStyle,
   hasPopupRenderableContent,
-  handlePopupOutsideClick,
-  resolvePopupDirection,
 } from './helpers/Popup.helper';
 
 export const HansPopup = React.memo((props: HansPopupProps) => {
@@ -29,38 +31,36 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
   const hasContent = hasPopupRenderableContent(children);
 
   const setOpen = createPopupOpenSetter({ disabled, onOpenChange });
-  const open = React.useCallback(() => setOpen(true), [setOpen]);
-  const close = React.useCallback(() => setOpen(false), [setOpen]);
-  const toggle = React.useCallback(() => setOpen(!isOpen), [isOpen, setOpen]);
+  const { open, close, toggle } = React.useMemo(
+    () => createPopupStateHandlers({ isOpen, setOpen }),
+    [isOpen, setOpen],
+  );
+  const handleClickOutside = React.useMemo(
+    () => createPopupOutsideMouseDownHandler({ containerRef, close }),
+    [close],
+  );
+  const resolveDirection = React.useMemo(
+    () =>
+      createPopupDirectionFrameHandler({
+        containerRef,
+        panelRef,
+        setDirection,
+        onDirectionChange,
+      }),
+    [onDirectionChange],
+  );
 
   React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      handlePopupOutsideClick({
-        container: containerRef.current,
-        target: event.target as Node | null,
-        close,
-      });
-    };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [close]);
+  }, [handleClickOutside]);
 
   React.useEffect(() => {
     if (!isOpen) return;
-    const frame = requestAnimationFrame(() => {
-      const nextDirection = resolvePopupDirection({
-        container: containerRef.current,
-        panel: panelRef.current,
-        viewportHeight: window.innerHeight,
-      });
-      if (!nextDirection) return;
-      setDirection(nextDirection);
-      if (onDirectionChange) onDirectionChange(nextDirection);
-    });
+    const frame = requestAnimationFrame(resolveDirection);
 
     return () => cancelAnimationFrame(frame);
-  }, [isOpen, children, onDirectionChange]);
+  }, [children, isOpen, resolveDirection]);
 
   return (
     <div className={`hans-popup ${customClasses}`} ref={containerRef} {...rest}>
@@ -71,11 +71,7 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
           ref={panelRef}
           className={`hans-popup-panel ${popupClassName}`}
           data-direction={direction}
-          style={
-            {
-              '--hans-popup-bg': popupBackgroundColor,
-            } as React.CSSProperties
-          }
+          style={getPopupPanelStyle({ popupBackgroundColor })}
         >
           <div className={`hans-popup-panel-content ${panelClassName}`}>
             {hasContent ? (

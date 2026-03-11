@@ -2,7 +2,9 @@ import type React from 'react';
 import type { DropdownItem } from '../Dropdown.types';
 import type { HansPopupItemListItemState } from '../../../Popup/PopupItemList/PopupItemList.types';
 import type {
+  CreateClearDropdownLeaveTimeoutParams,
   CreateHandleDropdownItemEnterParams,
+  CreateHandleDropdownListLeaveParams,
   CreateDropdownOpenSetterParams,
   CreateHandleDropdownSelectParams,
   ResolveDropdownItemIdParams,
@@ -106,4 +108,42 @@ export const createHandleDropdownItemEnter =
     const availableSpaceRight = window.innerWidth - targetRect.right;
     const direction = availableSpaceRight < submenuWidth ? 'left' : 'right';
     setSubmenuDirection(path, direction);
+  };
+
+export const createClearDropdownLeaveTimeout = ({
+  listLeaveTimeoutRef,
+}: CreateClearDropdownLeaveTimeoutParams) =>
+  (): void => {
+    if (!listLeaveTimeoutRef.current) return;
+    clearTimeout(listLeaveTimeoutRef.current);
+    listLeaveTimeoutRef.current = null;
+  };
+
+export const createHandleDropdownListEnter =
+  (clearListLeaveTimeout: () => void) =>
+  (): void => {
+    clearListLeaveTimeout();
+  };
+
+export const createHandleDropdownListLeave =
+  ({
+    clearListLeaveTimeout,
+    listLeaveTimeoutRef,
+    setHoveredPath,
+    closeDelay = 240,
+  }: CreateHandleDropdownListLeaveParams) =>
+  (parentPath: string, event: React.MouseEvent): void => {
+    if (parentPath.length === 0) return;
+    const relatedTarget = event.relatedTarget;
+    if (
+      relatedTarget instanceof Element &&
+      relatedTarget.closest('.hans-dropdown-list')
+    ) {
+      clearListLeaveTimeout();
+      return;
+    }
+    clearListLeaveTimeout();
+    listLeaveTimeoutRef.current = setTimeout(() => {
+      setHoveredPath(getHoveredPathOnListLeave(parentPath));
+    }, closeDelay);
   };

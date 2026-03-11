@@ -6,10 +6,12 @@ import { HansPopup } from '../../Popup/Popup';
 import { HansDropdownItemList } from './DropdownItemList/DropdownItemList';
 import type { HansDropdownProps } from './Dropdown.types';
 import {
+  createClearDropdownLeaveTimeout,
   createDropdownOpenSetter,
   createHandleDropdownItemEnter,
+  createHandleDropdownListEnter,
+  createHandleDropdownListLeave,
   createHandleDropdownSelect,
-  getHoveredPathOnListLeave,
   getNextDropdownSubmenuDirections,
   hasCustomDropdownContent,
 } from './helpers/Dropdown.helper';
@@ -51,11 +53,10 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
   const listLeaveTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
-  const clearListLeaveTimeout = React.useCallback(() => {
-    if (!listLeaveTimeoutRef.current) return;
-    clearTimeout(listLeaveTimeoutRef.current);
-    listLeaveTimeoutRef.current = null;
-  }, []);
+  const clearListLeaveTimeout = React.useMemo(
+    () => createClearDropdownLeaveTimeout({ listLeaveTimeoutRef }),
+    [],
+  );
 
   const setSubmenuDirection = React.useCallback(
     (path: string, direction: 'left' | 'right') => {
@@ -65,27 +66,19 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     },
     [],
   );
-  const handleListEnter = React.useCallback(() => {
-    clearListLeaveTimeout();
-  }, [clearListLeaveTimeout]);
-  const handleListLeave = React.useCallback((
-    parentPath: string,
-    event: React.MouseEvent,
-  ) => {
-    if (parentPath.length === 0) return;
-    const relatedTarget = event.relatedTarget;
-    if (
-      relatedTarget instanceof Element &&
-      relatedTarget.closest('.hans-dropdown-list')
-    ) {
-      clearListLeaveTimeout();
-      return;
-    }
-    clearListLeaveTimeout();
-    listLeaveTimeoutRef.current = setTimeout(() => {
-      setHoveredPath(getHoveredPathOnListLeave(parentPath));
-    }, 240);
-  }, [clearListLeaveTimeout]);
+  const handleListEnter = React.useMemo(
+    () => createHandleDropdownListEnter(clearListLeaveTimeout),
+    [clearListLeaveTimeout],
+  );
+  const handleListLeave = React.useMemo(
+    () =>
+      createHandleDropdownListLeave({
+        clearListLeaveTimeout,
+        listLeaveTimeoutRef,
+        setHoveredPath,
+      }),
+    [clearListLeaveTimeout],
+  );
 
   React.useEffect(() => {
     if (!isOpen) {

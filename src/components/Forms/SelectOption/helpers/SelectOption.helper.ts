@@ -9,6 +9,9 @@ import type {
   CreateHandleRemoveSelectedParams,
   CreateHandleSelectOptionParams,
   CreateSetSelectOptionOpenParams,
+  CreateSyncAutocompleteSearchTermParams,
+  CreateSyncPopupOffsetsParams,
+  CreateSyncSelectOptionValueParams,
 } from './SelectOption.helper.types';
 
 export const parsePx = (value: string): number => {
@@ -107,6 +110,44 @@ export const getSelectOptionPopupOffsets = (
     down: getElementOuterHeight(message),
   };
 };
+
+export const getSelectedOptions = (
+  options: SelectOptionItem[],
+  selectedValues: string[],
+): SelectOptionItem[] =>
+  options.filter((option) => selectedValues.includes(getOptionId(option)));
+
+export const getSelectOptionFieldStyle = (
+  popupOffsets: { up: number; down: number },
+): React.CSSProperties =>
+  ({
+    '--hans-select-option-up-offset': `${popupOffsets.up}px`,
+    '--hans-select-option-down-offset': `${popupOffsets.down}px`,
+  }) as React.CSSProperties;
+
+export const createSyncSelectOptionValue =
+  ({ value, setInternalValue }: CreateSyncSelectOptionValueParams) =>
+  (): void => {
+    if (typeof value !== 'undefined') setInternalValue(value);
+  };
+
+export const createSyncAutocompleteSearchTerm =
+  ({
+    enableAutocomplete,
+    isMulti,
+    selectedLabel,
+    setSearchTerm,
+  }: CreateSyncAutocompleteSearchTermParams) =>
+  (): void => {
+    if (!enableAutocomplete || isMulti) return;
+    setSearchTerm(selectedLabel);
+  };
+
+export const createSyncPopupOffsets =
+  ({ selectOptionRef, setPopupOffsets }: CreateSyncPopupOffsetsParams) =>
+  (): void => {
+    setPopupOffsets(getSelectOptionPopupOffsets(selectOptionRef.current));
+  };
 
 export const createHandleInputChange =
   (params: CreateHandleInputChangeParams) =>

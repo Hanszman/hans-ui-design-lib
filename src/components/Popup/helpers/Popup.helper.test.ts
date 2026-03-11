@@ -1,8 +1,12 @@
 import React from 'react';
 import { vi } from 'vitest';
 import {
+  createPopupDirectionFrameHandler,
   createPopupOpenSetter,
+  createPopupOutsideMouseDownHandler,
+  createPopupStateHandlers,
   getPopupDirection,
+  getPopupPanelStyle,
   hasPopupRenderableContent,
   handlePopupOutsideClick,
   resolvePopupItemClassName,
@@ -32,6 +36,22 @@ describe('Popup.helper', () => {
     expect(onOpenChange).toHaveBeenCalledTimes(1);
   });
 
+  it('Should create popup state handlers', () => {
+    const setOpen = vi.fn();
+    const { open, close, toggle } = createPopupStateHandlers({
+      isOpen: true,
+      setOpen,
+    });
+
+    open();
+    close();
+    toggle();
+
+    expect(setOpen).toHaveBeenNthCalledWith(1, true);
+    expect(setOpen).toHaveBeenNthCalledWith(2, false);
+    expect(setOpen).toHaveBeenNthCalledWith(3, false);
+  });
+
   it('Should handle popup outside click', () => {
     const close = vi.fn();
     const container = document.createElement('div');
@@ -43,6 +63,23 @@ describe('Popup.helper', () => {
     expect(close).not.toHaveBeenCalled();
 
     handlePopupOutsideClick({ container, target: external, close });
+    expect(close).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should create outside mouse down handler from refs', () => {
+    const close = vi.fn();
+    const container = document.createElement('div');
+    const ref = { current: container };
+    const event = new MouseEvent('mousedown');
+    Object.defineProperty(event, 'target', {
+      value: document.createElement('div'),
+    });
+
+    createPopupOutsideMouseDownHandler({
+      containerRef: ref,
+      close,
+    })(event);
+
     expect(close).toHaveBeenCalledTimes(1);
   });
 
@@ -80,13 +117,67 @@ describe('Popup.helper', () => {
     ).toBeNull();
   });
 
+  it('Should create popup direction frame handler and notify direction', () => {
+    const setDirection = vi.fn();
+    const onDirectionChange = vi.fn();
+    const container = document.createElement('div');
+    const panel = document.createElement('div');
+    vi.spyOn(container, 'getBoundingClientRect').mockReturnValue({
+      x: 0,
+      y: 300,
+      width: 100,
+      height: 40,
+      top: 300,
+      right: 100,
+      bottom: 340,
+      left: 0,
+      toJSON: () => ({}),
+    } as DOMRect);
+    vi.spyOn(panel, 'getBoundingClientRect').mockReturnValue({
+      x: 0,
+      y: 0,
+      width: 100,
+      height: 120,
+      top: 0,
+      right: 100,
+      bottom: 120,
+      left: 0,
+      toJSON: () => ({}),
+    } as DOMRect);
+
+    Object.defineProperty(window, 'innerHeight', {
+      value: 360,
+      writable: true,
+    });
+
+    createPopupDirectionFrameHandler({
+      containerRef: { current: container },
+      panelRef: { current: panel },
+      setDirection,
+      onDirectionChange,
+    })();
+
+    expect(setDirection).toHaveBeenCalledWith('up');
+    expect(onDirectionChange).toHaveBeenCalledWith('up');
+  });
+
   it('Should detect popup renderable content correctly', () => {
     expect(hasPopupRenderableContent(null)).toBe(false);
     expect(hasPopupRenderableContent(undefined)).toBe(false);
     expect(hasPopupRenderableContent(false)).toBe(false);
     expect(hasPopupRenderableContent('   ')).toBe(false);
-    expect(hasPopupRenderableContent(React.createElement('span', null, 'content'))).toBe(true);
+    expect(
+      hasPopupRenderableContent(React.createElement('span', null, 'content')),
+    ).toBe(true);
     expect(hasPopupRenderableContent('content')).toBe(true);
+  });
+
+  it('Should resolve popup panel style', () => {
+    expect(
+      getPopupPanelStyle({ popupBackgroundColor: 'rgb(255, 255, 255)' }),
+    ).toEqual({
+      '--hans-popup-bg': 'rgb(255, 255, 255)',
+    });
   });
 
   it('Should resolve popup item helpers', () => {

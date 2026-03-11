@@ -1,8 +1,11 @@
 import { vi } from 'vitest';
 import {
+  createClearDropdownLeaveTimeout,
   createDropdownItemPath,
   createDropdownOpenSetter,
   createHandleDropdownItemEnter,
+  createHandleDropdownListEnter,
+  createHandleDropdownListLeave,
   createHandleDropdownSelect,
   getDropdownSubmenuArrowName,
   getDropdownItemClassName,
@@ -167,5 +170,52 @@ describe('Dropdown.helper', () => {
         'left',
       ),
     ).toContain('hans-dropdown-option-parent-left');
+  });
+
+  it('Should create dropdown timeout and list handlers', () => {
+    vi.useFakeTimers();
+    try {
+      const timeoutRef = {
+        current: setTimeout(() => undefined, 10),
+      } as React.RefObject<ReturnType<typeof setTimeout> | null>;
+      const setHoveredPath = vi.fn();
+      const clearListLeaveTimeout = createClearDropdownLeaveTimeout({
+        listLeaveTimeoutRef: timeoutRef,
+      });
+
+      clearListLeaveTimeout();
+      expect(timeoutRef.current).toBeNull();
+
+      createHandleDropdownListEnter(clearListLeaveTimeout)();
+      expect(timeoutRef.current).toBeNull();
+
+      const nestedList = document.createElement('ul');
+      nestedList.className = 'hans-dropdown-list';
+      createHandleDropdownListLeave({
+        clearListLeaveTimeout,
+        listLeaveTimeoutRef: timeoutRef,
+        setHoveredPath,
+        closeDelay: 50,
+      })('0.1.2', {
+        relatedTarget: document.body,
+      } as React.MouseEvent);
+
+      vi.advanceTimersByTime(51);
+      expect(setHoveredPath).toHaveBeenCalledWith('0.1');
+
+      createHandleDropdownListLeave({
+        clearListLeaveTimeout,
+        listLeaveTimeoutRef: timeoutRef,
+        setHoveredPath,
+        closeDelay: 50,
+      })('0.1', {
+        relatedTarget: nestedList,
+      } as React.MouseEvent);
+
+      vi.advanceTimersByTime(51);
+      expect(setHoveredPath).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

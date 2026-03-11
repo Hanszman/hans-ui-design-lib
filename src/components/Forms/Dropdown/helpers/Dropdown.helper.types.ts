@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { DropdownItem } from '../Dropdown.types';
 
 export type ResolveDropdownItemIdParams = {
@@ -20,4 +21,15 @@ export type CreateHandleDropdownItemEnterParams = {
   setHoveredPath: (nextPath: string | null) => void;
   setSubmenuDirection: (path: string, direction: 'left' | 'right') => void;
   submenuWidth?: number;
+};
+
+export type CreateClearDropdownLeaveTimeoutParams = {
+  listLeaveTimeoutRef: React.RefObject<ReturnType<typeof setTimeout> | null>;
+};
+
+export type CreateHandleDropdownListLeaveParams = {
+  clearListLeaveTimeout: () => void;
+  listLeaveTimeoutRef: React.RefObject<ReturnType<typeof setTimeout> | null>;
+  setHoveredPath: (nextPath: string | null) => void;
+  closeDelay?: number;
 };

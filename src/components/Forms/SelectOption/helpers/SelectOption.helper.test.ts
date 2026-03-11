@@ -6,6 +6,9 @@ import {
   createHandleOpen,
   createHandleRemoveSelected,
   createHandleSelectOption,
+  createSyncAutocompleteSearchTerm,
+  createSyncPopupOffsets,
+  createSyncSelectOptionValue,
   createHandleToggle,
   createSetSelectOptionOpen,
   filterSelectOptionItens,
@@ -13,8 +16,10 @@ import {
   getNextMultiValues,
   getOpenDirection,
   getOptionId,
+  getSelectOptionFieldStyle,
   getSelectOptionItemClassName,
   getSelectOptionPopupOffsets,
+  getSelectedOptions,
   getSelectedLabel,
   getValuesAfterRemoval,
   normalizeToArray,
@@ -49,6 +54,7 @@ describe('SelectOption.helper', () => {
     expect(getSelectedLabel(false, [options[0]])).toBe('Alpha');
     expect(getSelectedLabel(false, [])).toBe('');
     expect(getSelectedLabel(true, options)).toBe('Alpha, Beta');
+    expect(getSelectedOptions(options, ['b'])).toEqual([options[1]]);
   });
 
   it('Should filter options with autocomplete search', () => {
@@ -90,6 +96,10 @@ describe('SelectOption.helper', () => {
       down: 21,
     });
     expect(getSelectOptionPopupOffsets(null)).toEqual({ up: 0, down: 0 });
+    expect(getSelectOptionFieldStyle({ up: 25, down: 21 })).toEqual({
+      '--hans-select-option-up-offset': '25px',
+      '--hans-select-option-down-offset': '21px',
+    });
   });
 
   it('Should resolve class names for select option list items', () => {
@@ -250,5 +260,37 @@ describe('SelectOption.helper', () => {
       setIsOpen,
     })(true, 'focus');
     expect(setIsOpen).toHaveBeenCalledTimes(2);
+  });
+
+  it('Should create sync helpers for controlled value, label and popup offsets', () => {
+    const setInternalValue = vi.fn();
+    createSyncSelectOptionValue({
+      value: 'alpha',
+      setInternalValue,
+    })();
+    expect(setInternalValue).toHaveBeenCalledWith('alpha');
+
+    const setSearchTerm = vi.fn();
+    createSyncAutocompleteSearchTerm({
+      enableAutocomplete: true,
+      isMulti: false,
+      selectedLabel: 'Alpha',
+      setSearchTerm,
+    })();
+    expect(setSearchTerm).toHaveBeenCalledWith('Alpha');
+
+    const container = document.createElement('div');
+    const label = document.createElement('label');
+    label.className = 'hans-input-label';
+    Object.defineProperty(label, 'offsetHeight', { value: 10 });
+    container.appendChild(label);
+    const setPopupOffsets = vi.fn();
+
+    createSyncPopupOffsets({
+      selectOptionRef: { current: container },
+      setPopupOffsets,
+    })();
+
+    expect(setPopupOffsets).toHaveBeenCalledWith({ up: 10, down: 0 });
   });
 });
