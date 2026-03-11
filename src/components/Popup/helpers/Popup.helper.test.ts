@@ -64,6 +64,10 @@ describe('Popup.helper', () => {
 
     handlePopupOutsideClick({ container, target: external, close });
     expect(close).toHaveBeenCalledTimes(1);
+
+    handlePopupOutsideClick({ container: null, target: external, close });
+    handlePopupOutsideClick({ container, target: null, close });
+    expect(close).toHaveBeenCalledTimes(1);
   });
 
   it('Should create outside mouse down handler from refs', () => {
@@ -159,6 +163,49 @@ describe('Popup.helper', () => {
 
     expect(setDirection).toHaveBeenCalledWith('up');
     expect(onDirectionChange).toHaveBeenCalledWith('up');
+  });
+
+  it('Should skip popup direction frame handling when window is unavailable', () => {
+    const originalWindow = globalThis.window;
+    const setDirection = vi.fn();
+    const onDirectionChange = vi.fn();
+
+    Object.defineProperty(globalThis, 'window', {
+      value: undefined,
+      configurable: true,
+    });
+
+    try {
+      createPopupDirectionFrameHandler({
+        containerRef: { current: document.createElement('div') },
+        panelRef: { current: document.createElement('div') },
+        setDirection,
+        onDirectionChange,
+      })();
+
+      expect(setDirection).not.toHaveBeenCalled();
+      expect(onDirectionChange).not.toHaveBeenCalled();
+    } finally {
+      Object.defineProperty(globalThis, 'window', {
+        value: originalWindow,
+        configurable: true,
+      });
+    }
+  });
+
+  it('Should skip popup direction notifications when direction cannot be resolved', () => {
+    const setDirection = vi.fn();
+    const onDirectionChange = vi.fn();
+
+    createPopupDirectionFrameHandler({
+      containerRef: { current: null },
+      panelRef: { current: document.createElement('div') },
+      setDirection,
+      onDirectionChange,
+    })();
+
+    expect(setDirection).not.toHaveBeenCalled();
+    expect(onDirectionChange).not.toHaveBeenCalled();
   });
 
   it('Should detect popup renderable content correctly', () => {

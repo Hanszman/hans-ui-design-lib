@@ -1,4 +1,5 @@
 * Continuar próximos componentes:
+-Refatorar Toggle
 -Toast (usar lib?)
 -DatePicker (usar lib?) (moment, luxon, alguma outra?)
 -Modal (usar lib?)
