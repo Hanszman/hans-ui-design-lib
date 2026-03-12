@@ -36,7 +36,7 @@ export const HansTag = React.memo((props: HansTagProps) => {
           disabled={disabled}
         >
           <span className="hans-tag-icon">
-            <HansIcon name={actionIcon} iconSize="medium" />
+            <HansIcon name={actionIcon} />
           </span>
         </button>
       ) : null}

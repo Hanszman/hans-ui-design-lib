@@ -37,6 +37,7 @@ export type HansToastProps = InferPropsFromSchema<typeof HansToastSchema> &
   Omit<React.HTMLAttributes<HTMLDivElement>, 'color' | 'title'> & {
     onClose?: (reason: ToastCloseReason) => void;
     onVisibilityChange?: (visible: boolean) => void;
+    portalTarget?: HTMLElement | null;
   };
 
 export const HansToastPropsList = createPropsList(HansToastSchema);

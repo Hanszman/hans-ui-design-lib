@@ -208,6 +208,23 @@ describe('HansToast', () => {
     }
   });
 
+  it('Should render into a custom portal target when provided', () => {
+    const portalTarget = document.createElement('div');
+    document.body.appendChild(portalTarget);
+
+    renderWithAct(
+      <HansToast
+        title="Portal toast"
+        message="Outside the local tree"
+        duration={0}
+        portalTarget={portalTarget}
+      />,
+    );
+
+    expect(portalTarget).toHaveTextContent('Portal toast');
+    document.body.removeChild(portalTarget);
+  });
+
   it('Should not render when visibility starts disabled', () => {
     renderWithAct(
       <HansToast

@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { HansIcon } from '../Icon/Icon';
 import type { HansToastProps } from './Toast.types';
 import {
@@ -34,6 +35,7 @@ export const HansToast = React.memo((props: HansToastProps) => {
     messageClassName = '',
     onClose,
     onVisibilityChange,
+    portalTarget = null,
     style,
     ...rest
   } = props;
@@ -91,7 +93,7 @@ export const HansToast = React.memo((props: HansToastProps) => {
     style,
   });
 
-  return (
+  const toastContent = (
     <div
       ref={containerRef}
       className={className}
@@ -128,11 +130,17 @@ export const HansToast = React.memo((props: HansToastProps) => {
           aria-label={closeButtonLabel}
           onClick={() => handleClose('dismiss')}
         >
-          <HansIcon name="IoIosCloseCircle" iconSize="small" />
+          <HansIcon name="IoIosCloseCircle" />
         </button>
       ) : null}
     </div>
   );
+
+  if (portalTarget) {
+    return createPortal(toastContent, portalTarget);
+  }
+
+  return toastContent;
 });
 
 HansToast.displayName = 'HansToast';

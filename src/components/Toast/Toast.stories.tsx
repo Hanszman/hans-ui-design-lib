@@ -13,6 +13,11 @@ const positions = [
   'bottom-left',
 ] as const;
 
+const getStorybookPortalTarget = (): HTMLElement | null => {
+  if (typeof window === 'undefined') return null;
+  return document.body;
+};
+
 const meta: Meta<typeof HansToast> = {
   title: 'Components/Toast',
   component: HansToast,
@@ -29,7 +34,15 @@ const meta: Meta<typeof HansToast> = {
   argTypes: {
     toastColor: {
       control: 'select',
-      options: ['base', 'primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+      options: [
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
     },
     toastVariant: {
       control: 'select',
@@ -83,27 +96,32 @@ const StoryViewportToastDemo = ({
 }: {
   items: ToastStoryItem[];
   onCloseItem: (id: string) => void;
-}) => (
-  <>
-    {items.map((item) => (
-      <HansToast
-        key={item.id}
-        title={item.title}
-        message={item.message}
-        toastColor={item.toastColor}
-        toastVariant={item.toastVariant}
-        toastSize={item.toastSize}
-        position={item.position}
-        duration={item.duration}
-        dismissible={item.dismissible}
-        onVisibilityChange={(visible) => {
-          if (!visible) onCloseItem(item.id);
-        }}
-        onClose={() => onCloseItem(item.id)}
-      />
-    ))}
-  </>
-);
+}) => {
+  const portalTarget = getStorybookPortalTarget();
+
+  return (
+    <>
+      {items.map((item) => (
+        <HansToast
+          key={item.id}
+          title={item.title}
+          message={item.message}
+          toastColor={item.toastColor}
+          toastVariant={item.toastVariant}
+          toastSize={item.toastSize}
+          position={item.position}
+          duration={item.duration}
+          dismissible={item.dismissible}
+          portalTarget={portalTarget}
+          onVisibilityChange={(visible) => {
+            if (!visible) onCloseItem(item.id);
+          }}
+          onClose={() => onCloseItem(item.id)}
+        />
+      ))}
+    </>
+  );
+};
 
 const useToastStoryReset = () => {
   React.useEffect(() => {
@@ -149,11 +167,12 @@ export const Sizes: Story = {
       const [items, setItems] = React.useState<ToastStoryItem[]>([]);
 
       return (
-        <div className="flex min-h-[88px] flex-wrap gap-3 rounded-2xl border border-[var(--gray-300)] p-4">
+        <div className="flex gap-3">
           {(['small', 'medium', 'large'] as Size[]).map((size) => (
             <HansButton
               key={size}
               label={size}
+              buttonColor="primary"
               buttonVariant="outline"
               onClick={() =>
                 setItems([
@@ -189,7 +208,13 @@ export const VariantsAndColors: Story = {
       return (
         <div className="grid grid-cols-1 gap-4 rounded-2xl border border-[var(--gray-300)] p-4 md:grid-cols-2 xl:grid-cols-3">
           {(
-            ['strong', 'default', 'neutral', 'outline', 'transparent'] as Variant[]
+            [
+              'strong',
+              'default',
+              'neutral',
+              'outline',
+              'transparent',
+            ] as Variant[]
           ).map((variant) => (
             <div
               key={variant}
@@ -214,7 +239,9 @@ export const VariantsAndColors: Story = {
                     key={`${variant}-${color}`}
                     label={color}
                     buttonColor={color}
-                    buttonVariant={variant === 'transparent' ? 'outline' : 'default'}
+                    buttonVariant={
+                      variant === 'transparent' ? 'outline' : 'default'
+                    }
                     onClick={() =>
                       setItems([
                         createToastStoryItem({
@@ -251,11 +278,12 @@ export const Positions: Story = {
       const [items, setItems] = React.useState<ToastStoryItem[]>([]);
 
       return (
-        <div className="flex min-h-[88px] flex-wrap gap-3 rounded-2xl border border-dashed border-[var(--gray-300)] p-4">
+        <div className="flex gap-3">
           {positions.map((position) => (
             <HansButton
               key={position}
               label={position.replace('-', ' / ')}
+              buttonColor="primary"
               buttonVariant="outline"
               onClick={() =>
                 setItems([
