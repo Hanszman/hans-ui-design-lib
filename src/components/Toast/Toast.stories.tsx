@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { Color, Size, Variant } from '../../types/Common.types';
 import { HansButton } from '../Forms/Button/Button';
 import { HansToast } from './Toast';
+import { resetToastStackRegistry } from './helpers/Toast.helper';
 import DocsPage from './Toast.mdx';
 
 const positions = [
@@ -49,109 +50,278 @@ const meta: Meta<typeof HansToast> = {
 export default meta;
 type Story = StoryObj<typeof HansToast>;
 
-export const Primary: Story = {};
+type ToastStoryItem = {
+  id: string;
+  title: string;
+  message: string;
+  toastColor: Color;
+  toastVariant: Variant;
+  toastSize: Size;
+  position: (typeof positions)[number];
+  duration: number;
+  dismissible: boolean;
+};
+
+const createToastStoryItem = (
+  overrides: Partial<ToastStoryItem> = {},
+): ToastStoryItem => ({
+  id: `${Date.now()}-${Math.random()}`,
+  title: 'Changes saved',
+  message: 'Everything was stored successfully.',
+  toastColor: 'success',
+  toastVariant: 'neutral',
+  toastSize: 'medium',
+  position: 'top-right',
+  duration: 4000,
+  dismissible: true,
+  ...overrides,
+});
+
+const StoryViewportToastDemo = ({
+  items,
+  onCloseItem,
+}: {
+  items: ToastStoryItem[];
+  onCloseItem: (id: string) => void;
+}) => (
+  <>
+    {items.map((item) => (
+      <HansToast
+        key={item.id}
+        title={item.title}
+        message={item.message}
+        toastColor={item.toastColor}
+        toastVariant={item.toastVariant}
+        toastSize={item.toastSize}
+        position={item.position}
+        duration={item.duration}
+        dismissible={item.dismissible}
+        onVisibilityChange={(visible) => {
+          if (!visible) onCloseItem(item.id);
+        }}
+        onClose={() => onCloseItem(item.id)}
+      />
+    ))}
+  </>
+);
+
+const useToastStoryReset = () => {
+  React.useEffect(() => {
+    resetToastStackRegistry();
+    return () => resetToastStackRegistry();
+  }, []);
+};
+
+const PrimaryDemo = () => {
+  useToastStoryReset();
+  const [items, setItems] = React.useState<ToastStoryItem[]>([]);
+
+  return (
+    <div className="flex min-h-[88px] items-center gap-3 rounded-2xl border border-[var(--gray-300)] p-4">
+      <HansButton
+        label="Show toast"
+        buttonColor="success"
+        onClick={() => setItems([createToastStoryItem()])}
+      />
+      <HansButton
+        label="Clear"
+        buttonVariant="outline"
+        onClick={() => setItems([])}
+      />
+      <StoryViewportToastDemo
+        items={items}
+        onCloseItem={(id) =>
+          setItems((prev) => prev.filter((item) => item.id !== id))
+        }
+      />
+    </div>
+  );
+};
+
+export const Primary: Story = {
+  render: () => <PrimaryDemo />,
+};
 
 export const Sizes: Story = {
-  render: () => (
-    <div className="flex min-h-[320px] flex-col gap-4">
-      {(['small', 'medium', 'large'] as Size[]).map((size, index) => (
-        <HansToast
-          key={size}
-          title={`${size} toast`}
-          message="Dimension tokens change spacing and card width."
-          toastSize={size}
-          duration={0}
-          offset={24 + index * 88}
-          position="top-left"
-        />
-      ))}
-    </div>
-  ),
+  render: () => {
+    const SizeDemo = () => {
+      useToastStoryReset();
+      const [items, setItems] = React.useState<ToastStoryItem[]>([]);
+
+      return (
+        <div className="flex min-h-[88px] flex-wrap gap-3 rounded-2xl border border-[var(--gray-300)] p-4">
+          {(['small', 'medium', 'large'] as Size[]).map((size) => (
+            <HansButton
+              key={size}
+              label={size}
+              buttonVariant="outline"
+              onClick={() =>
+                setItems([
+                  createToastStoryItem({
+                    title: `${size} toast`,
+                    message: 'Dimension tokens change spacing and card width.',
+                    toastSize: size,
+                  }),
+                ])
+              }
+            />
+          ))}
+          <StoryViewportToastDemo
+            items={items}
+            onCloseItem={(id) =>
+              setItems((prev) => prev.filter((item) => item.id !== id))
+            }
+          />
+        </div>
+      );
+    };
+
+    return <SizeDemo />;
+  },
 };
 
 export const VariantsAndColors: Story = {
-  render: () => (
-    <div className="grid min-h-[820px] grid-cols-1 gap-4 md:grid-cols-2">
-      {(['strong', 'default', 'neutral', 'outline', 'transparent'] as Variant[]).map(
-        (variant, variantIndex) => (
-          <div key={variant} className="relative min-h-[360px] rounded-xl border border-[var(--gray-300)] p-4">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em]">
-              {variant}
-            </p>
-            {(['base', 'primary', 'secondary', 'success', 'danger', 'warning', 'info'] as Color[]).map(
-              (color, colorIndex) => (
-                <HansToast
-                  key={`${variant}-${color}`}
-                  title={`${color} ${variant}`}
-                  message="Semantic tone driven by design tokens."
-                  toastColor={color}
-                  toastVariant={variant}
-                  position={variantIndex % 2 === 0 ? 'top-left' : 'top-right'}
-                  duration={0}
-                  offset={20 + colorIndex * 76}
-                  dismissible={false}
-                />
-              ),
-            )}
-          </div>
-        ),
-      )}
-    </div>
-  ),
+  render: () => {
+    const VariantDemo = () => {
+      useToastStoryReset();
+      const [items, setItems] = React.useState<ToastStoryItem[]>([]);
+
+      return (
+        <div className="grid grid-cols-1 gap-4 rounded-2xl border border-[var(--gray-300)] p-4 md:grid-cols-2 xl:grid-cols-3">
+          {(
+            ['strong', 'default', 'neutral', 'outline', 'transparent'] as Variant[]
+          ).map((variant) => (
+            <div
+              key={variant}
+              className="rounded-xl border border-[var(--gray-300)] p-4"
+            >
+              <p className="mb-3 text-sm font-semibold uppercase tracking-[0.18em]">
+                {variant}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {(
+                  [
+                    'base',
+                    'primary',
+                    'secondary',
+                    'success',
+                    'danger',
+                    'warning',
+                    'info',
+                  ] as Color[]
+                ).map((color) => (
+                  <HansButton
+                    key={`${variant}-${color}`}
+                    label={color}
+                    buttonColor={color}
+                    buttonVariant={variant === 'transparent' ? 'outline' : 'default'}
+                    onClick={() =>
+                      setItems([
+                        createToastStoryItem({
+                          title: `${color} ${variant}`,
+                          message: 'Semantic tone driven by design tokens.',
+                          toastColor: color,
+                          toastVariant: variant,
+                        }),
+                      ])
+                    }
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+          <StoryViewportToastDemo
+            items={items}
+            onCloseItem={(id) =>
+              setItems((prev) => prev.filter((item) => item.id !== id))
+            }
+          />
+        </div>
+      );
+    };
+
+    return <VariantDemo />;
+  },
 };
 
 export const Positions: Story = {
-  render: () => (
-    <div className="grid min-h-[540px] grid-cols-1 gap-4 rounded-2xl border border-dashed border-[var(--gray-300)] p-4 md:grid-cols-2">
-      {positions.map((position) => (
-        <div key={position} className="relative min-h-[240px] rounded-xl bg-[var(--gray-100)] p-4">
-          <span className="text-sm font-semibold capitalize">
-            {position.replace('-', ' / ')}
-          </span>
-          <HansToast
-            title={position}
-            message="The stack direction follows the selected corner."
-            position={position}
-            duration={0}
+  render: () => {
+    const PositionDemo = () => {
+      useToastStoryReset();
+      const [items, setItems] = React.useState<ToastStoryItem[]>([]);
+
+      return (
+        <div className="flex min-h-[88px] flex-wrap gap-3 rounded-2xl border border-dashed border-[var(--gray-300)] p-4">
+          {positions.map((position) => (
+            <HansButton
+              key={position}
+              label={position.replace('-', ' / ')}
+              buttonVariant="outline"
+              onClick={() =>
+                setItems([
+                  createToastStoryItem({
+                    title: position,
+                    message: 'The stack direction follows the selected corner.',
+                    position,
+                    duration: 0,
+                  }),
+                ])
+              }
+            />
+          ))}
+          <StoryViewportToastDemo
+            items={items}
+            onCloseItem={(id) =>
+              setItems((prev) => prev.filter((item) => item.id !== id))
+            }
           />
         </div>
-      ))}
-    </div>
-  ),
+      );
+    };
+
+    return <PositionDemo />;
+  },
 };
 
 const StackedToastDemo = () => {
-  const [items, setItems] = React.useState([0, 1]);
+  useToastStoryReset();
+  const [items, setItems] = React.useState<ToastStoryItem[]>([]);
+
+  const appendToast = () => {
+    setItems((prev) => [
+      ...prev,
+      createToastStoryItem({
+        title: `Toast ${prev.length + 1}`,
+        message: 'New notifications keep the same corner and stack vertically.',
+        position: 'bottom-right',
+        duration: 0,
+        toastColor: prev.length % 2 === 0 ? 'primary' : 'success',
+        toastVariant: prev.length % 2 === 0 ? 'outline' : 'neutral',
+      }),
+    ]);
+  };
 
   return (
-    <div className="relative min-h-[520px] rounded-2xl border border-[var(--gray-300)] p-4">
+    <div className="rounded-2xl border border-[var(--gray-300)] p-4">
       <div className="flex gap-3">
         <HansButton
           label="Add toast"
           buttonColor="primary"
-          onClick={() => setItems((prev) => [...prev, prev.length])}
+          onClick={appendToast}
         />
         <HansButton
           label="Reset"
           buttonVariant="outline"
-          onClick={() => setItems([0, 1])}
+          onClick={() => setItems([])}
         />
       </div>
 
-      {items.map((item) => (
-        <HansToast
-          key={item}
-          title={`Toast ${item + 1}`}
-          message="New notifications keep the same corner and stack vertically."
-          position="bottom-right"
-          duration={0}
-          toastColor={item % 2 === 0 ? 'primary' : 'success'}
-          toastVariant={item % 2 === 0 ? 'outline' : 'neutral'}
-          onClose={() =>
-            setItems((prev) => prev.filter((currentItem) => currentItem !== item))
-          }
-        />
-      ))}
+      <StoryViewportToastDemo
+        items={items}
+        onCloseItem={(id) =>
+          setItems((prev) => prev.filter((item) => item.id !== id))
+        }
+      />
     </div>
   );
 };
@@ -161,26 +331,32 @@ export const Stacked: Story = {
 };
 
 const AutoDismissDemo = () => {
-  const [visible, setVisible] = React.useState(false);
+  useToastStoryReset();
+  const [items, setItems] = React.useState<ToastStoryItem[]>([]);
 
   return (
-    <div className="relative min-h-[300px] rounded-2xl border border-[var(--gray-300)] p-4">
+    <div className="rounded-2xl border border-[var(--gray-300)] p-4">
       <HansButton
         label="Trigger toast"
         buttonColor="secondary"
-        onClick={() => setVisible(true)}
+        onClick={() =>
+          setItems([
+            createToastStoryItem({
+              title: 'Scheduled sync',
+              message: 'This example closes automatically after 2.5 seconds.',
+              duration: 2500,
+              toastColor: 'secondary',
+              toastVariant: 'default',
+            }),
+          ])
+        }
       />
-
-      {visible ? (
-        <HansToast
-          title="Scheduled sync"
-          message="This example closes automatically after 2.5 seconds."
-          duration={2500}
-          toastColor="secondary"
-          toastVariant="default"
-          onVisibilityChange={setVisible}
-        />
-      ) : null}
+      <StoryViewportToastDemo
+        items={items}
+        onCloseItem={(id) =>
+          setItems((prev) => prev.filter((item) => item.id !== id))
+        }
+      />
     </div>
   );
 };

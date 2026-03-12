@@ -2,17 +2,15 @@ import React from 'react';
 import { HansIcon } from '../Icon/Icon';
 import type { HansToastProps } from './Toast.types';
 import {
+  createToastAutoDismissEffect,
   createToastCloseHandler,
-  getToastAriaLive,
+  createToastStackEffect,
+  getToastAccessibilityState,
   getToastClassName,
   getToastInlineStyle,
-  getToastRole,
   getToastStackIndex,
   getToastStackOffset,
-  measureToastHeight,
-  removeToastFromStack,
   subscribeToastStack,
-  upsertToastInStack,
 } from './helpers/Toast.helper';
 
 export const HansToast = React.memo((props: HansToastProps) => {
@@ -29,7 +27,7 @@ export const HansToast = React.memo((props: HansToastProps) => {
     dismissible = true,
     iconName = '',
     stackGap = 12,
-    offset = 24,
+    offset = 16,
     closeButtonLabel = 'Dismiss notification',
     customClasses = '',
     titleClassName = '',
@@ -45,6 +43,12 @@ export const HansToast = React.memo((props: HansToastProps) => {
   const [internalVisible, setInternalVisible] = React.useState(defaultVisible);
   const isControlled = typeof isVisible !== 'undefined';
   const visible = isControlled ? Boolean(isVisible) : internalVisible;
+  const handleClose = createToastCloseHandler({
+    isControlled,
+    setInternalVisible,
+    onVisibilityChange,
+    onClose,
+  });
   const stackOffset = React.useSyncExternalStore(
     subscribeToastStack,
     () => getToastStackOffset(position, toastId, stackGap),
@@ -55,57 +59,27 @@ export const HansToast = React.memo((props: HansToastProps) => {
     () => getToastStackIndex(position, toastId),
     () => -1,
   );
+  const { role, ariaLive } = getToastAccessibilityState(toastColor);
 
   React.useLayoutEffect(() => {
-    if (!visible) {
-      removeToastFromStack(toastId);
-      return;
-    }
-
-    const element = containerRef.current as HTMLDivElement;
-
-    const syncHeight = () =>
-      upsertToastInStack(position, toastId, measureToastHeight(element));
-
-    syncHeight();
-
-    if (typeof ResizeObserver === 'undefined') {
-      return () => {
-        removeToastFromStack(toastId);
-      };
-    }
-
-    const observer = new ResizeObserver(() => syncHeight());
-    observer.observe(element);
-
-    return () => {
-      observer.disconnect();
-      removeToastFromStack(toastId);
-    };
+    return createToastStackEffect({
+      visible,
+      position,
+      toastId,
+      containerRef,
+    })();
   }, [message, position, title, toastId, toastSize, visible]);
 
   React.useEffect(() => {
-    if (!visible || duration <= 0) return;
-
-    const handleClose = createToastCloseHandler({
-      isControlled,
-      setInternalVisible,
-      onVisibilityChange,
-      onClose,
-    });
-
-    const timer = window.setTimeout(() => handleClose('timeout'), duration);
-    return () => window.clearTimeout(timer);
-  }, [duration, isControlled, onClose, onVisibilityChange, visible]);
+    return createToastAutoDismissEffect({
+      visible,
+      duration,
+      handleClose,
+    })();
+  }, [duration, handleClose, visible]);
 
   if (!visible) return null;
 
-  const handleClose = createToastCloseHandler({
-    isControlled,
-    setInternalVisible,
-    onVisibilityChange,
-    onClose,
-  });
   const className = getToastClassName(toastSize, customClasses);
   const inlineStyle = getToastInlineStyle({
     toastColor,
@@ -122,8 +96,8 @@ export const HansToast = React.memo((props: HansToastProps) => {
       ref={containerRef}
       className={className}
       style={inlineStyle}
-      role={getToastRole(toastColor)}
-      aria-live={getToastAriaLive(toastColor)}
+      role={role}
+      aria-live={ariaLive}
       aria-atomic="true"
       data-position={position}
       {...rest}
@@ -154,7 +128,7 @@ export const HansToast = React.memo((props: HansToastProps) => {
           aria-label={closeButtonLabel}
           onClick={() => handleClose('dismiss')}
         >
-          <span aria-hidden="true">x</span>
+          <HansIcon name="IoIosCloseCircle" iconSize="small" />
         </button>
       ) : null}
     </div>

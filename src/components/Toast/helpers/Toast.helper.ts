@@ -1,9 +1,12 @@
 import type React from 'react';
 import type { Color } from '../../../types/Common.types';
 import type {
+  CreateToastAutoDismissEffectParams,
   CreateToastCloseHandlerParams,
+  CreateToastStackEffectParams,
   GetToastInlineStyleParams,
   ResolveToastToneParams,
+  ToastStackSnapshot,
   ToastStackRegistry,
 } from './Toast.helper.types';
 import type { ToastCloseReason, ToastPosition } from '../Toast.types';
@@ -97,6 +100,11 @@ export const getToastStackIndex = (
   id: string,
 ): number => toastStackRegistry[position].findIndex((item) => item.id === id);
 
+export const getDefaultToastStackSnapshot = (): ToastStackSnapshot => ({
+  offset: 0,
+  index: -1,
+});
+
 export const getToastStackOffset = (
   position: ToastPosition,
   id: string,
@@ -112,17 +120,28 @@ export const getToastStackOffset = (
     .reduce((offset, item) => offset + item.height + stackGap, 0);
 };
 
+export const getToastStackSnapshot = (
+  position: ToastPosition,
+  id: string,
+  stackGap: number,
+): ToastStackSnapshot => ({
+  offset: getToastStackOffset(position, id, stackGap),
+  index: getToastStackIndex(position, id),
+});
+
 export const measureToastHeight = (element: HTMLDivElement | null): number => {
   if (!element) return 0;
   const rect = element.getBoundingClientRect();
   return rect.height || element.offsetHeight || 0;
 };
 
-export const getToastRole = (toastColor: Color): 'status' | 'alert' =>
-  toastColor === 'danger' || toastColor === 'warning' ? 'alert' : 'status';
-
-export const getToastAriaLive = (toastColor: Color): 'polite' | 'assertive' =>
-  toastColor === 'danger' ? 'assertive' : 'polite';
+export const getToastAccessibilityState = (
+  toastColor: Color,
+): { role: 'status' | 'alert'; ariaLive: 'polite' | 'assertive' } => ({
+  role:
+    toastColor === 'danger' || toastColor === 'warning' ? 'alert' : 'status',
+  ariaLive: toastColor === 'danger' ? 'assertive' : 'polite',
+});
 
 export const resolveToastTone = ({
   toastColor,
@@ -227,4 +246,54 @@ export const createToastCloseHandler =
     if (!isControlled) setInternalVisible(false);
     if (onVisibilityChange) onVisibilityChange(false);
     if (onClose) onClose(reason);
+  };
+
+export const createToastStackEffect =
+  ({
+    visible,
+    position,
+    toastId,
+    containerRef,
+  }: CreateToastStackEffectParams) =>
+  (): VoidFunction | undefined => {
+    if (!visible) {
+      removeToastFromStack(toastId);
+      return undefined;
+    }
+
+    const syncHeight = () =>
+      upsertToastInStack(
+        position,
+        toastId,
+        measureToastHeight(containerRef.current),
+      );
+
+    syncHeight();
+
+    if (typeof ResizeObserver === 'undefined' || !containerRef.current) {
+      return () => {
+        removeToastFromStack(toastId);
+      };
+    }
+
+    const observer = new ResizeObserver(() => syncHeight());
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
+      removeToastFromStack(toastId);
+    };
+  };
+
+export const createToastAutoDismissEffect =
+  ({
+    visible,
+    duration,
+    handleClose,
+  }: CreateToastAutoDismissEffectParams) =>
+  (): VoidFunction | undefined => {
+    if (!visible || duration <= 0) return undefined;
+
+    const timer = window.setTimeout(() => handleClose('timeout'), duration);
+    return () => window.clearTimeout(timer);
   };

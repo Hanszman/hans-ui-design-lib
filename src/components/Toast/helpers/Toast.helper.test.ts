@@ -1,11 +1,15 @@
+import type React from 'react';
 import { vi } from 'vitest';
 import {
+  createToastAutoDismissEffect,
   createToastCloseHandler,
-  getToastAriaLive,
+  createToastStackEffect,
+  getDefaultToastStackSnapshot,
+  getToastAccessibilityState,
   getToastInlineStyle,
-  getToastRole,
   getToastStackIndex,
   getToastStackOffset,
+  getToastStackSnapshot,
   measureToastHeight,
   removeToastFromStack,
   resetToastStackRegistry,
@@ -54,10 +58,14 @@ describe('Toast.helper', () => {
   });
 
   it('Should resolve role and aria-live by toast color', () => {
-    expect(getToastRole('danger')).toBe('alert');
-    expect(getToastRole('primary')).toBe('status');
-    expect(getToastAriaLive('danger')).toBe('assertive');
-    expect(getToastAriaLive('warning')).toBe('polite');
+    expect(getToastAccessibilityState('danger')).toEqual({
+      role: 'alert',
+      ariaLive: 'assertive',
+    });
+    expect(getToastAccessibilityState('primary')).toEqual({
+      role: 'status',
+      ariaLive: 'polite',
+    });
   });
 
   it('Should create inline style according to position and stack offset', () => {
@@ -106,6 +114,10 @@ describe('Toast.helper', () => {
     expect(getToastStackIndex('top-right', 'toast-2')).toBe(-1);
     expect(getToastStackIndex('bottom-left', 'toast-2')).toBe(0);
     expect(getToastStackOffset('top-right', 'toast-1', 12)).toBe(0);
+    expect(getToastStackSnapshot('bottom-left', 'toast-2', 12)).toEqual({
+      offset: 0,
+      index: 0,
+    });
 
     removeToastFromStack('toast-1');
     expect(getToastStackIndex('bottom-left', 'toast-2')).toBe(0);
@@ -149,5 +161,39 @@ describe('Toast.helper', () => {
 
     expect(setInternalVisible).toHaveBeenCalledTimes(1);
     expect(onClose).toHaveBeenCalledWith('timeout');
+  });
+
+  it('Should create stack and auto-dismiss effects', () => {
+    vi.useFakeTimers();
+    const containerRef = {
+      current: {
+        getBoundingClientRect: () => ({ height: 88 }),
+        offsetHeight: 0,
+      },
+    } as React.RefObject<HTMLDivElement>;
+    const handleClose = vi.fn();
+
+    const stackCleanup = createToastStackEffect({
+      visible: true,
+      position: 'top-right',
+      toastId: 'toast-effect',
+      containerRef,
+    })();
+
+    expect(getToastStackIndex('top-right', 'toast-effect')).toBe(0);
+
+    const dismissCleanup = createToastAutoDismissEffect({
+      visible: true,
+      duration: 500,
+      handleClose,
+    })();
+
+    vi.advanceTimersByTime(500);
+    expect(handleClose).toHaveBeenCalledWith('timeout');
+    expect(getDefaultToastStackSnapshot()).toEqual({ offset: 0, index: -1 });
+
+    stackCleanup?.();
+    dismissCleanup?.();
+    vi.useRealTimers();
   });
 });

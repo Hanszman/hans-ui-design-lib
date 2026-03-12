@@ -30,9 +30,27 @@ export type GetToastInlineStyleParams = ResolveToastToneParams & {
   style?: React.CSSProperties;
 };
 
+export type ToastStackSnapshot = {
+  offset: number;
+  index: number;
+};
+
 export type CreateToastCloseHandlerParams = {
   isControlled: boolean;
   setInternalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onVisibilityChange?: (visible: boolean) => void;
   onClose?: (reason: ToastCloseReason) => void;
+};
+
+export type CreateToastStackEffectParams = {
+  visible: boolean;
+  position: ToastPosition;
+  toastId: string;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+};
+
+export type CreateToastAutoDismissEffectParams = {
+  visible: boolean;
+  duration: number;
+  handleClose: (reason: ToastCloseReason) => void;
 };

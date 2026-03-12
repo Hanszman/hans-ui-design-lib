@@ -6,7 +6,7 @@ import { resetToastStackRegistry } from './helpers/Toast.helper';
 
 vi.mock('../Icon/Icon', () => ({
   HansIcon: ({ name }: { name?: string }) => (
-    <span data-testid="mock-toast-icon">{name}</span>
+    <span data-testid={`mock-toast-icon-${name}`}>{name}</span>
   ),
 }));
 
@@ -57,7 +57,10 @@ describe('HansToast', () => {
     expect(toast).toHaveClass('hans-toast', 'hans-toast-large', 'custom-toast');
     expect(screen.getByText('Saved')).toBeInTheDocument();
     expect(screen.getByText('Your changes are available.')).toBeInTheDocument();
-    expect(screen.getByTestId('mock-toast-icon')).toHaveTextContent('MdCheckCircle');
+    expect(screen.getByTestId('mock-toast-icon-MdCheckCircle')).toBeInTheDocument();
+    expect(
+      screen.getByTestId('mock-toast-icon-IoIosCloseCircle'),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'Dismiss notification' }),
     ).toBeInTheDocument();
