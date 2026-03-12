@@ -1,0 +1,130 @@
+.hans-toggle-loading-switch {
+  @apply inline-flex items-center justify-center;
+}
+
+.hans-toggle-switch-row {
+  @apply inline-flex items-center gap-2;
+}
+
+.hans-toggle-side-label {
+  @apply text-sm;
+}
+
+.hans-toggle {
+  @apply relative inline-flex shrink-0 rounded-full border-0 cursor-pointer transition-colors duration-200 items-center justify-center;
+}
+
+.hans-toggle:focus-visible {
+  @apply outline-none;
+  box-shadow:
+    0 0 0 2px var(--white),
+    0 0 0 4px var(--primary-default-color);
+}
+
+.hans-toggle:disabled {
+  @apply cursor-not-allowed;
+}
+
+.hans-toggle-track-content {
+  @apply absolute inset-0 flex items-center justify-center text-xs font-semibold pointer-events-none whitespace-nowrap overflow-hidden text-ellipsis;
+  color: var(--white);
+}
+
+.hans-toggle-track-content-on {
+  padding-left: 0.5rem;
+  padding-right: calc(var(--hans-toggle-thumb-size) + 0.4rem);
+}
+
+.hans-toggle-track-content-off {
+  padding-left: calc(var(--hans-toggle-thumb-size) + 0.4rem);
+  padding-right: 0.5rem;
+}
+
+.hans-toggle-thumb {
+  @apply absolute top-1/2 rounded-full shadow-sm transition-all duration-200 flex items-center justify-center bg-[var(--white)] text-[var(--base-strong-color)];
+  left: var(--hans-toggle-thumb-x);
+  transform: translateY(-50%);
+}
+
+.hans-toggle-small {
+  @apply w-9 h-5;
+  --hans-toggle-thumb-size: 0.875rem;
+  --hans-toggle-thumb-x: 0.125rem;
+}
+
+.hans-toggle-medium {
+  @apply w-11 h-6;
+  --hans-toggle-thumb-size: 1rem;
+  --hans-toggle-thumb-x: 0.125rem;
+}
+
+.hans-toggle-large {
+  @apply w-14 h-8;
+  --hans-toggle-thumb-size: 1.5rem;
+  --hans-toggle-thumb-x: 0.125rem;
+}
+
+.hans-toggle-has-track-content {
+  min-width: calc((var(--hans-toggle-thumb-size) * 2) + 1.5rem);
+}
+
+.hans-toggle-small .hans-toggle-thumb,
+.hans-toggle-medium .hans-toggle-thumb,
+.hans-toggle-large .hans-toggle-thumb {
+  width: var(--hans-toggle-thumb-size);
+  height: var(--hans-toggle-thumb-size);
+}
+
+.hans-toggle-on-primary,
+.hans-toggle-on-secondary,
+.hans-toggle-on-success,
+.hans-toggle-on-danger,
+.hans-toggle-on-warning,
+.hans-toggle-on-info {
+  --hans-toggle-thumb-x: calc(100% - var(--hans-toggle-thumb-size) - 0.125rem);
+}
+
+.hans-toggle-off {
+  @apply bg-[var(--base-neutral-color)];
+}
+
+.hans-toggle-off .hans-toggle-track-content {
+  color: var(--base-strong-color);
+}
+
+.hans-toggle-off-disabled {
+  @apply bg-[var(--base-neutral-color)] opacity-70;
+}
+
+.hans-toggle-off-disabled .hans-toggle-track-content {
+  color: var(--base-default-color);
+}
+
+.hans-toggle-on-disabled {
+  @apply bg-[var(--base-default-color)];
+  --hans-toggle-thumb-x: calc(100% - var(--hans-toggle-thumb-size) - 0.125rem);
+}
+
+.hans-toggle-on-primary {
+  @apply bg-[var(--primary-default-color)];
+}
+
+.hans-toggle-on-secondary {
+  @apply bg-[var(--secondary-default-color)];
+}
+
+.hans-toggle-on-success {
+  @apply bg-[var(--success-default-color)];
+}
+
+.hans-toggle-on-danger {
+  @apply bg-[var(--danger-default-color)];
+}
+
+.hans-toggle-on-warning {
+  @apply bg-[var(--warning-default-color)];
+}
+
+.hans-toggle-on-info {
+  @apply bg-[var(--info-default-color)];
+}

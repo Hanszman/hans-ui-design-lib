@@ -1,0 +1,75 @@
+.hans-toggle-loading-segmented {
+  @apply block w-full rounded-xl;
+}
+
+.hans-toggle-segmented {
+  @apply inline-flex rounded-xl border overflow-hidden;
+  border-color: var(--hans-toggle-segment-border);
+}
+
+.hans-toggle-segmented-small .hans-toggle-segment {
+  @apply px-3 py-1.5 text-xs;
+}
+
+.hans-toggle-segmented-medium .hans-toggle-segment {
+  @apply px-4 py-2 text-sm;
+}
+
+.hans-toggle-segmented-large .hans-toggle-segment {
+  @apply px-5 py-2.5 text-base;
+}
+
+.hans-toggle-segment {
+  @apply inline-flex items-center gap-2 font-medium bg-transparent border-0 transition-colors duration-200 cursor-pointer;
+  color: var(--hans-toggle-segment-text);
+}
+
+.hans-toggle-segment-selected {
+  @apply text-[var(--white)];
+  background: var(--hans-toggle-segment-selected-bg);
+}
+
+.hans-toggle-segment + .hans-toggle-segment {
+  @apply border-l;
+  border-color: var(--hans-toggle-segment-border);
+}
+
+.hans-toggle-segmented-disabled {
+  @apply opacity-60;
+}
+
+.hans-toggle-segmented-primary {
+  --hans-toggle-segment-selected-bg: var(--primary-default-color);
+  --hans-toggle-segment-border: var(--primary-default-color);
+  --hans-toggle-segment-text: var(--primary-default-color);
+}
+
+.hans-toggle-segmented-secondary {
+  --hans-toggle-segment-selected-bg: var(--secondary-default-color);
+  --hans-toggle-segment-border: var(--secondary-default-color);
+  --hans-toggle-segment-text: var(--secondary-default-color);
+}
+
+.hans-toggle-segmented-success {
+  --hans-toggle-segment-selected-bg: var(--success-default-color);
+  --hans-toggle-segment-border: var(--success-default-color);
+  --hans-toggle-segment-text: var(--success-default-color);
+}
+
+.hans-toggle-segmented-danger {
+  --hans-toggle-segment-selected-bg: var(--danger-default-color);
+  --hans-toggle-segment-border: var(--danger-default-color);
+  --hans-toggle-segment-text: var(--danger-default-color);
+}
+
+.hans-toggle-segmented-warning {
+  --hans-toggle-segment-selected-bg: var(--warning-default-color);
+  --hans-toggle-segment-border: var(--warning-default-color);
+  --hans-toggle-segment-text: var(--warning-default-color);
+}
+
+.hans-toggle-segmented-info {
+  --hans-toggle-segment-selected-bg: var(--info-default-color);
+  --hans-toggle-segment-border: var(--info-default-color);
+  --hans-toggle-segment-text: var(--info-default-color);
+}
