@@ -55,6 +55,11 @@ import {
   type HansPopupProps,
   HansPopupPropsList,
 } from './components/Popup/Popup.types';
+import { HansToast } from './components/Toast/Toast';
+import {
+  type HansToastProps,
+  HansToastPropsList,
+} from './components/Toast/Toast.types';
 import { HansTable } from './components/Table/Table';
 import {
   type HansTableProps,
@@ -120,6 +125,11 @@ registerReactAsWebComponent<HansPopupProps>(
   'hans-popup',
   HansPopup,
   HansPopupPropsList,
+);
+registerReactAsWebComponent<HansToastProps>(
+  'hans-toast',
+  HansToast,
+  HansToastPropsList,
 );
 registerReactAsWebComponent<HansTableProps>(
   'hans-table',

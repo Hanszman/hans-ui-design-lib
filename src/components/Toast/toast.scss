@@ -1,0 +1,49 @@
+.hans-toast {
+  @apply fixed flex items-start gap-3 rounded-xl border px-4 py-3 min-w-[260px] max-w-[420px] shadow-[var(--hans-toast-shadow)] backdrop-blur-sm;
+  background: var(--hans-toast-bg);
+  border-color: var(--hans-toast-border);
+  color: var(--hans-toast-text);
+}
+
+.hans-toast-small {
+  @apply max-w-[300px] px-3 py-2 text-sm;
+}
+
+.hans-toast-medium {
+  @apply max-w-[360px] px-4 py-3 text-sm;
+}
+
+.hans-toast-large {
+  @apply max-w-[420px] px-5 py-4 text-base;
+}
+
+.hans-toast-accent {
+  @apply shrink-0 rounded-full w-2 self-stretch;
+  background: var(--hans-toast-accent);
+}
+
+.hans-toast-icon {
+  @apply shrink-0 inline-flex items-center justify-center pt-0.5;
+  color: var(--hans-toast-accent);
+}
+
+.hans-toast-content {
+  @apply flex min-w-0 flex-1 flex-col gap-1;
+}
+
+.hans-toast-title {
+  @apply font-semibold leading-5;
+}
+
+.hans-toast-message {
+  @apply leading-5 opacity-90;
+}
+
+.hans-toast-close {
+  @apply shrink-0 border-none bg-transparent cursor-pointer rounded-md inline-flex items-center justify-center p-1 text-base leading-none;
+  color: inherit;
+}
+
+.hans-toast-close:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}

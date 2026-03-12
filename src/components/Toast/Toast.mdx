@@ -1,0 +1,66 @@
+import {
+  Canvas,
+  Controls,
+  Meta,
+  Primary,
+  Title,
+} from '@storybook/addon-docs/blocks';
+import * as HansToastStories from './Toast.stories';
+
+<Meta of={HansToastStories} />
+
+<Title />
+
+The **Toast** component renders fixed notification cards without external libraries. It supports semantic colors, visual variants, stack-aware placement in any corner, optional dismissal and automatic timeout handling.
+
+## Usage
+
+```tsx
+import { HansToast } from 'hans-ui-design-lib';
+
+export const Example = () => (
+  <HansToast
+    title="Profile updated"
+    message="The new data is already available."
+    toastColor="success"
+    toastVariant="neutral"
+    position="top-right"
+  />
+);
+```
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Sizes
+
+Use `toastSize` when the card needs a more compact or more prominent footprint.
+
+<Canvas of={HansToastStories.Sizes} />
+
+## Variants And Colors
+
+Use `toastColor` with `toastVariant` to map the component to the semantic palette already used across the design system.
+
+<Canvas of={HansToastStories.VariantsAndColors} />
+
+## Positions
+
+Use `position` to move the toast to any corner. The stack automatically grows downward for top positions and upward for bottom positions.
+
+<Canvas of={HansToastStories.Positions} />
+
+## Stacked Notifications
+
+Multiple visible toasts in the same corner are measured and offset vertically to avoid overlap.
+
+<Canvas of={HansToastStories.Stacked} />
+
+## Automatic Dismiss
+
+Use `duration` with `onVisibilityChange` for timed notifications that the parent can control.
+
+<Canvas of={HansToastStories.AutoDismiss} />

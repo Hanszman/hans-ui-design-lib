@@ -2,6 +2,7 @@
 -Toast (usar lib?)
 -DatePicker (usar lib?) (moment, luxon, alguma outra?)
 -Modal (usar lib?)
+-Publi/propaganda (usar lib?)
 -Kanban (usar lib?) (cards com drag and drop)
 -Card (template de card / será usado como item do kanban / - usar lib?)
 -Translation?

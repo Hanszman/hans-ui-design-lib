@@ -14,6 +14,7 @@ export * from './components/Chart/Chart';
 export * from './components/Icon/Icon';
 export * from './components/Loading/Loading';
 export * from './components/Popup/Popup';
+export * from './components/Toast/Toast';
 export * from './components/Table/Table';
 export * from './components/Tabs/Tabs';
 
@@ -28,5 +29,6 @@ export * from './components/Chart/Chart.types';
 export * from './components/Icon/Icon.types';
 export * from './components/Loading/Loading.types';
 export * from './components/Popup/Popup.types';
+export * from './components/Toast/Toast.types';
 export * from './components/Table/Table.types';
 export * from './components/Tabs/Tabs.types';
