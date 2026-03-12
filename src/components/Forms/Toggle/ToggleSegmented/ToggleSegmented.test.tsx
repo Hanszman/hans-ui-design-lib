@@ -101,4 +101,12 @@ describe('HansToggleSegmented', () => {
     ).toBeInTheDocument();
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
   });
+
+  it('Should render an empty tablist when no options or default value are provided', () => {
+    render(<HansToggleSegmented />);
+
+    const tablist = screen.getByRole('tablist');
+    expect(tablist).toBeInTheDocument();
+    expect(screen.queryAllByRole('tab')).toHaveLength(0);
+  });
 });
