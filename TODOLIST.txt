@@ -1,5 +1,5 @@
 * Continuar próximos componentes:
--Toast (usar lib?)
+-Fix Toast
 -DatePicker (usar lib?) (moment, luxon, alguma outra?)
 -Modal (usar lib?)
 -Publi/propaganda (usar lib?)

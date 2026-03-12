@@ -8,21 +8,21 @@ import type {
 } from './Toast.helper.types';
 import type { ToastCloseReason, ToastPosition } from '../Toast.types';
 
-const createEmptyToastStackRegistry = (): ToastStackRegistry => ({
+export const createEmptyToastStackRegistry = (): ToastStackRegistry => ({
   'top-right': [],
   'top-left': [],
   'bottom-right': [],
   'bottom-left': [],
 });
 
-const toastStackListeners = new Set<() => void>();
+export const toastStackListeners = new Set<() => void>();
 let toastStackRegistry = createEmptyToastStackRegistry();
 
-const notifyToastStackListeners = (): void => {
+export const notifyToastStackListeners = (): void => {
   toastStackListeners.forEach((listener) => listener());
 };
 
-const getToastTokenPrefix = (toastColor: Color): string =>
+export const getToastTokenPrefix = (toastColor: Color): string =>
   toastColor === 'base' ? 'base' : toastColor;
 
 export const subscribeToastStack = (listener: () => void): (() => void) => {
@@ -41,7 +41,9 @@ export const removeToastFromStack = (id: string): void => {
   let changed = false;
 
   (Object.keys(toastStackRegistry) as ToastPosition[]).forEach((position) => {
-    const nextItems = toastStackRegistry[position].filter((item) => item.id !== id);
+    const nextItems = toastStackRegistry[position].filter(
+      (item) => item.id !== id,
+    );
     if (nextItems.length !== toastStackRegistry[position].length) {
       toastStackRegistry[position] = nextItems;
       changed = true;
@@ -58,17 +60,19 @@ export const upsertToastInStack = (
 ): void => {
   let changed = false;
 
-  (Object.keys(toastStackRegistry) as ToastPosition[]).forEach((currentPosition) => {
-    const currentItems = toastStackRegistry[currentPosition];
-    const currentIndex = currentItems.findIndex((item) => item.id === id);
+  (Object.keys(toastStackRegistry) as ToastPosition[]).forEach(
+    (currentPosition) => {
+      const currentItems = toastStackRegistry[currentPosition];
+      const currentIndex = currentItems.findIndex((item) => item.id === id);
 
-    if (currentPosition !== position && currentIndex >= 0) {
-      toastStackRegistry[currentPosition] = currentItems.filter(
-        (item) => item.id !== id,
-      );
-      changed = true;
-    }
-  });
+      if (currentPosition !== position && currentIndex >= 0) {
+        toastStackRegistry[currentPosition] = currentItems.filter(
+          (item) => item.id !== id,
+        );
+        changed = true;
+      }
+    },
+  );
 
   const targetItems = toastStackRegistry[position];
   const targetIndex = targetItems.findIndex((item) => item.id === id);
