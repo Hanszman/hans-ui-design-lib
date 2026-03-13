@@ -23,7 +23,11 @@
 }
 
 .hans-date-picker-day {
-  @apply h-10 min-w-0 px-0 py-0 text-sm;
+  @apply flex h-10 w-full items-center justify-center rounded-full border border-transparent bg-transparent px-0 py-0 text-sm transition-colors duration-150;
+}
+
+.hans-date-picker-day:hover {
+  @apply bg-[var(--base-neutral-color)];
 }
 
 .hans-date-picker-day-outside {
@@ -31,5 +35,77 @@
 }
 
 .hans-date-picker-day-today {
+  @apply border-[var(--text-color)] text-[var(--text-color)];
+}
+
+.hans-date-picker-day-selected {
+  @apply text-[var(--white)];
+}
+
+.hans-date-picker-day-color-base.hans-date-picker-day-selected {
+  background-color: var(--text-color);
+}
+
+.hans-date-picker-day-color-primary.hans-date-picker-day-selected {
+  background-color: var(--primary-default-color);
+}
+
+.hans-date-picker-day-color-secondary.hans-date-picker-day-selected {
+  background-color: var(--secondary-default-color);
+}
+
+.hans-date-picker-day-color-success.hans-date-picker-day-selected {
+  background-color: var(--success-default-color);
+}
+
+.hans-date-picker-day-color-danger.hans-date-picker-day-selected {
+  background-color: var(--danger-default-color);
+}
+
+.hans-date-picker-day-color-warning.hans-date-picker-day-selected {
+  background-color: var(--warning-default-color);
+}
+
+.hans-date-picker-day-color-info.hans-date-picker-day-selected {
+  background-color: var(--info-default-color);
+}
+
+.hans-date-picker-day-variant-outline.hans-date-picker-day-selected,
+.hans-date-picker-day-variant-transparent.hans-date-picker-day-selected {
+  @apply border;
+}
+
+.hans-date-picker-day-color-base.hans-date-picker-day-variant-outline.hans-date-picker-day-selected,
+.hans-date-picker-day-color-base.hans-date-picker-day-variant-transparent.hans-date-picker-day-selected {
   @apply border-[var(--text-color)] bg-transparent text-[var(--text-color)];
+}
+
+.hans-date-picker-day-color-primary.hans-date-picker-day-variant-outline.hans-date-picker-day-selected,
+.hans-date-picker-day-color-primary.hans-date-picker-day-variant-transparent.hans-date-picker-day-selected {
+  @apply border-[var(--primary-default-color)] bg-transparent text-[var(--primary-default-color)];
+}
+
+.hans-date-picker-day-color-secondary.hans-date-picker-day-variant-outline.hans-date-picker-day-selected,
+.hans-date-picker-day-color-secondary.hans-date-picker-day-variant-transparent.hans-date-picker-day-selected {
+  @apply border-[var(--secondary-default-color)] bg-transparent text-[var(--secondary-default-color)];
+}
+
+.hans-date-picker-day-color-success.hans-date-picker-day-variant-outline.hans-date-picker-day-selected,
+.hans-date-picker-day-color-success.hans-date-picker-day-variant-transparent.hans-date-picker-day-selected {
+  @apply border-[var(--success-default-color)] bg-transparent text-[var(--success-default-color)];
+}
+
+.hans-date-picker-day-color-danger.hans-date-picker-day-variant-outline.hans-date-picker-day-selected,
+.hans-date-picker-day-color-danger.hans-date-picker-day-variant-transparent.hans-date-picker-day-selected {
+  @apply border-[var(--danger-default-color)] bg-transparent text-[var(--danger-default-color)];
+}
+
+.hans-date-picker-day-color-warning.hans-date-picker-day-variant-outline.hans-date-picker-day-selected,
+.hans-date-picker-day-color-warning.hans-date-picker-day-variant-transparent.hans-date-picker-day-selected {
+  @apply border-[var(--warning-default-color)] bg-transparent text-[var(--warning-default-color)];
+}
+
+.hans-date-picker-day-color-info.hans-date-picker-day-variant-outline.hans-date-picker-day-selected,
+.hans-date-picker-day-color-info.hans-date-picker-day-variant-transparent.hans-date-picker-day-selected {
+  @apply border-[var(--info-default-color)] bg-transparent text-[var(--info-default-color)];
 }

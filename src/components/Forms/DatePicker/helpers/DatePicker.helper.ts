@@ -1,16 +1,25 @@
 import type React from 'react';
 import type {
+  CreateDatePickerApplyHandlerParams,
   CreateDatePickerBlurHandlerParams,
   CreateDatePickerChangeHandlerParams,
   CreateDatePickerDisplayInputHandlerParams,
+  CreateDatePickerClearHandlerParams,
+  CreateDatePickerInputMouseDownHandlerParams,
+  CreateMonthNavigationHandlerParams,
   CreateDatePickerOpenHandlerParams,
+  CreateDatePickerSelectDayHandlerParams,
   CreateDatePickerTimeInputHandlerParams,
+  CreateDatePickerToggleIconMouseDownHandlerParams,
+  CreateDatePickerTodayHandlerParams,
+  CreateTimeInputChangeHandlerParams,
   CreateSyncDatePickerPopupOffsetsParams,
   DatePickerPopupOffsets,
   DatePickerTimeParts,
   FormatDatePickerDisplayParams,
   FormatDatePickerValueParams,
   ParseDatePickerValueParams,
+  SyncTimeInputStateParams,
   SyncDatePickerStateParams,
 } from './DatePicker.helper.types';
 import type {
@@ -72,6 +81,11 @@ export const getDatePickerMonthLabel = (value: Date): string =>
     month: 'long',
     year: 'numeric',
   });
+
+export const resolveDateTimePickerType = (
+  pickerType: HansDatePickerType,
+): Exclude<HansDatePickerType, 'time'> =>
+  pickerType === 'datetime' ? 'datetime' : 'date';
 
 export const cloneDate = (value: Date): Date => new Date(value.getTime());
 
@@ -482,6 +496,209 @@ export const createDatePickerDisplayInputHandler =
   (event: React.ChangeEvent<HTMLInputElement>): void => {
     setDisplayValue(event.target.value);
   };
+
+export const createTimeInputChangeHandler =
+  ({
+    timePrecision,
+    handleMaskedChange,
+    setTimeInputValue,
+    applyValue,
+  }: CreateTimeInputChangeHandlerParams) =>
+  (event: React.ChangeEvent<HTMLInputElement>): void => {
+    handleMaskedChange(event);
+
+    const normalizedValue = normalizeMaskedTimeValue(
+      event.target.value,
+      timePrecision,
+    );
+    const expectedLength = timePrecision === 'second' ? 8 : 5;
+
+    if (!normalizedValue) {
+      setTimeInputValue('');
+      applyValue('');
+      return;
+    }
+
+    if (normalizedValue.length !== expectedLength) return;
+
+    if (
+      !mergeDateAndTime(new Date(2000, 0, 1), normalizedValue, timePrecision)
+    ) {
+      setTimeInputValue('');
+      applyValue('');
+      return;
+    }
+
+    applyValue(normalizedValue);
+  };
+
+export const syncTimeInputState = ({
+  isControlled,
+  value,
+  setInternalValue,
+  setTimeInputValue,
+}: SyncTimeInputStateParams): void => {
+  if (!isControlled) return;
+
+  const nextValue = value ?? '';
+  setInternalValue(nextValue);
+  setTimeInputValue(nextValue);
+};
+
+export const createDatePickerInputMouseDownHandler =
+  ({
+    allowInputTyping,
+    isOpen,
+    handleOpenChange,
+  }: CreateDatePickerInputMouseDownHandlerParams) =>
+  (event: React.MouseEvent<HTMLInputElement>): void => {
+    if (allowInputTyping) return;
+    event.preventDefault();
+    handleOpenChange(!isOpen);
+  };
+
+export const createDatePickerToggleIconMouseDownHandler =
+  ({
+    isOpen,
+    handleOpenChange,
+  }: CreateDatePickerToggleIconMouseDownHandlerParams) =>
+  (event: React.MouseEvent<HTMLButtonElement>): void => {
+    event.preventDefault();
+    handleOpenChange(!isOpen);
+  };
+
+export const createMonthNavigationHandler =
+  ({ viewDate, months, setViewDate }: CreateMonthNavigationHandlerParams) =>
+  (): void => {
+    setViewDate(addMonths(viewDate, months));
+  };
+
+export const createDatePickerSelectDayHandler =
+  ({
+    pickerType,
+    timePrecision,
+    applyValue,
+    setDisplayValue,
+    setDraftDate,
+    setViewDate,
+    handleOpenChange,
+  }: CreateDatePickerSelectDayHandlerParams) =>
+  (day: {
+    date: Date;
+    isoValue: string;
+  }): void => {
+    setDraftDate(day.date);
+    setViewDate(day.date);
+
+    if (pickerType === 'date') {
+      applyValue(day.isoValue);
+      setDisplayValue(
+        getInitialDatePickerDisplayValue(
+          pickerType,
+          day.isoValue,
+          timePrecision,
+        ),
+      );
+      handleOpenChange(false);
+    }
+  };
+
+export const createDatePickerClearHandler =
+  ({
+    setDraftDate,
+    setTimeInputValue,
+    setDisplayValue,
+    applyValue,
+    handleOpenChange,
+  }: CreateDatePickerClearHandlerParams) =>
+  (): void => {
+    setDraftDate(null);
+    setTimeInputValue('');
+    if (setDisplayValue) setDisplayValue('');
+    applyValue('');
+    if (handleOpenChange) handleOpenChange(false);
+  };
+
+export const createDatePickerTodayHandler =
+  ({
+    pickerType,
+    timePrecision,
+    applyValue,
+    setDisplayValue,
+    setDraftDate,
+    setViewDate,
+    setTimeInputValue,
+    handleOpenChange,
+    now = new Date(),
+  }: CreateDatePickerTodayHandlerParams) =>
+  (): void => {
+    setDraftDate(now);
+    setViewDate(now);
+
+    if (pickerType === 'date') {
+      const nextValue = formatDatePickerValue({
+        pickerType,
+        date: now,
+        timePrecision,
+      });
+      applyValue(nextValue);
+      setDisplayValue(
+        getInitialDatePickerDisplayValue(pickerType, nextValue, timePrecision),
+      );
+      handleOpenChange(false);
+      return;
+    }
+
+    setTimeInputValue(
+      now.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: timePrecision === 'second' ? '2-digit' : undefined,
+        hour12: false,
+      }),
+    );
+  };
+
+export const createDatePickerApplyHandler =
+  ({
+    pickerType,
+    draftDate,
+    timeInputValue,
+    timePrecision,
+    setTimeInputValue,
+    setDisplayValue,
+    applyValue,
+    handleOpenChange,
+  }: CreateDatePickerApplyHandlerParams) =>
+  (): void => {
+    if (!draftDate) return;
+    const mergedDate = mergeDateAndTime(draftDate, timeInputValue, timePrecision);
+    if (!mergedDate) {
+      setTimeInputValue('');
+      applyValue('');
+      return;
+    }
+
+    const nextValue = formatDatePickerValue({
+      pickerType,
+      date: mergedDate,
+      timePrecision,
+    });
+    applyValue(nextValue);
+    setDisplayValue(
+      getInitialDatePickerDisplayValue(pickerType, nextValue, timePrecision),
+    );
+    handleOpenChange(false);
+  };
+
+export const getDatePickerAllowApply = (
+  pickerType: Exclude<HansDatePickerType, 'time'>,
+  draftDate: Date | null,
+  timeInputValue: string,
+  timePrecision: HansDatePickerTimePrecision,
+): boolean =>
+  pickerType === 'date' ||
+  Boolean(draftDate && mergeDateAndTime(draftDate, timeInputValue, timePrecision));
 
 export const syncDatePickerState = ({
   pickerType,

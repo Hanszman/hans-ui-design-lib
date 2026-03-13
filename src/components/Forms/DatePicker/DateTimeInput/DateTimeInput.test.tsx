@@ -72,4 +72,48 @@ describe('HansDateTimeInput', () => {
     expect(input).toHaveValue('14/03/2026');
     expect(onChange).toHaveBeenCalledWith('2026-03-14');
   });
+
+  it('Should toggle popup from the icon and support controlled values', () => {
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <HansDateTimeInput
+        pickerType="datetime"
+        value="2026-03-13T08:30"
+        placeholder="Custom datetime"
+        onOpenChange={onOpenChange}
+      />,
+    );
+
+    expect(screen.getByPlaceholderText('Custom datetime')).toHaveValue(
+      '13/03/2026 08:30',
+    );
+
+    fireEvent.mouseDown(screen.getByLabelText('Toggle date picker'));
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+    expect(screen.getByLabelText('Time')).toBeInTheDocument();
+
+    rerender(
+      <HansDateTimeInput
+        pickerType="datetime"
+        value="2026-03-14T09:45"
+        placeholder="Custom datetime"
+        onOpenChange={onOpenChange}
+      />,
+    );
+
+    expect(screen.getByPlaceholderText('Custom datetime')).toHaveValue(
+      '14/03/2026 09:45',
+    );
+  });
+
+  it('Should fallback to an empty controlled value when null is received', () => {
+    render(
+      <HansDateTimeInput
+        pickerType="date"
+        value={null as unknown as string}
+      />,
+    );
+
+    expect(screen.getByPlaceholderText('DD/MM/YYYY')).toHaveValue('');
+  });
 });

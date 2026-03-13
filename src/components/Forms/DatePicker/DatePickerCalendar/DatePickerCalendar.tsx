@@ -67,25 +67,22 @@ export const HansDatePickerCalendar = React.memo(
 
         <div className="hans-date-picker-calendar-grid">
           {days.map((day) => (
-            <HansButton
+            <button
               key={day.isoValue}
-              buttonColor={calendarColor}
-              buttonVariant={
-                day.isSelected ? calendarVariant : day.isCurrentMonth ? 'transparent' : 'outline'
-              }
-              buttonSize="small"
-              buttonShape="rounded"
-              customClasses={`
+              type="button"
+              className={`
                 hans-date-picker-day
+                hans-date-picker-day-color-${calendarColor}
+                hans-date-picker-day-variant-${calendarVariant}
                 ${day.isCurrentMonth ? '' : 'hans-date-picker-day-outside'}
                 ${day.isSelected ? 'hans-date-picker-day-selected' : ''}
                 ${day.isToday ? 'hans-date-picker-day-today' : ''}
-              `}
+              `.trim()}
               aria-pressed={day.isSelected}
               onClick={() => onSelectDay(day)}
             >
               {day.date.getDate()}
-            </HansButton>
+            </button>
           ))}
         </div>
 

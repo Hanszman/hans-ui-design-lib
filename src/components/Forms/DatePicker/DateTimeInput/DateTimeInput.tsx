@@ -5,15 +5,21 @@ import { HansIcon } from '../../../Icon/Icon';
 import type { HansDateTimeInputProps } from './DateTimeInput.types';
 import { HansDatePickerCalendar } from '../DatePickerCalendar/DatePickerCalendar';
 import {
-  addMonths,
   buildCalendarDays,
+  createDatePickerApplyHandler,
   createDatePickerBlurHandler,
   createDatePickerChangeHandler,
+  createDatePickerClearHandler,
   createDatePickerDisplayInputHandler,
+  createDatePickerInputMouseDownHandler,
+  createMonthNavigationHandler,
   createDatePickerOpenHandler,
+  createDatePickerSelectDayHandler,
   createDatePickerTimeInputHandler,
+  createDatePickerToggleIconMouseDownHandler,
+  createDatePickerTodayHandler,
   createSyncDatePickerPopupOffsets,
-  formatDatePickerValue,
+  getDatePickerAllowApply,
   getDatePickerFieldStyle,
   getDatePickerMonthLabel,
   getDatePickerPlaceholder,
@@ -21,7 +27,7 @@ import {
   getInitialDatePickerDisplayValue,
   getInitialDatePickerViewDate,
   getWeekdayLabels,
-  mergeDateAndTime,
+  resolveDateTimePickerType,
   syncDatePickerState,
 } from '../helpers/DatePicker.helper';
 
@@ -53,7 +59,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     onOpenChange,
     ...rest
   } = props;
-  const resolvedPickerType = pickerType === 'datetime' ? 'datetime' : 'date';
+  const resolvedPickerType = resolveDateTimePickerType(pickerType);
 
   const isControlled = typeof value !== 'undefined';
   const initialValue = isControlled ? ((value as string) ?? '') : defaultValue;
@@ -162,100 +168,102 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     [popupOffsets],
   );
 
-  const handleInputMouseDown = (
-    event: React.MouseEvent<HTMLInputElement>,
-  ): void => {
-    if (allowInputTyping) return;
-    event.preventDefault();
-    handleOpenChange(!isOpen);
-  };
-
-  const handleSelectDay = (day: (typeof calendarDays)[number]): void => {
-    setDraftDate(day.date);
-    setViewDate(day.date);
-
-    if (resolvedPickerType === 'date') {
-      const nextValue = day.isoValue;
-      applyValue(nextValue);
-      setDisplayValue(
-        getInitialDatePickerDisplayValue(
-          resolvedPickerType,
-          nextValue,
-          timePrecision,
-        ),
-      );
-      handleOpenChange(false);
-    }
-  };
-
-  const handleClear = (): void => {
-    setDraftDate(null);
-    setTimeInputValue('');
-    setDisplayValue('');
-    applyValue('');
-    handleOpenChange(false);
-  };
-
-  const handleToday = (): void => {
-    const today = new Date();
-    setDraftDate(today);
-    setViewDate(today);
-
-    if (resolvedPickerType === 'date') {
-      const nextValue = formatDatePickerValue({
-        pickerType: resolvedPickerType,
-        date: today,
-        timePrecision,
-      });
-      applyValue(nextValue);
-      setDisplayValue(
-        getInitialDatePickerDisplayValue(
-          resolvedPickerType,
-          nextValue,
-          timePrecision,
-        ),
-      );
-      handleOpenChange(false);
-      return;
-    }
-
-    setTimeInputValue(
-      today.toLocaleTimeString('en-GB', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: timePrecision === 'second' ? '2-digit' : undefined,
-        hour12: false,
+  const handleInputMouseDown = React.useMemo(
+    () =>
+      createDatePickerInputMouseDownHandler({
+        allowInputTyping,
+        isOpen,
+        handleOpenChange,
       }),
-    );
-  };
-
-  const handleApply = (): void => {
-    if (!draftDate) return;
-    const mergedDate = mergeDateAndTime(draftDate, timeInputValue, timePrecision);
-    if (!mergedDate) {
-      setTimeInputValue('');
-      applyValue('');
-      return;
-    }
-
-    const nextValue = formatDatePickerValue({
-      pickerType: resolvedPickerType,
-      date: mergedDate,
-      timePrecision,
-    });
-    applyValue(nextValue);
-    setDisplayValue(
-      getInitialDatePickerDisplayValue(
+    [allowInputTyping, handleOpenChange, isOpen],
+  );
+  const handleSelectDay = React.useMemo(
+    () =>
+      createDatePickerSelectDayHandler({
+        pickerType: resolvedPickerType,
+        timePrecision,
+        applyValue,
+        setDisplayValue,
+        setDraftDate,
+        setViewDate,
+        handleOpenChange,
+      }),
+    [applyValue, handleOpenChange, resolvedPickerType, timePrecision],
+  );
+  const handleClear = React.useMemo(
+    () =>
+      createDatePickerClearHandler({
+        setDraftDate,
+        setTimeInputValue,
+        setDisplayValue,
+        applyValue,
+        handleOpenChange,
+      }),
+    [applyValue, handleOpenChange],
+  );
+  const handleToday = React.useMemo(
+    () =>
+      createDatePickerTodayHandler({
+        pickerType: resolvedPickerType,
+        timePrecision,
+        applyValue,
+        setDisplayValue,
+        setDraftDate,
+        setViewDate,
+        setTimeInputValue,
+        handleOpenChange,
+      }),
+    [applyValue, handleOpenChange, resolvedPickerType, timePrecision],
+  );
+  const handleApply = React.useMemo(
+    () =>
+      createDatePickerApplyHandler({
+        pickerType: 'datetime',
+        draftDate,
+        timeInputValue,
+        timePrecision,
+        setTimeInputValue,
+        setDisplayValue,
+        applyValue,
+        handleOpenChange,
+      }),
+    [applyValue, draftDate, handleOpenChange, timeInputValue, timePrecision],
+  );
+  const allowApply = React.useMemo(
+    () =>
+      getDatePickerAllowApply(
         resolvedPickerType,
-        nextValue,
+        draftDate,
+        timeInputValue,
         timePrecision,
       ),
-    );
-    handleOpenChange(false);
-  };
-
-  const allowApply = resolvedPickerType === 'date' || Boolean(
-    draftDate && mergeDateAndTime(draftDate, timeInputValue, timePrecision),
+    [draftDate, resolvedPickerType, timeInputValue, timePrecision],
+  );
+  const handleToggleIconMouseDown = React.useMemo(
+    () =>
+      createDatePickerToggleIconMouseDownHandler({
+        isOpen,
+        handleOpenChange,
+      }),
+    [handleOpenChange, isOpen],
+  );
+  const handlePreviousMonth = React.useMemo(
+    () =>
+      createMonthNavigationHandler({
+        viewDate,
+        months: -1,
+        setViewDate,
+      }),
+    [viewDate],
+  );
+  const handleNextMonth = React.useMemo(
+    () =>
+      createMonthNavigationHandler({
+        viewDate,
+        months: 1,
+        setViewDate,
+      }),
+    [viewDate],
   );
 
   return (
@@ -294,10 +302,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
                 type="button"
                 className="hans-date-picker-trigger-icon"
                 aria-label="Toggle date picker"
-                onMouseDown={(event) => {
-                  event.preventDefault();
-                  handleOpenChange(!isOpen);
-                }}
+                onMouseDown={handleToggleIconMouseDown}
               >
                 <HansIcon name="MdDateRange" iconSize="small" />
               </button>
@@ -321,8 +326,8 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
             todayLabel={todayLabel}
             applyLabel={applyLabel}
             allowApply={allowApply}
-            onPreviousMonth={() => setViewDate(addMonths(viewDate, -1))}
-            onNextMonth={() => setViewDate(addMonths(viewDate, 1))}
+            onPreviousMonth={handlePreviousMonth}
+            onNextMonth={handleNextMonth}
             onSelectDay={handleSelectDay}
             onTimeInputChange={handleTimeInputChange}
             onClear={handleClear}

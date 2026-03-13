@@ -53,4 +53,63 @@ describe('HansDatePickerCalendar', () => {
     expect(onSelectDay).toHaveBeenCalledWith(days[5]);
     expect(screen.getByText('Apply')).toBeInTheDocument();
   });
+
+  it('Should render second precision placeholder for datetime time input', () => {
+    render(
+      <HansDatePickerCalendar
+        days={days}
+        weekdayLabels={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+        monthLabel="March 2026"
+        calendarColor="primary"
+        calendarVariant="default"
+        inputColor="primary"
+        timePrecision="second"
+        pickerType="datetime"
+        timeInputValue="10:15:20"
+        clearLabel="Clear"
+        todayLabel="Today"
+        applyLabel="Apply"
+        allowApply
+        onPreviousMonth={vi.fn()}
+        onNextMonth={vi.fn()}
+        onSelectDay={vi.fn()}
+        onTimeInputChange={vi.fn()}
+        onClear={vi.fn()}
+        onToday={vi.fn()}
+        onApply={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByPlaceholderText('HH:MM:SS')).toBeInTheDocument();
+  });
+
+  it('Should hide time controls when picker type is date', () => {
+    render(
+      <HansDatePickerCalendar
+        days={days}
+        weekdayLabels={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+        monthLabel="March 2026"
+        calendarColor="secondary"
+        calendarVariant="outline"
+        inputColor="primary"
+        timePrecision="second"
+        pickerType="date"
+        timeInputValue=""
+        clearLabel="Clear"
+        todayLabel="Today"
+        applyLabel="Apply"
+        allowApply={false}
+        onPreviousMonth={vi.fn()}
+        onNextMonth={vi.fn()}
+        onSelectDay={vi.fn()}
+        onTimeInputChange={vi.fn()}
+        onClear={vi.fn()}
+        onToday={vi.fn()}
+        onApply={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryByLabelText('Time')).not.toBeInTheDocument();
+    expect(screen.queryByText('Apply')).not.toBeInTheDocument();
+  });
 });

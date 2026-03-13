@@ -111,7 +111,7 @@ export const Primary: Story = {
 
 export const DateOnly: Story = {
   render: (args) => (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="flex flex-col gap-4">
       <ControlledDateStory {...args} label="Start date" />
       <ControlledDateStory {...args} label="Review date" />
       <ControlledDateStory {...args} label="Delivery date" />
@@ -121,7 +121,7 @@ export const DateOnly: Story = {
 
 export const DateTime: Story = {
   render: (args) => (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="flex flex-col gap-4">
       <ControlledDateTimeStory {...args} label="Start datetime" />
       <ControlledDateTimeStory {...args} label="Checkpoint" />
       <ControlledDateTimeStory {...args} label="Publish at" />
@@ -131,7 +131,7 @@ export const DateTime: Story = {
 
 export const TimeOnly: Story = {
   render: (args) => (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="flex flex-col gap-4">
       <ControlledTimeStory {...args} label="Open at" />
       <ControlledTimeStory {...args} label="Close at" />
       <ControlledTimeStory {...args} label="Reminder" />

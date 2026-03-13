@@ -16,6 +16,13 @@
 .hans-date-picker-popup {
   width: min(320px, calc(100vw - 24px));
   min-width: min(320px, calc(100vw - 24px));
+  max-width: min(320px, calc(100vw - 24px));
+}
+
+.hans-popup-panel.hans-date-picker-popup {
+  min-width: min(320px, calc(100vw - 24px));
+  width: min(320px, calc(100vw - 24px));
+  max-width: min(320px, calc(100vw - 24px));
 }
 
 .hans-date-picker-popup-content {

@@ -31,4 +31,29 @@ describe('HansTimeInput', () => {
     expect(input).toHaveValue('');
     expect(onChange).toHaveBeenCalledWith('');
   });
+
+  it('Should support controlled values and custom placeholder', () => {
+    const onChange = vi.fn();
+    const { rerender } = render(
+      <HansTimeInput
+        pickerType="time"
+        value="08:15"
+        placeholder="Custom time"
+        onChange={onChange}
+      />,
+    );
+
+    expect(screen.getByPlaceholderText('Custom time')).toHaveValue('08:15');
+
+    rerender(
+      <HansTimeInput
+        pickerType="time"
+        value="10:20"
+        placeholder="Custom time"
+        onChange={onChange}
+      />,
+    );
+
+    expect(screen.getByPlaceholderText('Custom time')).toHaveValue('10:20');
+  });
 });

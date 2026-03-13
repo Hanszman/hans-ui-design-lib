@@ -3,11 +3,11 @@ import { HansInput } from '../../Input/Input';
 import { HansIcon } from '../../../Icon/Icon';
 import type { HansTimeInputProps } from './TimeInput.types';
 import {
+  createTimeInputChangeHandler,
   createDatePickerChangeHandler,
   createDatePickerTimeInputHandler,
-  normalizeMaskedTimeValue,
-  mergeDateAndTime,
   getDatePickerPlaceholder,
+  syncTimeInputState,
 } from '../helpers/DatePicker.helper';
 
 export const HansTimeInput = React.memo((props: HansTimeInputProps) => {
@@ -39,9 +39,12 @@ export const HansTimeInput = React.memo((props: HansTimeInputProps) => {
   );
 
   React.useEffect(() => {
-    if (!isControlled) return;
-    setInternalValue(value as string);
-    setTimeInputValue(value as string);
+    syncTimeInputState({
+      isControlled,
+      value: value as string | undefined,
+      setInternalValue,
+      setTimeInputValue,
+    });
   }, [isControlled, value]);
 
   const applyValue = React.useMemo(
@@ -62,34 +65,16 @@ export const HansTimeInput = React.memo((props: HansTimeInputProps) => {
       }),
     [timePrecision],
   );
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    handleMaskedChange(event);
-
-    const normalizedValue = normalizeMaskedTimeValue(
-      event.target.value,
-      timePrecision,
-    );
-    const expectedLength = timePrecision === 'second' ? 8 : 5;
-
-    if (!normalizedValue) {
-      setTimeInputValue('');
-      applyValue('');
-      return;
-    }
-
-    if (normalizedValue.length !== expectedLength) return;
-
-    if (
-      !mergeDateAndTime(new Date(2000, 0, 1), normalizedValue, timePrecision)
-    ) {
-      setTimeInputValue('');
-      applyValue('');
-      return;
-    }
-
-    applyValue(normalizedValue);
-  };
+  const handleChange = React.useMemo(
+    () =>
+      createTimeInputChangeHandler({
+        timePrecision,
+        handleMaskedChange,
+        setTimeInputValue,
+        applyValue,
+      }),
+    [applyValue, handleMaskedChange, timePrecision],
+  );
 
   const selectedValue = isControlled ? (value as string) : internalValue;
 

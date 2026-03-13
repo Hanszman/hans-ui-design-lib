@@ -4,19 +4,32 @@ import {
   addMonths,
   buildCalendarDays,
   cloneDate,
+  createDatePickerApplyHandler,
+  createDatePickerBlurHandler,
   createDatePickerChangeHandler,
+  createDatePickerClearHandler,
+  createDatePickerDisplayInputHandler,
+  createDatePickerInputMouseDownHandler,
   createDatePickerOpenHandler,
+  createDatePickerSelectDayHandler,
   createDatePickerTimeInputHandler,
+  createDatePickerTodayHandler,
+  createDatePickerToggleIconMouseDownHandler,
+  createMonthNavigationHandler,
+  createTimeInputChangeHandler,
   createSyncDatePickerPopupOffsets,
   formatDatePickerDisplay,
   formatDatePickerTimeValue,
   formatDatePickerValue,
+  getDatePickerAllowApply,
   getDatePickerFieldStyle,
+  getDatePickerDisplayValueFromStoredValue,
   getDatePickerMonthLabel,
   getDatePickerPlaceholder,
   getDatePickerPopupOffsets,
   getDatePickerSelectionFromValue,
   getElementOuterHeight,
+  getInitialDatePickerDisplayValue,
   getInitialDatePickerViewDate,
   getStartOfCalendarGrid,
   getWeekdayLabels,
@@ -26,8 +39,12 @@ import {
   normalizeMaskedTimeValue,
   padDatePickerNumber,
   parseDatePickerValue,
+  parseTypedDatePickerDisplayValue,
   parsePx,
   parseTimeInputValue,
+  resolveDateTimePickerType,
+  syncDatePickerState,
+  syncTimeInputState,
 } from './DatePicker.helper';
 
 describe('DatePicker.helper', () => {
@@ -60,6 +77,8 @@ describe('DatePicker.helper', () => {
       'Sun',
     ]);
     expect(getDatePickerMonthLabel(new Date(2026, 2, 1))).toBe('March 2026');
+    expect(resolveDateTimePickerType('datetime')).toBe('datetime');
+    expect(resolveDateTimePickerType('time')).toBe('date');
   });
 
   it('Should clone, shift months and resolve calendar grid start', () => {
@@ -210,6 +229,35 @@ describe('DatePicker.helper', () => {
         noDateText: 'No date',
       }),
     ).toBe('invalid');
+    expect(
+      getDatePickerDisplayValueFromStoredValue(
+        'datetime',
+        '2026-03-13T09:05',
+        'minute',
+      ),
+    ).toBe('13/03/2026 09:05');
+    expect(
+      getInitialDatePickerDisplayValue('date', '2026-03-13', 'minute'),
+    ).toBe('13/03/2026');
+    expect(parseTypedDatePickerDisplayValue('date', '31/02/2026', 'minute')).toBeNull();
+    expect(parseTypedDatePickerDisplayValue('date', 'oops', 'minute')).toBeNull();
+    expect(
+      parseTypedDatePickerDisplayValue('datetime', 'oops', 'minute'),
+    ).toBeNull();
+    expect(
+      parseTypedDatePickerDisplayValue(
+        'datetime',
+        '13/03/2026 25:20',
+        'minute',
+      ),
+    ).toBeNull();
+    expect(
+      parseTypedDatePickerDisplayValue(
+        'datetime',
+        '13/03/2026 09:05:40',
+        'minute',
+      ),
+    ).toBeNull();
   });
 
   it('Should resolve selection, initial view date and merge time', () => {
@@ -323,5 +371,300 @@ describe('DatePicker.helper', () => {
       setPopupOffsets,
     })();
     expect(setPopupOffsets).toHaveBeenCalledWith({ up: 0, down: 0 });
+  });
+
+  it('Should create advanced handlers for typing, selection and navigation', () => {
+    const setDisplayValue = vi.fn();
+    createDatePickerDisplayInputHandler({ setDisplayValue })({
+      target: { value: '13/03/2026' },
+    } as React.ChangeEvent<HTMLInputElement>);
+    expect(setDisplayValue).toHaveBeenCalledWith('13/03/2026');
+
+    const handleOpenChange = vi.fn();
+    const mouseDownEvent = { preventDefault: vi.fn() } as unknown as React.MouseEvent<HTMLInputElement>;
+    createDatePickerInputMouseDownHandler({
+      allowInputTyping: false,
+      isOpen: false,
+      handleOpenChange,
+    })(mouseDownEvent);
+    expect(mouseDownEvent.preventDefault).toHaveBeenCalled();
+    expect(handleOpenChange).toHaveBeenCalledWith(true);
+
+    createDatePickerInputMouseDownHandler({
+      allowInputTyping: true,
+      isOpen: false,
+      handleOpenChange,
+    })(mouseDownEvent);
+    expect(handleOpenChange).toHaveBeenCalledTimes(1);
+
+    const toggleEvent = { preventDefault: vi.fn() } as unknown as React.MouseEvent<HTMLButtonElement>;
+    createDatePickerToggleIconMouseDownHandler({
+      isOpen: true,
+      handleOpenChange,
+    })(toggleEvent);
+    expect(toggleEvent.preventDefault).toHaveBeenCalled();
+    expect(handleOpenChange).toHaveBeenCalledWith(false);
+
+    const setViewDate = vi.fn();
+    createMonthNavigationHandler({
+      viewDate: new Date(2026, 2, 13),
+      months: 1,
+      setViewDate,
+    })();
+    expect(setViewDate).toHaveBeenCalled();
+
+    const setDraftDate = vi.fn();
+    const applyValue = vi.fn();
+    const day = { date: new Date(2026, 2, 13), isoValue: '2026-03-13' };
+    createDatePickerSelectDayHandler({
+      pickerType: 'date',
+      timePrecision: 'minute',
+      applyValue,
+      setDisplayValue,
+      setDraftDate,
+      setViewDate,
+      handleOpenChange,
+    })(day);
+    expect(setDraftDate).toHaveBeenCalledWith(day.date);
+    expect(applyValue).toHaveBeenCalledWith('2026-03-13');
+
+    createDatePickerSelectDayHandler({
+      pickerType: 'datetime',
+      timePrecision: 'minute',
+      applyValue,
+      setDisplayValue,
+      setDraftDate,
+      setViewDate,
+      handleOpenChange,
+    })(day);
+    expect(applyValue).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should create clear, today and apply handlers', () => {
+    const setDraftDate = vi.fn();
+    const setTimeInputValue = vi.fn();
+    const setDisplayValue = vi.fn();
+    const applyValue = vi.fn();
+    const handleOpenChange = vi.fn();
+
+    createDatePickerClearHandler({
+      setDraftDate,
+      setTimeInputValue,
+      setDisplayValue,
+      applyValue,
+      handleOpenChange,
+    })();
+    expect(setDraftDate).toHaveBeenCalledWith(null);
+    expect(setTimeInputValue).toHaveBeenCalledWith('');
+    expect(setDisplayValue).toHaveBeenCalledWith('');
+    expect(applyValue).toHaveBeenCalledWith('');
+    expect(handleOpenChange).toHaveBeenCalledWith(false);
+
+    createDatePickerClearHandler({
+      setDraftDate,
+      setTimeInputValue,
+      applyValue,
+    })();
+
+    const now = new Date(2026, 2, 13, 11, 22, 33);
+    createDatePickerTodayHandler({
+      pickerType: 'date',
+      timePrecision: 'minute',
+      applyValue,
+      setDisplayValue,
+      setDraftDate,
+      setViewDate: vi.fn(),
+      setTimeInputValue,
+      handleOpenChange,
+      now,
+    })();
+    expect(applyValue).toHaveBeenCalledWith('2026-03-13');
+
+    createDatePickerTodayHandler({
+      pickerType: 'datetime',
+      timePrecision: 'second',
+      applyValue,
+      setDisplayValue,
+      setDraftDate,
+      setViewDate: vi.fn(),
+      setTimeInputValue,
+      handleOpenChange,
+      now,
+    })();
+    expect(setTimeInputValue).toHaveBeenCalledWith('11:22:33');
+    createDatePickerTodayHandler({
+      pickerType: 'datetime',
+      timePrecision: 'minute',
+      applyValue,
+      setDisplayValue,
+      setDraftDate,
+      setViewDate: vi.fn(),
+      setTimeInputValue,
+      handleOpenChange,
+      now,
+    })();
+    expect(setTimeInputValue).toHaveBeenCalledWith('11:22');
+
+    createDatePickerApplyHandler({
+      pickerType: 'datetime',
+      draftDate: null,
+      timeInputValue: '10:20',
+      timePrecision: 'minute',
+      setTimeInputValue,
+      setDisplayValue,
+      applyValue,
+      handleOpenChange,
+    })();
+
+    createDatePickerApplyHandler({
+      pickerType: 'datetime',
+      draftDate: new Date(2026, 2, 13),
+      timeInputValue: '99:99',
+      timePrecision: 'minute',
+      setTimeInputValue,
+      setDisplayValue,
+      applyValue,
+      handleOpenChange,
+    })();
+    expect(setTimeInputValue).toHaveBeenCalledWith('');
+
+    createDatePickerApplyHandler({
+      pickerType: 'datetime',
+      draftDate: new Date(2026, 2, 13),
+      timeInputValue: '10:20',
+      timePrecision: 'minute',
+      setTimeInputValue,
+      setDisplayValue,
+      applyValue,
+      handleOpenChange,
+    })();
+    expect(applyValue).toHaveBeenCalledWith('2026-03-13T10:20');
+    expect(handleOpenChange).toHaveBeenCalledWith(false);
+    expect(getDatePickerAllowApply('date', null, '', 'minute')).toBe(true);
+    expect(getDatePickerAllowApply('datetime', null, '', 'minute')).toBe(false);
+    expect(
+      getDatePickerAllowApply(
+        'datetime',
+        new Date(2026, 2, 13),
+        '10:20',
+        'minute',
+      ),
+    ).toBe(true);
+  });
+
+  it('Should create blur, sync and time change handlers', () => {
+    const setInternalValue = vi.fn();
+    const setTimeInputValue = vi.fn();
+    syncTimeInputState({
+      isControlled: false,
+      value: '08:00',
+      setInternalValue,
+      setTimeInputValue,
+    });
+    expect(setInternalValue).not.toHaveBeenCalled();
+
+    syncTimeInputState({
+      isControlled: true,
+      value: '08:00',
+      setInternalValue,
+      setTimeInputValue,
+    });
+    expect(setInternalValue).toHaveBeenCalledWith('08:00');
+    expect(setTimeInputValue).toHaveBeenCalledWith('08:00');
+    syncTimeInputState({
+      isControlled: true,
+      value: undefined,
+      setInternalValue,
+      setTimeInputValue,
+    });
+    expect(setInternalValue).toHaveBeenCalledWith('');
+
+    const handleMaskedChange = vi.fn();
+    const applyValue = vi.fn();
+    const setMaskedValue = vi.fn();
+    const timeChangeHandler = createTimeInputChangeHandler({
+      timePrecision: 'minute',
+      handleMaskedChange,
+      setTimeInputValue: setMaskedValue,
+      applyValue,
+    });
+    timeChangeHandler({
+      target: { value: '' },
+    } as React.ChangeEvent<HTMLInputElement>);
+    timeChangeHandler({
+      target: { value: '12' },
+    } as React.ChangeEvent<HTMLInputElement>);
+    timeChangeHandler({
+      target: { value: '2560' },
+    } as React.ChangeEvent<HTMLInputElement>);
+    timeChangeHandler({
+      target: { value: '1234' },
+    } as React.ChangeEvent<HTMLInputElement>);
+    expect(handleMaskedChange).toHaveBeenCalledTimes(4);
+    expect(applyValue).toHaveBeenCalledWith('');
+    expect(applyValue).toHaveBeenCalledWith('12:34');
+
+    const setDraftDate = vi.fn();
+    const setViewDate = vi.fn();
+    const setDisplayValue = vi.fn();
+    syncDatePickerState({
+      pickerType: 'time',
+      value: '09:45',
+      timePrecision: 'minute',
+      setDraftDate,
+      setViewDate,
+      setTimeInputValue,
+    });
+    expect(setDisplayValue).not.toHaveBeenCalled();
+
+    createDatePickerBlurHandler({
+      pickerType: 'date',
+      allowInputTyping: false,
+      timePrecision: 'minute',
+      displayValue: '13/03/2026',
+      setDisplayValue,
+      setDraftDate,
+      setViewDate,
+      setTimeInputValue,
+      applyValue,
+    })();
+
+    createDatePickerBlurHandler({
+      pickerType: 'date',
+      allowInputTyping: true,
+      timePrecision: 'minute',
+      displayValue: '   ',
+      setDisplayValue,
+      setDraftDate,
+      setViewDate,
+      setTimeInputValue,
+      applyValue,
+    })();
+    expect(setDisplayValue).toHaveBeenCalledWith('');
+
+    createDatePickerBlurHandler({
+      pickerType: 'datetime',
+      allowInputTyping: true,
+      timePrecision: 'minute',
+      displayValue: '31/02/2026 10:20',
+      setDisplayValue,
+      setDraftDate,
+      setViewDate,
+      setTimeInputValue,
+      applyValue,
+    })();
+
+    createDatePickerBlurHandler({
+      pickerType: 'datetime',
+      allowInputTyping: true,
+      timePrecision: 'minute',
+      displayValue: '13/03/2026 10:20',
+      setDisplayValue,
+      setDraftDate,
+      setViewDate,
+      setTimeInputValue,
+      applyValue,
+    })();
+    expect(applyValue).toHaveBeenCalledWith('2026-03-13T10:20');
   });
 });
