@@ -33,3 +33,10 @@ Ficou ótimo, obrigado! Mas tenho vários pontos de melhoria:
 -alem disso, deixe o tamanho da caixa menor (igual no print 3), mesmo se o input for grande igual no print 1/2... pois assim ela fica muito enorme, ela não precisa crescer junto com o input igual precisa no selectoption... nesse caso específico do datepicker podemos manter o popup sempre nesse tamanho do print 3
 -como vc pode ver no print 4, o time permite horário inexistentes, como por exemplo 25h... faça essa validação por favor, limpando o texto caso o usuário faça isso
 -permita também que o usuário digite a data (pode ser uma prop type boolean que defina se vai habilitar isso ou não) e, se ele digitar uma data inválida, também limpe o texto
+
+Ficou melhor, obrigado!
+-Sim, feche a coverage dos testes em 100% de todos os arquivos por favor, como vc pode ver no print 1, vários não ficaram como 100%
+-Sobre o TimeInput e o DateTimeInput, senti que neles ainda tem muitas funções/consts, coisas dentro de useEffects e handlers que da pra gente passar tudo pro helper... crie tudo isso no helper e apenas chame isso nesses componentes nos lugares onde for necessário por favor
+-os hansbuttons nos botões de dias ficaram esquisitos, como vc pode ver no print 2, pode voltar os de dias especificamente para oq estava antes no estilo que estava antes como button... o resto (os botões de configuração do calendario como <,>,today, etc, pode manter o hansbutton)
+-como vc pode ver no print 2 o tamanho (largura) do popup de datepicker ainda está grande, do tamanho do input... mantenha ele menor como no print 3
+-como vc pode ver no print 4, os trio de exemplos ficaram como flex-row, tem q ser flex-col pra dar esse espaço e aparecer melhor o popup
