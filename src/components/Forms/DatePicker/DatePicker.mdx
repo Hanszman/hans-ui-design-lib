@@ -1,0 +1,60 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansDatePickerStories from './DatePicker.stories';
+
+<Meta of={HansDatePickerStories} />
+
+<Title />
+
+The **DatePicker** component supports `date`, `datetime` and `time` selection while reusing the Hans input, icons and popup patterns.
+
+## Usage
+
+```tsx
+import { HansDatePicker } from 'hans-ui-design-lib';
+
+export const Example = () => (
+  <HansDatePicker
+    label="Start date"
+    pickerType="datetime"
+    inputColor="primary"
+    calendarColor="secondary"
+    defaultValue="2026-03-13T14:30"
+  />
+);
+```
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Date
+
+Use `pickerType="date"` for a fast calendar-only selection flow.
+
+<Canvas of={HansDatePickerStories.DateOnly} />
+
+## DateTime
+
+Use `pickerType="datetime"` when a date and a masked time should be selected together.
+
+<Canvas of={HansDatePickerStories.DateTime} />
+
+## Time
+
+Use `pickerType="time"` for masked time selection only. Set `timePrecision="second"` to include seconds.
+
+<Canvas of={HansDatePickerStories.TimeOnly} />
+
+## States
+
+Theme colors, variants and disabled mode are shown below.
+
+<Canvas of={HansDatePickerStories.StatesAndColors} />

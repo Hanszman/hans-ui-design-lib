@@ -25,6 +25,11 @@ import {
   type HansToggleProps,
   HansTogglePropsList,
 } from './components/Forms/Toggle/Toggle.types';
+import { HansDatePicker } from './components/Forms/DatePicker/DatePicker';
+import {
+  type HansDatePickerProps,
+  HansDatePickerPropsList,
+} from './components/Forms/DatePicker/DatePicker.types';
 import { HansAvatar } from './components/Avatar/Avatar';
 import {
   type HansAvatarProps,
@@ -95,6 +100,11 @@ registerReactAsWebComponent<HansToggleProps>(
   'hans-toggle',
   HansToggle,
   HansTogglePropsList,
+);
+registerReactAsWebComponent<HansDatePickerProps>(
+  'hans-date-picker',
+  HansDatePicker,
+  HansDatePickerPropsList,
 );
 registerReactAsWebComponent<HansAvatarProps>(
   'hans-avatar',

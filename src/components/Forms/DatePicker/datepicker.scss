@@ -1,0 +1,43 @@
+.hans-date-picker {
+  @apply flex w-full flex-col overflow-visible;
+}
+
+.hans-date-picker-field {
+  @apply w-full overflow-visible;
+}
+
+.hans-date-picker-input {
+  @apply w-full;
+}
+
+.hans-date-picker-popup {
+  @apply w-full;
+}
+
+.hans-date-picker-popup-content {
+  @apply max-h-none overflow-visible p-0;
+}
+
+.hans-date-picker-field .hans-popup-panel[data-direction='up'] {
+  bottom: calc(100% - var(--hans-date-picker-up-offset, 0px));
+}
+
+.hans-date-picker-field .hans-popup-panel[data-direction='down'] {
+  top: calc(100% - var(--hans-date-picker-down-offset, 0px));
+}
+
+.hans-date-picker-panel {
+  @apply flex flex-col gap-3 rounded-xl border border-[var(--base-neutral-color)] bg-[var(--white)] p-3 shadow-lg;
+}
+
+.hans-date-picker-trigger-icon {
+  @apply m-0 flex cursor-pointer items-center justify-center border-none bg-transparent p-0;
+}
+
+.hans-date-picker-time-panel {
+  @apply border-t border-[var(--base-neutral-color)] pt-3;
+}
+
+.hans-date-picker-actions {
+  @apply flex items-center justify-between gap-2 border-t border-[var(--base-neutral-color)] pt-3;
+}
