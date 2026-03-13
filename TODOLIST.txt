@@ -1,5 +1,5 @@
 * Continuar próximos componentes:
--DatePicker (usar lib?) (moment, luxon, alguma outra?)
+-DatePicker (corrigir)
 -Modal (usar lib?)
 -Publi/propaganda (usar lib?)
 -Kanban (usar lib?) (cards com drag and drop)
@@ -23,3 +23,13 @@ Siga o padrão acima e vamos criar o componente: [COMPONENT]...
 na pasta que já criei com o nome dele.
 Ele deve: ...
 Enfim! faça o componente por favor, te dou acesso a todo o repo/workspace, pode editável conforme for necessário
+
+Ficou ótimo, obrigado! Mas tenho vários pontos de melhoria:
+-Sobre o datepicker.tsx, tem muitas funções/consts e coisas dentro de useEffect, useMemo, handlers, que não deveriam e não precisam estar ai no tsx, pode criar lá no helper e apenas chamar onde necessário no tsx por favor
+-ainda sobre o tsx, estamos retornando duas coisas: o hansinput quando é time e todo aquele hanspopup quando date ou datetime... será que não é melhor criarmos 2 componentes filhos separados e migrar essas lógicas pra eles? por exemplo: HansTimeInput e HansDateTimeInput... crie esses componentes filhos e migre tudo oq for referente a eles pra suas respectivas pastas (tsx, scss, test e types)...
+-ainda sobre o tsx, vi que como filho do HansPopup vc está passando o HansDatePickerCalendar e depois HansInput (caso datetime) e depois o hans-date-picker-actions com os HansButton... acho que tudo isso deveria estar dentro do HansDatePickerCalendar... tanto o hans-date-picker-time-panel como o hans-date-picker-actions... pois tudo faz parte do container custom children do popup... e querendo ou não, é tudo parte do escopo do calendário ali... ajuste por favor
+-Sobre o HansDatePickerCalendar, use o HansButton nos lugares que pudermos ao invés de button por favor... e pra eles que passaremos os colors/variants... alem de passarmos as cores/variantes também pros dias selecionados, etc
+-sobre os mdx/stories, em todos os exemplos, coloque grupos de 3 por favor, pois assim da pra ver melhor a caixa do popup abrindo no container do storybook... pois como vc pode ver no print 1/2, estamos tendo que scrollar pra ver a caixa.... ou, se vc preferir, faça para todos os popups aquela mesma lógica do portal que vc fez no toast, para sempre abrir popups acima (em termos de profundidade) do limite da caixa de exemplo do storybook... tente fazer essa ultima abordagem, se não der certo, só replique 3 exemplos pra cada caso mesmo
+-alem disso, deixe o tamanho da caixa menor (igual no print 3), mesmo se o input for grande igual no print 1/2... pois assim ela fica muito enorme, ela não precisa crescer junto com o input igual precisa no selectoption... nesse caso específico do datepicker podemos manter o popup sempre nesse tamanho do print 3
+-como vc pode ver no print 4, o time permite horário inexistentes, como por exemplo 25h... faça essa validação por favor, limpando o texto caso o usuário faça isso
+-permita também que o usuário digite a data (pode ser uma prop type boolean que defina se vai habilitar isso ou não) e, se ele digitar uma data inválida, também limpe o texto
