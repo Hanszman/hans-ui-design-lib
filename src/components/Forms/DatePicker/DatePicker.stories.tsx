@@ -55,6 +55,7 @@ const meta: Meta<typeof HansDatePicker> = {
     calendarColor: 'primary',
     calendarVariant: 'default',
     timePrecision: 'minute',
+    allowInputTyping: false,
     disabled: false,
   },
   argTypes: {
@@ -89,6 +90,7 @@ const meta: Meta<typeof HansDatePicker> = {
     },
     inputSize: { control: 'select', options: ['small', 'medium', 'large'] },
     timePrecision: { control: 'select', options: ['minute', 'second'] },
+    allowInputTyping: { control: 'boolean' },
   },
   parameters: {
     docs: {
@@ -108,15 +110,33 @@ export const Primary: Story = {
 };
 
 export const DateOnly: Story = {
-  render: (args) => <ControlledDateStory {...args} />,
+  render: (args) => (
+    <div className="grid gap-4 md:grid-cols-3">
+      <ControlledDateStory {...args} label="Start date" />
+      <ControlledDateStory {...args} label="Review date" />
+      <ControlledDateStory {...args} label="Delivery date" />
+    </div>
+  ),
 };
 
 export const DateTime: Story = {
-  render: (args) => <ControlledDateTimeStory {...args} />,
+  render: (args) => (
+    <div className="grid gap-4 md:grid-cols-3">
+      <ControlledDateTimeStory {...args} label="Start datetime" />
+      <ControlledDateTimeStory {...args} label="Checkpoint" />
+      <ControlledDateTimeStory {...args} label="Publish at" />
+    </div>
+  ),
 };
 
 export const TimeOnly: Story = {
-  render: (args) => <ControlledTimeStory {...args} />,
+  render: (args) => (
+    <div className="grid gap-4 md:grid-cols-3">
+      <ControlledTimeStory {...args} label="Open at" />
+      <ControlledTimeStory {...args} label="Close at" />
+      <ControlledTimeStory {...args} label="Reminder" />
+    </div>
+  ),
 };
 
 export const StatesAndColors: Story = {

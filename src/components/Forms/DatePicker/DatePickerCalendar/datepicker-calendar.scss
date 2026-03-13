@@ -11,7 +11,7 @@
 }
 
 .hans-date-picker-calendar-nav {
-  @apply flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[var(--base-neutral-color)] bg-transparent;
+  @apply h-8 w-8 p-0;
 }
 
 .hans-date-picker-calendar-grid {
@@ -23,102 +23,13 @@
 }
 
 .hans-date-picker-day {
-  @apply h-10 cursor-pointer rounded-xl border border-transparent text-sm transition-colors;
+  @apply h-10 min-w-0 px-0 py-0 text-sm;
 }
 
 .hans-date-picker-day-outside {
-  @apply text-[var(--gray-500)];
+  @apply opacity-50;
 }
 
 .hans-date-picker-day-today {
-  @apply border-[var(--text-color)];
-}
-
-.hans-date-picker-day-base.hans-date-picker-day-default.hans-date-picker-day-selected {
-  @apply bg-[var(--base-default-color)] text-[var(--white)];
-}
-
-.hans-date-picker-day-primary.hans-date-picker-day-default.hans-date-picker-day-selected {
-  @apply bg-[var(--primary-default-color)] text-[var(--white)];
-}
-
-.hans-date-picker-day-secondary.hans-date-picker-day-default.hans-date-picker-day-selected {
-  @apply bg-[var(--secondary-default-color)] text-[var(--white)];
-}
-
-.hans-date-picker-day-success.hans-date-picker-day-default.hans-date-picker-day-selected {
-  @apply bg-[var(--success-default-color)] text-[var(--white)];
-}
-
-.hans-date-picker-day-danger.hans-date-picker-day-default.hans-date-picker-day-selected {
-  @apply bg-[var(--danger-default-color)] text-[var(--white)];
-}
-
-.hans-date-picker-day-warning.hans-date-picker-day-default.hans-date-picker-day-selected {
-  @apply bg-[var(--warning-default-color)] text-[var(--white)];
-}
-
-.hans-date-picker-day-info.hans-date-picker-day-default.hans-date-picker-day-selected {
-  @apply bg-[var(--info-default-color)] text-[var(--white)];
-}
-
-.hans-date-picker-day-base.hans-date-picker-day-neutral.hans-date-picker-day-selected {
-  @apply bg-[var(--base-neutral-color)] text-[var(--base-strong-color)];
-}
-
-.hans-date-picker-day-primary.hans-date-picker-day-neutral.hans-date-picker-day-selected {
-  @apply bg-[var(--primary-neutral-color)] text-[var(--primary-strong-color)];
-}
-
-.hans-date-picker-day-secondary.hans-date-picker-day-neutral.hans-date-picker-day-selected {
-  @apply bg-[var(--secondary-neutral-color)] text-[var(--secondary-strong-color)];
-}
-
-.hans-date-picker-day-success.hans-date-picker-day-neutral.hans-date-picker-day-selected {
-  @apply bg-[var(--success-neutral-color)] text-[var(--success-strong-color)];
-}
-
-.hans-date-picker-day-danger.hans-date-picker-day-neutral.hans-date-picker-day-selected {
-  @apply bg-[var(--danger-neutral-color)] text-[var(--danger-strong-color)];
-}
-
-.hans-date-picker-day-warning.hans-date-picker-day-neutral.hans-date-picker-day-selected {
-  @apply bg-[var(--warning-neutral-color)] text-[var(--warning-strong-color)];
-}
-
-.hans-date-picker-day-info.hans-date-picker-day-neutral.hans-date-picker-day-selected {
-  @apply bg-[var(--info-neutral-color)] text-[var(--info-strong-color)];
-}
-
-.hans-date-picker-day-base.hans-date-picker-day-strong.hans-date-picker-day-selected {
-  @apply bg-[var(--base-strong-color)] text-[var(--base-neutral-color)];
-}
-
-.hans-date-picker-day-primary.hans-date-picker-day-strong.hans-date-picker-day-selected {
-  @apply bg-[var(--primary-strong-color)] text-[var(--primary-neutral-color)];
-}
-
-.hans-date-picker-day-secondary.hans-date-picker-day-strong.hans-date-picker-day-selected {
-  @apply bg-[var(--secondary-strong-color)] text-[var(--secondary-neutral-color)];
-}
-
-.hans-date-picker-day-success.hans-date-picker-day-strong.hans-date-picker-day-selected {
-  @apply bg-[var(--success-strong-color)] text-[var(--success-neutral-color)];
-}
-
-.hans-date-picker-day-danger.hans-date-picker-day-strong.hans-date-picker-day-selected {
-  @apply bg-[var(--danger-strong-color)] text-[var(--danger-neutral-color)];
-}
-
-.hans-date-picker-day-warning.hans-date-picker-day-strong.hans-date-picker-day-selected {
-  @apply bg-[var(--warning-strong-color)] text-[var(--warning-neutral-color)];
-}
-
-.hans-date-picker-day-info.hans-date-picker-day-strong.hans-date-picker-day-selected {
-  @apply bg-[var(--info-strong-color)] text-[var(--info-neutral-color)];
-}
-
-.hans-date-picker-day.hans-date-picker-day-outline.hans-date-picker-day-selected,
-.hans-date-picker-day.hans-date-picker-day-transparent.hans-date-picker-day-selected {
   @apply border-[var(--text-color)] bg-transparent text-[var(--text-color)];
 }

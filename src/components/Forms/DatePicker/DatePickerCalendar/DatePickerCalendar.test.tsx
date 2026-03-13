@@ -24,9 +24,21 @@ describe('HansDatePickerCalendar', () => {
         monthLabel="March 2026"
         calendarColor="primary"
         calendarVariant="default"
+        inputColor="primary"
+        timePrecision="minute"
+        pickerType="datetime"
+        timeInputValue="10:15"
+        clearLabel="Clear"
+        todayLabel="Today"
+        applyLabel="Apply"
+        allowApply
         onPreviousMonth={onPreviousMonth}
         onNextMonth={onNextMonth}
         onSelectDay={onSelectDay}
+        onTimeInputChange={vi.fn()}
+        onClear={vi.fn()}
+        onToday={vi.fn()}
+        onApply={vi.fn()}
       />,
     );
 
@@ -39,5 +51,6 @@ describe('HansDatePickerCalendar', () => {
     expect(onPreviousMonth).toHaveBeenCalled();
     expect(onNextMonth).toHaveBeenCalled();
     expect(onSelectDay).toHaveBeenCalledWith(days[5]);
+    expect(screen.getByText('Apply')).toBeInTheDocument();
   });
 });

@@ -1,6 +1,8 @@
 import type React from 'react';
 import type {
+  CreateDatePickerBlurHandlerParams,
   CreateDatePickerChangeHandlerParams,
+  CreateDatePickerDisplayInputHandlerParams,
   CreateDatePickerOpenHandlerParams,
   CreateDatePickerTimeInputHandlerParams,
   CreateSyncDatePickerPopupOffsetsParams,
@@ -9,6 +11,7 @@ import type {
   FormatDatePickerDisplayParams,
   FormatDatePickerValueParams,
   ParseDatePickerValueParams,
+  SyncDatePickerStateParams,
 } from './DatePicker.helper.types';
 import type {
   HansDatePickerTimePrecision,
@@ -19,6 +22,9 @@ export const DATE_INPUT_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
 export const DATETIME_INPUT_PATTERN =
   /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/;
 export const TIME_INPUT_PATTERN = /^(\d{2}):(\d{2})(?::(\d{2}))?$/;
+export const DISPLAY_DATE_INPUT_PATTERN = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+export const DISPLAY_DATETIME_INPUT_PATTERN =
+  /^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})(?::(\d{2}))?$/;
 export const WEEKDAY_LABELS_SUNDAY = [
   'Sun',
   'Mon',
@@ -69,6 +75,16 @@ export const getDatePickerMonthLabel = (value: Date): string =>
 
 export const cloneDate = (value: Date): Date => new Date(value.getTime());
 
+export const isMatchingDateParts = (
+  date: Date,
+  year: number,
+  month: number,
+  day: number,
+): boolean =>
+  date.getFullYear() === year &&
+  date.getMonth() === month - 1 &&
+  date.getDate() === day;
+
 export const addMonths = (value: Date, months: number): Date => {
   const nextDate = cloneDate(value);
   nextDate.setDate(1);
@@ -104,6 +120,7 @@ export const formatDatePickerTimeValue = (
   timePrecision: HansDatePickerTimePrecision,
 ): string => {
   const baseValue = `${padDatePickerNumber(parts.hours)}:${padDatePickerNumber(parts.minutes)}`;
+
   if (timePrecision === 'second') {
     return `${baseValue}:${padDatePickerNumber(parts.seconds)}`;
   }
@@ -122,10 +139,9 @@ export const parseTimeInputValue = (
   const minutes = Number(match[2]);
   const seconds = Number(match[3] ?? 0);
   const maxSegments = timePrecision === 'second' ? 3 : 2;
-  const hasTooManySegments = value.split(':').length > maxSegments;
 
   if (
-    hasTooManySegments ||
+    value.split(':').length > maxSegments ||
     hours > 23 ||
     minutes > 59 ||
     seconds > 59 ||
@@ -193,47 +209,74 @@ export const parseDatePickerValue = ({
     const match = value.match(DATE_INPUT_PATTERN);
     if (!match) return null;
 
-    const nextDate = new Date(
+    return new Date(
       Number(match[1]),
       Number(match[2]) - 1,
       Number(match[3]),
       0,
       0,
       0,
+      0,
     );
-
-    return nextDate;
   }
 
   if (pickerType === 'datetime') {
     const match = value.match(DATETIME_INPUT_PATTERN);
     if (!match) return null;
-
     if (timePrecision === 'minute' && match[6]) return null;
 
-    const nextDate = new Date(
+    return new Date(
       Number(match[1]),
       Number(match[2]) - 1,
       Number(match[3]),
       Number(match[4]),
       Number(match[5]),
       Number(match[6] ?? 0),
+      0,
     );
-
-    return nextDate;
   }
 
   const parsedTime = parseTimeInputValue(value, timePrecision);
   if (!parsedTime) return null;
 
   const nextDate = new Date(2000, 0, 1);
-  nextDate.setHours(
-    parsedTime.hours,
-    parsedTime.minutes,
-    parsedTime.seconds,
-    0,
-  );
+  nextDate.setHours(parsedTime.hours, parsedTime.minutes, parsedTime.seconds, 0);
   return nextDate;
+};
+
+export const parseTypedDatePickerDisplayValue = (
+  pickerType: Exclude<HansDatePickerType, 'time'>,
+  value: string,
+  timePrecision: HansDatePickerTimePrecision,
+): Date | null => {
+  if (pickerType === 'date') {
+    const match = value.match(DISPLAY_DATE_INPUT_PATTERN);
+    if (!match) return null;
+
+    const day = Number(match[1]);
+    const month = Number(match[2]);
+    const year = Number(match[3]);
+    const nextDate = new Date(year, month - 1, day, 0, 0, 0, 0);
+
+    return isMatchingDateParts(nextDate, year, month, day) ? nextDate : null;
+  }
+
+  const match = value.match(DISPLAY_DATETIME_INPUT_PATTERN);
+  if (!match) return null;
+
+  const day = Number(match[1]);
+  const month = Number(match[2]);
+  const year = Number(match[3]);
+  const hours = Number(match[4]);
+  const minutes = Number(match[5]);
+  const seconds = Number(match[6] ?? 0);
+
+  if (hours > 23 || minutes > 59 || seconds > 59) return null;
+  if (timePrecision === 'minute' && match[6]) return null;
+
+  const nextDate = new Date(year, month - 1, day, hours, minutes, seconds, 0);
+
+  return isMatchingDateParts(nextDate, year, month, day) ? nextDate : null;
 };
 
 export const formatDatePickerDisplay = ({
@@ -247,7 +290,6 @@ export const formatDatePickerDisplay = ({
     value,
     timePrecision,
   });
-
   if (!parsedValue) return value ?? noDateText;
 
   if (pickerType === 'time') {
@@ -273,6 +315,25 @@ export const formatDatePickerDisplay = ({
     timePrecision,
   )}`;
 };
+
+export const getDatePickerDisplayValueFromStoredValue = (
+  pickerType: HansDatePickerType,
+  value: string,
+  timePrecision: HansDatePickerTimePrecision,
+): string =>
+  formatDatePickerDisplay({
+    pickerType,
+    value,
+    timePrecision,
+    noDateText: '',
+  });
+
+export const getInitialDatePickerDisplayValue = (
+  pickerType: Exclude<HansDatePickerType, 'time'>,
+  value: string,
+  timePrecision: HansDatePickerTimePrecision,
+): string =>
+  getDatePickerDisplayValueFromStoredValue(pickerType, value, timePrecision);
 
 export const buildCalendarDays = ({
   viewDate,
@@ -311,12 +372,7 @@ export const mergeDateAndTime = (
   if (!parsedTime) return null;
 
   const nextDate = cloneDate(date);
-  nextDate.setHours(
-    parsedTime.hours,
-    parsedTime.minutes,
-    parsedTime.seconds,
-    0,
-  );
+  nextDate.setHours(parsedTime.hours, parsedTime.minutes, parsedTime.seconds, 0);
   return nextDate;
 };
 
@@ -382,10 +438,7 @@ export const getDatePickerPopupOffsets = (
 };
 
 export const createSyncDatePickerPopupOffsets =
-  ({
-    datePickerRef,
-    setPopupOffsets,
-  }: CreateSyncDatePickerPopupOffsetsParams) =>
+  ({ datePickerRef, setPopupOffsets }: CreateSyncDatePickerPopupOffsetsParams) =>
   (): void => {
     setPopupOffsets(getDatePickerPopupOffsets(datePickerRef.current));
   };
@@ -404,7 +457,11 @@ export const createDatePickerChangeHandler =
   };
 
 export const createDatePickerOpenHandler =
-  ({ disabled, setIsOpen, onOpenChange }: CreateDatePickerOpenHandlerParams) =>
+  ({
+    disabled,
+    setIsOpen,
+    onOpenChange,
+  }: CreateDatePickerOpenHandlerParams) =>
   (nextOpen: boolean): void => {
     if (disabled) return;
     setIsOpen(nextOpen);
@@ -417,7 +474,113 @@ export const createDatePickerTimeInputHandler =
     setTimeInputValue,
   }: CreateDatePickerTimeInputHandlerParams) =>
   (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setTimeInputValue(
-      normalizeMaskedTimeValue(event.target.value, timePrecision),
+    setTimeInputValue(normalizeMaskedTimeValue(event.target.value, timePrecision));
+  };
+
+export const createDatePickerDisplayInputHandler =
+  ({ setDisplayValue }: CreateDatePickerDisplayInputHandlerParams) =>
+  (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setDisplayValue(event.target.value);
+  };
+
+export const syncDatePickerState = ({
+  pickerType,
+  value,
+  timePrecision,
+  setDraftDate,
+  setViewDate,
+  setTimeInputValue,
+  setDisplayValue,
+}: SyncDatePickerStateParams): void => {
+  const nextDate = getDatePickerSelectionFromValue(
+    pickerType,
+    value,
+    timePrecision,
+  );
+
+  setDraftDate(nextDate);
+  setViewDate(nextDate ?? new Date());
+  setTimeInputValue(
+    nextDate
+      ? formatDatePickerTimeValue(
+          {
+            hours: nextDate.getHours(),
+            minutes: nextDate.getMinutes(),
+            seconds: nextDate.getSeconds(),
+          },
+          timePrecision,
+        )
+      : '',
+  );
+
+  if (setDisplayValue && pickerType !== 'time') {
+    setDisplayValue(
+      getDatePickerDisplayValueFromStoredValue(pickerType, value, timePrecision),
     );
+  }
+};
+
+export const createDatePickerBlurHandler =
+  ({
+    pickerType,
+    allowInputTyping,
+    timePrecision,
+    displayValue,
+    setDisplayValue,
+    setDraftDate,
+    setViewDate,
+    setTimeInputValue,
+    applyValue,
+  }: CreateDatePickerBlurHandlerParams) =>
+  (): void => {
+    if (!allowInputTyping) return;
+
+    if (!displayValue.trim()) {
+      setDisplayValue('');
+      setDraftDate(null);
+      setTimeInputValue('');
+      applyValue('');
+      return;
+    }
+
+    const parsedDate = parseTypedDatePickerDisplayValue(
+      pickerType,
+      displayValue.trim(),
+      timePrecision,
+    );
+
+    if (!parsedDate) {
+      setDisplayValue('');
+      setDraftDate(null);
+      setTimeInputValue('');
+      applyValue('');
+      return;
+    }
+
+    const storedValue = formatDatePickerValue({
+      pickerType,
+      date: parsedDate,
+      timePrecision,
+    });
+
+    setDraftDate(parsedDate);
+    setViewDate(parsedDate);
+    setTimeInputValue(
+      formatDatePickerTimeValue(
+        {
+          hours: parsedDate.getHours(),
+          minutes: parsedDate.getMinutes(),
+          seconds: parsedDate.getSeconds(),
+        },
+        timePrecision,
+      ),
+    );
+    setDisplayValue(
+      getDatePickerDisplayValueFromStoredValue(
+        pickerType,
+        storedValue,
+        timePrecision,
+      ),
+    );
+    applyValue(storedValue);
   };

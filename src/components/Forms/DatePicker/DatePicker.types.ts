@@ -32,6 +32,7 @@ const HansDatePickerSchema = {
   applyLabel: 'string',
   timePrecision: { type: 'custom', ref: {} as HansDatePickerTimePrecision },
   weekStartsOnSunday: 'boolean',
+  allowInputTyping: 'boolean',
 } as const;
 
 export type HansDatePickerProps = InferPropsFromSchema<

@@ -55,6 +55,32 @@ export type CreateDatePickerTimeInputHandlerParams = {
   setTimeInputValue: (value: string) => void;
 };
 
+export type CreateDatePickerDisplayInputHandlerParams = {
+  setDisplayValue: (value: string) => void;
+};
+
+export type CreateDatePickerBlurHandlerParams = {
+  pickerType: Exclude<HansDatePickerType, 'time'>;
+  allowInputTyping: boolean;
+  timePrecision: HansDatePickerTimePrecision;
+  displayValue: string;
+  setDisplayValue: (value: string) => void;
+  setDraftDate: (value: Date | null) => void;
+  setViewDate: (value: Date) => void;
+  setTimeInputValue: (value: string) => void;
+  applyValue: (value: string) => void;
+};
+
+export type SyncDatePickerStateParams = {
+  pickerType: HansDatePickerType;
+  value: string;
+  timePrecision: HansDatePickerTimePrecision;
+  setDraftDate: (value: Date | null) => void;
+  setViewDate: (value: Date) => void;
+  setTimeInputValue: (value: string) => void;
+  setDisplayValue?: (value: string) => void;
+};
+
 export type DatePickerPopupOffsets = {
   up: number;
   down: number;
