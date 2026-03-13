@@ -56,7 +56,9 @@ export const HansDatePicker = React.memo((props: HansDatePickerProps) => {
 
   const isControlled = typeof value !== 'undefined';
   const controlledValue = value as string | undefined;
-  const initialValue = isControlled ? (controlledValue as string) : defaultValue;
+  const initialValue = isControlled
+    ? (controlledValue as string)
+    : defaultValue;
   const [internalValue, setInternalValue] = React.useState(initialValue);
   const [isOpen, setIsOpen] = React.useState(false);
   const [popupOffsets, setPopupOffsets] = React.useState({ up: 0, down: 0 });
@@ -85,7 +87,9 @@ export const HansDatePicker = React.memo((props: HansDatePickerProps) => {
   });
   const datePickerRef = React.useRef<HTMLDivElement>(null);
 
-  const selectedValue = isControlled ? (controlledValue as string) : internalValue;
+  const selectedValue = isControlled
+    ? (controlledValue as string)
+    : internalValue;
 
   React.useEffect(() => {
     if (!isControlled) return;
@@ -217,7 +221,11 @@ export const HansDatePicker = React.memo((props: HansDatePickerProps) => {
 
   const handleApplyDateTime = (): void => {
     if (!draftDate) return;
-    const mergedDate = mergeDateAndTime(draftDate, timeInputValue, timePrecision);
+    const mergedDate = mergeDateAndTime(
+      draftDate,
+      timeInputValue,
+      timePrecision,
+    );
     if (!mergedDate) return;
 
     handleValueChange(
@@ -261,7 +269,8 @@ export const HansDatePicker = React.memo((props: HansDatePickerProps) => {
     }
   };
 
-  const triggerIconName = pickerType === 'time' ? 'MdAccessTime' : 'MdDateRange';
+  const triggerIconName =
+    pickerType === 'time' ? 'MdAccessTime' : 'MdDateRange';
 
   if (pickerType === 'time') {
     return (

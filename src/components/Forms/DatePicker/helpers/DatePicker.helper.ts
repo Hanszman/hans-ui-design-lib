@@ -15,13 +15,28 @@ import type {
   HansDatePickerType,
 } from '../DatePicker.types';
 
-const DATE_INPUT_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
-const DATETIME_INPUT_PATTERN =
+export const DATE_INPUT_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+export const DATETIME_INPUT_PATTERN =
   /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?$/;
-const TIME_INPUT_PATTERN = /^(\d{2}):(\d{2})(?::(\d{2}))?$/;
-
-const WEEKDAY_LABELS_SUNDAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const WEEKDAY_LABELS_MONDAY = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+export const TIME_INPUT_PATTERN = /^(\d{2}):(\d{2})(?::(\d{2}))?$/;
+export const WEEKDAY_LABELS_SUNDAY = [
+  'Sun',
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat',
+];
+export const WEEKDAY_LABELS_MONDAY = [
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat',
+  'Sun',
+];
 
 export const padDatePickerNumber = (value: number): string =>
   value.toString().padStart(2, '0');
@@ -212,7 +227,12 @@ export const parseDatePickerValue = ({
   if (!parsedTime) return null;
 
   const nextDate = new Date(2000, 0, 1);
-  nextDate.setHours(parsedTime.hours, parsedTime.minutes, parsedTime.seconds, 0);
+  nextDate.setHours(
+    parsedTime.hours,
+    parsedTime.minutes,
+    parsedTime.seconds,
+    0,
+  );
   return nextDate;
 };
 
@@ -291,7 +311,12 @@ export const mergeDateAndTime = (
   if (!parsedTime) return null;
 
   const nextDate = cloneDate(date);
-  nextDate.setHours(parsedTime.hours, parsedTime.minutes, parsedTime.seconds, 0);
+  nextDate.setHours(
+    parsedTime.hours,
+    parsedTime.minutes,
+    parsedTime.seconds,
+    0,
+  );
   return nextDate;
 };
 
@@ -357,7 +382,10 @@ export const getDatePickerPopupOffsets = (
 };
 
 export const createSyncDatePickerPopupOffsets =
-  ({ datePickerRef, setPopupOffsets }: CreateSyncDatePickerPopupOffsetsParams) =>
+  ({
+    datePickerRef,
+    setPopupOffsets,
+  }: CreateSyncDatePickerPopupOffsetsParams) =>
   (): void => {
     setPopupOffsets(getDatePickerPopupOffsets(datePickerRef.current));
   };
@@ -376,11 +404,7 @@ export const createDatePickerChangeHandler =
   };
 
 export const createDatePickerOpenHandler =
-  ({
-    disabled,
-    setIsOpen,
-    onOpenChange,
-  }: CreateDatePickerOpenHandlerParams) =>
+  ({ disabled, setIsOpen, onOpenChange }: CreateDatePickerOpenHandlerParams) =>
   (nextOpen: boolean): void => {
     if (disabled) return;
     setIsOpen(nextOpen);
@@ -393,5 +417,7 @@ export const createDatePickerTimeInputHandler =
     setTimeInputValue,
   }: CreateDatePickerTimeInputHandlerParams) =>
   (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setTimeInputValue(normalizeMaskedTimeValue(event.target.value, timePrecision));
+    setTimeInputValue(
+      normalizeMaskedTimeValue(event.target.value, timePrecision),
+    );
   };

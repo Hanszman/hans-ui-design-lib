@@ -26,7 +26,9 @@ export const HansDatePickerCalendar = React.memo(
           >
             <HansIcon name="IoIosArrowBack" iconSize="small" />
           </button>
-          <strong className="hans-date-picker-calendar-title">{monthLabel}</strong>
+          <strong className="hans-date-picker-calendar-title">
+            {monthLabel}
+          </strong>
           <button
             type="button"
             className="hans-date-picker-calendar-nav"

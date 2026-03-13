@@ -6,6 +6,7 @@ import {
 import type { Color, Size, Variant } from '../../../types/Common.types';
 
 export type HansDatePickerType = 'date' | 'datetime' | 'time';
+
 export type HansDatePickerTimePrecision = 'minute' | 'second';
 
 const HansDatePickerSchema = {
