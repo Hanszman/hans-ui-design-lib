@@ -212,7 +212,7 @@ describe('Modal.helper', () => {
       keydownHandler(new window.KeyboardEvent('keydown', { key: 'Escape' }));
     }
     expect(close).toHaveBeenCalledWith('escape');
-    expect(cleanupEscape).toBeTypeOf('function');
+    expect(typeof cleanupEscape).toBe('function');
     if (!cleanupEscape) throw new Error('cleanupEscape should be defined');
     cleanupEscape();
     expect(removeEventListenerSpy).toHaveBeenCalled();
@@ -224,7 +224,7 @@ describe('Modal.helper', () => {
     })!();
 
     expect(document.body.style.overflow).toBe('hidden');
-    expect(cleanupScroll).toBeTypeOf('function');
+    expect(typeof cleanupScroll).toBe('function');
     if (!cleanupScroll) throw new Error('cleanupScroll should be defined');
     cleanupScroll();
     expect(document.body.style.overflow).toBe('auto');

@@ -1,8 +1,7 @@
 * Continuar próximos componentes:
--Modal (usar lib?)
--Publi/propaganda (usar lib?)
--Kanban (usar lib?) (cards com drag and drop)
 -Card (template de card / será usado como item do kanban / - usar lib?)
+-Kanban (usar lib?) (cards com drag and drop)
+-Publi/propaganda (usar lib?)
 -Translation?
 
 Recap Prompt:
