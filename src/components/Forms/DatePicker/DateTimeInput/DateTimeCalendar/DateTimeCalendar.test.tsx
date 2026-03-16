@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
-import { HansDatePickerCalendar } from './DatePickerCalendar';
+import { HansDateTimeCalendar } from './DateTimeCalendar';
 
 const days = Array.from({ length: 42 }, (_, index) => ({
   date: new Date(2026, 2, index + 1),
@@ -11,14 +11,14 @@ const days = Array.from({ length: 42 }, (_, index) => ({
   isToday: index === 7,
 }));
 
-describe('HansDatePickerCalendar', () => {
-  it('Should render month navigation, weekdays and selectable days', () => {
+describe('HansDateTimeCalendar', () => {
+  it('Should render navigation, weekdays and selectable days', () => {
     const onPreviousMonth = vi.fn();
     const onNextMonth = vi.fn();
     const onSelectDay = vi.fn();
 
     render(
-      <HansDatePickerCalendar
+      <HansDateTimeCalendar
         days={days}
         weekdayLabels={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
         monthLabel="March 2026"
@@ -54,9 +54,10 @@ describe('HansDatePickerCalendar', () => {
     expect(screen.getByText('Apply')).toBeInTheDocument();
   });
 
-  it('Should render second precision placeholder for datetime time input', () => {
+  it('Should render the shared time input and clear invalid datetime times', () => {
+    const onTimeInputChange = vi.fn();
     render(
-      <HansDatePickerCalendar
+      <HansDateTimeCalendar
         days={days}
         weekdayLabels={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
         monthLabel="March 2026"
@@ -73,7 +74,7 @@ describe('HansDatePickerCalendar', () => {
         onPreviousMonth={vi.fn()}
         onNextMonth={vi.fn()}
         onSelectDay={vi.fn()}
-        onTimeInputChange={vi.fn()}
+        onTimeInputChange={onTimeInputChange}
         onClear={vi.fn()}
         onToday={vi.fn()}
         onApply={vi.fn()}
@@ -81,11 +82,13 @@ describe('HansDatePickerCalendar', () => {
     );
 
     expect(screen.getByPlaceholderText('HH:MM:SS')).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Time'), { target: { value: '256600' } });
+    expect(onTimeInputChange).toHaveBeenCalledWith('');
   });
 
   it('Should hide time controls when picker type is date', () => {
     render(
-      <HansDatePickerCalendar
+      <HansDateTimeCalendar
         days={days}
         weekdayLabels={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
         monthLabel="March 2026"

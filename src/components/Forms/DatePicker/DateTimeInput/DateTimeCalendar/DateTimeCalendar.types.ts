@@ -1,9 +1,10 @@
-import type React from 'react';
-import type { Color, Variant } from '../../../../types/Common.types';
-import type { DatePickerDayItem } from '../helpers/DatePicker.helper.types';
+import type { Color, Variant } from '../../../../../types/Common.types';
+import type {
+  DateTimeCalendarDayItem,
+} from './helpers/DateTimeCalendar.helper.types';
 
-export type HansDatePickerCalendarProps = {
-  days: DatePickerDayItem[];
+export type HansDateTimeCalendarProps = {
+  days: DateTimeCalendarDayItem[];
   weekdayLabels: string[];
   monthLabel: string;
   calendarColor: Color;
@@ -18,8 +19,8 @@ export type HansDatePickerCalendarProps = {
   allowApply: boolean;
   onPreviousMonth: () => void;
   onNextMonth: () => void;
-  onSelectDay: (day: DatePickerDayItem) => void;
-  onTimeInputChange: React.ChangeEventHandler<HTMLInputElement>;
+  onSelectDay: (day: DateTimeCalendarDayItem) => void;
+  onTimeInputChange: (value: string) => void;
   onClear: () => void;
   onToday: () => void;
   onApply: () => void;

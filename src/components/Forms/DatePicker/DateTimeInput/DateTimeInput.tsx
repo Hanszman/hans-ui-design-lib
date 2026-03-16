@@ -3,33 +3,36 @@ import { HansInput } from '../../Input/Input';
 import { HansPopup } from '../../../Popup/Popup';
 import { HansIcon } from '../../../Icon/Icon';
 import type { HansDateTimeInputProps } from './DateTimeInput.types';
-import { HansDatePickerCalendar } from '../DatePickerCalendar/DatePickerCalendar';
+import { HansDateTimeCalendar } from './DateTimeCalendar/DateTimeCalendar';
 import {
-  buildCalendarDays,
-  createDatePickerApplyHandler,
-  createDatePickerBlurHandler,
   createDatePickerChangeHandler,
-  createDatePickerClearHandler,
-  createDatePickerDisplayInputHandler,
-  createDatePickerInputMouseDownHandler,
-  createMonthNavigationHandler,
   createDatePickerOpenHandler,
-  createDatePickerSelectDayHandler,
-  createDatePickerTimeInputHandler,
-  createDatePickerToggleIconMouseDownHandler,
-  createDatePickerTodayHandler,
   createSyncDatePickerPopupOffsets,
-  getDatePickerAllowApply,
   getDatePickerFieldStyle,
-  getDatePickerMonthLabel,
   getDatePickerPlaceholder,
   getDatePickerSelectionFromValue,
   getInitialDatePickerDisplayValue,
   getInitialDatePickerViewDate,
-  getWeekdayLabels,
   resolveDateTimePickerType,
-  syncDatePickerState,
 } from '../helpers/DatePicker.helper';
+import {
+  buildCalendarDays,
+  createMonthNavigationHandler,
+  getDatePickerMonthLabel,
+  getWeekdayLabels,
+} from './DateTimeCalendar/helpers/DateTimeCalendar.helper';
+import {
+  createDatePickerApplyHandler,
+  createDatePickerBlurHandler,
+  createDatePickerClearHandler,
+  createDatePickerDisplayInputHandler,
+  createDatePickerInputMouseDownHandler,
+  createDatePickerSelectDayHandler,
+  createDatePickerTodayHandler,
+  createDatePickerToggleIconMouseDownHandler,
+  getDatePickerAllowApply,
+  syncDatePickerState,
+} from './helpers/DateTimeInput.helper';
 
 export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
   const {
@@ -118,14 +121,6 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
         onOpenChange,
       }),
     [disabled, onOpenChange],
-  );
-  const handleTimeInputChange = React.useMemo(
-    () =>
-      createDatePickerTimeInputHandler({
-        timePrecision,
-        setTimeInputValue,
-      }),
-    [timePrecision],
   );
   const handleDisplayInputChange = React.useMemo(
     () => createDatePickerDisplayInputHandler({ setDisplayValue }),
@@ -312,7 +307,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
         )}
       >
         <div className="hans-date-picker-panel">
-          <HansDatePickerCalendar
+          <HansDateTimeCalendar
             days={calendarDays}
             weekdayLabels={getWeekdayLabels(weekStartsOnSunday)}
             monthLabel={getDatePickerMonthLabel(viewDate)}
@@ -329,7 +324,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
             onPreviousMonth={handlePreviousMonth}
             onNextMonth={handleNextMonth}
             onSelectDay={handleSelectDay}
-            onTimeInputChange={handleTimeInputChange}
+            onTimeInputChange={setTimeInputValue}
             onClear={handleClear}
             onToday={handleToday}
             onApply={handleApply}

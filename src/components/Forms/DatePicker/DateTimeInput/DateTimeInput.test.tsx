@@ -33,6 +33,7 @@ describe('HansDateTimeInput', () => {
     fireEvent.change(screen.getByLabelText('Time'), {
       target: { value: '9999' },
     });
+    expect(screen.getByLabelText('Time')).toHaveValue('');
     fireEvent.click(screen.getByText('Apply'));
     expect(onChange).not.toHaveBeenCalled();
 

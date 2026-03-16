@@ -4,6 +4,7 @@
 
 @import './TimeInput/time-input.scss';
 @import './DateTimeInput/date-time-input.scss';
+@import './DateTimeInput/DateTimeCalendar/date-time-calendar.scss';
 
 .hans-date-picker-field {
   @apply w-full overflow-visible;

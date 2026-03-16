@@ -1,11 +1,11 @@
 import React from 'react';
-import { HansButton } from '../../Button/Button';
-import { HansIcon } from '../../../Icon/Icon';
-import { HansInput } from '../../Input/Input';
-import type { HansDatePickerCalendarProps } from './DatePickerCalendar.types';
+import { HansButton } from '../../../Button/Button';
+import { HansIcon } from '../../../../Icon/Icon';
+import { HansTimeInput } from '../../TimeInput/TimeInput';
+import type { HansDateTimeCalendarProps } from './DateTimeCalendar.types';
 
-export const HansDatePickerCalendar = React.memo(
-  (props: HansDatePickerCalendarProps) => {
+export const HansDateTimeCalendar = React.memo(
+  (props: HansDateTimeCalendarProps) => {
     const {
       days,
       weekdayLabels,
@@ -88,15 +88,17 @@ export const HansDatePickerCalendar = React.memo(
 
         {pickerType === 'datetime' ? (
           <div className="hans-date-picker-time-panel">
-            <HansInput
+            <HansTimeInput
               inputId="hans-date-picker-calendar-time"
+              pickerType="time"
               label="Time"
               inputColor={inputColor}
               inputSize="small"
-              placeholder={timePrecision === 'second' ? 'HH:MM:SS' : 'HH:MM'}
+              timePrecision={timePrecision}
               value={timeInputValue}
               onChange={onTimeInputChange}
-              rightIcon={<HansIcon name="MdAccessTime" iconSize="small" />}
+              onMaskedValueChange={onTimeInputChange}
+              customClasses="hans-date-picker-calendar-time-input"
             />
           </div>
         ) : null}
@@ -132,4 +134,4 @@ export const HansDatePickerCalendar = React.memo(
   },
 );
 
-HansDatePickerCalendar.displayName = 'HansDatePickerCalendar';
+HansDateTimeCalendar.displayName = 'HansDateTimeCalendar';

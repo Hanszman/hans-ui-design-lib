@@ -10,7 +10,6 @@
 @import '../components/Forms/SelectOption/SelectOptionItemList/select-option-item-list.scss';
 @import '../components/Forms/Toggle/toggle.scss';
 @import '../components/Forms/DatePicker/datepicker.scss';
-@import '../components/Forms/DatePicker/DatePickerCalendar/datepicker-calendar.scss';
 @import '../components/Avatar/avatar.scss';
 @import '../components/Tag/tag.scss';
 @import '../components/Chart/chart.scss';

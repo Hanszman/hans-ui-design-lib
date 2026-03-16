@@ -6,12 +6,20 @@ import { HansTimeInput } from './TimeInput';
 describe('HansTimeInput', () => {
   it('Should accept valid minute and second values', () => {
     const onChange = vi.fn();
-    const { rerender } = render(<HansTimeInput pickerType="time" onChange={onChange} />);
+    const onMaskedValueChange = vi.fn();
+    const { rerender } = render(
+      <HansTimeInput
+        pickerType="time"
+        onChange={onChange}
+        onMaskedValueChange={onMaskedValueChange}
+      />,
+    );
 
     const input = screen.getByPlaceholderText('HH:MM');
     fireEvent.change(input, { target: { value: '0945' } });
     expect(input).toHaveValue('09:45');
     expect(onChange).toHaveBeenCalledWith('09:45');
+    expect(onMaskedValueChange).toHaveBeenCalledWith('09:45');
 
     rerender(
       <HansTimeInput pickerType="time" timePrecision="second" onChange={onChange} />,

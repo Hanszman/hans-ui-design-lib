@@ -139,6 +139,27 @@ export const TimeOnly: Story = {
   ),
 };
 
+export const ManualTyping: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      <HansDatePicker
+        {...args}
+        label="Typed date"
+        pickerType="date"
+        allowInputTyping
+        defaultValue="2026-03-13"
+      />
+      <HansDatePicker
+        {...args}
+        label="Typed datetime"
+        pickerType="datetime"
+        allowInputTyping
+        defaultValue="2026-03-13T16:20"
+      />
+    </div>
+  ),
+};
+
 export const StatesAndColors: Story = {
   render: () => (
     <div className="flex max-w-md flex-col gap-4">

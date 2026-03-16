@@ -11,7 +11,7 @@
 }
 
 .hans-date-picker-calendar-nav {
-  @apply h-8 w-8 p-0;
+  @apply h-8 w-8 cursor-pointer p-0;
 }
 
 .hans-date-picker-calendar-grid {
@@ -23,7 +23,7 @@
 }
 
 .hans-date-picker-day {
-  @apply flex h-10 w-full items-center justify-center rounded-full border border-transparent bg-transparent px-0 py-0 text-sm transition-colors duration-150;
+  @apply flex h-10 w-full cursor-pointer items-center justify-center rounded-full border border-transparent bg-transparent px-0 py-0 text-sm transition-colors duration-150;
 }
 
 .hans-date-picker-day:hover {
@@ -108,4 +108,8 @@
 .hans-date-picker-day-color-info.hans-date-picker-day-variant-outline.hans-date-picker-day-selected,
 .hans-date-picker-day-color-info.hans-date-picker-day-variant-transparent.hans-date-picker-day-selected {
   @apply border-[var(--info-default-color)] bg-transparent text-[var(--info-default-color)];
+}
+
+.hans-date-picker-time-panel .hans-date-picker-time-input {
+  @apply w-full;
 }

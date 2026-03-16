@@ -3,12 +3,14 @@ import { HansInput } from '../../Input/Input';
 import { HansIcon } from '../../../Icon/Icon';
 import type { HansTimeInputProps } from './TimeInput.types';
 import {
-  createTimeInputChangeHandler,
   createDatePickerChangeHandler,
-  createDatePickerTimeInputHandler,
   getDatePickerPlaceholder,
-  syncTimeInputState,
 } from '../helpers/DatePicker.helper';
+import {
+  createTimeInputChangeHandler,
+  createTimeInputMaskedValueHandler,
+  syncTimeInputState,
+} from './helpers/TimeInput.helper';
 
 export const HansTimeInput = React.memo((props: HansTimeInputProps) => {
   const {
@@ -27,6 +29,7 @@ export const HansTimeInput = React.memo((props: HansTimeInputProps) => {
     defaultValue = '',
     timePrecision = 'minute',
     onChange,
+    onMaskedValueChange,
     ...rest
   } = props;
 
@@ -57,23 +60,24 @@ export const HansTimeInput = React.memo((props: HansTimeInputProps) => {
       }),
     [disabled, isControlled, onChange],
   );
-  const handleMaskedChange = React.useMemo(
+  const syncMaskedValue = React.useMemo(
     () =>
-      createDatePickerTimeInputHandler({
+      createTimeInputMaskedValueHandler({
         timePrecision,
         setTimeInputValue,
+        onMaskedValueChange,
       }),
-    [timePrecision],
+    [onMaskedValueChange, timePrecision],
   );
   const handleChange = React.useMemo(
     () =>
       createTimeInputChangeHandler({
         timePrecision,
-        handleMaskedChange,
+        syncMaskedValue,
         setTimeInputValue,
         applyValue,
       }),
-    [applyValue, handleMaskedChange, timePrecision],
+    [applyValue, syncMaskedValue, timePrecision],
   );
 
   const selectedValue = isControlled ? (value as string) : internalValue;

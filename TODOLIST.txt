@@ -22,3 +22,13 @@ Siga o padrão acima e vamos criar o componente: [COMPONENT]...
 na pasta que já criei com o nome dele.
 Ele deve: ...
 Enfim! faça o componente por favor, te dou acesso a todo o repo/workspace, pode editável conforme for necessário
+
+beleza, vc corrigiu tudo, obrigado!
+mas tenho mais algumas considerações:
+-acho que podemos colocar cursor pointer em todos os botões de dentro do calendário, inclusive os botões de dia, pois esses ainda estão com cursor normal
+-vc não colocou um exemplo no storires/mdx em que podemos editar manualmente (digitando) a date e a datetime... coloque esse exemplo por favor (com allowInputTyping true)
+-como vc pode ver no print 1, reparei que o time do datetime permite digitar horas inválidas (acima de 23) e minutos invalidos (acima de 59)... o botão fica desabilitado e tal, mas gostaria que funcionasse assim como no input de time solo, onde o componente força limpar o valor do input nesses casos... por isso, acho que seria melhor na verdade vc chamar o componente HansTimeInput dentro do componente HansDatePickerCalendar, ao invés de HansInput diretamente... mantendo mascara e outros comportamentos padronizados
+-seria interessante renomear o DatePickerCalendar para DateTimeCalendar, já que somente o DateTimeInput usa ele... e poderiamos mover a pasta do calendar para dentro do datetime... faça essas alterações de renomeação e mudança de diretório por favor... ajuste também imports necessários, dentre outros ajustes
+-outra coisa que seria interessante é separar também o helper e helper types entre cada contexto (datetimeinput, timeinput, calendar), já que nosso helper ficou com mais de 800 linhas... faça essa refatoração também por favor... ai em cada um teremos a pasta helpers, com sem helper, test e types... e pode manter um na raiz do DatePIcker também para aquilo que for do DatePicker tsx ou que for comum a todos os outros componentes internos
+OBS: não desfaça nada que já ajustamos por favor!
+faça apenas essas alterações que comentei agora nessa mensagem, obrigado!
