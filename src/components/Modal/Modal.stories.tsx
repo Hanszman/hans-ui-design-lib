@@ -62,16 +62,16 @@ const ModalLauncher = ({
 };
 
 const LongContent = () => (
-  <div className="flex min-w-[920px] flex-col gap-4">
+  <div className="flex h-full min-h-full min-w-[920px] flex-col gap-4">
     <p>
       This example shows a body that can overflow vertically and horizontally
       without clipping the custom children area.
     </p>
-    <div className="grid min-w-[880px] grid-cols-3 gap-3">
+    <div className="grid min-h-[640px] min-w-[880px] flex-1 auto-rows-[minmax(140px,1fr)] grid-cols-3 gap-3">
       {Array.from({ length: 12 }, (_, index) => (
         <div
           key={`info-card-${index + 1}`}
-          className="rounded-xl border border-[var(--base-default-color)] p-4"
+          className="h-full rounded-xl border border-[var(--base-default-color)] p-4"
         >
           <strong className="block mb-2">Card {index + 1}</strong>
           <span>
@@ -85,15 +85,22 @@ const LongContent = () => (
 );
 
 const FormContent = () => (
-  <div className="flex flex-col gap-4">
+  <div className="flex min-h-full flex-col gap-4">
     <HansInput label="Name" placeholder="Type the full name" />
     <HansInput label="Email" placeholder="name@company.com" inputType="email" />
     <HansInput label="Role" placeholder="Product Designer" />
+    <div className="flex-1 rounded-xl border border-[var(--base-default-color)] p-4">
+      <strong className="block mb-2">Additional details</strong>
+      <span>
+        This area stretches to occupy the remaining available body space in the
+        side modal example.
+      </span>
+    </div>
   </div>
 );
 
 const SummaryContent = () => (
-  <div className="flex flex-col gap-3">
+  <div className="flex min-h-full flex-col gap-3">
     <p className="m-0">
       The modal body accepts any custom structure, including descriptive text,
       grouped actions and embedded design-system components.
@@ -105,6 +112,13 @@ const SummaryContent = () => (
         buttonColor="secondary"
         buttonVariant="outline"
       />
+    </div>
+    <div className="flex-1 rounded-xl border border-[var(--base-default-color)] p-4">
+      <strong className="block mb-2">Flexible content area</strong>
+      <span>
+        This block grows with the modal body so centered and side layouts can
+        demonstrate full-height custom children.
+      </span>
     </div>
   </div>
 );

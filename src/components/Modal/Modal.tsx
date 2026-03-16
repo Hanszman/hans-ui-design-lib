@@ -107,6 +107,8 @@ export const HansModal = React.memo((props: HansModalProps) => {
     confirmLabel,
     cancelLabel,
   });
+  const resolvedMaxBodyHeight =
+    placement === 'center' ? maxBodyHeight : '100vh';
 
   React.useEffect(() => {
     return createModalEscapeKeyEffect({
@@ -200,11 +202,11 @@ export const HansModal = React.memo((props: HansModalProps) => {
                 className={`hans-modal-body ${bodyClassName}`}
                 style={
                   {
-                    '--hans-modal-body-max-height': maxBodyHeight,
+                    '--hans-modal-body-max-height': resolvedMaxBodyHeight,
                   } as React.CSSProperties
                 }
               >
-                {children}
+                <div className="hans-modal-body-content">{children}</div>
               </div>
             ) : null}
 
