@@ -178,6 +178,8 @@ Make sure you are logged in to npm:
 npm login
 ```
 
+or create a .npmrc file on the root of this application based on .npmrc-example and paste on the file the token you created on npm website.
+
 Then build and publish:
 
 ```bash
