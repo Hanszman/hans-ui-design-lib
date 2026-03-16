@@ -13,6 +13,11 @@
   @apply relative z-[1] flex min-h-full w-full p-4 md:p-6;
 }
 
+.hans-modal-portal[data-placement='left'] .hans-modal-shell,
+.hans-modal-portal[data-placement='right'] .hans-modal-shell {
+  @apply p-0;
+}
+
 .hans-modal-dialog {
   @apply relative flex max-h-full w-full flex-col overflow-hidden rounded-2xl border shadow-[var(--hans-modal-shadow)];
   background: var(--hans-modal-bg);
@@ -96,7 +101,7 @@
 
 .hans-modal-dismiss {
   @apply inline-flex shrink-0 items-center justify-center rounded-md border-none bg-transparent p-1 text-xl leading-none cursor-pointer;
-  color: inherit;
+  color: var(--hans-modal-dismiss-color);
 }
 
 .hans-modal-body {

@@ -33,17 +33,27 @@ type Story = StoryObj<typeof HansModal>;
 const ModalLauncher = ({
   buttonLabel,
   modalProps,
+  triggerColor,
+  triggerVariant = 'default',
   children,
 }: {
   buttonLabel: string;
   modalProps?: Partial<React.ComponentProps<typeof HansModal>>;
+  triggerColor?: React.ComponentProps<typeof HansButton>['buttonColor'];
+  triggerVariant?: React.ComponentProps<typeof HansButton>['buttonVariant'];
   children?: React.ReactNode;
 }) => {
   const [open, setOpen] = useState(false);
+  const resolvedTriggerColor = triggerColor ?? modalProps?.modalColor ?? 'base';
 
   return (
     <div className="flex items-start">
-      <HansButton label={buttonLabel} onClick={() => setOpen(true)} />
+      <HansButton
+        label={buttonLabel}
+        buttonColor={resolvedTriggerColor}
+        buttonVariant={triggerVariant}
+        onClick={() => setOpen(true)}
+      />
       <HansModal isOpen={open} onOpenChange={setOpen} {...modalProps}>
         {children}
       </HansModal>
@@ -209,6 +219,7 @@ export const ColorsAndVariants: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Primary outline"
+        triggerVariant="outline"
         modalProps={{
           title: 'Primary outline',
           modalColor: 'primary',
@@ -231,11 +242,71 @@ export const ColorsAndVariants: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Success transparent"
+        triggerVariant="outline"
         modalProps={{
           title: 'Success transparent',
           modalColor: 'success',
           modalVariant: 'transparent',
           confirmLabel: 'Approve',
+        }}
+      >
+        <SummaryContent />
+      </ModalLauncher>
+    </div>
+  ),
+};
+
+export const ActionButtonColors: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-4">
+      <ModalLauncher
+        buttonLabel="Primary confirm"
+        modalProps={{
+          title: 'Primary confirm',
+          confirmLabel: 'Save',
+          cancelLabel: 'Cancel',
+        }}
+      >
+        <SummaryContent />
+      </ModalLauncher>
+      <ModalLauncher
+        buttonLabel="Success actions"
+        modalProps={{
+          title: 'Success actions',
+          modalColor: 'base',
+          confirmLabel: 'Approve',
+          cancelLabel: 'Back',
+          confirmButtonColor: 'success',
+          cancelButtonColor: 'info',
+          dismissButtonColor: 'success',
+        }}
+      >
+        <SummaryContent />
+      </ModalLauncher>
+      <ModalLauncher
+        buttonLabel="Danger actions"
+        modalProps={{
+          title: 'Danger actions',
+          modalColor: 'base',
+          confirmLabel: 'Delete',
+          cancelLabel: 'Keep',
+          confirmButtonColor: 'danger',
+          cancelButtonColor: 'warning',
+          dismissButtonColor: 'danger',
+        }}
+      >
+        <SummaryContent />
+      </ModalLauncher>
+      <ModalLauncher
+        buttonLabel="Secondary actions"
+        modalProps={{
+          title: 'Secondary actions',
+          modalColor: 'base',
+          confirmLabel: 'Apply',
+          cancelLabel: 'Reset',
+          confirmButtonColor: 'secondary',
+          cancelButtonColor: 'primary',
+          dismissButtonColor: 'secondary',
         }}
       >
         <SummaryContent />

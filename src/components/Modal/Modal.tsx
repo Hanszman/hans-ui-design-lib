@@ -38,6 +38,9 @@ export const HansModal = React.memo((props: HansModalProps) => {
     confirmLabel = '',
     cancelLabel = '',
     closeButtonLabel = 'Close modal',
+    confirmButtonColor = 'primary',
+    cancelButtonColor = 'base',
+    dismissButtonColor = 'base',
     customClasses = '',
     overlayClassName = '',
     dialogClassName = '',
@@ -130,10 +133,17 @@ export const HansModal = React.memo((props: HansModalProps) => {
   const modalContent = (
     <div
       className={`hans-modal-portal ${overlayClassName}`}
-      style={getModalInlineStyle({ modalColor, modalVariant, style })}
+      style={getModalInlineStyle({
+        modalColor,
+        modalVariant,
+        dismissButtonColor,
+        style,
+      })}
       data-placement={placement}
     >
-      {showOverlay ? <div className="hans-modal-overlay" aria-hidden="true" /> : null}
+      {showOverlay ? (
+        <div className="hans-modal-overlay" aria-hidden="true" />
+      ) : null}
 
       <div className="hans-modal-shell" onClick={handleBackdropClick}>
         <div
@@ -146,7 +156,9 @@ export const HansModal = React.memo((props: HansModalProps) => {
           })}
           role="dialog"
           aria-modal="true"
-          aria-labelledby={hasRenderableModalContent(title) ? titleId : undefined}
+          aria-labelledby={
+            hasRenderableModalContent(title) ? titleId : undefined
+          }
           tabIndex={-1}
           {...rest}
         >
@@ -212,7 +224,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
                   <HansButton
                     label={cancelLabel}
                     buttonVariant="outline"
-                    buttonColor={modalColor}
+                    buttonColor={cancelButtonColor}
                     onClick={handleCancel}
                   />
                 ) : null}
@@ -221,7 +233,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
                   <HansButton
                     label={confirmLabel}
                     buttonVariant="default"
-                    buttonColor={modalColor}
+                    buttonColor={confirmButtonColor}
                     onClick={handleConfirm}
                   />
                 ) : null}

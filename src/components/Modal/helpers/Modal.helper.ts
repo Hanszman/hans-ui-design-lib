@@ -21,6 +21,14 @@ export const resolveModalTone = ({
   modalVariant,
 }: ResolveModalToneParams): ModalTone => {
   const tokenPrefix = getModalTokenPrefix(modalColor);
+  const baseTextColor =
+    modalColor === 'base'
+      ? 'var(--text-color)'
+      : `var(--${tokenPrefix}-strong-color)`;
+  const baseMutedTextColor =
+    modalColor === 'base'
+      ? 'var(--gray-700)'
+      : `var(--${tokenPrefix}-default-color)`;
 
   if (modalVariant === 'strong') {
     return {
@@ -48,8 +56,8 @@ export const resolveModalTone = ({
     return {
       background: 'var(--white)',
       border: `var(--${tokenPrefix}-default-color)`,
-      text: `var(--${tokenPrefix}-strong-color)`,
-      mutedText: `var(--${tokenPrefix}-default-color)`,
+      text: baseTextColor,
+      mutedText: baseMutedTextColor,
       overlay: 'rgba(15, 23, 42, 0.52)',
       shadow: '0 22px 54px rgba(15, 23, 42, 0.2)',
     };
@@ -59,8 +67,8 @@ export const resolveModalTone = ({
     return {
       background: 'rgba(255, 255, 255, 0.88)',
       border: `var(--${tokenPrefix}-neutral-color)`,
-      text: `var(--${tokenPrefix}-strong-color)`,
-      mutedText: `var(--${tokenPrefix}-default-color)`,
+      text: baseTextColor,
+      mutedText: baseMutedTextColor,
       overlay: 'rgba(15, 23, 42, 0.44)',
       shadow: '0 18px 48px rgba(15, 23, 42, 0.18)',
     };
@@ -69,8 +77,8 @@ export const resolveModalTone = ({
   return {
     background: `var(--${tokenPrefix}-neutral-color)`,
     border: `var(--${tokenPrefix}-default-color)`,
-    text: `var(--${tokenPrefix}-strong-color)`,
-    mutedText: `var(--${tokenPrefix}-default-color)`,
+    text: baseTextColor,
+    mutedText: baseMutedTextColor,
     overlay: 'rgba(15, 23, 42, 0.48)',
     shadow: '0 20px 52px rgba(15, 23, 42, 0.18)',
   };
@@ -79,9 +87,15 @@ export const resolveModalTone = ({
 export const getModalInlineStyle = ({
   modalColor,
   modalVariant,
+  dismissButtonColor,
   style,
 }: GetModalInlineStyleParams): React.CSSProperties => {
   const tone = resolveModalTone({ modalColor, modalVariant });
+  const dismissTokenPrefix = getModalTokenPrefix(dismissButtonColor);
+  const dismissColor =
+    dismissButtonColor === 'base'
+      ? 'var(--text-color)'
+      : `var(--${dismissTokenPrefix}-strong-color)`;
 
   return {
     ...(style || {}),
@@ -91,6 +105,7 @@ export const getModalInlineStyle = ({
     '--hans-modal-muted-text': tone.mutedText,
     '--hans-modal-overlay': tone.overlay,
     '--hans-modal-shadow': tone.shadow,
+    '--hans-modal-dismiss-color': dismissColor,
   } as React.CSSProperties;
 };
 

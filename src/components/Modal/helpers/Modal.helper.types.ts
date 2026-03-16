@@ -17,6 +17,7 @@ export type ModalTone = {
 };
 
 export type GetModalInlineStyleParams = ResolveModalToneParams & {
+  dismissButtonColor: Color;
   style?: React.CSSProperties;
 };
 
