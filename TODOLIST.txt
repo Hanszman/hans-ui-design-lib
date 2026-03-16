@@ -1,6 +1,5 @@
 * Continuar próximos componentes:
--Card (template de card / será usado como item do kanban / - usar lib?)
--Kanban (usar lib?) (cards com drag and drop)
+-Check out new components files (card, kanban, kanbancolumn e kanbanitem)
 -Publi/propaganda (usar lib?)
 -Translation?
 
