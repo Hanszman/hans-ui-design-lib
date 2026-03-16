@@ -115,6 +115,21 @@ describe('HansModal', () => {
     expect(screen.queryByText('Escape modal')).not.toBeInTheDocument();
   });
 
+  it('Should close with dismiss button when dismissible', () => {
+    const onClose = vi.fn();
+
+    renderWithAct(
+      <HansModal defaultOpen title="Dismiss modal" onClose={onClose}>
+        <div>Body</div>
+      </HansModal>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close modal' }));
+
+    expect(onClose).toHaveBeenCalledWith('dismiss');
+    expect(screen.queryByText('Dismiss modal')).not.toBeInTheDocument();
+  });
+
   it('Should support controlled mode without hiding until parent changes state', () => {
     const onOpenChange = vi.fn();
     const onClose = vi.fn();

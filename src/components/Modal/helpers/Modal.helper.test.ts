@@ -187,7 +187,7 @@ describe('Modal.helper', () => {
 
   it('Should create escape and body scroll effects', () => {
     const close = vi.fn();
-    let keydownHandler: ((event: KeyboardEvent) => void) | null = null;
+    let keydownHandler: ((event: KeyboardEvent) => void) | undefined;
     const addEventListenerSpy = vi.spyOn(document, 'addEventListener');
     const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener');
 
@@ -207,8 +207,13 @@ describe('Modal.helper', () => {
       close,
     })!();
 
-    keydownHandler?.(new window.KeyboardEvent('keydown', { key: 'Escape' }));
+    expect(keydownHandler).toBeDefined();
+    if (keydownHandler) {
+      keydownHandler(new window.KeyboardEvent('keydown', { key: 'Escape' }));
+    }
     expect(close).toHaveBeenCalledWith('escape');
+    expect(cleanupEscape).toBeTypeOf('function');
+    if (!cleanupEscape) throw new Error('cleanupEscape should be defined');
     cleanupEscape();
     expect(removeEventListenerSpy).toHaveBeenCalled();
 
@@ -219,6 +224,8 @@ describe('Modal.helper', () => {
     })!();
 
     expect(document.body.style.overflow).toBe('hidden');
+    expect(cleanupScroll).toBeTypeOf('function');
+    if (!cleanupScroll) throw new Error('cleanupScroll should be defined');
     cleanupScroll();
     expect(document.body.style.overflow).toBe('auto');
 
