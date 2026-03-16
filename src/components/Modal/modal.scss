@@ -10,7 +10,7 @@
 }
 
 .hans-modal-shell {
-  @apply relative z-[1] flex min-h-full w-full p-4 md:p-6;
+  @apply relative z-[1] flex h-full w-full p-4 md:p-6;
 }
 
 .hans-modal-portal[data-placement='left'] .hans-modal-shell,
@@ -65,7 +65,7 @@
 }
 
 .hans-modal-content {
-  @apply flex h-full min-h-0 flex-col;
+  @apply flex h-full min-h-0 flex-1 flex-col;
 }
 
 .hans-modal-header,

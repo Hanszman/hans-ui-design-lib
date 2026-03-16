@@ -109,10 +109,20 @@ const SummaryContent = () => (
   </div>
 );
 
+const getSemanticTextColor = (
+  color: NonNullable<React.ComponentProps<typeof HansModal>['modalColor']>,
+  variant: NonNullable<React.ComponentProps<typeof HansModal>['modalVariant']>,
+) => {
+  if (variant === 'strong' || variant === 'default') return 'var(--white)';
+  if (color === 'base') return 'var(--text-color)';
+  return `var(--${color}-strong-color)`;
+};
+
 export const Playground: Story = {
   render: (args) => (
     <ModalLauncher
       buttonLabel="Open playground"
+      triggerColor="primary"
       modalProps={{
         ...args,
         title: args.title ?? 'Modal title',
@@ -130,6 +140,7 @@ export const Sizes: Story = {
     <div className="flex flex-wrap gap-4">
       <ModalLauncher
         buttonLabel="Small modal"
+        triggerColor="base"
         modalProps={{
           title: 'Small modal',
           modalSize: 'small',
@@ -140,6 +151,7 @@ export const Sizes: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Medium modal"
+        triggerColor="primary"
         modalProps={{
           title: 'Medium modal',
           modalSize: 'medium',
@@ -150,6 +162,7 @@ export const Sizes: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Large modal"
+        triggerColor="base"
         modalProps={{
           title: 'Large modal',
           modalSize: 'large',
@@ -167,6 +180,7 @@ export const Placements: Story = {
     <div className="flex flex-wrap gap-4">
       <ModalLauncher
         buttonLabel="Centered"
+        triggerColor="base"
         modalProps={{
           title: 'Centered modal',
           placement: 'center',
@@ -177,6 +191,7 @@ export const Placements: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Left side"
+        triggerColor="primary"
         modalProps={{
           title: 'Left side modal',
           placement: 'left',
@@ -189,6 +204,7 @@ export const Placements: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Right side"
+        triggerColor="base"
         modalProps={{
           title: 'Right side modal',
           placement: 'right',
@@ -209,10 +225,15 @@ export const ColorsAndVariants: Story = {
       <ModalLauncher
         buttonLabel="Base neutral"
         modalProps={{
-          title: 'Base neutral',
+          title: (
+            <span style={{ color: getSemanticTextColor('base', 'neutral') }}>
+              Base neutral
+            </span>
+          ),
           modalColor: 'base',
           modalVariant: 'neutral',
           confirmLabel: 'Done',
+          dismissButtonColor: 'base',
         }}
       >
         <SummaryContent />
@@ -221,10 +242,15 @@ export const ColorsAndVariants: Story = {
         buttonLabel="Primary outline"
         triggerVariant="outline"
         modalProps={{
-          title: 'Primary outline',
+          title: (
+            <span style={{ color: getSemanticTextColor('primary', 'outline') }}>
+              Primary outline
+            </span>
+          ),
           modalColor: 'primary',
           modalVariant: 'outline',
           confirmLabel: 'Continue',
+          dismissButtonColor: 'primary',
         }}
       >
         <FormContent />
@@ -232,10 +258,15 @@ export const ColorsAndVariants: Story = {
       <ModalLauncher
         buttonLabel="Secondary strong"
         modalProps={{
-          title: 'Secondary strong',
+          title: (
+            <span style={{ color: getSemanticTextColor('secondary', 'strong') }}>
+              Secondary strong
+            </span>
+          ),
           modalColor: 'secondary',
           modalVariant: 'strong',
           confirmLabel: 'Confirm',
+          dismissButtonColor: 'secondary',
         }}
       >
         <SummaryContent />
@@ -244,10 +275,15 @@ export const ColorsAndVariants: Story = {
         buttonLabel="Success transparent"
         triggerVariant="outline"
         modalProps={{
-          title: 'Success transparent',
+          title: (
+            <span style={{ color: getSemanticTextColor('success', 'transparent') }}>
+              Success transparent
+            </span>
+          ),
           modalColor: 'success',
           modalVariant: 'transparent',
           confirmLabel: 'Approve',
+          dismissButtonColor: 'success',
         }}
       >
         <SummaryContent />
@@ -261,6 +297,7 @@ export const ActionButtonColors: Story = {
     <div className="flex flex-wrap gap-4">
       <ModalLauncher
         buttonLabel="Primary confirm"
+        triggerColor="primary"
         modalProps={{
           title: 'Primary confirm',
           confirmLabel: 'Save',
@@ -271,6 +308,7 @@ export const ActionButtonColors: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Success actions"
+        triggerColor="success"
         modalProps={{
           title: 'Success actions',
           modalColor: 'base',
@@ -285,6 +323,7 @@ export const ActionButtonColors: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Danger actions"
+        triggerColor="danger"
         modalProps={{
           title: 'Danger actions',
           modalColor: 'base',
@@ -299,6 +338,7 @@ export const ActionButtonColors: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Secondary actions"
+        triggerColor="secondary"
         modalProps={{
           title: 'Secondary actions',
           modalColor: 'base',
@@ -320,6 +360,7 @@ export const SectionOptions: Story = {
     <div className="flex flex-wrap gap-4">
       <ModalLauncher
         buttonLabel="Only body"
+        triggerColor="base"
         modalProps={{
           title: '',
           dismissible: false,
@@ -331,6 +372,7 @@ export const SectionOptions: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Header and body"
+        triggerColor="primary"
         modalProps={{
           title: 'Header and body',
           dismissible: true,
@@ -341,6 +383,7 @@ export const SectionOptions: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Body and custom footer"
+        triggerColor="base"
         modalProps={{
           title: 'Custom footer',
           footer: (
@@ -362,6 +405,7 @@ export const ScrollScenarios: Story = {
     <div className="flex gap-4">
       <ModalLauncher
         buttonLabel="Scrollable content"
+        triggerColor="primary"
         modalProps={{
           title: 'Scroll test',
           modalSize: 'large',
