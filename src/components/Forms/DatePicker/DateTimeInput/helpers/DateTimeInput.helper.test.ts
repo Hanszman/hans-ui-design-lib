@@ -32,6 +32,14 @@ describe('DateTimeInput.helper', () => {
       target: { value: '130320261045' },
     } as React.ChangeEvent<HTMLInputElement>);
     expect(setDisplayValue).toHaveBeenCalledWith('13/03/2026 10:45');
+    createDatePickerDisplayInputHandler({
+      pickerType: 'datetime',
+      timePrecision: 'second',
+      setDisplayValue,
+    })({
+      target: { value: '13032026104559' },
+    } as React.ChangeEvent<HTMLInputElement>);
+    expect(setDisplayValue).toHaveBeenCalledWith('13/03/2026 10:45:59');
 
     const handleOpenChange = vi.fn();
     const mouseDownEvent = { preventDefault: vi.fn() } as unknown as React.MouseEvent<HTMLInputElement>;
