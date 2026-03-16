@@ -4,6 +4,8 @@ import type {
 } from '../../DatePicker.types';
 
 export type CreateDatePickerDisplayInputHandlerParams = {
+  pickerType: Exclude<HansDatePickerType, 'time'>;
+  timePrecision: HansDatePickerTimePrecision;
   setDisplayValue: (value: string) => void;
 };
 

@@ -25,9 +25,41 @@ import {
 } from '../../helpers/DatePicker.helper';
 
 export const createDatePickerDisplayInputHandler =
-  ({ setDisplayValue }: CreateDatePickerDisplayInputHandlerParams) =>
+  ({
+    pickerType,
+    timePrecision,
+    setDisplayValue,
+  }: CreateDatePickerDisplayInputHandlerParams) =>
   (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setDisplayValue(event.target.value);
+    const digits = event.target.value.replace(/\D/g, '');
+
+    if (pickerType === 'date') {
+      const nextValue = digits.slice(0, 8).replace(
+        /(\d{0,2})(\d{0,2})(\d{0,4})/,
+        (_, day, month, year) =>
+          [day, month, year].filter(Boolean).join('/'),
+      );
+      setDisplayValue(nextValue);
+      return;
+    }
+
+    const maxDigits = timePrecision === 'second' ? 14 : 12;
+    const maskedDigits = digits.slice(0, maxDigits);
+    const datePart = maskedDigits.slice(0, 8).replace(
+      /(\d{0,2})(\d{0,2})(\d{0,4})/,
+      (_, day, month, year) =>
+        [day, month, year].filter(Boolean).join('/'),
+    );
+    const timeDigits = maskedDigits.slice(8);
+    const timePart = timeDigits.replace(
+      timePrecision === 'second'
+        ? /(\d{0,2})(\d{0,2})(\d{0,2})/
+        : /(\d{0,2})(\d{0,2})/,
+      (_, hours, minutes, seconds) =>
+        [hours, minutes, seconds].filter(Boolean).join(':'),
+    );
+
+    setDisplayValue([datePart, timePart].filter(Boolean).join(' '));
   };
 
 export const createDatePickerInputMouseDownHandler =

@@ -16,10 +16,22 @@ import {
 describe('DateTimeInput.helper', () => {
   it('Should create display and mouse handlers', () => {
     const setDisplayValue = vi.fn();
-    createDatePickerDisplayInputHandler({ setDisplayValue })({
-      target: { value: '13/03/2026' },
+    createDatePickerDisplayInputHandler({
+      pickerType: 'date',
+      timePrecision: 'minute',
+      setDisplayValue,
+    })({
+      target: { value: '13032026' },
     } as React.ChangeEvent<HTMLInputElement>);
     expect(setDisplayValue).toHaveBeenCalledWith('13/03/2026');
+    createDatePickerDisplayInputHandler({
+      pickerType: 'datetime',
+      timePrecision: 'minute',
+      setDisplayValue,
+    })({
+      target: { value: '130320261045' },
+    } as React.ChangeEvent<HTMLInputElement>);
+    expect(setDisplayValue).toHaveBeenCalledWith('13/03/2026 10:45');
 
     const handleOpenChange = vi.fn();
     const mouseDownEvent = { preventDefault: vi.fn() } as unknown as React.MouseEvent<HTMLInputElement>;

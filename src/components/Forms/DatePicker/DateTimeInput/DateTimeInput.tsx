@@ -123,8 +123,13 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     [disabled, onOpenChange],
   );
   const handleDisplayInputChange = React.useMemo(
-    () => createDatePickerDisplayInputHandler({ setDisplayValue }),
-    [],
+    () =>
+      createDatePickerDisplayInputHandler({
+        pickerType: resolvedPickerType,
+        timePrecision,
+        setDisplayValue,
+      }),
+    [resolvedPickerType, timePrecision],
   );
 
   const handleBlur = React.useMemo(

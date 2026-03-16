@@ -63,15 +63,30 @@ describe('HansDateTimeInput', () => {
     );
 
     const input = screen.getByPlaceholderText('DD/MM/YYYY');
-    fireEvent.change(input, { target: { value: '31/02/2026' } });
+    fireEvent.change(input, { target: { value: '31022026' } });
+    expect(input).toHaveValue('31/02/2026');
     fireEvent.blur(input);
     expect(input).toHaveValue('');
     expect(onChange).toHaveBeenCalledWith('');
 
-    fireEvent.change(input, { target: { value: '14/03/2026' } });
+    fireEvent.change(input, { target: { value: '14032026' } });
+    expect(input).toHaveValue('14/03/2026');
     fireEvent.blur(input);
     expect(input).toHaveValue('14/03/2026');
     expect(onChange).toHaveBeenCalledWith('2026-03-14');
+  });
+
+  it('Should apply manual typing mask for datetime values too', () => {
+    render(
+      <HansDateTimeInput
+        pickerType="datetime"
+        allowInputTyping
+      />,
+    );
+
+    const input = screen.getByPlaceholderText('DD/MM/YYYY HH:MM');
+    fireEvent.change(input, { target: { value: '130320261045' } });
+    expect(input).toHaveValue('13/03/2026 10:45');
   });
 
   it('Should toggle popup from the icon and support controlled values', () => {
