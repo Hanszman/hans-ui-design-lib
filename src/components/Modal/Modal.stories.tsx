@@ -204,7 +204,7 @@ export const Placements: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Right side"
-        triggerColor="base"
+        triggerColor="primary"
         modalProps={{
           title: 'Right side modal',
           placement: 'right',
@@ -259,14 +259,16 @@ export const ColorsAndVariants: Story = {
         buttonLabel="Secondary strong"
         modalProps={{
           title: (
-            <span style={{ color: getSemanticTextColor('secondary', 'strong') }}>
+            <span
+              style={{ color: getSemanticTextColor('secondary', 'strong') }}
+            >
               Secondary strong
             </span>
           ),
           modalColor: 'secondary',
           modalVariant: 'strong',
           confirmLabel: 'Confirm',
-          dismissButtonColor: 'secondary',
+          dismissButtonColor: 'primary',
         }}
       >
         <SummaryContent />
@@ -276,7 +278,9 @@ export const ColorsAndVariants: Story = {
         triggerVariant="outline"
         modalProps={{
           title: (
-            <span style={{ color: getSemanticTextColor('success', 'transparent') }}>
+            <span
+              style={{ color: getSemanticTextColor('success', 'transparent') }}
+            >
               Success transparent
             </span>
           ),
@@ -360,7 +364,7 @@ export const SectionOptions: Story = {
     <div className="flex flex-wrap gap-4">
       <ModalLauncher
         buttonLabel="Only body"
-        triggerColor="base"
+        triggerColor="primary"
         modalProps={{
           title: '',
           dismissible: false,
@@ -372,7 +376,7 @@ export const SectionOptions: Story = {
       </ModalLauncher>
       <ModalLauncher
         buttonLabel="Header and body"
-        triggerColor="primary"
+        triggerColor="base"
         modalProps={{
           title: 'Header and body',
           dismissible: true,
