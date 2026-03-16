@@ -1,0 +1,21 @@
+import React from 'react';
+import {
+  createPropsList,
+  type InferPropsFromSchema,
+} from '../../../types/Schema.types';
+import type { HansKanbanItemData } from '../Kanban.types';
+
+const HansKanbanItemSchema = {
+  item: { type: 'custom', ref: {} as HansKanbanItemData },
+  draggable: 'boolean',
+  isDragging: 'boolean',
+  showDropIndicator: 'boolean',
+  customClasses: 'string',
+} as const;
+
+export type HansKanbanItemProps = InferPropsFromSchema<
+  typeof HansKanbanItemSchema
+> &
+  Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>;
+
+export const HansKanbanItemPropsList = createPropsList(HansKanbanItemSchema);

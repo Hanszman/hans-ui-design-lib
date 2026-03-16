@@ -35,6 +35,11 @@ import {
   type HansAvatarProps,
   HansAvatarPropsList,
 } from './components/Avatar/Avatar.types';
+import { HansCard } from './components/Card/Card';
+import {
+  type HansCardProps,
+  HansCardPropsList,
+} from './components/Card/Card.types';
 import { HansTag } from './components/Tag/Tag';
 import {
   type HansTagProps,
@@ -55,6 +60,21 @@ import {
   type HansLoadingProps,
   HansLoadingPropsList,
 } from './components/Loading/Loading.types';
+import { HansKanban } from './components/Kanban/Kanban';
+import {
+  type HansKanbanProps,
+  HansKanbanPropsList,
+} from './components/Kanban/Kanban.types';
+import { HansKanbanColumn } from './components/Kanban/KanbanColumn/KanbanColumn';
+import {
+  type HansKanbanColumnProps,
+  HansKanbanColumnPropsList,
+} from './components/Kanban/KanbanColumn/KanbanColumn.types';
+import { HansKanbanItem } from './components/Kanban/KanbanItem/KanbanItem';
+import {
+  type HansKanbanItemProps,
+  HansKanbanItemPropsList,
+} from './components/Kanban/KanbanItem/KanbanItem.types';
 import { HansPopup } from './components/Popup/Popup';
 import {
   type HansPopupProps,
@@ -116,6 +136,11 @@ registerReactAsWebComponent<HansAvatarProps>(
   HansAvatar,
   HansAvatarPropsList,
 );
+registerReactAsWebComponent<HansCardProps>(
+  'hans-card',
+  HansCard,
+  HansCardPropsList,
+);
 registerReactAsWebComponent<HansTagProps>(
   'hans-tag',
   HansTag,
@@ -135,6 +160,21 @@ registerReactAsWebComponent<HansLoadingProps>(
   'hans-loading',
   HansLoading,
   HansLoadingPropsList,
+);
+registerReactAsWebComponent<HansKanbanProps>(
+  'hans-kanban',
+  HansKanban,
+  HansKanbanPropsList,
+);
+registerReactAsWebComponent<HansKanbanColumnProps>(
+  'hans-kanban-column',
+  HansKanbanColumn,
+  HansKanbanColumnPropsList,
+);
+registerReactAsWebComponent<HansKanbanItemProps>(
+  'hans-kanban-item',
+  HansKanbanItem,
+  HansKanbanItemPropsList,
 );
 registerReactAsWebComponent<HansPopupProps>(
   'hans-popup',

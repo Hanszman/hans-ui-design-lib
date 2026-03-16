@@ -1,0 +1,15 @@
+@import './KanbanColumn/kanban-column.scss';
+@import './KanbanItem/kanban-item.scss';
+
+.hans-kanban-wrapper {
+  @apply w-full overflow-x-auto;
+}
+
+.hans-kanban-board {
+  @apply grid auto-cols-[minmax(var(--hans-kanban-column-min-width),1fr)] grid-flow-col gap-4;
+  min-height: var(--hans-kanban-board-min-height);
+}
+
+.hans-kanban-loading {
+  @apply flex min-h-[var(--hans-kanban-board-min-height)] w-full items-center justify-center rounded-2xl border border-[var(--base-neutral-color)] bg-[var(--white)];
+}

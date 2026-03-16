@@ -1,0 +1,86 @@
+.hans-card {
+  @apply flex w-full min-w-0 overflow-hidden rounded-2xl border;
+  background: var(--hans-card-bg);
+  border-color: var(--hans-card-border);
+  color: var(--hans-card-text);
+}
+
+.hans-card-small {
+  @apply min-h-20 gap-3 p-3;
+}
+
+.hans-card-medium {
+  @apply min-h-24 gap-4 p-4;
+}
+
+.hans-card-large {
+  @apply min-h-32 gap-4 p-5;
+}
+
+.hans-card-profile {
+  @apply flex-col;
+}
+
+.hans-card-profile-main {
+  @apply flex items-start gap-3;
+}
+
+.hans-card-copy {
+  @apply flex min-w-0 flex-1 flex-col gap-1;
+}
+
+.hans-card-title {
+  @apply block min-w-0 text-sm font-semibold leading-5;
+  color: var(--hans-card-text);
+}
+
+.hans-card-description {
+  @apply block text-sm leading-5;
+  color: var(--hans-card-muted);
+}
+
+.hans-card-extra {
+  @apply mt-2 flex flex-wrap items-center gap-2;
+}
+
+.hans-card-image {
+  @apply p-0;
+}
+
+.hans-card-image.hans-card-small {
+  @apply min-h-32;
+}
+
+.hans-card-image.hans-card-medium {
+  @apply min-h-40;
+}
+
+.hans-card-image.hans-card-large {
+  @apply min-h-52;
+}
+
+.hans-card-image-surface {
+  @apply relative flex h-full w-full items-end overflow-hidden bg-[var(--hans-card-bg)] bg-cover bg-center bg-no-repeat;
+  background-image:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--black) 6%, transparent) 0%,
+      color-mix(in srgb, var(--black) 54%, transparent) 100%
+    ),
+    var(--hans-card-image);
+  min-height: inherit;
+}
+
+.hans-card-image-overlay {
+  @apply flex w-full flex-col justify-end gap-3 p-4;
+  min-height: inherit;
+}
+
+.hans-card-image-copy {
+  @apply flex min-w-0 flex-col gap-1;
+}
+
+.hans-card-image .hans-card-title,
+.hans-card-image .hans-card-description {
+  @apply text-white;
+}

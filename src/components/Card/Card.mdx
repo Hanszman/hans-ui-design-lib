@@ -1,0 +1,46 @@
+import { Canvas, Controls, Meta, Primary, Title } from '@storybook/addon-docs/blocks';
+import * as HansCardStories from './Card.stories';
+
+<Meta of={HansCardStories} />
+
+<Title />
+
+The **Card** component is a reusable visual template for structured content blocks. It supports a profile-style layout with avatar, title and description, and an image-cover layout where the artwork fills the entire card area with text layered above it.
+
+## Usage
+
+```tsx
+import { HansCard } from 'hans-ui-design-lib';
+
+export const Example = () => (
+  <HansCard
+    title="Design sync"
+    description="Avatar + text composition for kanban items and dashboards."
+    avatarSrc="https://i.pravatar.cc/120?img=24"
+  />
+);
+```
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Profile Layout
+
+Use the default profile layout for list items, kanban cards, compact summaries or activity entries.
+
+<Canvas of={HansCardStories.ProfileCards} />
+
+## Image Layout
+
+Use `cardLayout="image"` for full-cover artwork blocks with optional text above the image.
+
+<Canvas of={HansCardStories.ImageCards} />
+
+## Colors And Sizes
+
+The component follows the common semantic `color`, `variant` and `size` patterns used across the design system.
+
+<Canvas of={HansCardStories.ColorsAndSizes} />

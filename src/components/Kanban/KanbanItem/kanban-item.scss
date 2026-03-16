@@ -1,0 +1,21 @@
+.hans-kanban-item {
+  @apply relative cursor-grab;
+}
+
+.hans-kanban-item-dragging {
+  @apply opacity-60;
+}
+
+.hans-kanban-item-drop-indicator::before {
+  content: '';
+  @apply absolute -top-2 left-0 right-0 z-[1] h-1 rounded-full;
+  background: color-mix(in srgb, var(--primary-default-color) 72%, transparent);
+}
+
+.hans-kanban-item-card {
+  @apply shadow-sm transition-transform duration-150;
+}
+
+.hans-kanban-item:hover .hans-kanban-item-card {
+  @apply -translate-y-px shadow-md;
+}

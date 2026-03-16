@@ -1,0 +1,69 @@
+import { Canvas, Controls, Meta, Primary, Title } from '@storybook/addon-docs/blocks';
+import * as HansKanbanStories from './Kanban.stories';
+
+<Meta of={HansKanbanStories} />
+
+<Title />
+
+The **Kanban** component provides a drag-and-drop workflow board built without external drag libraries. It is composed of reusable `KanbanColumn` and `KanbanItem` building blocks, while each item internally uses the standalone `Card` component as its visual template.
+
+## Usage
+
+```tsx
+import { useState } from 'react';
+import { HansKanban } from 'hans-ui-design-lib';
+
+const columns = [
+  { id: 'todo', title: 'To do' },
+  { id: 'doing', title: 'Doing' },
+  { id: 'done', title: 'Done' },
+];
+
+const initialItems = [
+  { id: 'task-1', columnId: 'todo', title: 'Refine backlog' },
+  { id: 'task-2', columnId: 'doing', title: 'Build drag and drop' },
+];
+
+export const Example = () => {
+  const [items, setItems] = useState(initialItems);
+
+  return (
+    <HansKanban
+      columns={columns}
+      items={items}
+      onItemsChange={setItems}
+      emptyColumnText="Drop a task here"
+    />
+  );
+};
+```
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Mixed Card Templates
+
+Kanban items can render avatar-based profile cards or full-cover image cards, because the item component delegates its visual structure to `HansCard`.
+
+<Canvas of={HansKanbanStories.ImageAndProfileCards} />
+
+## Column Surfaces
+
+Each column can receive its own semantic color and variant to emphasize workflow stages without breaking the board layout.
+
+<Canvas of={HansKanbanStories.ColumnStyles} />
+
+## Empty And Dense States
+
+Empty columns remain droppable, while dense columns continue stacking cards naturally inside the scrollable board.
+
+<Canvas of={HansKanbanStories.EmptyAndDenseStates} />
+
+## Loading State
+
+Use the built-in loading state when the board data is still being fetched.
+
+<Canvas of={HansKanbanStories.LoadingBoard} />

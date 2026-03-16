@@ -1,0 +1,43 @@
+.hans-kanban-column {
+  @apply flex min-h-[var(--hans-kanban-board-min-height)] flex-col rounded-2xl border;
+  background: var(--hans-kanban-surface-bg);
+  border-color: var(--hans-kanban-surface-border);
+  color: var(--hans-kanban-surface-text);
+}
+
+.hans-kanban-column-drag-over {
+  @apply shadow-[0_0_0_3px_color-mix(in_srgb,var(--hans-kanban-surface-border)_28%,transparent)];
+}
+
+.hans-kanban-column-header {
+  @apply flex items-start justify-between gap-3 border-b px-4 py-4;
+  border-color: color-mix(in srgb, var(--hans-kanban-surface-border) 35%, transparent);
+}
+
+.hans-kanban-column-copy {
+  @apply flex min-w-0 flex-1 flex-col gap-1;
+}
+
+.hans-kanban-column-title {
+  @apply text-sm font-semibold leading-5;
+}
+
+.hans-kanban-column-description,
+.hans-kanban-column-empty {
+  @apply text-sm leading-5;
+  color: var(--hans-kanban-surface-muted);
+}
+
+.hans-kanban-column-count {
+  @apply inline-flex min-w-8 items-center justify-center rounded-full px-2 py-1 text-xs font-semibold;
+  background: color-mix(in srgb, var(--hans-kanban-surface-border) 22%, transparent);
+}
+
+.hans-kanban-column-body {
+  @apply flex min-h-[12rem] flex-1 flex-col gap-3 p-4;
+}
+
+.hans-kanban-column-drop-indicator {
+  @apply mt-auto block h-2 rounded-full;
+  background: color-mix(in srgb, var(--hans-kanban-surface-border) 55%, transparent);
+}
