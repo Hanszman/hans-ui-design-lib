@@ -82,3 +82,9 @@ Header, body and footer are optional. You can keep only the custom children area
 The body area uses its own scroll container so large forms, wide content grids and long informational layouts continue working without breaking the overlay shell.
 
 <Canvas of={HansModalStories.ScrollScenarios} />
+
+## Loading State
+
+Use `loading` to replace the body content with a centered `HansLoading` spinner while keeping the modal shell visible and with a safe minimum body height.
+
+<Canvas of={HansModalStories.LoadingState} />

@@ -113,13 +113,6 @@ const SummaryContent = () => (
         buttonVariant="outline"
       />
     </div>
-    <div className="flex-1 rounded-xl border border-[var(--base-default-color)] p-4">
-      <strong className="block mb-2">Flexible content area</strong>
-      <span>
-        This block grows with the modal body so centered and side layouts can
-        demonstrate full-height custom children.
-      </span>
-    </div>
   </div>
 );
 
@@ -433,6 +426,23 @@ export const ScrollScenarios: Story = {
       >
         <LongContent />
       </ModalLauncher>
+    </div>
+  ),
+};
+
+export const LoadingState: Story = {
+  render: () => (
+    <div className="flex gap-4">
+      <ModalLauncher
+        buttonLabel="Loading modal"
+        triggerColor="base"
+        modalProps={{
+          title: 'Loading modal',
+          modalSize: 'small',
+          loading: true,
+          dismissible: false,
+        }}
+      />
     </div>
   ),
 };

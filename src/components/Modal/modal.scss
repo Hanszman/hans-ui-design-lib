@@ -113,6 +113,10 @@
   @apply flex h-full min-h-full flex-1 flex-col;
 }
 
+.hans-modal-body-loading {
+  @apply min-h-[18rem] items-center justify-center;
+}
+
 .hans-modal-footer {
   @apply mt-auto flex flex-wrap items-center justify-end gap-3;
 }

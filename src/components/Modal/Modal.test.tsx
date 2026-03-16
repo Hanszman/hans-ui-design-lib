@@ -32,6 +32,28 @@ vi.mock('../Forms/Button/Button', () => ({
   ),
 }));
 
+vi.mock('../Loading/Loading', () => ({
+  HansLoading: ({
+    ariaLabel,
+    loadingColor,
+    loadingSize,
+    loadingType,
+  }: {
+    ariaLabel?: string;
+    loadingColor?: string;
+    loadingSize?: string;
+    loadingType?: string;
+  }) => (
+    <span
+      data-testid="mock-modal-loading"
+      aria-label={ariaLabel}
+      data-color={loadingColor}
+      data-size={loadingSize}
+      data-type={loadingType}
+    />
+  ),
+}));
+
 const renderWithAct = (ui: React.ReactNode) => {
   let view: ReturnType<typeof render>;
 
@@ -250,5 +272,32 @@ describe('HansModal', () => {
 
     expect(screen.getByRole('dialog')).toHaveFocus();
     expect(document.body.style.overflow).toBe('hidden');
+  });
+
+  it('Should render centered loading state with minimum body area and hide children', () => {
+    renderWithAct(
+      <HansModal isOpen title="Loading modal" modalSize="small" loading>
+        <div>Hidden content</div>
+      </HansModal>,
+    );
+
+    expect(screen.getByText('Loading modal')).toBeInTheDocument();
+    expect(screen.getByTestId('mock-modal-loading')).toHaveAttribute(
+      'aria-label',
+      'Modal loading',
+    );
+    expect(screen.getByTestId('mock-modal-loading')).toHaveAttribute(
+      'data-type',
+      'spinner',
+    );
+    expect(screen.getByTestId('mock-modal-loading')).toHaveAttribute(
+      'data-size',
+      'medium',
+    );
+    expect(screen.queryByText('Hidden content')).not.toBeInTheDocument();
+    expect(screen.getByTestId('mock-modal-loading').parentElement).toHaveClass(
+      'hans-modal-body-content',
+      'hans-modal-body-loading',
+    );
   });
 });

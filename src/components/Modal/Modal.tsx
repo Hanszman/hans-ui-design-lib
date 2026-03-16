@@ -2,6 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { HansButton } from '../Forms/Button/Button';
 import { HansIcon } from '../Icon/Icon';
+import { HansLoading } from '../Loading/Loading';
 import type { HansModalProps } from './Modal.types';
 import {
   createModalActionHandler,
@@ -35,6 +36,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
     lockBodyScroll = true,
     showHeaderDivider = true,
     showFooterDivider = true,
+    loading = false,
     confirmLabel = '',
     cancelLabel = '',
     closeButtonLabel = 'Close modal',
@@ -101,7 +103,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
     [close, closeOnBackdropClick],
   );
   const hasHeader = shouldRenderModalHeader({ title, dismissible, header });
-  const hasBody = hasRenderableModalContent(children);
+  const hasBody = loading || hasRenderableModalContent(children);
   const hasFooter = shouldRenderModalFooter({
     footer,
     confirmLabel,
@@ -206,7 +208,22 @@ export const HansModal = React.memo((props: HansModalProps) => {
                   } as React.CSSProperties
                 }
               >
-                <div className="hans-modal-body-content">{children}</div>
+                <div
+                  className={`hans-modal-body-content ${
+                    loading ? 'hans-modal-body-loading' : ''
+                  }`}
+                >
+                  {loading ? (
+                    <HansLoading
+                      loadingType="spinner"
+                      loadingSize="medium"
+                      loadingColor={modalColor}
+                      ariaLabel="Modal loading"
+                    />
+                  ) : (
+                    children
+                  )}
+                </div>
               </div>
             ) : null}
 

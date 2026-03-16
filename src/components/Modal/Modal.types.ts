@@ -31,6 +31,7 @@ const HansModalSchema = {
   lockBodyScroll: 'boolean',
   showHeaderDivider: 'boolean',
   showFooterDivider: 'boolean',
+  loading: 'boolean',
   confirmLabel: 'string',
   cancelLabel: 'string',
   closeButtonLabel: 'string',
