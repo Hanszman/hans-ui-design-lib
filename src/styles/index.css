@@ -18,6 +18,7 @@
 @import '../components/Popup/popup.scss';
 @import '../components/Popup/PopupItemList/popup-item-list.scss';
 @import '../components/Toast/toast.scss';
+@import '../components/Modal/modal.scss';
 @import '../components/Table/table.scss';
 @import '../components/Tabs/tabs.scss';
 

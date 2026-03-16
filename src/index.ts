@@ -16,6 +16,7 @@ export * from './components/Icon/Icon';
 export * from './components/Loading/Loading';
 export * from './components/Popup/Popup';
 export * from './components/Toast/Toast';
+export * from './components/Modal/Modal';
 export * from './components/Table/Table';
 export * from './components/Tabs/Tabs';
 
@@ -32,5 +33,6 @@ export * from './components/Icon/Icon.types';
 export * from './components/Loading/Loading.types';
 export * from './components/Popup/Popup.types';
 export * from './components/Toast/Toast.types';
+export * from './components/Modal/Modal.types';
 export * from './components/Table/Table.types';
 export * from './components/Tabs/Tabs.types';

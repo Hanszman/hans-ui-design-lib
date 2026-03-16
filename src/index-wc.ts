@@ -65,6 +65,11 @@ import {
   type HansToastProps,
   HansToastPropsList,
 } from './components/Toast/Toast.types';
+import { HansModal } from './components/Modal/Modal';
+import {
+  type HansModalProps,
+  HansModalPropsList,
+} from './components/Modal/Modal.types';
 import { HansTable } from './components/Table/Table';
 import {
   type HansTableProps,
@@ -140,6 +145,11 @@ registerReactAsWebComponent<HansToastProps>(
   'hans-toast',
   HansToast,
   HansToastPropsList,
+);
+registerReactAsWebComponent<HansModalProps>(
+  'hans-modal',
+  HansModal,
+  HansModalPropsList,
 );
 registerReactAsWebComponent<HansTableProps>(
   'hans-table',

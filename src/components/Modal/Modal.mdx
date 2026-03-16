@@ -1,0 +1,78 @@
+import {
+  Canvas,
+  Controls,
+  Meta,
+  Primary,
+  Title,
+} from '@storybook/addon-docs/blocks';
+import * as HansModalStories from './Modal.stories';
+
+<Meta of={HansModalStories} />
+
+<Title />
+
+The **Modal** component renders dialog layers through a portal so it can escape local layout containers in apps and Storybook. It supports centered dialogs, left and right side panels, optional header/body/footer sections, semantic color variants and custom children with vertical or horizontal scrolling when needed.
+
+## Usage
+
+```tsx
+import { useState } from 'react';
+import { HansButton, HansModal } from 'hans-ui-design-lib';
+
+export const Example = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <HansButton label="Open modal" onClick={() => setOpen(true)} />
+      <HansModal
+        isOpen={open}
+        onOpenChange={setOpen}
+        title="Create workspace"
+        confirmLabel="Create"
+        cancelLabel="Cancel"
+        modalColor="primary"
+        modalVariant="outline"
+      >
+        <div>Any custom content can be rendered here.</div>
+      </HansModal>
+    </>
+  );
+};
+```
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Sizes
+
+Use `modalSize` to control the overall modal width while keeping the internal body scrollable.
+
+<Canvas of={HansModalStories.Sizes} />
+
+## Placement
+
+Use `placement="center"` for classic dialogs or `left` / `right` for side modals that slide into the viewport area.
+
+<Canvas of={HansModalStories.Placements} />
+
+## Colors And Variants
+
+Use the common semantic props `modalColor` and `modalVariant` to align the dialog with the rest of the design system.
+
+<Canvas of={HansModalStories.ColorsAndVariants} />
+
+## Optional Sections
+
+Header, body and footer are optional. You can keep only the custom children area, add a dismiss icon, show confirm/cancel actions, or inject a completely custom footer node.
+
+<Canvas of={HansModalStories.SectionOptions} />
+
+## Scroll Behavior
+
+The body area uses its own scroll container so large forms, wide content grids and long informational layouts continue working without breaking the overlay shell.
+
+<Canvas of={HansModalStories.ScrollScenarios} />

@@ -1,0 +1,114 @@
+.hans-modal-portal {
+  @apply fixed inset-0 z-[1200] flex;
+  color: var(--hans-modal-text);
+}
+
+.hans-modal-overlay {
+  @apply absolute inset-0 pointer-events-none;
+  background: var(--hans-modal-overlay);
+  backdrop-filter: blur(2px);
+}
+
+.hans-modal-shell {
+  @apply relative z-[1] flex min-h-full w-full p-4 md:p-6;
+}
+
+.hans-modal-dialog {
+  @apply relative flex max-h-full w-full flex-col overflow-hidden rounded-2xl border shadow-[var(--hans-modal-shadow)];
+  background: var(--hans-modal-bg);
+  border-color: var(--hans-modal-border);
+  color: var(--hans-modal-text);
+}
+
+.hans-modal-placement-center {
+  @apply my-auto mx-auto;
+}
+
+.hans-modal-placement-left {
+  @apply mr-auto ml-0 my-0 h-full rounded-none rounded-r-2xl;
+}
+
+.hans-modal-placement-right {
+  @apply ml-auto mr-0 my-0 h-full rounded-none rounded-l-2xl;
+}
+
+.hans-modal-small.hans-modal-placement-center {
+  @apply max-w-md;
+}
+
+.hans-modal-medium.hans-modal-placement-center {
+  @apply max-w-2xl;
+}
+
+.hans-modal-large.hans-modal-placement-center {
+  @apply max-w-5xl;
+}
+
+.hans-modal-small.hans-modal-placement-left,
+.hans-modal-small.hans-modal-placement-right {
+  @apply max-w-[380px];
+}
+
+.hans-modal-medium.hans-modal-placement-left,
+.hans-modal-medium.hans-modal-placement-right {
+  @apply max-w-[520px];
+}
+
+.hans-modal-large.hans-modal-placement-left,
+.hans-modal-large.hans-modal-placement-right {
+  @apply max-w-[680px];
+}
+
+.hans-modal-content {
+  @apply flex h-full min-h-0 flex-col;
+}
+
+.hans-modal-header,
+.hans-modal-footer {
+  @apply flex items-start gap-3 px-5 py-4;
+}
+
+.hans-modal-header-divider,
+.hans-modal-footer-divider {
+  border-color: color-mix(in srgb, var(--hans-modal-border) 40%, transparent);
+}
+
+.hans-modal-header-divider {
+  @apply border-b;
+}
+
+.hans-modal-footer-divider {
+  @apply border-t;
+}
+
+.hans-modal-header-main {
+  @apply flex min-w-0 flex-1 flex-col gap-2;
+}
+
+.hans-modal-title {
+  @apply text-xl font-semibold leading-7;
+}
+
+.hans-modal-header-content {
+  @apply text-sm leading-6;
+  color: var(--hans-modal-muted-text);
+}
+
+.hans-modal-dismiss {
+  @apply inline-flex shrink-0 items-center justify-center rounded-md border-none bg-transparent p-1 text-xl leading-none cursor-pointer;
+  color: inherit;
+}
+
+.hans-modal-body {
+  @apply min-h-0 flex-1 overflow-auto px-5 py-4;
+  max-height: var(--hans-modal-body-max-height);
+}
+
+.hans-modal-footer {
+  @apply flex flex-wrap items-center justify-end gap-3;
+}
+
+.hans-modal-footer-content {
+  @apply mr-auto flex min-w-0 flex-1 items-center gap-3 text-sm;
+  color: var(--hans-modal-muted-text);
+}
