@@ -95,3 +95,25 @@ export const ColorsAndSizes: Story = {
     </div>
   ),
 };
+
+export const LoadingCards: Story = {
+  render: () => (
+    <div className="grid gap-4 md:grid-cols-2">
+      <HansCard
+        loading
+        loadingColor="base"
+        cardSize="medium"
+        cardColor="base"
+        cardVariant="neutral"
+      />
+      <HansCard
+        loading
+        loadingColor="primary"
+        cardLayout="image"
+        cardSize="large"
+        cardColor="primary"
+        cardVariant="strong"
+      />
+    </div>
+  ),
+};

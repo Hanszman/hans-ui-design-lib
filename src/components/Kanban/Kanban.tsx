@@ -2,17 +2,17 @@ import React from 'react';
 import { HansLoading } from '../Loading/Loading';
 import { HansKanbanColumn } from './KanbanColumn/KanbanColumn';
 import { HansKanbanItem } from './KanbanItem/KanbanItem';
-import type {
-  HansKanbanItemData,
-  HansKanbanMoveEvent,
-  HansKanbanProps,
-} from './Kanban.types';
+import type { HansKanbanItemData, HansKanbanProps } from './Kanban.types';
 import {
-  getHansKanbanDropIndex,
+  createHansKanbanMoveResult,
+  getHansKanbanColumnSurfaceStyle,
+  getHansKanbanControlledItems,
+  getHansKanbanNextColumnDragState,
+  getHansKanbanNextDropState,
+  getHansKanbanNextItemDragOverState,
+  getHansKanbanNextItemDragStartState,
   getHansKanbanStyleVars,
-  getHansKanbanSurfaceStyleVars,
   groupHansKanbanItems,
-  moveHansKanbanItem,
 } from './helpers/Kanban.helper';
 import type { HansKanbanDragState } from './helpers/Kanban.helper.types';
 
@@ -46,7 +46,12 @@ export const HansKanban = React.memo((props: HansKanbanProps) => {
   );
 
   const resolvedItems = React.useMemo(
-    () => (isControlled ? (items as HansKanbanItemData[]) : internalItems),
+    () =>
+      getHansKanbanControlledItems({
+        isControlled,
+        items,
+        internalItems,
+      }),
     [internalItems, isControlled, items],
   );
 
@@ -66,32 +71,15 @@ export const HansKanban = React.memo((props: HansKanbanProps) => {
 
   const commitMove = React.useCallback(
     (nextDragState: HansKanbanDragState) => {
-      const nextItems = moveHansKanbanItem({
+      const { nextItems, moveEvent } = createHansKanbanMoveResult({
         columns,
         items: resolvedItems,
-        activeItemId: nextDragState.activeItemId,
-        sourceColumnId: nextDragState.sourceColumnId,
-        targetColumnId: nextDragState.targetColumnId,
-        targetIndex: nextDragState.targetIndex,
+        dragState: nextDragState,
       });
 
-      const movedItem = nextItems.find(
-        (item) => item.id === nextDragState.activeItemId,
-      ) as HansKanbanItemData;
-
       if (!isControlled) setInternalItems(nextItems);
-      if (onItemsChange) onItemsChange(nextItems);
-
-      const moveEvent: HansKanbanMoveEvent = {
-        item: movedItem,
-        fromColumnId: nextDragState.sourceColumnId,
-        toColumnId: nextDragState.targetColumnId,
-        fromIndex: nextDragState.sourceIndex,
-        toIndex: nextDragState.targetIndex,
-        nextItems,
-      };
-
-      if (onMoveItem) onMoveItem(moveEvent);
+      onItemsChange?.(nextItems);
+      onMoveItem?.(moveEvent);
     },
     [columns, isControlled, onItemsChange, onMoveItem, resolvedItems],
   );
@@ -105,14 +93,16 @@ export const HansKanban = React.memo((props: HansKanbanProps) => {
     columnId: string,
     columnItemsLength: number,
   ) => {
-    if (!dragAndDrop || !dragState) return;
-    event.preventDefault();
-
-    setDragState({
-      ...dragState,
-      targetColumnId: columnId,
-      targetIndex: columnItemsLength,
+    const nextDragState = getHansKanbanNextColumnDragState({
+      dragAndDrop,
+      dragState,
+      columnId,
+      columnItemsLength,
     });
+
+    if (!nextDragState) return;
+    event.preventDefault();
+    setDragState(nextDragState);
   };
 
   const handleDrop = (
@@ -120,18 +110,16 @@ export const HansKanban = React.memo((props: HansKanbanProps) => {
     columnId: string,
     fallbackTargetIndex: number,
   ) => {
-    if (!dragAndDrop || !dragState) return;
+    const nextDragState = getHansKanbanNextDropState({
+      dragAndDrop,
+      dragState,
+      columnId,
+      fallbackTargetIndex,
+    });
+
+    if (!nextDragState) return;
     event.preventDefault();
     event.stopPropagation();
-
-    const nextDragState = {
-      ...dragState,
-      targetColumnId: columnId,
-      targetIndex:
-        dragState.targetColumnId === columnId
-          ? dragState.targetIndex
-          : fallbackTargetIndex,
-    };
 
     commitMove(nextDragState);
     setDragState(null);
@@ -146,10 +134,12 @@ export const HansKanban = React.memo((props: HansKanbanProps) => {
         {...rest}
       >
         <HansLoading
-          loadingType="spinner"
-          loadingSize="large"
+          loadingType="skeleton"
           loadingColor={loadingColor}
+          skeletonWidth="100%"
+          skeletonHeight="100%"
           ariaLabel={loadingAriaLabel}
+          customClasses="hans-kanban-loading-skeleton"
         />
       </div>
     );
@@ -179,9 +169,9 @@ export const HansKanban = React.memo((props: HansKanbanProps) => {
               showColumnCount={showColumnCounts}
               isDragOver={isColumnDragOver}
               showDropAtEnd={showDropAtEnd}
-              style={getHansKanbanSurfaceStyleVars({
-                color: column.columnColor ?? 'base',
-                variant: column.columnVariant ?? 'outline',
+              style={getHansKanbanColumnSurfaceStyle({
+                color: column.columnColor,
+                variant: column.columnVariant,
               })}
               onDragOver={(event) =>
                 handleColumnDragOver(event, column.id, columnItems.length)
@@ -199,36 +189,35 @@ export const HansKanban = React.memo((props: HansKanbanProps) => {
                   }
                   onClick={() => onItemClick?.(item)}
                   onDragStart={(event) => {
-                    if (!dragAndDrop) return;
-                    event.dataTransfer.effectAllowed = 'move';
-                    setDragState({
-                      activeItemId: item.id,
-                      sourceColumnId: column.id,
-                      sourceIndex: itemIndex,
-                      targetColumnId: column.id,
-                      targetIndex: itemIndex,
+                    const nextDragState = getHansKanbanNextItemDragStartState({
+                      dragAndDrop,
+                      itemId: item.id,
+                      columnId: column.id,
+                      itemIndex,
                     });
+
+                    if (!nextDragState) return;
+                    event.dataTransfer.effectAllowed = 'move';
+                    setDragState(nextDragState);
                   }}
                   onDragEnd={handleDragEnd}
                   onDragOver={(event) => {
-                    if (!dragAndDrop || !dragState) return;
-                    event.preventDefault();
-
                     const rect = (
                       event.currentTarget as HTMLDivElement
                     ).getBoundingClientRect();
-                    const targetIndex = getHansKanbanDropIndex({
+                    const nextDragState = getHansKanbanNextItemDragOverState({
+                      dragAndDrop,
+                      dragState,
+                      columnId: column.id,
+                      itemIndex,
                       clientY: event.clientY,
                       itemTop: rect.top,
                       itemHeight: rect.height,
-                      currentIndex: itemIndex,
                     });
 
-                    setDragState({
-                      ...dragState,
-                      targetColumnId: column.id,
-                      targetIndex,
-                    });
+                    if (!nextDragState) return;
+                    event.preventDefault();
+                    setDragState(nextDragState);
                   }}
                   onDrop={(event) => handleDrop(event, column.id, columnItems.length)}
                 />

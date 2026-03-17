@@ -1,13 +1,27 @@
-import type React from 'react';
 import type { Variant } from '../../../types/Common.types';
 import type {
+  HansKanbanColumnSurfaceStyleArgs,
+  HansKanbanColumnDragStateArgs,
+  HansKanbanDragState,
   HansKanbanGroupedItems,
+  HansKanbanItemDragOverStateArgs,
+  HansKanbanItemDragStateArgs,
   HansKanbanMoveArgs,
+  HansKanbanMoveResult,
+  HansKanbanMoveResultArgs,
+  HansKanbanNextColumnDragStateArgs,
+  HansKanbanNextDropStateArgs,
+  HansKanbanNextItemDragOverStateArgs,
+  HansKanbanNextItemDragStartStateArgs,
+  HansKanbanDropStateArgs,
   HansKanbanSurfaceStyleArgs,
+  HansKanbanStyleVars,
+  HansKanbanSurfaceStyleVars,
 } from './Kanban.helper.types';
 import type {
   HansKanbanColumnData,
   HansKanbanItemData,
+  HansKanbanMoveEvent,
 } from '../Kanban.types';
 
 const createSurfaceVariantMap = ({
@@ -70,16 +84,15 @@ export const getHansKanbanStyleVars = ({
 }: {
   columnMinWidth: string;
   boardMinHeight: string;
-}) =>
-  ({
+}): HansKanbanStyleVars => ({
     '--hans-kanban-column-min-width': columnMinWidth,
     '--hans-kanban-board-min-height': boardMinHeight,
-  }) as React.CSSProperties;
+  });
 
 export const getHansKanbanSurfaceStyleVars = ({
   color,
   variant,
-}: HansKanbanSurfaceStyleArgs) => {
+}: HansKanbanSurfaceStyleArgs): HansKanbanSurfaceStyleVars => {
   const resolved = createSurfaceVariantMap({ color, variant });
 
   return {
@@ -87,8 +100,17 @@ export const getHansKanbanSurfaceStyleVars = ({
     '--hans-kanban-surface-border': resolved.border,
     '--hans-kanban-surface-text': resolved.text,
     '--hans-kanban-surface-muted': resolved.muted,
-  } as React.CSSProperties;
+  };
 };
+
+export const getHansKanbanColumnSurfaceStyle = ({
+  color = 'base',
+  variant = 'outline',
+}: HansKanbanColumnSurfaceStyleArgs): HansKanbanSurfaceStyleVars =>
+  getHansKanbanSurfaceStyleVars({
+    color,
+    variant,
+  });
 
 export const groupHansKanbanItems = (
   columns: HansKanbanColumnData[],
@@ -169,4 +191,166 @@ export const moveHansKanbanItem = ({
   };
 
   return columns.flatMap((column) => nextGrouped[column.id]);
+};
+
+export const createHansKanbanMoveResult = ({
+  columns,
+  items,
+  dragState,
+}: HansKanbanMoveResultArgs): HansKanbanMoveResult => {
+  const nextItems = moveHansKanbanItem({
+    columns,
+    items,
+    activeItemId: dragState.activeItemId,
+    sourceColumnId: dragState.sourceColumnId,
+    targetColumnId: dragState.targetColumnId,
+    targetIndex: dragState.targetIndex,
+  });
+
+  const item = nextItems.find(
+    (nextItem) => nextItem.id === dragState.activeItemId,
+  ) as HansKanbanItemData;
+
+  const moveEvent: HansKanbanMoveEvent = {
+    item,
+    fromColumnId: dragState.sourceColumnId,
+    toColumnId: dragState.targetColumnId,
+    fromIndex: dragState.sourceIndex,
+    toIndex: dragState.targetIndex,
+    nextItems,
+  };
+
+  return {
+    nextItems,
+    moveEvent,
+  };
+};
+
+export const getHansKanbanControlledItems = ({
+  isControlled,
+  items,
+  internalItems,
+}: {
+  isControlled: boolean;
+  items: HansKanbanItemData[] | undefined;
+  internalItems: HansKanbanItemData[];
+}) => (isControlled ? (items as HansKanbanItemData[]) : internalItems);
+
+export const getHansKanbanColumnDragState = ({
+  dragState,
+  columnId,
+  columnItemsLength,
+}: HansKanbanColumnDragStateArgs): HansKanbanDragState => ({
+  ...dragState,
+  targetColumnId: columnId,
+  targetIndex: columnItemsLength,
+});
+
+export const getHansKanbanNextColumnDragState = ({
+  dragAndDrop,
+  dragState,
+  columnId,
+  columnItemsLength,
+}: HansKanbanNextColumnDragStateArgs): HansKanbanDragState | null => {
+  if (!dragAndDrop || !dragState) return null;
+
+  return getHansKanbanColumnDragState({
+    dragState,
+    columnId,
+    columnItemsLength,
+  });
+};
+
+export const getHansKanbanDropState = ({
+  dragState,
+  columnId,
+  fallbackTargetIndex,
+}: HansKanbanDropStateArgs): HansKanbanDragState => ({
+  ...dragState,
+  targetColumnId: columnId,
+  targetIndex:
+    dragState.targetColumnId === columnId
+      ? dragState.targetIndex
+      : fallbackTargetIndex,
+});
+
+export const getHansKanbanNextDropState = ({
+  dragAndDrop,
+  dragState,
+  columnId,
+  fallbackTargetIndex,
+}: HansKanbanNextDropStateArgs): HansKanbanDragState | null => {
+  if (!dragAndDrop || !dragState) return null;
+
+  return getHansKanbanDropState({
+    dragState,
+    columnId,
+    fallbackTargetIndex,
+  });
+};
+
+export const createHansKanbanItemDragState = ({
+  itemId,
+  columnId,
+  itemIndex,
+}: HansKanbanItemDragStateArgs): HansKanbanDragState => ({
+  activeItemId: itemId,
+  sourceColumnId: columnId,
+  sourceIndex: itemIndex,
+  targetColumnId: columnId,
+  targetIndex: itemIndex,
+});
+
+export const getHansKanbanNextItemDragStartState = ({
+  dragAndDrop,
+  itemId,
+  columnId,
+  itemIndex,
+}: HansKanbanNextItemDragStartStateArgs): HansKanbanDragState | null => {
+  if (!dragAndDrop) return null;
+
+  return createHansKanbanItemDragState({
+    itemId,
+    columnId,
+    itemIndex,
+  });
+};
+
+export const getHansKanbanItemDragOverState = ({
+  dragState,
+  columnId,
+  itemIndex,
+  clientY,
+  itemTop,
+  itemHeight,
+}: HansKanbanItemDragOverStateArgs): HansKanbanDragState => ({
+  ...dragState,
+  targetColumnId: columnId,
+  targetIndex: getHansKanbanDropIndex({
+    clientY,
+    itemTop,
+    itemHeight,
+    currentIndex: itemIndex,
+  }),
+});
+
+export const getHansKanbanNextItemDragOverState = ({
+  dragAndDrop,
+  dragState,
+  columnId,
+  itemIndex,
+  clientY,
+  itemTop,
+  itemHeight,
+}: HansKanbanNextItemDragOverStateArgs): HansKanbanDragState | null => {
+  if (!dragAndDrop || !dragState) return null;
+
+  return getHansKanbanItemDragOverState({
+    dragState,
+    columnId,
+    itemIndex,
+    clientY,
+    itemTop,
+    itemHeight,
+  });
 };

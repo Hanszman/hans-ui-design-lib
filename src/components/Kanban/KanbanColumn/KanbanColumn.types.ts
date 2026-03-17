@@ -3,6 +3,7 @@ import {
   createPropsList,
   type InferPropsFromSchema,
 } from '../../../types/Schema.types';
+import type { Color } from '../../../types/Common.types';
 import type { HansKanbanColumnData } from '../Kanban.types';
 
 const HansKanbanColumnSchema = {
@@ -12,6 +13,9 @@ const HansKanbanColumnSchema = {
   showColumnCount: 'boolean',
   isDragOver: 'boolean',
   showDropAtEnd: 'boolean',
+  loading: 'boolean',
+  loadingColor: { type: 'custom', ref: {} as Color },
+  loadingAriaLabel: 'string',
   customClasses: 'string',
 } as const;
 

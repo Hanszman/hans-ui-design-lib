@@ -1,4 +1,5 @@
 import React from 'react';
+import { HansLoading } from '../../Loading/Loading';
 import { HansCard } from '../../Card/Card';
 import type { HansKanbanItemProps } from './KanbanItem.types';
 
@@ -8,9 +9,36 @@ export const HansKanbanItem = React.memo((props: HansKanbanItemProps) => {
     draggable = true,
     isDragging = false,
     showDropIndicator = false,
+    loading = false,
+    loadingColor = 'base',
+    loadingAriaLabel = 'Loading kanban item',
     customClasses = '',
     ...rest
   } = props;
+
+  if (loading) {
+    return (
+      <div
+        className={`
+          hans-kanban-item
+          hans-kanban-item-loading
+          ${customClasses}
+        `}
+        draggable={false}
+        data-testid={`hans-kanban-item-${item?.id}`}
+        {...rest}
+      >
+        <HansLoading
+          loadingType="skeleton"
+          loadingColor={loadingColor}
+          skeletonWidth="100%"
+          skeletonHeight="100%"
+          ariaLabel={loadingAriaLabel}
+          customClasses="hans-kanban-item-skeleton"
+        />
+      </div>
+    );
+  }
 
   return (
     <div

@@ -25,6 +25,22 @@ vi.mock('../Avatar/Avatar', () => ({
   ),
 }));
 
+vi.mock('../Loading/Loading', () => ({
+  HansLoading: ({
+    ariaLabel,
+    loadingType,
+  }: {
+    ariaLabel?: string;
+    loadingType?: string;
+  }) => (
+    <span
+      data-testid="mock-card-loading"
+      aria-label={ariaLabel}
+      data-type={loadingType}
+    />
+  ),
+}));
+
 describe('HansCard', () => {
   it('Should render profile card with avatar title description and extra content', () => {
     render(
@@ -103,5 +119,18 @@ describe('HansCard', () => {
 
     expect(screen.getByLabelText('Card image')).toBeInTheDocument();
     expect(screen.queryByRole('strong')).not.toBeInTheDocument();
+  });
+
+  it('Should render skeleton loading when requested', () => {
+    render(<HansCard loading loadingAriaLabel="Loading marketing card" />);
+
+    expect(screen.getByTestId('mock-card-loading')).toHaveAttribute(
+      'aria-label',
+      'Loading marketing card',
+    );
+    expect(screen.getByTestId('mock-card-loading')).toHaveAttribute(
+      'data-type',
+      'skeleton',
+    );
   });
 });

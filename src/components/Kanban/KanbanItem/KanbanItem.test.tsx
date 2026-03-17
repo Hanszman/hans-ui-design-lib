@@ -5,6 +5,12 @@ import { HansKanbanItem } from './KanbanItem';
 
 const cardSpy = vi.fn();
 
+vi.mock('../../Loading/Loading', () => ({
+  HansLoading: ({ ariaLabel }: { ariaLabel?: string }) => (
+    <span data-testid="mock-kanban-item-loading" aria-label={ariaLabel} />
+  ),
+}));
+
 vi.mock('../../Card/Card', () => ({
   HansCard: (props: Record<string, unknown>) => {
     cardSpy(props);
@@ -106,5 +112,27 @@ describe('HansKanbanItem', () => {
         imageAlt: 'Kanban card image',
       }),
     );
+  });
+
+  it('Should render skeleton loading when requested', () => {
+    cardSpy.mockClear();
+
+    render(
+      <HansKanbanItem
+        item={{
+          id: 'item-4',
+          columnId: 'todo',
+          title: 'Loading item',
+        }}
+        loading
+        loadingAriaLabel="Loading backlog item"
+      />,
+    );
+
+    expect(screen.getByTestId('mock-kanban-item-loading')).toHaveAttribute(
+      'aria-label',
+      'Loading backlog item',
+    );
+    expect(cardSpy).not.toHaveBeenCalled();
   });
 });

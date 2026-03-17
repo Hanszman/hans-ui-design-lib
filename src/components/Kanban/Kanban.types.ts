@@ -4,7 +4,7 @@ import {
   type InferPropsFromSchema,
 } from '../../types/Schema.types';
 import type { Color, Variant } from '../../types/Common.types';
-import type { HansCardLayout } from '../Card/helpers/Card.helper';
+import type { HansCardLayout } from '../Card/helpers/Card.helper.types';
 
 export type HansKanbanColumnData = {
   id: string;

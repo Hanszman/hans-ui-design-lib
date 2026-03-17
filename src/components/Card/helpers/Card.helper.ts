@@ -1,19 +1,10 @@
-import type React from 'react';
-import type { Color, Size, Variant } from '../../../types/Common.types';
-
-export type HansCardLayout = 'profile' | 'image';
-
-type CardClassNameArgs = {
-  cardLayout: HansCardLayout;
-  cardSize: Size;
-  customClasses: string;
-};
-
-type CardStyleArgs = {
-  cardColor: Color;
-  cardVariant: Variant;
-  imageSrc: string;
-};
+import type { Variant } from '../../../types/Common.types';
+import type {
+  HansCardClassNameArgs,
+  HansCardLayout,
+  HansCardStyleArgs,
+  HansCardStyleVars,
+} from './Card.helper.types';
 
 export const resolveHansCardLayout = (
   cardLayout: HansCardLayout | undefined,
@@ -27,7 +18,7 @@ export const getHansCardClassName = ({
   cardLayout,
   cardSize,
   customClasses,
-}: CardClassNameArgs) =>
+}: HansCardClassNameArgs) =>
   `
     hans-card
     hans-card-${cardLayout}
@@ -39,7 +30,7 @@ export const getHansCardStyleVars = ({
   cardColor,
   cardVariant,
   imageSrc,
-}: CardStyleArgs) => {
+}: HansCardStyleArgs): HansCardStyleVars => {
   const tokenPrefix = `--${cardColor}`;
   const isBase = cardColor === 'base';
 
@@ -100,5 +91,5 @@ export const getHansCardStyleVars = ({
     '--hans-card-text': resolvedVariant.text,
     '--hans-card-muted': resolvedVariant.muted,
     '--hans-card-image': imageSrc ? `url("${imageSrc}")` : 'none',
-  } as React.CSSProperties;
+  };
 };

@@ -5,6 +5,10 @@
   color: var(--hans-card-text);
 }
 
+.hans-card-loading {
+  min-height: inherit;
+}
+
 .hans-card-small {
   @apply min-h-20 gap-3 p-3;
 }
@@ -83,4 +87,9 @@
 .hans-card-image .hans-card-title,
 .hans-card-image .hans-card-description {
   @apply text-white;
+}
+
+.hans-card-skeleton {
+  @apply block;
+  min-height: inherit;
 }

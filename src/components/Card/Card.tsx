@@ -1,5 +1,6 @@
 import React from 'react';
 import { HansAvatar } from '../Avatar/Avatar';
+import { HansLoading } from '../Loading/Loading';
 import type { HansCardProps } from './Card.types';
 import {
   getHansCardClassName,
@@ -20,6 +21,9 @@ export const HansCard = React.memo((props: HansCardProps) => {
     cardSize = 'medium',
     cardColor = 'base',
     cardVariant = 'neutral',
+    loading = false,
+    loadingColor,
+    loadingAriaLabel = 'Loading card',
     customClasses = '',
     children,
     ...rest
@@ -36,6 +40,26 @@ export const HansCard = React.memo((props: HansCardProps) => {
     cardVariant,
     imageSrc,
   });
+  const resolvedLoadingColor = loadingColor ?? cardColor;
+
+  if (loading) {
+    return (
+      <div
+        className={`${className} hans-card-loading`}
+        style={styleVars}
+        {...rest}
+      >
+        <HansLoading
+          loadingType="skeleton"
+          loadingColor={resolvedLoadingColor}
+          skeletonWidth="100%"
+          skeletonHeight="100%"
+          ariaLabel={loadingAriaLabel}
+          customClasses="hans-card-skeleton"
+        />
+      </div>
+    );
+  }
 
   if (resolvedLayout === 'image') {
     return (

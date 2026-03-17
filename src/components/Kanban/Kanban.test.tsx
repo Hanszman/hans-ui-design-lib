@@ -4,8 +4,18 @@ import { describe, expect, it, vi } from 'vitest';
 import { HansKanban } from './Kanban';
 
 vi.mock('../Loading/Loading', () => ({
-  HansLoading: ({ ariaLabel }: { ariaLabel?: string }) => (
-    <span data-testid="mock-kanban-loading" aria-label={ariaLabel} />
+  HansLoading: ({
+    ariaLabel,
+    loadingType,
+  }: {
+    ariaLabel?: string;
+    loadingType?: string;
+  }) => (
+    <span
+      data-testid="mock-kanban-loading"
+      aria-label={ariaLabel}
+      data-type={loadingType}
+    />
   ),
 }));
 
@@ -129,6 +139,10 @@ describe('HansKanban', () => {
     expect(screen.getByTestId('mock-kanban-loading')).toHaveAttribute(
       'aria-label',
       'Loading kanban board',
+    );
+    expect(screen.getByTestId('mock-kanban-loading')).toHaveAttribute(
+      'data-type',
+      'skeleton',
     );
   });
 

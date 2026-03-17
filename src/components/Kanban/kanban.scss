@@ -13,3 +13,7 @@
 .hans-kanban-loading {
   @apply flex min-h-[var(--hans-kanban-board-min-height)] w-full items-center justify-center rounded-2xl border border-[var(--base-neutral-color)] bg-[var(--white)];
 }
+
+.hans-kanban-loading-skeleton {
+  @apply block h-full min-h-[var(--hans-kanban-board-min-height)];
+}

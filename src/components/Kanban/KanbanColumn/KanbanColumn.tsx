@@ -1,4 +1,5 @@
 import React from 'react';
+import { HansLoading } from '../../Loading/Loading';
 import type { HansKanbanColumnProps } from './KanbanColumn.types';
 
 export const HansKanbanColumn = React.memo((props: HansKanbanColumnProps) => {
@@ -9,10 +10,36 @@ export const HansKanbanColumn = React.memo((props: HansKanbanColumnProps) => {
     showColumnCount = true,
     isDragOver = false,
     showDropAtEnd = false,
+    loading = false,
+    loadingColor = 'base',
+    loadingAriaLabel = 'Loading kanban column',
     customClasses = '',
     children,
     ...rest
   } = props;
+
+  if (loading) {
+    return (
+      <section
+        className={`
+          hans-kanban-column
+          hans-kanban-column-loading
+          ${customClasses}
+        `}
+        data-testid={`hans-kanban-column-${column?.id}`}
+        {...rest}
+      >
+        <HansLoading
+          loadingType="skeleton"
+          loadingColor={loadingColor}
+          skeletonWidth="100%"
+          skeletonHeight="100%"
+          ariaLabel={loadingAriaLabel}
+          customClasses="hans-kanban-column-skeleton"
+        />
+      </section>
+    );
+  }
 
   return (
     <section

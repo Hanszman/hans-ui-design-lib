@@ -19,3 +19,11 @@
 .hans-kanban-item:hover .hans-kanban-item-card {
   @apply -translate-y-px shadow-md;
 }
+
+.hans-kanban-item-loading {
+  @apply min-h-24 overflow-hidden rounded-2xl;
+}
+
+.hans-kanban-item-skeleton {
+  @apply block min-h-24;
+}
