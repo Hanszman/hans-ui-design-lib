@@ -24,7 +24,7 @@ import type {
   HansKanbanMoveEvent,
 } from '../Kanban.types';
 
-const createSurfaceVariantMap = ({
+export const createSurfaceVariantMap = ({
   color,
   variant,
 }: HansKanbanSurfaceStyleArgs) => {
@@ -85,9 +85,9 @@ export const getHansKanbanStyleVars = ({
   columnMinWidth: string;
   boardMinHeight: string;
 }): HansKanbanStyleVars => ({
-    '--hans-kanban-column-min-width': columnMinWidth,
-    '--hans-kanban-board-min-height': boardMinHeight,
-  });
+  '--hans-kanban-column-min-width': columnMinWidth,
+  '--hans-kanban-board-min-height': boardMinHeight,
+});
 
 export const getHansKanbanSurfaceStyleVars = ({
   color,
@@ -165,7 +165,10 @@ export const moveHansKanbanItem = ({
   const rawTargetIndex = targetIndex;
   const [movedItem] = sourceItems.splice(sourceIndex, 1);
 
-  const safeTargetIndex = Math.max(0, Math.min(rawTargetIndex, targetItems.length));
+  const safeTargetIndex = Math.max(
+    0,
+    Math.min(rawTargetIndex, targetItems.length),
+  );
   const adjustedTargetIndex =
     sourceColumnId === targetColumnId
       ? Math.max(
@@ -186,7 +189,8 @@ export const moveHansKanbanItem = ({
 
   const nextGrouped = {
     ...grouped,
-    [sourceColumnId]: sourceColumnId === targetColumnId ? targetItems : sourceItems,
+    [sourceColumnId]:
+      sourceColumnId === targetColumnId ? targetItems : sourceItems,
     [targetColumnId]: targetItems,
   };
 
