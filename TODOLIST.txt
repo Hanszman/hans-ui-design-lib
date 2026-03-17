@@ -1,5 +1,4 @@
 * Continuar próximos componentes:
--Check out new components files (card, kanban, kanbancolumn e kanbanitem)
 -Publi/propaganda (usar lib?)
 -Translation?
 

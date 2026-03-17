@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
 import { HansTag } from '../Tag/Tag';
 import { HansCard } from './Card';
 import DocsPage from './Card.mdx';
