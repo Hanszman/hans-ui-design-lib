@@ -1,18 +1,28 @@
-import { describe, expect, it } from 'vitest';
+import type React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 import {
   createHansKanbanItemDragState,
   getHansKanbanColumnSurfaceStyle,
   getHansKanbanColumnDragState,
+  getHansKanbanColumnViewState,
   getHansKanbanControlledItems,
   getHansKanbanDropIndex,
+  getHansKanbanResolvedDropTargetIndex,
   getHansKanbanDropState,
   getHansKanbanItemDragOverState,
+  getHansKanbanItemViewState,
   getHansKanbanNextColumnDragState,
   getHansKanbanNextDropState,
   getHansKanbanNextItemDragOverState,
   getHansKanbanNextItemDragStartState,
   getHansKanbanStyleVars,
   getHansKanbanSurfaceStyleVars,
+  handleHansKanbanColumnDragOver,
+  handleHansKanbanCommitMove,
+  handleHansKanbanDragEnd,
+  handleHansKanbanDrop,
+  handleHansKanbanItemDragOver,
+  handleHansKanbanItemDragStart,
   groupHansKanbanItems,
   createHansKanbanMoveResult,
   moveHansKanbanItem,
@@ -61,6 +71,34 @@ describe('Kanban.helper', () => {
     expect(
       getHansKanbanColumnSurfaceStyle({})['--hans-kanban-surface-border'],
     ).toBe('var(--base-default-color)');
+
+    expect(
+      getHansKanbanColumnViewState({
+        dragAndDrop: true,
+        dragState: {
+          activeItemId: 'item-1',
+          sourceColumnId: 'todo',
+          sourceIndex: 0,
+          targetColumnId: 'doing',
+          targetIndex: 1,
+        },
+        columnId: 'doing',
+        columnItemsLength: 1,
+        color: 'primary',
+        variant: 'outline',
+      }),
+    ).toEqual({
+      columnItemsLength: 1,
+      isDragOver: true,
+      showDropAtEnd: true,
+      style: {
+        '--hans-kanban-surface-bg': 'var(--white)',
+        '--hans-kanban-surface-border': 'var(--primary-default-color)',
+        '--hans-kanban-surface-text': 'var(--primary-strong-color)',
+        '--hans-kanban-surface-muted':
+          'color-mix(in srgb, var(--primary-strong-color) 72%, transparent)',
+      },
+    });
   });
 
   it('Should group items by their column', () => {
@@ -96,6 +134,30 @@ describe('Kanban.helper', () => {
         currentIndex: 2,
       }),
     ).toBe(3);
+
+    expect(
+      getHansKanbanResolvedDropTargetIndex({
+        dragState: {
+          activeItemId: 'item-1',
+          sourceColumnId: 'todo',
+          sourceIndex: 0,
+          targetColumnId: 'doing',
+          targetIndex: 2,
+        },
+        columnId: 'doing',
+        fallbackTargetIndex: 0,
+        itemIndex: 1,
+        event: {
+          clientY: undefined,
+          currentTarget: {
+            getBoundingClientRect: () => ({
+              top: 100,
+              height: 80,
+            }),
+          },
+        } as unknown as React.DragEvent<HTMLElement>,
+      }),
+    ).toBe(2);
   });
 
   it('Should move items between columns and reorder within the same column', () => {
@@ -267,15 +329,19 @@ describe('Kanban.helper', () => {
       getHansKanbanDropState({
         dragState: initialDragState,
         columnId: 'todo',
-        fallbackTargetIndex: 3,
+        targetIndex: 3,
       }),
-    ).toEqual(initialDragState);
+    ).toEqual({
+      ...initialDragState,
+      targetColumnId: 'todo',
+      targetIndex: 3,
+    });
 
     expect(
       getHansKanbanDropState({
         dragState: initialDragState,
         columnId: 'done',
-        fallbackTargetIndex: 1,
+        targetIndex: 1,
       }),
     ).toEqual({
       ...initialDragState,
@@ -294,8 +360,20 @@ describe('Kanban.helper', () => {
       }),
     ).toEqual({
       ...initialDragState,
-      targetColumnId: 'doing',
-      targetIndex: 1,
+        targetColumnId: 'doing',
+        targetIndex: 1,
+      });
+
+    expect(
+      getHansKanbanItemViewState({
+        dragState: initialDragState,
+        columnId: 'todo',
+        itemId: 'item-1',
+        itemIndex: 0,
+      }),
+    ).toEqual({
+      isDragging: true,
+      showDropIndicator: true,
     });
   });
 
@@ -360,7 +438,7 @@ describe('Kanban.helper', () => {
         dragAndDrop: false,
         dragState: initialDragState,
         columnId: 'done',
-        fallbackTargetIndex: 2,
+        targetIndex: 2,
       }),
     ).toBeNull();
 
@@ -369,7 +447,7 @@ describe('Kanban.helper', () => {
         dragAndDrop: true,
         dragState: null,
         columnId: 'done',
-        fallbackTargetIndex: 2,
+        targetIndex: 2,
       }),
     ).toBeNull();
 
@@ -378,7 +456,7 @@ describe('Kanban.helper', () => {
         dragAndDrop: true,
         dragState: initialDragState,
         columnId: 'done',
-        fallbackTargetIndex: 2,
+        targetIndex: 2,
       }),
     ).toEqual({
       ...initialDragState,
@@ -422,8 +500,128 @@ describe('Kanban.helper', () => {
       }),
     ).toEqual({
       ...initialDragState,
+        targetColumnId: 'doing',
+        targetIndex: 2,
+      });
+  });
+
+  it('Should handle drag and drop side effects through helper handlers', () => {
+    const setDragState = vi.fn();
+    const setInternalItems = vi.fn();
+    const onItemsChange = vi.fn();
+    const onMoveItem = vi.fn();
+    const preventDefault = vi.fn();
+    const stopPropagation = vi.fn();
+    const event = {
+      preventDefault,
+      stopPropagation,
+      dataTransfer: { effectAllowed: 'none' },
+      currentTarget: {
+        getBoundingClientRect: () => ({
+          top: 100,
+          height: 100,
+        }),
+      },
+      clientY: 170,
+    } as unknown as React.DragEvent<HTMLDivElement>;
+    const baseDragState = createHansKanbanItemDragState({
+      itemId: 'item-1',
+      columnId: 'todo',
+      itemIndex: 0,
+    });
+    const dragStateRef = {
+      current: null,
+    } as React.MutableRefObject<ReturnType<typeof createHansKanbanItemDragState> | null>;
+
+    handleHansKanbanItemDragStart({
+      dragAndDrop: true,
+      itemId: 'item-1',
+      columnId: 'todo',
+      itemIndex: 0,
+      dragStateRef,
+      setDragState,
+      event,
+    });
+
+    expect(event.dataTransfer.effectAllowed).toBe('move');
+    expect(dragStateRef.current).toEqual(baseDragState);
+    expect(setDragState).toHaveBeenCalledWith(baseDragState);
+
+    handleHansKanbanColumnDragOver({
+      dragAndDrop: true,
+      dragStateRef,
+      columnId: 'doing',
+      columnItemsLength: 1,
+      setDragState,
+      event: event as unknown as React.DragEvent<HTMLElement>,
+    });
+
+    expect(preventDefault).toHaveBeenCalled();
+    expect(setDragState).toHaveBeenLastCalledWith({
+      ...baseDragState,
+      targetColumnId: 'doing',
+      targetIndex: 1,
+    });
+
+    handleHansKanbanItemDragOver({
+      dragAndDrop: true,
+      dragStateRef,
+      columnId: 'doing',
+      itemIndex: 1,
+      setDragState,
+      event,
+    });
+
+    expect(stopPropagation).toHaveBeenCalled();
+    expect(setDragState).toHaveBeenLastCalledWith({
+      ...baseDragState,
       targetColumnId: 'doing',
       targetIndex: 2,
     });
+
+    const commitMove = vi.fn();
+
+    handleHansKanbanDrop({
+      dragAndDrop: true,
+      dragStateRef,
+      columnId: 'done',
+      fallbackTargetIndex: 0,
+      commitMove,
+      setDragState,
+      event: event as unknown as React.DragEvent<HTMLElement>,
+    });
+
+    expect(commitMove).toHaveBeenCalledWith({
+      ...baseDragState,
+      targetColumnId: 'done',
+      targetIndex: 0,
+    });
+    expect(dragStateRef.current).toBeNull();
+    expect(setDragState).toHaveBeenLastCalledWith(null);
+
+    handleHansKanbanCommitMove({
+      columns,
+      items,
+      dragState: {
+        activeItemId: 'item-1',
+        sourceColumnId: 'todo',
+        sourceIndex: 0,
+        targetColumnId: 'doing',
+        targetIndex: 1,
+      },
+      isControlled: false,
+      setInternalItems,
+      onItemsChange,
+      onMoveItem,
+    });
+
+    expect(setInternalItems).toHaveBeenCalled();
+    expect(onItemsChange).toHaveBeenCalled();
+    expect(onMoveItem).toHaveBeenCalled();
+
+    dragStateRef.current = baseDragState;
+    handleHansKanbanDragEnd({ dragStateRef, setDragState });
+    expect(dragStateRef.current).toBeNull();
+    expect(setDragState).toHaveBeenLastCalledWith(null);
   });
 });

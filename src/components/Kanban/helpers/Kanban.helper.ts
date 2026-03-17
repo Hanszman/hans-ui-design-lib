@@ -2,10 +2,18 @@ import type { Variant } from '../../../types/Common.types';
 import type {
   HansKanbanColumnSurfaceStyleArgs,
   HansKanbanColumnDragStateArgs,
+  HansKanbanColumnViewStateArgs,
   HansKanbanDragState,
   HansKanbanGroupedItems,
+  HansKanbanHandleColumnDragOverArgs,
+  HansKanbanHandleCommitMoveArgs,
+  HansKanbanHandleDragEndArgs,
+  HansKanbanHandleDropArgs,
+  HansKanbanHandleItemDragOverArgs,
+  HansKanbanHandleItemDragStartArgs,
   HansKanbanItemDragOverStateArgs,
   HansKanbanItemDragStateArgs,
+  HansKanbanItemViewStateArgs,
   HansKanbanMoveArgs,
   HansKanbanMoveResult,
   HansKanbanMoveResultArgs,
@@ -240,6 +248,38 @@ export const getHansKanbanControlledItems = ({
   internalItems: HansKanbanItemData[];
 }) => (isControlled ? (items as HansKanbanItemData[]) : internalItems);
 
+export const getHansKanbanColumnViewState = ({
+  dragAndDrop,
+  dragState,
+  columnId,
+  columnItemsLength,
+  color,
+  variant,
+}: HansKanbanColumnViewStateArgs) => ({
+  columnItemsLength,
+  isDragOver: Boolean(dragAndDrop && dragState?.targetColumnId === columnId),
+  showDropAtEnd: Boolean(
+    dragAndDrop &&
+      dragState?.targetColumnId === columnId &&
+      dragState.targetIndex === columnItemsLength,
+  ),
+  style: getHansKanbanColumnSurfaceStyle({
+    color,
+    variant,
+  }),
+});
+
+export const getHansKanbanItemViewState = ({
+  dragState,
+  columnId,
+  itemId,
+  itemIndex,
+}: HansKanbanItemViewStateArgs) => ({
+  isDragging: dragState?.activeItemId === itemId,
+  showDropIndicator:
+    dragState?.targetColumnId === columnId && dragState.targetIndex === itemIndex,
+});
+
 export const getHansKanbanColumnDragState = ({
   dragState,
   columnId,
@@ -268,28 +308,60 @@ export const getHansKanbanNextColumnDragState = ({
 export const getHansKanbanDropState = ({
   dragState,
   columnId,
-  fallbackTargetIndex,
+  targetIndex,
 }: HansKanbanDropStateArgs): HansKanbanDragState => ({
   ...dragState,
   targetColumnId: columnId,
-  targetIndex:
-    dragState.targetColumnId === columnId
-      ? dragState.targetIndex
-      : fallbackTargetIndex,
+  targetIndex,
 });
 
 export const getHansKanbanNextDropState = ({
   dragAndDrop,
   dragState,
   columnId,
-  fallbackTargetIndex,
+  targetIndex,
 }: HansKanbanNextDropStateArgs): HansKanbanDragState | null => {
   if (!dragAndDrop || !dragState) return null;
 
   return getHansKanbanDropState({
     dragState,
     columnId,
-    fallbackTargetIndex,
+    targetIndex,
+  });
+};
+
+export const getHansKanbanResolvedDropTargetIndex = ({
+  dragState,
+  columnId,
+  event,
+  fallbackTargetIndex,
+  itemIndex,
+}: {
+  dragState: HansKanbanDragState | null;
+  columnId: string;
+  event: React.DragEvent<HTMLElement>;
+  fallbackTargetIndex: number;
+  itemIndex?: number;
+}) => {
+  if (typeof itemIndex !== 'number') {
+    return dragState?.targetColumnId === columnId
+      ? dragState.targetIndex
+      : fallbackTargetIndex;
+  }
+
+  if (typeof event.clientY !== 'number') {
+    return dragState?.targetColumnId === columnId
+      ? dragState.targetIndex
+      : fallbackTargetIndex;
+  }
+
+  const rect = event.currentTarget.getBoundingClientRect();
+
+  return getHansKanbanDropIndex({
+    clientY: event.clientY,
+    itemTop: rect.top,
+    itemHeight: rect.height,
+    currentIndex: itemIndex,
   });
 };
 
@@ -357,4 +429,138 @@ export const getHansKanbanNextItemDragOverState = ({
     itemTop,
     itemHeight,
   });
+};
+
+export const handleHansKanbanDragEnd = ({
+  dragStateRef,
+  setDragState,
+}: HansKanbanHandleDragEndArgs) => {
+  dragStateRef.current = null;
+  setDragState(null);
+};
+
+export const handleHansKanbanCommitMove = ({
+  columns,
+  items,
+  dragState,
+  isControlled,
+  setInternalItems,
+  onItemsChange,
+  onMoveItem,
+}: HansKanbanHandleCommitMoveArgs) => {
+  const { nextItems, moveEvent } = createHansKanbanMoveResult({
+    columns,
+    items,
+    dragState,
+  });
+
+  if (!isControlled) setInternalItems(nextItems);
+  onItemsChange?.(nextItems);
+  onMoveItem?.(moveEvent);
+};
+
+export const handleHansKanbanColumnDragOver = ({
+  dragAndDrop,
+  dragStateRef,
+  columnId,
+  columnItemsLength,
+  setDragState,
+  event,
+}: HansKanbanHandleColumnDragOverArgs) => {
+  const nextDragState = getHansKanbanNextColumnDragState({
+    dragAndDrop,
+    dragState: dragStateRef.current,
+    columnId,
+    columnItemsLength,
+  });
+
+  if (!nextDragState) return;
+
+  event.preventDefault();
+  dragStateRef.current = nextDragState;
+  setDragState(nextDragState);
+};
+
+export const handleHansKanbanDrop = ({
+  dragAndDrop,
+  dragStateRef,
+  columnId,
+  fallbackTargetIndex,
+  itemIndex,
+  commitMove,
+  setDragState,
+  event,
+}: HansKanbanHandleDropArgs) => {
+  const currentDragState = dragStateRef.current;
+  const targetIndex = getHansKanbanResolvedDropTargetIndex({
+    dragState: currentDragState,
+    columnId,
+    event,
+    fallbackTargetIndex,
+    itemIndex,
+  });
+  const nextDragState = getHansKanbanNextDropState({
+    dragAndDrop,
+    dragState: currentDragState,
+    columnId,
+    targetIndex,
+  });
+
+  if (!nextDragState) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  commitMove(nextDragState);
+  dragStateRef.current = null;
+  setDragState(null);
+};
+
+export const handleHansKanbanItemDragStart = ({
+  dragAndDrop,
+  itemId,
+  columnId,
+  itemIndex,
+  dragStateRef,
+  setDragState,
+  event,
+}: HansKanbanHandleItemDragStartArgs) => {
+  const nextDragState = getHansKanbanNextItemDragStartState({
+    dragAndDrop,
+    itemId,
+    columnId,
+    itemIndex,
+  });
+
+  if (!nextDragState) return;
+
+  event.dataTransfer.effectAllowed = 'move';
+  dragStateRef.current = nextDragState;
+  setDragState(nextDragState);
+};
+
+export const handleHansKanbanItemDragOver = ({
+  dragAndDrop,
+  dragStateRef,
+  columnId,
+  itemIndex,
+  setDragState,
+  event,
+}: HansKanbanHandleItemDragOverArgs) => {
+  const rect = event.currentTarget.getBoundingClientRect();
+  const nextDragState = getHansKanbanNextItemDragOverState({
+    dragAndDrop,
+    dragState: dragStateRef.current,
+    columnId,
+    itemIndex,
+    clientY: event.clientY,
+    itemTop: rect.top,
+    itemHeight: rect.height,
+  });
+
+  if (!nextDragState) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  dragStateRef.current = nextDragState;
+  setDragState(nextDragState);
 };

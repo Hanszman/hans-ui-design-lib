@@ -62,7 +62,7 @@ export type HansKanbanColumnDragStateArgs = {
 export type HansKanbanDropStateArgs = {
   dragState: HansKanbanDragState;
   columnId: string;
-  fallbackTargetIndex: number;
+  targetIndex: number;
 };
 
 export type HansKanbanItemDragStateArgs = {
@@ -97,7 +97,7 @@ export type HansKanbanNextColumnDragStateArgs = HansKanbanDragGateArgs & {
 
 export type HansKanbanNextDropStateArgs = HansKanbanDragGateArgs & {
   columnId: string;
-  fallbackTargetIndex: number;
+  targetIndex: number;
 };
 
 export type HansKanbanNextItemDragStartStateArgs = {
@@ -113,4 +113,82 @@ export type HansKanbanNextItemDragOverStateArgs = HansKanbanDragGateArgs & {
   clientY: number;
   itemTop: number;
   itemHeight: number;
+};
+
+export type HansKanbanSetDragState = React.Dispatch<
+  React.SetStateAction<HansKanbanDragState | null>
+>;
+
+export type HansKanbanDragStateRef = React.MutableRefObject<HansKanbanDragState | null>;
+
+export type HansKanbanCommitMove = (dragState: HansKanbanDragState) => void;
+
+export type HansKanbanColumnViewStateArgs = {
+  dragAndDrop: boolean;
+  dragState: HansKanbanDragState | null;
+  columnId: string;
+  columnItemsLength: number;
+  color?: Color;
+  variant?: Variant;
+};
+
+export type HansKanbanItemViewStateArgs = {
+  dragState: HansKanbanDragState | null;
+  columnId: string;
+  itemId: string;
+  itemIndex: number;
+};
+
+export type HansKanbanHandleDragEndArgs = {
+  dragStateRef: HansKanbanDragStateRef;
+  setDragState: HansKanbanSetDragState;
+};
+
+export type HansKanbanHandleColumnDragOverArgs = {
+  dragAndDrop: boolean;
+  dragStateRef: HansKanbanDragStateRef;
+  columnId: string;
+  columnItemsLength: number;
+  setDragState: HansKanbanSetDragState;
+  event: React.DragEvent<HTMLElement>;
+};
+
+export type HansKanbanHandleDropArgs = {
+  dragAndDrop: boolean;
+  dragStateRef: HansKanbanDragStateRef;
+  columnId: string;
+  fallbackTargetIndex: number;
+  itemIndex?: number;
+  commitMove: HansKanbanCommitMove;
+  setDragState: HansKanbanSetDragState;
+  event: React.DragEvent<HTMLElement>;
+};
+
+export type HansKanbanHandleItemDragStartArgs = {
+  dragAndDrop: boolean;
+  itemId: string;
+  columnId: string;
+  itemIndex: number;
+  dragStateRef: HansKanbanDragStateRef;
+  setDragState: HansKanbanSetDragState;
+  event: React.DragEvent<HTMLDivElement>;
+};
+
+export type HansKanbanHandleItemDragOverArgs = {
+  dragAndDrop: boolean;
+  dragStateRef: HansKanbanDragStateRef;
+  columnId: string;
+  itemIndex: number;
+  setDragState: HansKanbanSetDragState;
+  event: React.DragEvent<HTMLDivElement>;
+};
+
+export type HansKanbanHandleCommitMoveArgs = {
+  columns: HansKanbanColumnData[];
+  items: HansKanbanItemData[];
+  dragState: HansKanbanDragState;
+  isControlled: boolean;
+  setInternalItems: React.Dispatch<React.SetStateAction<HansKanbanItemData[]>>;
+  onItemsChange?: (items: HansKanbanItemData[]) => void;
+  onMoveItem?: (event: HansKanbanMoveEvent) => void;
 };

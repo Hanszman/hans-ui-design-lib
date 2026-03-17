@@ -1,7 +1,9 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { HansKanban } from './Kanban';
+
+const kanbanItemPropsRegistry = new Map<string, Record<string, unknown>>();
 
 vi.mock('../Loading/Loading', () => ({
   HansLoading: ({
@@ -38,21 +40,31 @@ vi.mock('./KanbanItem/KanbanItem', () => ({
     onClick?: () => void;
     isDragging?: boolean;
     showDropIndicator?: boolean;
-  }) => (
-    <div
-      data-testid={`kanban-item-${item.id}`}
-      draggable
-      data-dragging={String(isDragging)}
-      data-indicator={String(showDropIndicator)}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
-      onDragEnd={onDragEnd}
-      onClick={onClick}
-    >
-      {item.title}
-    </div>
-  ),
+  }) => {
+    kanbanItemPropsRegistry.set(item.id, {
+      onDragStart,
+      onDragOver,
+      onDrop,
+      onDragEnd,
+      onClick,
+    });
+
+    return (
+      <div
+        data-testid={`kanban-item-${item.id}`}
+        draggable
+        data-dragging={String(isDragging)}
+        data-indicator={String(showDropIndicator)}
+        onDragStart={onDragStart}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+        onDragEnd={onDragEnd}
+        onClick={onClick}
+      >
+        {item.title}
+      </div>
+    );
+  },
 }));
 
 const columns = [
@@ -67,6 +79,21 @@ const items = [
 ];
 
 describe('HansKanban', () => {
+  beforeEach(() => {
+    kanbanItemPropsRegistry.clear();
+  });
+
+  const createDragEvent = (clientY = 170) =>
+    ({
+      clientY,
+      dataTransfer: { effectAllowed: 'move' },
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+      currentTarget: {
+        getBoundingClientRect: () => ({ top: 100, height: 100 }),
+      },
+    }) as unknown as React.DragEvent<HTMLDivElement>;
+
   it('Should render columns items and empty states', () => {
     render(
       <HansKanban
@@ -84,7 +111,6 @@ describe('HansKanban', () => {
   it('Should move items between columns and notify listeners', () => {
     const onItemsChange = vi.fn();
     const onMoveItem = vi.fn();
-    const dataTransfer = { effectAllowed: 'move' };
 
     render(
       <HansKanban
@@ -95,16 +121,23 @@ describe('HansKanban', () => {
       />,
     );
 
-    const firstItem = screen.getByTestId('kanban-item-item-1');
-    const thirdItem = screen.getByTestId('kanban-item-item-3');
-
-    Object.defineProperty(thirdItem, 'getBoundingClientRect', {
-      value: () => ({ top: 100, height: 100 }),
+    act(() => {
+      (
+        kanbanItemPropsRegistry.get('item-1')?.onDragStart as
+          | ((event: React.DragEvent<HTMLDivElement>) => void)
+          | undefined
+      )?.(createDragEvent());
+      (
+        kanbanItemPropsRegistry.get('item-3')?.onDragOver as
+          | ((event: React.DragEvent<HTMLDivElement>) => void)
+          | undefined
+      )?.(createDragEvent());
+      (
+        kanbanItemPropsRegistry.get('item-3')?.onDrop as
+          | ((event: React.DragEvent<HTMLDivElement>) => void)
+          | undefined
+      )?.(createDragEvent());
     });
-
-    fireEvent.dragStart(firstItem, { dataTransfer });
-    fireEvent.dragOver(thirdItem, { clientY: 170 });
-    fireEvent.drop(thirdItem);
 
     expect(onItemsChange).toHaveBeenCalledTimes(1);
     expect(
@@ -116,6 +149,62 @@ describe('HansKanban', () => {
         toColumnId: 'doing',
       }),
     );
+  });
+
+  it('Should reorder items downward inside the same column without jumping to the end', () => {
+    render(<HansKanban columns={columns} defaultItems={items} />);
+
+    act(() => {
+      (
+        kanbanItemPropsRegistry.get('item-1')?.onDragStart as
+          | ((event: React.DragEvent<HTMLDivElement>) => void)
+          | undefined
+      )?.(createDragEvent());
+      (
+        kanbanItemPropsRegistry.get('item-2')?.onDragOver as
+          | ((event: React.DragEvent<HTMLDivElement>) => void)
+          | undefined
+      )?.(createDragEvent());
+      (
+        kanbanItemPropsRegistry.get('item-2')?.onDrop as
+          | ((event: React.DragEvent<HTMLDivElement>) => void)
+          | undefined
+      )?.(createDragEvent());
+    });
+
+    expect(screen.getAllByTestId(/kanban-item-/).map((item) => item.textContent)).toEqual([
+      'Second item',
+      'First item',
+      'Third item',
+    ]);
+  });
+
+  it('Should reorder items upward inside the same column', () => {
+    render(<HansKanban columns={columns} defaultItems={items} />);
+
+    act(() => {
+      (
+        kanbanItemPropsRegistry.get('item-2')?.onDragStart as
+          | ((event: React.DragEvent<HTMLDivElement>) => void)
+          | undefined
+      )?.(createDragEvent(170));
+      (
+        kanbanItemPropsRegistry.get('item-1')?.onDragOver as
+          | ((event: React.DragEvent<HTMLDivElement>) => void)
+          | undefined
+      )?.(createDragEvent(110));
+      (
+        kanbanItemPropsRegistry.get('item-1')?.onDrop as
+          | ((event: React.DragEvent<HTMLDivElement>) => void)
+          | undefined
+      )?.(createDragEvent(110));
+    });
+
+    expect(screen.getAllByTestId(/kanban-item-/).map((item) => item.textContent)).toEqual([
+      'Second item',
+      'First item',
+      'Third item',
+    ]);
   });
 
   it('Should support uncontrolled mode item clicks and loading state', () => {
