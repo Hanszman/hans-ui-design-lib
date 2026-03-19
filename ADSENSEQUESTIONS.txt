@@ -1,0 +1,23 @@
+Em 19/03/2026, o fluxo oficial do Google para começar a monetizar está assim:
+
+Criar uma única conta AdSense do publisher em adsense.google.com e garantir que o site tenha conteúdo original/interessante. O Google diz que há uma conta por publisher e que, se você precisar monetizar mais sites, usa a mesma conta e adiciona mais sites nela. Fontes: Sign up for AdSense, If you want more than one AdSense account.
+Preencher os dados de pagamento e depois adicionar cada site que vai exibir anúncios. A revisão é do site inteiro e normalmente leva alguns dias, podendo chegar a 2–4 semanas. Fonte: Connect your site to AdSense.
+Conectar cada site ao AdSense usando um dos métodos oficiais do Google:
+snippet do AdSense no head
+ads.txt na raiz do site
+meta tag no head
+Fonte: Connect your site to AdSense.
+Depois que o site estiver aprovado/ready, criar a unidade de anúncio em Ads > By ad unit > Display ads > Save and get code. O Google recomenda responsivo por padrão. Fonte: Create a display ad unit.
+Copiar do código do Google o que realmente importa para a sua arquitetura:
+do snippet global: o client=ca-pub-... do script principal
+da ad unit: data-ad-client="ca-pub-...", data-ad-slot="..." e, se vierem, atributos como data-ad-format, data-full-width-responsive, data-ad-layout, data-ad-layout-key
+o push({}) do adsbygoogle
+Fonte: Connect your site to AdSense, Create a display ad unit, Modifications of AdSense ad code.
+Respondendo objetivamente às tuas dúvidas:
+
+Você pode criar o componente em uma lib e reutilizar entre seus sites, sim.
+Você não registra a lib no Google; o Google aprova o site/domínio que vai exibir anúncios. Isso vem da própria etapa “Add site / Connect your site”.
+Se você usar o mesmo componente em vários sites seus, as impressões e cliques entram na mesma conta AdSense, desde que cada site esteja corretamente adicionado/aprovado e os anúncios estejam realmente sendo servidos. Isso é uma inferência segura a partir da regra “uma conta por publisher” + “adicione mais sites na mesma conta”.
+Você não precisa recriar o componente em cada repositório. O que precisa existir em cada site é o setup do próprio site: aprovação, snippet/meta/ads.txt, consentimento/CMP quando aplicável e conformidade com política.
+Eu não achei nenhuma fonte oficial dizendo que “usar uma lib compartilhada” reprova por si só. O foco da aprovação está no site, no conteúdo e na implementação correta. Isso é inferência baseada nas páginas oficiais acima.
+Para o seu caso específico de index-wc.ts com shadow: 'open', eu não encontrei fonte oficial do AdSense confirmando suporte em Web Components/Shadow DOM. Como o Google documenta o uso no head/body do documento e recomenda copiar/colar o código com poucas mudanças, a recomendação segura é: v1 em React, script controlado pelo host, sem export WC/CDN para AdSense. Essa parte é recomendação técnica minha, não regra explícita do Google.
