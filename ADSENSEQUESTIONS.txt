@@ -1,3 +1,11 @@
+Fala GPT! Bom dia, tudo bem?
+Dê uma olhada nesse meu projeto, ele é uma lib pra react que também pode ser exportada com module federation para ser usado em outras aplicações js, como angular por exemplo, via cdn. Esses exports estão nos arquivos de index (wc, ts, css).
+Além disso, essa lib segue alguns padrões, então precisamos utilizar clean code, dry, srp, solid, passar com 100% de coverage nos tests, deve utilizar tailwind nos scss, passar no lint e nos builds, além de funcionar perfeitamente no storybook.
+Como vc pode ver, já criamos vários componentes, certo?
+Agora quero criar o componente de AdSense, ou seja, a propaganda do google. Me fale um passo a passo do que eu tenho que fazer pra receber dinheiro com o google adsense por favor. Como eu crio a conta, o que eu devo fazer, qual código eu devo copiar do google e colar aqui pra criar meu componente, etc. Além disso, eu posso criar esse componente de adsense em uma lib mesmo? quando eu for registrar o meu site que eu for colocar o ad, eu posso registrar essa lib? esse componente dessa lib pode ser usado nos meus outros sistemas? vai funcionar se as pessoas acessarem meus outros sites e verem o componente de propaganda? vai contar como visualizado e vou receber por isso? ou eu teria que criar o componente separadamente em cada site meu pra valer? ou poderia ser reprovado pelo google por usar numa lib? se eu criar o componente nessa lib, exportar e utilizar essa exportação em outros repos/sites meus, só a lib que receberia a visualização ou cada site que eu usar esse componente receberia? como que funciona? alem disso, estabeleça um plano de como criar esse componente da melhor forma aqui nessa lib, se for realmente possível tudo isso q estou perguntando e querendo fazer... pq minha intenção é criar esse componente uma vez só, distribuir ele entre meus sites e receber pela publi em cada um deles, sacou?
+
+// RESPOSTAS:
+
 Em 19/03/2026, o fluxo oficial do Google para começar a monetizar está assim:
 
 Criar uma única conta AdSense do publisher em adsense.google.com e garantir que o site tenha conteúdo original/interessante. O Google diz que há uma conta por publisher e que, se você precisar monetizar mais sites, usa a mesma conta e adiciona mais sites nela. Fontes: Sign up for AdSense, If you want more than one AdSense account.
