@@ -1,4 +1,5 @@
 import React from 'react';
+import { Source } from '@storybook/addon-docs/blocks';
 import {
   HANS_THEME_COMBINATIONS,
   HANS_THEME_SEMANTIC_KEYS,
@@ -6,21 +7,8 @@ import {
   resetHansTheme,
   setHansTheme,
   type HansThemeCombination,
-  type HansThemeSemanticKey,
 } from '../../theme/theme';
-
-type CombinationRow = {
-  token: HansThemeSemanticKey;
-  strong: string;
-  default: string;
-  neutral: string;
-};
-
-type CombinationData = {
-  background: string;
-  text: string;
-  rows: CombinationRow[];
-};
+import type { CombinationData } from './ColorSystemDocs.types';
 
 const COLOR_FAMILIES = [
   'red',
@@ -60,9 +48,68 @@ const DYNAMIC_THEME_SAMPLE: HansThemeCombination = {
     default: '#22c55e',
     neutral: '#bbf7d0',
   },
+  danger: {
+    strong: '#991b1b',
+    default: '#ef4444',
+    neutral: '#fecaca',
+  },
+  warning: {
+    strong: '#92400e',
+    default: '#f59e0b',
+    neutral: '#fde68a',
+  },
+  info: {
+    strong: '#155e75',
+    default: '#06b6d4',
+    neutral: '#cffafe',
+  },
+  base: {
+    strong: '#334155',
+    default: '#64748b',
+    neutral: '#cbd5e1',
+  },
   backgroundColor: '#f8fafc',
   textColor: '#0f172a',
 };
+const DYNAMIC_THEME_SOURCE = `setHansTheme({
+  primary: {
+    strong: '#1e3a8a',
+    default: '#2563eb',
+    neutral: '#bfdbfe',
+  },
+  secondary: {
+    strong: '#9f1239',
+    default: '#e11d48',
+    neutral: '#fecdd3',
+  },
+  success: {
+    strong: '#166534',
+    default: '#22c55e',
+    neutral: '#bbf7d0',
+  },
+  danger: {
+    strong: '#991b1b',
+    default: '#ef4444',
+    neutral: '#fecaca',
+  },
+  warning: {
+    strong: '#92400e',
+    default: '#f59e0b',
+    neutral: '#fde68a',
+  },
+  info: {
+    strong: '#155e75',
+    default: '#06b6d4',
+    neutral: '#cffafe',
+  },
+  base: {
+    strong: '#334155',
+    default: '#64748b',
+    neutral: '#cbd5e1',
+  },
+  backgroundColor: '#f8fafc',
+  textColor: '#0f172a',
+});`;
 
 const SWATCH_STYLE: React.CSSProperties = {
   display: 'inline-block',
@@ -185,8 +232,8 @@ export const ColorSystemDocs = (): React.JSX.Element => {
       </p>
       <p>
         The current <code>data-theme</code> combinations still work exactly as
-        before. The new dynamic API can override the same semantic tokens at
-        runtime with a custom object per consuming project.
+        before. The new dynamic API now accepts a full 23-color combination
+        object per consuming project.
       </p>
 
       <h2>Base Palettes</h2>
@@ -308,13 +355,11 @@ export const ColorSystemDocs = (): React.JSX.Element => {
 
       <h2>Dynamic Theme Object</h2>
       <p>
-        Use <code>setHansTheme</code> to override only the tokens your project
-        wants to customize. Any token you do not provide keeps the active
-        combination fallback.
+        Use <code>setHansTheme</code> with a complete combination object. The
+        consumer must pass the same 23 color tokens used by the built-in
+        combinations.
       </p>
-      <pre>
-        <code>{`setHansTheme(${JSON.stringify(DYNAMIC_THEME_SAMPLE, null, 2)})`}</code>
-      </pre>
+      <Source code={DYNAMIC_THEME_SOURCE} language="tsx" />
       <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
         <button type="button" onClick={handleApplyDynamicTheme}>
           Apply dynamic theme
@@ -370,9 +415,10 @@ export const ColorSystemDocs = (): React.JSX.Element => {
       )}
 
       <h3>Generated CSS Variables</h3>
-      <pre>
-        <code>{JSON.stringify(getHansThemeVars(DYNAMIC_THEME_SAMPLE), null, 2)}</code>
-      </pre>
+      <Source
+        code={JSON.stringify(getHansThemeVars(DYNAMIC_THEME_SAMPLE), null, 2)}
+        language="json"
+      />
     </>
   );
 };

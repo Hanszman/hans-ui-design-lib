@@ -49,9 +49,7 @@ import { HansButton } from 'hans-ui-design-lib';
 <HansButton label="Button"></HansButton>;
 ```
 
-The current 5 theme combinations are still fully supported and remain the default preset system.
-
-If your project needs a custom semantic palette, you can override the active combination at runtime:
+The current 5 theme combinations are fully supported and represent the default preset system. But if your project needs a custom semantic palette, you can override the active combination at runtime:
 
 ```tsx
 import { HansButton, setHansTheme } from 'hans-ui-design-lib';
@@ -67,6 +65,31 @@ setHansTheme({
     default: '#e11d48',
     neutral: '#fecdd3',
   },
+  success: {
+    strong: '#166534',
+    default: '#22c55e',
+    neutral: '#bbf7d0',
+  },
+  danger: {
+    strong: '#991b1b',
+    default: '#ef4444',
+    neutral: '#fecaca',
+  },
+  warning: {
+    strong: '#92400e',
+    default: '#f59e0b',
+    neutral: '#fde68a',
+  },
+  info: {
+    strong: '#155e75',
+    default: '#06b6d4',
+    neutral: '#cffafe',
+  },
+  base: {
+    strong: '#334155',
+    default: '#64748b',
+    neutral: '#cbd5e1',
+  },
   backgroundColor: '#f8fafc',
   textColor: '#0f172a',
 });
@@ -74,7 +97,7 @@ setHansTheme({
 <HansButton label="Button"></HansButton>;
 ```
 
-Only the tokens you provide are overridden. The others keep following the current `data-theme` fallback.
+The dynamic object must include the same 23 color slots used by the built-in combinations. You can see more details about the palette customization in our Color System documentation session.
 
 ### Others:
 
@@ -99,7 +122,7 @@ If you're using other Technologies like Angular for example, you don't have to i
 </html>
 ```
 
-If you're using a technology like Angular, probably you're gonna have to declare CUSTOM_ELEMENTS_SCHEMA like this in your component:
+If you're using a technology like Angular, probably you're gonna have to declare `CUSTOM_ELEMENTS_SCHEMA` like this in your component:
 
 ```ts
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -131,6 +154,31 @@ You can also override the active combination dynamically in CDN/web component us
       strong: '#9f1239',
       default: '#e11d48',
       neutral: '#fecdd3',
+    },
+    success: {
+      strong: '#166534',
+      default: '#22c55e',
+      neutral: '#bbf7d0',
+    },
+    danger: {
+      strong: '#991b1b',
+      default: '#ef4444',
+      neutral: '#fecaca',
+    },
+    warning: {
+      strong: '#92400e',
+      default: '#f59e0b',
+      neutral: '#fde68a',
+    },
+    info: {
+      strong: '#155e75',
+      default: '#06b6d4',
+      neutral: '#cffafe',
+    },
+    base: {
+      strong: '#334155',
+      default: '#64748b',
+      neutral: '#cbd5e1',
     },
     backgroundColor: '#f8fafc',
     textColor: '#0f172a',

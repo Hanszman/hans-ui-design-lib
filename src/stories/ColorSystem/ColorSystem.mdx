@@ -30,7 +30,7 @@ The five built-in combinations are still the default way to pick a preset palett
 
 ## Dynamic Combination Object
 
-Projects that need a custom palette can now override the semantic tokens at runtime with a theme object.
+Projects that need a custom palette can override the semantic tokens at runtime with a complete combination object containing the same 23 color tokens used by the built-in combinations.
 
 ### React / npm
 
@@ -47,6 +47,31 @@ setHansTheme({
     strong: '#9f1239',
     default: '#e11d48',
     neutral: '#fecdd3',
+  },
+  success: {
+    strong: '#166534',
+    default: '#22c55e',
+    neutral: '#bbf7d0',
+  },
+  danger: {
+    strong: '#991b1b',
+    default: '#ef4444',
+    neutral: '#fecaca',
+  },
+  warning: {
+    strong: '#92400e',
+    default: '#f59e0b',
+    neutral: '#fde68a',
+  },
+  info: {
+    strong: '#155e75',
+    default: '#06b6d4',
+    neutral: '#cffafe',
+  },
+  base: {
+    strong: '#334155',
+    default: '#64748b',
+    neutral: '#cbd5e1',
   },
   backgroundColor: '#f8fafc',
   textColor: '#0f172a',
@@ -68,10 +93,35 @@ setHansTheme({
       default: '#e11d48',
       neutral: '#fecdd3',
     },
+    success: {
+      strong: '#166534',
+      default: '#22c55e',
+      neutral: '#bbf7d0',
+    },
+    danger: {
+      strong: '#991b1b',
+      default: '#ef4444',
+      neutral: '#fecaca',
+    },
+    warning: {
+      strong: '#92400e',
+      default: '#f59e0b',
+      neutral: '#fde68a',
+    },
+    info: {
+      strong: '#155e75',
+      default: '#06b6d4',
+      neutral: '#cffafe',
+    },
+    base: {
+      strong: '#334155',
+      default: '#64748b',
+      neutral: '#cbd5e1',
+    },
     backgroundColor: '#f8fafc',
     textColor: '#0f172a',
   });
 </script>
 ```
 
-Only the informed tokens are overridden. Any semantic color not provided continues using the active `data-theme` combination fallback.
+The dynamic object must include all 23 color slots so the runtime theme always matches the full structure of a built-in combination.

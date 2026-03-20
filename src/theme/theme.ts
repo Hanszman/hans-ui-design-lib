@@ -1,25 +1,22 @@
-import type { Color } from '../types/Common.types';
+import type {
+  HansThemeApi,
+  HansThemeCombination,
+  HansThemeCssVars,
+  HansThemeSemanticKey,
+  HansThemeSetOptions,
+  HansThemeToneLevel,
+} from './theme.types';
 
-export type HansThemeSemanticKey = Color;
-export type HansThemeToneLevel = 'strong' | 'default' | 'neutral';
-export type HansThemeTone = Partial<Record<HansThemeToneLevel, string>>;
-export type HansThemeCombinationName =
-  | 'combination1'
-  | 'combination2'
-  | 'combination3'
-  | 'combination4'
-  | 'combination5';
-export type HansThemeCombination = Partial<
-  Record<HansThemeSemanticKey, HansThemeTone>
-> & {
-  backgroundColor?: string;
-  textColor?: string;
-};
-export type HansThemeApi = {
-  setTheme: typeof setHansTheme;
-  resetTheme: typeof resetHansTheme;
-  getThemeVars: typeof getHansThemeVars;
-};
+export type {
+  HansThemeApi,
+  HansThemeCombination,
+  HansThemeCombinationName,
+  HansThemeCssVars,
+  HansThemeSemanticKey,
+  HansThemeSetOptions,
+  HansThemeTone,
+  HansThemeToneLevel,
+} from './theme.types';
 
 export const HANS_THEME_MANAGED_ATTR = 'data-hans-theme-vars';
 export const HANS_THEME_WINDOW_KEY = 'HansUI';
@@ -94,38 +91,65 @@ export const clearThemeAttribute = (): void => {
   document.body?.removeAttribute(HANS_THEME_DATA_ATTRIBUTE);
 };
 
-export const getHansThemeVars = (
-  theme: HansThemeCombination,
-): Record<string, string> => {
-  const cssVars: Record<string, string> = {};
+export const getMissingThemeEntries = (theme: HansThemeCombination): string[] => {
+  const missingEntries: string[] = [];
 
   HANS_THEME_SEMANTIC_KEYS.forEach((semanticKey) => {
-    const tones = theme[semanticKey];
-    if (!tones) return;
-
     HANS_THEME_TONE_LEVELS.forEach((tone) => {
-      const value = normalizeThemeValue(tones[tone]);
-      if (!value) return;
-      cssVars[getThemeCssVarName(semanticKey, tone)] = value;
+      if (!normalizeThemeValue(theme[semanticKey]?.[tone])) {
+        missingEntries.push(`${semanticKey}.${tone}`);
+      }
     });
   });
 
-  const backgroundColor = normalizeThemeValue(theme.backgroundColor);
-  if (backgroundColor) {
-    cssVars[HANS_THEME_GLOBAL_VAR_MAP.backgroundColor] = backgroundColor;
+  if (!normalizeThemeValue(theme.backgroundColor)) {
+    missingEntries.push('backgroundColor');
   }
 
-  const textColor = normalizeThemeValue(theme.textColor);
-  if (textColor) {
-    cssVars[HANS_THEME_GLOBAL_VAR_MAP.textColor] = textColor;
+  if (!normalizeThemeValue(theme.textColor)) {
+    missingEntries.push('textColor');
   }
+
+  return missingEntries;
+};
+
+export const assertCompleteHansTheme = (theme: HansThemeCombination): void => {
+  const missingEntries = getMissingThemeEntries(theme);
+  if (missingEntries.length === 0) return;
+
+  throw new Error(
+    `Hans theme requires all 23 color tokens. Missing: ${missingEntries.join(', ')}`,
+  );
+};
+
+export const getHansThemeVars = (
+  theme: HansThemeCombination,
+): HansThemeCssVars => {
+  assertCompleteHansTheme(theme);
+
+  const cssVars: HansThemeCssVars = {};
+
+  HANS_THEME_SEMANTIC_KEYS.forEach((semanticKey) => {
+    HANS_THEME_TONE_LEVELS.forEach((tone) => {
+      cssVars[getThemeCssVarName(semanticKey, tone)] = normalizeThemeValue(
+        theme[semanticKey][tone],
+      );
+    });
+  });
+
+  cssVars[HANS_THEME_GLOBAL_VAR_MAP.backgroundColor] = normalizeThemeValue(
+    theme.backgroundColor,
+  );
+  cssVars[HANS_THEME_GLOBAL_VAR_MAP.textColor] = normalizeThemeValue(
+    theme.textColor,
+  );
 
   return cssVars;
 };
 
 export const setHansTheme = (
   theme: HansThemeCombination,
-  options: { clearDataTheme?: boolean } = {},
+  options: HansThemeSetOptions = {},
 ): void => {
   if (options.clearDataTheme) {
     clearThemeAttribute();
@@ -161,8 +185,9 @@ export const resetHansTheme = (): void => {
 export const registerHansThemeApi = (): void => {
   if (typeof window === 'undefined') return;
 
+  const currentApi = (window[HANS_THEME_WINDOW_KEY] ?? {}) as Partial<HansThemeApi>;
   window[HANS_THEME_WINDOW_KEY] = {
-    ...(window[HANS_THEME_WINDOW_KEY] ?? {}),
+    ...currentApi,
     setTheme: setHansTheme,
     resetTheme: resetHansTheme,
     getThemeVars: getHansThemeVars,
