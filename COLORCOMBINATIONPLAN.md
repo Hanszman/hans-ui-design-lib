@@ -1,87 +1,98 @@
-# Parametrização dinâmica de combinations via API programática
+# Dynamic Combination Theme API with Backward Compatibility
 
 ## Summary
 
-Adicionar uma API de tema em runtime, mantendo `data-theme="combination1..5"` 100% compatível como fallback.  
-A arquitetura atual suporta isso bem porque os componentes já consomem apenas CSS variables sem depender de contexto React; então basta introduzir uma camada oficial da lib para aplicar um objeto de tokens semânticos no alvo desejado (`document.documentElement` por padrão).
+Adicionar uma API pública de tematização dinâmica por objeto, sem quebrar o modelo atual baseado em `data-theme="combination1..5"`.  
+A lib continuará suportando as 5 combinations existentes como comportamento oficial e estável, enquanto passa a aceitar um objeto com os trios semânticos (`primary`, `secondary`, `success`, etc.) para sobrescrever os CSS tokens em runtime.
 
 ## Key Changes
 
-- Criar um contrato público de tema, algo como:
+- Manter `src/styles/colors.scss` como baseline estático da lib:
+  - preservar `:root` com fallbacks
+  - preservar integralmente as 5 combinations atuais
+  - manter `data-theme="combination1..5"` funcionando em React, CDN e Storybook
+- Criar uma camada de theme runtime baseada em CSS variables, sem provider React:
   - `HansThemeSemanticKey = 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'base'`
   - `HansThemeTone = { strong: string; default: string; neutral: string }`
   - `HansThemeCombination = Partial<Record<HansThemeSemanticKey, HansThemeTone>> & { backgroundColor?: string; textColor?: string }`
-  - `HansThemeTarget = HTMLElement | Document`
-- Criar utilitários puros para:
-  - normalizar o alvo (`Document` -> `document.documentElement`)
-  - mapear o objeto para CSS vars (`primary.default` -> `--primary-default-color`)
-  - aplicar/remover variáveis com `style.setProperty`
-  - validar o mínimo esperado e preencher faltas com fallback da combination ativa ou da `combination1`
-- Expor no pacote React/TS:
+- Expor API pública no pacote npm:
   - `setHansTheme(theme, options?)`
   - `resetHansTheme(options?)`
   - `getHansThemeVars(theme)`
-- Expor a mesma API no bundle CDN/web components:
-  - registrar `window.HansUI.setTheme(...)`
-  - registrar `window.HansUI.resetTheme(...)`
-- Regra de precedência:
-  1. tema dinâmico aplicado por API no alvo
+- Expor a mesma API no bundle CDN:
+  - `window.HansUI.setTheme(...)`
+  - `window.HansUI.resetTheme(...)`
+- Implementar utilitários puros para:
+  - transformar objeto de combination em mapa de CSS vars
+  - aplicar vars no alvo (`document.documentElement` por padrão)
+  - limpar vars dinâmicas no reset
+  - preencher campos ausentes com fallback da combination ativa ou da `combination1`
+- Definir precedência explícita:
+  1. vars dinâmicas aplicadas pela API
   2. `data-theme="combinationX"`
-  3. fallback de `:root` já existente em `colors.scss`
-- Manter `colors.scss` com as 5 combinations atuais, mas tratá-lo como baseline estático e fallback, não como único mecanismo.
-- Atualizar docs do README e Storybook Color System com:
-  - uso atual por `data-theme`
-  - novo uso por objeto programático
-  - exemplos React e CDN/Angular
-- Atualizar o preview/documentação do Color System para também demonstrar a leitura do tema aplicado por API, não só das combinations fixas.
+  3. fallbacks de `:root`
+- Atualizar `ColorSystemDocs.tsx` para documentar e demonstrar:
+  - combinations fixas atuais
+  - objeto dinâmico aplicado em runtime
+  - leitura dos tokens resultantes após sobrescrita
+- Atualizar `src/stories/ColorSystem/ColorSystem.mdx` com o novo sistema:
+  - manter a explicação das 5 combinations existentes
+  - explicar o novo modelo por objeto
+  - mostrar exemplos de uso React/npm e CDN/web components
+  - deixar claro quando usar `data-theme` e quando usar `setHansTheme`
+
+## Consumer Implementations
+
+- `hans-game-tracker-app` (Next/React via npm):
+  - manter o uso atual de `import "hans-ui-design-lib/style.css"` e `data-theme="combination1"` em `src/app/layout.tsx`
+  - adicionar um exemplo de consumo da API programática em client component, por exemplo no `ClientRoot`, aplicando um objeto customizado com `setHansTheme(...)`
+  - garantir que o exemplo rode apenas no client e não introduza erro de SSR
+- `hans-portfolio-app` (Angular via CDN/web components):
+  - manter o uso atual do CSS e JS CDN em `src/index.html`
+  - adicionar um exemplo de inicialização que chame `window.HansUI.setTheme(...)` após o bundle estar carregado
+  - manter compatibilidade com o uso atual dos web components sem exigir mudança em `hans-button`, `hans-icon`, etc.
+  - documentar que o tema dinâmico pode coexistir com `data-theme`, mas tem prioridade quando aplicado
+- Em ambos os projetos irmãos, o exemplo deve ser demonstrativo e mínimo:
+  - mostrar ao menos `primary` e `secondary`
+  - incluir `backgroundColor` e `textColor`
+  - evitar dependência de tokens internos não públicos
 
 ## Public API / Interfaces
 
-- Novo arquivo público de tema exportado pelo `src/index.ts`.
+- Novo módulo público de tema exportado por `src/index.ts`
 - API proposta:
-  - `setHansTheme(theme: HansThemeCombination, options?: { target?: HansThemeTarget; clearDataTheme?: boolean }): void`
-  - `resetHansTheme(options?: { target?: HansThemeTarget }): void`
+  - `setHansTheme(theme: HansThemeCombination, options?: { target?: HTMLElement | Document; clearDataTheme?: boolean }): void`
+  - `resetHansTheme(options?: { target?: HTMLElement | Document }): void`
   - `getHansThemeVars(theme: HansThemeCombination): Record<string, string>`
 - Comportamento:
   - `target` default: `document`
   - `clearDataTheme` default: `false`
-  - chaves ausentes no objeto não quebram o tema; usam fallback
-  - valores aceitos: `#hex`, `rgb(...)`, `hsl(...)`, `var(--alguma-coisa)` e equivalentes CSS válidos
-
-## How It Works
-
-- Hoje os componentes já leem tokens como `var(--primary-default-color)` nos SCSS e helpers.
-- Com a nova API, a aplicação consumidora passa um objeto com os trios desejados.
-- A lib converte esse objeto em CSS custom properties e grava no elemento-alvo.
-- Como React app, Angular app e web components enxergam as mesmas CSS vars, todos passam a renderizar com a combinação customizada sem mudar os componentes.
-- Exemplo conceitual:
-  - React/npm: `setHansTheme({ primary: { strong: '#123', default: '#456', neutral: '#789' } })`
-  - CDN: `window.HansUI.setTheme({ primary: { ... }, secondary: { ... } })`
-- Se nenhum tema dinâmico for aplicado, tudo continua funcionando via `data-theme` exatamente como hoje.
+  - valores ausentes usam fallback
+  - aceitar valores CSS válidos como `#hex`, `rgb(...)`, `hsl(...)`, `var(--token)`
 
 ## Test Plan
 
-- Unit tests dos utilitários de mapeamento:
-  - converte tokens semânticos em nomes corretos de CSS vars
-  - aplica apenas chaves informadas
-  - preserva fallback quando houver campos ausentes
-  - remove vars no reset
-- Tests de integração DOM:
-  - `setHansTheme` escreve vars no `document.documentElement`
-  - componentes renderizam usando o novo valor sem mudar props
-  - `resetHansTheme` devolve comportamento ao `data-theme`/fallback
-- Tests de compatibilidade:
-  - `data-theme="combination1..5"` continua funcionando sem usar a nova API
+- Unit tests dos helpers de theme:
+  - mapeamento correto de tokens para CSS vars
+  - aplicação parcial de objeto sem quebrar fallbacks
+  - reset removendo apenas vars dinâmicas
+  - precedência correta sobre `data-theme`
+- Integração DOM:
+  - `setHansTheme` altera `document.documentElement.style`
+  - componentes continuam renderizando com os novos valores sem mudar props
   - Chart continua resolvendo cores por `getComputedStyle`
-  - web component continua herdando CSS vars após `window.HansUI.setTheme`
-- Storybook/manual acceptance:
-  - docs exibem combinations fixas e tema dinâmico
-  - build, lint e cobertura permanecem verdes
-  - coverage 100% para os novos helpers e branches de fallback/reset
+- Compatibilidade:
+  - as 5 combinations atuais continuam funcionando sem a nova API
+  - Storybook continua exibindo o color system corretamente
+  - bundle npm e bundle CDN continuam expondo os estilos esperados
+- Qualidade:
+  - manter 100% coverage para o código novo
+  - passar em lint, build da lib, build do CDN e build do Storybook
+  - validar os exemplos nos dois projetos consumidores irmãos
 
 ## Assumptions
 
-- O escopo inicial vai parametrizar os tokens semânticos finais, não redefinir famílias base como `purple-500`.
-- `data-theme` permanece suportado e documentado como caminho estático/fallback.
-- A API principal será programática, única e shared entre npm/React e CDN.
-- O alvo padrão será global; suporte por container/host pode existir via `target`, mas sem introduzir provider React nesta primeira versão.
+- O escopo inicial parametriza os tokens semânticos finais, não as famílias base como `purple-500`.
+- O modelo atual com `data-theme="combination1..5"` permanece oficial, suportado e documentado.
+- A API dinâmica será global/programática para servir React, Next, Angular e web components com a mesma implementação.
+- O alvo padrão será global, sem introduzir provider React nesta primeira versão.

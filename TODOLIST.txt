@@ -1,5 +1,5 @@
 * Continuar próximos componentes:
--Publi/propaganda (usar lib?)
+-Publi/propaganda?
 -Translation?
 
 Recap Prompt:
