@@ -49,6 +49,33 @@ import { HansButton } from 'hans-ui-design-lib';
 <HansButton label="Button"></HansButton>;
 ```
 
+The current 5 theme combinations are still fully supported and remain the default preset system.
+
+If your project needs a custom semantic palette, you can override the active combination at runtime:
+
+```tsx
+import { HansButton, setHansTheme } from 'hans-ui-design-lib';
+
+setHansTheme({
+  primary: {
+    strong: '#1e3a8a',
+    default: '#2563eb',
+    neutral: '#bfdbfe',
+  },
+  secondary: {
+    strong: '#9f1239',
+    default: '#e11d48',
+    neutral: '#fecdd3',
+  },
+  backgroundColor: '#f8fafc',
+  textColor: '#0f172a',
+});
+
+<HansButton label="Button"></HansButton>;
+```
+
+Only the tokens you provide are overridden. The others keep following the current `data-theme` fallback.
+
 ### Others:
 
 If you're using other Technologies like Angular for example, you don't have to install it with npm, you just have to import the CDN links. In the root index.html of your application, define:
@@ -88,6 +115,27 @@ And in your component html you can just call it like this, passing the props you
 
 ```html
 <hans-button label="Button"></hans-button>
+```
+
+You can also override the active combination dynamically in CDN/web component usage:
+
+```html
+<script>
+  window.HansUI.setTheme({
+    primary: {
+      strong: '#1e3a8a',
+      default: '#2563eb',
+      neutral: '#bfdbfe',
+    },
+    secondary: {
+      strong: '#9f1239',
+      default: '#e11d48',
+      neutral: '#fecdd3',
+    },
+    backgroundColor: '#f8fafc',
+    textColor: '#0f172a',
+  });
+</script>
 ```
 
 ## 🧑‍💻 Development

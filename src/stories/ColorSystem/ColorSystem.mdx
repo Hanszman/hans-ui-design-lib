@@ -17,3 +17,61 @@ import { ColorSystemDocs } from './ColorSystemDocs';
 ## Usage Note
 
 Use semantic tokens in component SCSS (`--primary-default-color`, `--base-neutral-color`, etc.) instead of raw family tokens (`--purple-500`, etc.).
+
+## Theme Selection
+
+The current approach remains supported:
+
+```html
+<html data-theme="combination3"></html>
+```
+
+The five built-in combinations are still the default way to pick a preset palette for a project.
+
+## Dynamic Combination Object
+
+Projects that need a custom palette can now override the semantic tokens at runtime with a theme object.
+
+### React / npm
+
+```tsx
+import { setHansTheme } from 'hans-ui-design-lib';
+
+setHansTheme({
+  primary: {
+    strong: '#1e3a8a',
+    default: '#2563eb',
+    neutral: '#bfdbfe',
+  },
+  secondary: {
+    strong: '#9f1239',
+    default: '#e11d48',
+    neutral: '#fecdd3',
+  },
+  backgroundColor: '#f8fafc',
+  textColor: '#0f172a',
+});
+```
+
+### CDN / Web Components
+
+```html
+<script>
+  window.HansUI.setTheme({
+    primary: {
+      strong: '#1e3a8a',
+      default: '#2563eb',
+      neutral: '#bfdbfe',
+    },
+    secondary: {
+      strong: '#9f1239',
+      default: '#e11d48',
+      neutral: '#fecdd3',
+    },
+    backgroundColor: '#f8fafc',
+    textColor: '#0f172a',
+  });
+</script>
+```
+
+Only the informed tokens are overridden. Any semantic color not provided continues using the active `data-theme` combination fallback.

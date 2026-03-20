@@ -44,3 +44,6 @@ export * from './components/Toast/Toast.types';
 export * from './components/Modal/Modal.types';
 export * from './components/Table/Table.types';
 export * from './components/Tabs/Tabs.types';
+
+// Theme:
+export * from './theme/theme';

@@ -1,4 +1,5 @@
 import './styles/index.css';
+import { registerHansThemeApi } from './theme/theme';
 import { registerReactAsWebComponent } from './utils/reactToWebComponent';
 import { HansButton } from './components/Forms/Button/Button';
 import {
@@ -100,6 +101,8 @@ import {
   type HansTabsProps,
   HansTabsPropsList,
 } from './components/Tabs/Tabs.types';
+
+registerHansThemeApi();
 
 registerReactAsWebComponent<HansButtonProps>(
   'hans-button',

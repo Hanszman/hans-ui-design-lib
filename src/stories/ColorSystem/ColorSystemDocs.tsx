@@ -1,16 +1,16 @@
 import React from 'react';
-
-type SemanticColor =
-  | 'primary'
-  | 'secondary'
-  | 'success'
-  | 'danger'
-  | 'warning'
-  | 'info'
-  | 'base';
+import {
+  HANS_THEME_COMBINATIONS,
+  HANS_THEME_SEMANTIC_KEYS,
+  getHansThemeVars,
+  resetHansTheme,
+  setHansTheme,
+  type HansThemeCombination,
+  type HansThemeSemanticKey,
+} from '../../theme/theme';
 
 type CombinationRow = {
-  token: SemanticColor;
+  token: HansThemeSemanticKey;
   strong: string;
   default: string;
   neutral: string;
@@ -42,22 +42,27 @@ const COLOR_FAMILIES = [
 
 const FAMILY_LEVELS = ['900', '500', '300'] as const;
 const GRAY_LEVELS = ['900', '700', '500', '300', '100'] as const;
-const THEMES = [
-  'combination1',
-  'combination2',
-  'combination3',
-  'combination4',
-  'combination5',
-] as const;
-const SEMANTIC_KEYS: SemanticColor[] = [
-  'primary',
-  'secondary',
-  'success',
-  'danger',
-  'warning',
-  'info',
-  'base',
-];
+const THEMES = [...HANS_THEME_COMBINATIONS];
+const SEMANTIC_KEYS = [...HANS_THEME_SEMANTIC_KEYS];
+const DYNAMIC_THEME_SAMPLE: HansThemeCombination = {
+  primary: {
+    strong: '#1e3a8a',
+    default: '#2563eb',
+    neutral: '#bfdbfe',
+  },
+  secondary: {
+    strong: '#9f1239',
+    default: '#e11d48',
+    neutral: '#fecdd3',
+  },
+  success: {
+    strong: '#166534',
+    default: '#22c55e',
+    neutral: '#bbf7d0',
+  },
+  backgroundColor: '#f8fafc',
+  textColor: '#0f172a',
+};
 
 const SWATCH_STYLE: React.CSSProperties = {
   display: 'inline-block',
@@ -78,6 +83,17 @@ const normalize = (value: string): string => value.trim();
 const readVar = (styles: CSSStyleDeclaration, token: string): string =>
   normalize(styles.getPropertyValue(token));
 
+const readCombinationData = (styles: CSSStyleDeclaration): CombinationData => ({
+  background: readVar(styles, '--background-color'),
+  text: readVar(styles, '--text-color'),
+  rows: SEMANTIC_KEYS.map((token) => ({
+    token,
+    strong: readVar(styles, `--${token}-strong-color`),
+    default: readVar(styles, `--${token}-default-color`),
+    neutral: readVar(styles, `--${token}-neutral-color`),
+  })),
+});
+
 const colorCell = (value: string) => (
   <div style={CELL_WRAP_STYLE}>
     <span style={{ ...SWATCH_STYLE, background: value }} />
@@ -92,6 +108,8 @@ export const ColorSystemDocs = (): React.JSX.Element => {
   const [combos, setCombos] = React.useState<Record<string, CombinationData>>(
     {},
   );
+  const [dynamicPreview, setDynamicPreview] =
+    React.useState<CombinationData | null>(null);
 
   React.useEffect(() => {
     const root = getComputedStyle(document.documentElement);
@@ -107,28 +125,25 @@ export const ColorSystemDocs = (): React.JSX.Element => {
       nextGrays[level] = readVar(root, `--gray-${level}`);
     });
 
+    const html = document.documentElement;
     const body = document.body;
-    const originalTheme = body.getAttribute('data-theme');
+    const originalHtmlTheme = html.getAttribute('data-theme');
+    const originalBodyTheme = body.getAttribute('data-theme');
     const nextCombos: Record<string, CombinationData> = {};
 
     THEMES.forEach((theme) => {
-      body.setAttribute('data-theme', theme);
-      const styles = getComputedStyle(body);
-
-      nextCombos[theme] = {
-        background: readVar(styles, '--background-color'),
-        text: readVar(styles, '--text-color'),
-        rows: SEMANTIC_KEYS.map((token) => ({
-          token,
-          strong: readVar(styles, `--${token}-strong-color`),
-          default: readVar(styles, `--${token}-default-color`),
-          neutral: readVar(styles, `--${token}-neutral-color`),
-        })),
-      };
+      html.setAttribute('data-theme', theme);
+      nextCombos[theme] = readCombinationData(getComputedStyle(body));
     });
 
-    if (originalTheme) {
-      body.setAttribute('data-theme', originalTheme);
+    if (originalHtmlTheme) {
+      html.setAttribute('data-theme', originalHtmlTheme);
+    } else {
+      html.removeAttribute('data-theme');
+    }
+
+    if (originalBodyTheme) {
+      body.setAttribute('data-theme', originalBodyTheme);
     } else {
       body.removeAttribute('data-theme');
     }
@@ -136,8 +151,27 @@ export const ColorSystemDocs = (): React.JSX.Element => {
     setFamilies(nextFamilies);
     setGrays(nextGrays);
     setCombos(nextCombos);
+    setDynamicPreview(readCombinationData(getComputedStyle(body)));
     setReady(true);
+
+    return () => {
+      resetHansTheme();
+    };
   }, []);
+
+  const syncDynamicPreview = React.useCallback(() => {
+    setDynamicPreview(readCombinationData(getComputedStyle(document.body)));
+  }, []);
+
+  const handleApplyDynamicTheme = React.useCallback(() => {
+    setHansTheme(DYNAMIC_THEME_SAMPLE);
+    syncDynamicPreview();
+  }, [syncDynamicPreview]);
+
+  const handleResetDynamicTheme = React.useCallback(() => {
+    resetHansTheme();
+    syncDynamicPreview();
+  }, [syncDynamicPreview]);
 
   if (!ready) {
     return <p>Loading color tokens...</p>;
@@ -148,6 +182,11 @@ export const ColorSystemDocs = (): React.JSX.Element => {
       <p>
         This page documents <code>src/styles/colors.scss</code> with visual
         swatches and live values.
+      </p>
+      <p>
+        The current <code>data-theme</code> combinations still work exactly as
+        before. The new dynamic API can override the same semantic tokens at
+        runtime with a custom object per consuming project.
       </p>
 
       <h2>Base Palettes</h2>
@@ -214,7 +253,7 @@ export const ColorSystemDocs = (): React.JSX.Element => {
       <p>
         Use:
         <br />
-        <code>{'<body data-theme="combination3"></body>'}</code>
+        <code>{'<html data-theme="combination3"></html>'}</code>
       </p>
 
       {THEMES.map((theme) => (
@@ -266,6 +305,74 @@ export const ColorSystemDocs = (): React.JSX.Element => {
           </table>
         </div>
       ))}
+
+      <h2>Dynamic Theme Object</h2>
+      <p>
+        Use <code>setHansTheme</code> to override only the tokens your project
+        wants to customize. Any token you do not provide keeps the active
+        combination fallback.
+      </p>
+      <pre>
+        <code>{`setHansTheme(${JSON.stringify(DYNAMIC_THEME_SAMPLE, null, 2)})`}</code>
+      </pre>
+      <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+        <button type="button" onClick={handleApplyDynamicTheme}>
+          Apply dynamic theme
+        </button>
+        <button type="button" onClick={handleResetDynamicTheme}>
+          Reset dynamic theme
+        </button>
+      </div>
+
+      {dynamicPreview && (
+        <table style={{ width: '100%' }}>
+          <thead>
+            <tr>
+              <th style={{ textAlign: 'center' }}>Token</th>
+              <th style={{ textAlign: 'center' }}>Strong</th>
+              <th style={{ textAlign: 'center' }}>Default</th>
+              <th style={{ textAlign: 'center' }}>Neutral</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dynamicPreview.rows.map((row) => (
+              <tr key={`dynamic-${row.token}`}>
+                <td style={{ textAlign: 'center' }}>
+                  <strong>{row.token}</strong>
+                </td>
+                <td style={{ textAlign: 'center' }}>{colorCell(row.strong)}</td>
+                <td style={{ textAlign: 'center' }}>
+                  {colorCell(row.default)}
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  {colorCell(row.neutral)}
+                </td>
+              </tr>
+            ))}
+            <tr>
+              <td style={{ textAlign: 'center' }}>
+                <strong>background</strong>
+              </td>
+              <td colSpan={3} style={{ textAlign: 'center' }}>
+                {colorCell(dynamicPreview.background)}
+              </td>
+            </tr>
+            <tr>
+              <td style={{ textAlign: 'center' }}>
+                <strong>text</strong>
+              </td>
+              <td colSpan={3} style={{ textAlign: 'center' }}>
+                {colorCell(dynamicPreview.text)}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      )}
+
+      <h3>Generated CSS Variables</h3>
+      <pre>
+        <code>{JSON.stringify(getHansThemeVars(DYNAMIC_THEME_SAMPLE), null, 2)}</code>
+      </pre>
     </>
   );
 };
