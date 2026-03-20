@@ -125,6 +125,31 @@ const CELL_WRAP_STYLE: React.CSSProperties = {
   gap: 6,
 };
 
+const ACTION_BUTTON_STYLE: React.CSSProperties = {
+  appearance: 'none',
+  borderRadius: 8,
+  border: '1px solid #cbd5e1',
+  padding: '10px 14px',
+  fontSize: 14,
+  fontWeight: 600,
+  lineHeight: 1.2,
+  cursor: 'pointer',
+  transition: 'all 0.2s ease',
+};
+
+const PRIMARY_ACTION_BUTTON_STYLE: React.CSSProperties = {
+  ...ACTION_BUTTON_STYLE,
+  background: '#0f172a',
+  borderColor: '#0f172a',
+  color: '#f8fafc',
+};
+
+const SECONDARY_ACTION_BUTTON_STYLE: React.CSSProperties = {
+  ...ACTION_BUTTON_STYLE,
+  background: '#ffffff',
+  color: '#0f172a',
+};
+
 const normalize = (value: string): string => value.trim();
 
 const readVar = (styles: CSSStyleDeclaration, token: string): string =>
@@ -361,10 +386,20 @@ export const ColorSystemDocs = (): React.JSX.Element => {
       </p>
       <Source code={DYNAMIC_THEME_SOURCE} language="tsx" />
       <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
-        <button type="button" onClick={handleApplyDynamicTheme}>
+        <button
+          type="button"
+          onClick={handleApplyDynamicTheme}
+          style={PRIMARY_ACTION_BUTTON_STYLE}
+          title="Apply the dynamic theme example"
+        >
           Apply dynamic theme
         </button>
-        <button type="button" onClick={handleResetDynamicTheme}>
+        <button
+          type="button"
+          onClick={handleResetDynamicTheme}
+          style={SECONDARY_ACTION_BUTTON_STYLE}
+          title="Reset the dynamic theme preview"
+        >
           Reset dynamic theme
         </button>
       </div>
