@@ -21,9 +21,8 @@ export type HansThemeApi = {
   getThemeVars: typeof getHansThemeVars;
 };
 
-const HANS_THEME_MANAGED_ATTR = 'data-hans-theme-vars';
-const HANS_THEME_WINDOW_KEY = 'HansUI';
-
+export const HANS_THEME_MANAGED_ATTR = 'data-hans-theme-vars';
+export const HANS_THEME_WINDOW_KEY = 'HansUI';
 export const HANS_THEME_DATA_ATTRIBUTE = 'data-theme';
 export const HANS_THEME_COMBINATIONS = [
   'combination1',
@@ -46,28 +45,27 @@ export const HANS_THEME_TONE_LEVELS: HansThemeToneLevel[] = [
   'default',
   'neutral',
 ];
-
-const HANS_THEME_GLOBAL_VAR_MAP = {
+export const HANS_THEME_GLOBAL_VAR_MAP = {
   backgroundColor: '--background-color',
   textColor: '--text-color',
 } as const;
 
-const normalizeThemeValue = (value: string | undefined): string =>
+export const normalizeThemeValue = (value: string | undefined): string =>
   value?.trim() ?? '';
 
-const getThemeCssVarName = (
+export const getThemeCssVarName = (
   semanticKey: HansThemeSemanticKey,
   tone: HansThemeToneLevel,
 ): string => `--${semanticKey}-${tone}-color`;
 
-const getThemeTargets = (): HTMLElement[] => {
+export const getThemeTargets = (): HTMLElement[] => {
   if (typeof document === 'undefined') return [];
   return [document.documentElement, document.body].filter(
     (element): element is HTMLElement => Boolean(element),
   );
 };
 
-const getManagedThemeVars = (element: HTMLElement): Set<string> =>
+export const getManagedThemeVars = (element: HTMLElement): Set<string> =>
   new Set(
     (element.getAttribute(HANS_THEME_MANAGED_ATTR) ?? '')
       .split(',')
@@ -75,7 +73,7 @@ const getManagedThemeVars = (element: HTMLElement): Set<string> =>
       .filter(Boolean),
   );
 
-const setManagedThemeVars = (
+export const setManagedThemeVars = (
   element: HTMLElement,
   managedVars: Set<string>,
 ): void => {
@@ -90,7 +88,7 @@ const setManagedThemeVars = (
   );
 };
 
-const clearThemeAttribute = (): void => {
+export const clearThemeAttribute = (): void => {
   if (typeof document === 'undefined') return;
   document.documentElement.removeAttribute(HANS_THEME_DATA_ATTRIBUTE);
   document.body?.removeAttribute(HANS_THEME_DATA_ATTRIBUTE);
