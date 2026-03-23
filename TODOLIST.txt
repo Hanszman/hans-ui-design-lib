@@ -1,5 +1,4 @@
 * Continuar próximos componentes:
--Accoridon
 -Carousel
 -Message?
 -Translation?
