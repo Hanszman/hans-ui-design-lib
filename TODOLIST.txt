@@ -1,5 +1,4 @@
 * Continuar próximos componentes:
--Carousel
 -Message?
 -Translation?
 -AdSense (Publi/propaganda)
