@@ -1,6 +1,7 @@
 * Continuar próximos componentes:
 -Accoridon
 -Carousel
+-Message?
 -Publi/propaganda?
 -Translation?
 
