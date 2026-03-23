@@ -1,0 +1,59 @@
+.hans-accordion {
+  @apply flex w-full flex-col gap-3;
+}
+
+.hans-accordion-item {
+  @apply overflow-hidden rounded-xl border border-[var(--gray-200)] bg-[var(--white)] transition-colors duration-200;
+}
+
+.hans-accordion-item-open {
+  @apply border-[var(--base-default-color)] shadow-sm;
+}
+
+.hans-accordion-item-disabled {
+  @apply opacity-60;
+}
+
+.hans-accordion-trigger {
+  @apply flex w-full items-center justify-between gap-4 bg-transparent px-4 py-4 text-left transition-colors duration-200;
+}
+
+.hans-accordion-trigger:not(:disabled) {
+  @apply cursor-pointer;
+}
+
+.hans-accordion-trigger:not(:disabled):hover {
+  @apply bg-[var(--gray-50)];
+}
+
+.hans-accordion-trigger:disabled {
+  @apply cursor-not-allowed;
+}
+
+.hans-accordion-title {
+  @apply text-sm font-semibold leading-6;
+  color: var(--text-color);
+}
+
+.hans-accordion-icon {
+  @apply shrink-0;
+  color: var(--text-color);
+}
+
+.hans-accordion-panel {
+  @apply flex flex-col gap-2 border-t border-[var(--gray-100)] px-4 pb-4 pt-3;
+}
+
+.hans-accordion-description {
+  @apply text-sm leading-6;
+  color: var(--text-color);
+}
+
+.hans-accordion-empty {
+  @apply rounded-xl border border-dashed border-[var(--gray-300)] px-4 py-6 text-center text-sm;
+  color: var(--gray-600);
+}
+
+.hans-accordion-skeleton-item .hans-accordion-trigger {
+  @apply items-center;
+}

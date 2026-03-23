@@ -51,6 +51,11 @@ import {
   type HansChartProps,
   HansChartPropsList,
 } from './components/Chart/Chart.types';
+import { HansAccordion } from './components/Accordion/Accordion';
+import {
+  type HansAccordionProps,
+  HansAccordionPropsList,
+} from './components/Accordion/Accordion.types';
 import { HansIcon } from './components/Icon/Icon';
 import {
   type HansIconProps,
@@ -153,6 +158,11 @@ registerReactAsWebComponent<HansChartProps>(
   'hans-chart',
   HansChart,
   HansChartPropsList,
+);
+registerReactAsWebComponent<HansAccordionProps>(
+  'hans-accordion',
+  HansAccordion,
+  HansAccordionPropsList,
 );
 registerReactAsWebComponent<HansIconProps>(
   'hans-icon',

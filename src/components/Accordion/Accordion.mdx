@@ -1,0 +1,65 @@
+import { Canvas, Controls, Meta, Title } from '@storybook/addon-docs/blocks';
+import * as HansAccordionStories from './Accordion.stories';
+
+<Meta of={HansAccordionStories} />
+
+<Title />
+
+The **Accordion** component displays a list of text sections that can be expanded
+and collapsed one by one. It is designed for FAQ-style content and uses
+`IoIosArrowUp` and `IoIosArrowDown` to communicate the current state of each item.
+
+## Usage
+
+```tsx
+import { HansAccordion } from 'hans-ui-design-lib';
+
+const items = [
+  {
+    id: 'shipping',
+    title: 'How long does shipping take?',
+    description: 'Shipping usually takes between 3 and 5 business days.',
+  },
+];
+
+export const Example = () => (
+  <HansAccordion items={items} defaultOpenItemIds={['shipping']} />
+);
+```
+
+## Properties
+
+Use the controls below to test the component API.
+
+<Controls />
+
+## Single Item
+
+Use a single accordion item when you only need one expandable text block.
+
+<Canvas of={HansAccordionStories.SingleItem} />
+
+## Multiple Items
+
+Use multiple entries to build FAQ pages or grouped documentation sections.
+
+<Canvas of={HansAccordionStories.MultipleItems} />
+
+## Controlled State
+
+Use `openItemIds` with `onOpenItemIdsChange` when the expanded sections need to
+be synchronized with external state.
+
+<Canvas of={HansAccordionStories.Controlled} />
+
+## Empty State
+
+Use `emptyText` when there is no content available yet.
+
+<Canvas of={HansAccordionStories.Empty} />
+
+## Loading State
+
+Use `loading` while the accordion data is still being fetched asynchronously.
+
+<Canvas of={HansAccordionStories.Loading} />

@@ -14,6 +14,7 @@
 @import '../components/Card/card.scss';
 @import '../components/Tag/tag.scss';
 @import '../components/Chart/chart.scss';
+@import '../components/Accordion/accordion.scss';
 @import '../components/Loading/loading.scss';
 @import '../components/Kanban/kanban.scss';
 @import '../components/Icon/icon.scss';
