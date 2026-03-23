@@ -164,6 +164,8 @@ describe('HansCarousel', () => {
         carouselSize="large"
         carouselColor="secondary"
         carouselVariant="strong"
+        showBorder={false}
+        removeItemGap
       />,
     );
 
@@ -173,6 +175,8 @@ describe('HansCarousel', () => {
     expect(wrapper.style.getPropertyValue('--hans-carousel-accent-bg')).toBe(
       'var(--secondary-strong-color)',
     );
+    expect(wrapper).toHaveClass('hans-carousel-borderless');
+    expect(wrapper).toHaveClass('hans-carousel-without-gap');
   });
 
   it('Should render slides without copy when title and description are not provided', () => {
@@ -223,5 +227,32 @@ describe('HansCarousel', () => {
     expect(
       screen.getByRole('button', { name: 'Next image hans-carousel' }),
     ).toBeDisabled();
+  });
+
+  it('Should keep navigation enabled and loop when infiniteLoop is true', () => {
+    render(
+      <HansCarousel
+        items={items}
+        visibleItemsCount={1}
+        defaultActiveItemIndex={4}
+        infiniteLoop
+      />,
+    );
+
+    const nextButton = screen.getByRole('button', {
+      name: 'Next image hans-carousel',
+    });
+    const previousButton = screen.getByRole('button', {
+      name: 'Previous image hans-carousel',
+    });
+
+    expect(nextButton).not.toBeDisabled();
+    expect(previousButton).not.toBeDisabled();
+
+    fireEvent.click(nextButton);
+    expect(screen.getByRole('img', { name: 'Campaign image' })).toBeInTheDocument();
+
+    fireEvent.click(previousButton);
+    expect(screen.getByRole('img', { name: 'Plain image' })).toBeInTheDocument();
   });
 });

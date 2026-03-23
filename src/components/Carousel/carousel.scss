@@ -4,6 +4,16 @@
   border-color: var(--hans-carousel-shell-border, var(--gray-200));
 }
 
+.hans-carousel-borderless {
+  @apply p-0;
+  border-color: transparent;
+  background: transparent;
+}
+
+.hans-carousel-without-gap .hans-carousel-track {
+  gap: 0;
+}
+
 .hans-carousel-small {
   @apply p-3;
 }
@@ -17,7 +27,7 @@
 }
 
 .hans-carousel-frame {
-  @apply flex w-full flex-col gap-4;
+  @apply relative flex w-full flex-col gap-4;
 }
 
 .hans-carousel-viewport {
@@ -79,6 +89,15 @@
   box-shadow: 0 8px 24px color-mix(in srgb, var(--black) 16%, transparent);
 }
 
+.hans-carousel-nav.hans-button {
+  @apply p-0 outline-none;
+  background: var(--hans-carousel-accent-bg, var(--white)) !important;
+  color: var(--hans-carousel-accent-text, var(--text-color)) !important;
+  border-color: var(--hans-carousel-accent-border, var(--gray-300)) !important;
+  border-width: 1px;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--black) 16%, transparent);
+}
+
 .hans-carousel-nav:not(:disabled) {
   @apply cursor-pointer;
 }
@@ -102,6 +121,23 @@
 .hans-carousel-nav .hans-icon,
 .hans-carousel-nav .hans-loading {
   color: currentColor;
+}
+
+.hans-carousel-nav slot {
+  @apply inline-flex items-center justify-center;
+}
+
+.hans-carousel-nav .hans-icon {
+  @apply shrink-0;
+}
+
+.hans-carousel-nav .hans-loading-spinner {
+  border-color: color-mix(
+    in srgb,
+    currentColor 28%,
+    transparent
+  );
+  border-top-color: currentColor;
 }
 
 .hans-carousel-controls {
@@ -136,4 +172,34 @@
     transparent
   );
   min-height: var(--hans-carousel-height, 240px);
+}
+
+.hans-carousel-borderless .hans-carousel-frame {
+  @apply gap-0;
+}
+
+.hans-carousel-borderless .hans-carousel-viewport {
+  @apply rounded-2xl;
+}
+
+.hans-carousel-borderless .hans-carousel-controls {
+  @apply pointer-events-none absolute bottom-4 left-1/2 z-20 -translate-x-1/2;
+}
+
+.hans-carousel-borderless .hans-carousel-image {
+  @apply pb-24;
+}
+
+.hans-carousel-borderless .hans-carousel-indicators {
+  @apply pointer-events-auto rounded-full px-3 py-2;
+  background: color-mix(in srgb, var(--black) 24%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.hans-carousel-borderless .hans-carousel-copy {
+  @apply pr-4;
+}
+
+.hans-carousel-borderless .hans-carousel-empty {
+  @apply rounded-2xl border-0;
 }

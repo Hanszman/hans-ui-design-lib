@@ -147,25 +147,58 @@ export const getCanMoveCarouselNext = (
   itemsLength: number,
 ): boolean => activeItemIndex < itemsLength - 1;
 
+export const getCanMoveCarousel = (
+  direction: 'previous' | 'next',
+  activeItemIndex: number,
+  itemsLength: number,
+  infiniteLoop: boolean,
+): boolean => {
+  if (itemsLength <= 0) return false;
+  if (infiniteLoop) return true;
+
+  return direction === 'previous'
+    ? getCanMoveCarouselPrevious(activeItemIndex)
+    : getCanMoveCarouselNext(activeItemIndex, itemsLength);
+};
+
 export const getNextCarouselIndex = (
   direction: 'previous' | 'next',
   activeItemIndex: number,
   itemsLength: number,
+  infiniteLoop = false,
 ): number =>
-  clampCarouselIndex(
-    direction === 'previous' ? activeItemIndex - 1 : activeItemIndex + 1,
-    itemsLength,
-  );
+  (() => {
+    if (itemsLength <= 0) return 0;
+
+    if (infiniteLoop) {
+      if (direction === 'previous') {
+        return activeItemIndex <= 0 ? itemsLength - 1 : activeItemIndex - 1;
+      }
+
+      return activeItemIndex >= itemsLength - 1 ? 0 : activeItemIndex + 1;
+    }
+
+    return clampCarouselIndex(
+      direction === 'previous' ? activeItemIndex - 1 : activeItemIndex + 1,
+      itemsLength,
+    );
+  })();
 
 export const getCarouselClassName = ({
   carouselSize,
+  showBorder,
+  removeItemGap,
   customClasses,
 }: CarouselClassNameArgs): string =>
   `
     hans-carousel
     hans-carousel-${carouselSize}
+    ${showBorder ? '' : 'hans-carousel-borderless'}
+    ${removeItemGap ? 'hans-carousel-without-gap' : ''}
     ${customClasses}
   `;
+
+export const getCarouselTrackClassName = (): string => 'hans-carousel-track';
 
 export const getCarouselSlideClassName = (isActive: boolean): string =>
   `
@@ -298,6 +331,7 @@ export const createHandleCarouselMove =
     direction,
     resolvedActiveItemIndex,
     itemsLength,
+    infiniteLoop,
     activeItemIndex,
     setInternalActiveItemIndex,
     onActiveItemChange,
@@ -307,6 +341,7 @@ export const createHandleCarouselMove =
       direction,
       resolvedActiveItemIndex,
       itemsLength,
+      infiniteLoop,
     );
 
     if (nextIndex === resolvedActiveItemIndex) return;

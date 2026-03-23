@@ -1,4 +1,5 @@
 import React from 'react';
+import { HansButton } from '../Forms/Button/Button';
 import { HansIcon } from '../Icon/Icon';
 import { HansLoading } from '../Loading/Loading';
 import type { HansCarouselProps } from './Carousel.types';
@@ -7,8 +8,7 @@ import {
   createHandleCarouselMove,
   createHandleCarouselSelect,
   createSyncCarouselIndex,
-  getCanMoveCarouselNext,
-  getCanMoveCarouselPrevious,
+  getCanMoveCarousel,
   getCarouselButtonClassName,
   getCarouselButtonIconName,
   getCarouselClassName,
@@ -17,6 +17,7 @@ import {
   getCarouselSizeHeight,
   getCarouselSlideClassName,
   getCarouselStyleVars,
+  getCarouselTrackClassName,
   getInitialCarouselActiveItemIndex,
   getResolvedCarouselActiveItemIndex,
   getVisibleCarouselItems,
@@ -30,9 +31,12 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
     defaultActiveItemIndex = 0,
     visibleItemsCount = 1,
     maxIndicators = 7,
+    removeItemGap = false,
+    infiniteLoop = false,
     carouselSize = 'medium',
     carouselColor = 'base',
     carouselVariant = 'outline',
+    showBorder = true,
     loading = false,
     loadingColor,
     loadingAriaLabel = 'Loading carousel',
@@ -43,7 +47,10 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
     ...rest
   } = props;
 
-  const normalizedItems = React.useMemo(() => normalizeCarouselItems(items), [items]);
+  const normalizedItems = React.useMemo(
+    () => normalizeCarouselItems(items),
+    [items],
+  );
   const itemsLength = normalizedItems.length;
   const normalizedVisibleItemsCount = clampVisibleItemsCount(visibleItemsCount);
   const [internalActiveItemIndex, setInternalActiveItemIndex] = React.useState(
@@ -92,8 +99,11 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
   );
   const className = getCarouselClassName({
     carouselSize,
+    showBorder,
+    removeItemGap,
     customClasses,
   });
+  const trackClassName = getCarouselTrackClassName();
   const styleVars = React.useMemo(
     () =>
       ({
@@ -111,12 +121,23 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
       normalizedVisibleItemsCount,
     ],
   );
-  const canMovePrevious = getCanMoveCarouselPrevious(resolvedActiveItemIndex);
-  const canMoveNext = getCanMoveCarouselNext(resolvedActiveItemIndex, itemsLength);
+  const canMovePrevious = getCanMoveCarousel(
+    'previous',
+    resolvedActiveItemIndex,
+    itemsLength,
+    infiniteLoop,
+  );
+  const canMoveNext = getCanMoveCarousel(
+    'next',
+    resolvedActiveItemIndex,
+    itemsLength,
+    infiniteLoop,
+  );
   const handlePrevious = createHandleCarouselMove({
     direction: 'previous',
     resolvedActiveItemIndex,
     itemsLength,
+    infiniteLoop,
     activeItemIndex,
     setInternalActiveItemIndex,
     onActiveItemChange,
@@ -125,6 +146,7 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
     direction: 'next',
     resolvedActiveItemIndex,
     itemsLength,
+    infiniteLoop,
     activeItemIndex,
     setInternalActiveItemIndex,
     onActiveItemChange,
@@ -136,7 +158,7 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
       <div className={className} style={styleVars} aria-busy="true" {...rest}>
         <div className="hans-carousel-frame">
           <div className="hans-carousel-viewport">
-            <div className="hans-carousel-track">
+            <div className={trackClassName}>
               {Array.from(
                 { length: normalizedVisibleItemsCount },
                 (_, index) => index,
@@ -197,7 +219,7 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
     <div className={className} style={styleVars} {...rest}>
       <div className="hans-carousel-frame">
         <div className="hans-carousel-viewport">
-          <div className="hans-carousel-track">
+          <div className={trackClassName}>
             {visibleItems.map((item) => (
               <div
                 key={item.resolvedId}
@@ -234,9 +256,12 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
             ))}
           </div>
 
-          <button
-            type="button"
-            className={getCarouselButtonClassName('previous')}
+          <HansButton
+            buttonType="button"
+            buttonColor={carouselColor}
+            buttonVariant={carouselVariant}
+            buttonSize={carouselSize}
+            customClasses={getCarouselButtonClassName('previous')}
             aria-label={`Previous image ${carouselId}`}
             onClick={handlePrevious}
             disabled={!canMovePrevious}
@@ -245,11 +270,14 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
               name={getCarouselButtonIconName('previous')}
               iconSize={carouselSize}
             />
-          </button>
+          </HansButton>
 
-          <button
-            type="button"
-            className={getCarouselButtonClassName('next')}
+          <HansButton
+            buttonType="button"
+            buttonColor={carouselColor}
+            buttonVariant={carouselVariant}
+            buttonSize={carouselSize}
+            customClasses={getCarouselButtonClassName('next')}
             aria-label={`Next image ${carouselId}`}
             onClick={handleNext}
             disabled={!canMoveNext}
@@ -258,7 +286,7 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
               name={getCarouselButtonIconName('next')}
               iconSize={carouselSize}
             />
-          </button>
+          </HansButton>
         </div>
 
         <div className="hans-carousel-controls">

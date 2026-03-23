@@ -15,6 +15,8 @@ export type CarouselIndicatorItem = {
 
 export type CarouselClassNameArgs = {
   carouselSize: Size;
+  showBorder: boolean;
+  removeItemGap: boolean;
   customClasses: string;
 };
 
@@ -34,6 +36,7 @@ export type CreateHandleCarouselMoveParams = {
   direction: 'previous' | 'next';
   resolvedActiveItemIndex: number;
   itemsLength: number;
+  infiniteLoop: boolean;
   activeItemIndex: number | undefined;
   setInternalActiveItemIndex: React.Dispatch<React.SetStateAction<number>>;
   onActiveItemChange?: (activeItemIndex: number) => void;

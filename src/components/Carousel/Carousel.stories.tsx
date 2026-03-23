@@ -40,7 +40,8 @@ const carouselItems: HansCarouselItem[] = [
   {
     id: 'focus',
     title: 'Focused delivery',
-    description: 'Loading, empty state and indicators follow the same visual theme.',
+    description:
+      'Loading, empty state and indicators follow the same visual theme.',
     imageSrc:
       'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
     imageAlt: 'People collaborating in an office space',
@@ -60,9 +61,12 @@ const meta: Meta<typeof HansCarousel> = {
     items: carouselItems,
     visibleItemsCount: 1,
     maxIndicators: 7,
+    removeItemGap: false,
+    infiniteLoop: false,
     carouselSize: 'medium',
     carouselColor: 'base',
     carouselVariant: 'outline',
+    showBorder: true,
     loading: false,
     loadingColor: 'base',
     loadingAriaLabel: 'Loading carousel',
@@ -74,6 +78,8 @@ const meta: Meta<typeof HansCarousel> = {
     defaultActiveItemIndex: { control: 'number' },
     visibleItemsCount: { control: 'number' },
     maxIndicators: { control: 'number' },
+    removeItemGap: { control: 'boolean' },
+    infiniteLoop: { control: 'boolean' },
     carouselSize: { control: 'select', options: ['small', 'medium', 'large'] },
     carouselColor: {
       control: 'select',
@@ -91,6 +97,7 @@ const meta: Meta<typeof HansCarousel> = {
       control: 'select',
       options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
     },
+    showBorder: { control: 'boolean' },
     loadingColor: {
       control: 'select',
       options: [
@@ -199,6 +206,31 @@ export const Sizes: Story = {
 
 export const Controlled: Story = {
   render: () => <ControlledCarouselExample />,
+};
+
+export const InfiniteLoop: Story = {
+  args: {
+    items: carouselItems,
+    visibleItemsCount: 2,
+    infiniteLoop: true,
+  },
+};
+
+export const WithoutItemGap: Story = {
+  args: {
+    items: carouselItems,
+    visibleItemsCount: 3,
+    removeItemGap: true,
+  },
+};
+
+export const WithoutBorder: Story = {
+  args: {
+    items: carouselItems,
+    visibleItemsCount: 2,
+    showBorder: false,
+    removeItemGap: true,
+  },
 };
 
 export const Loading: Story = {

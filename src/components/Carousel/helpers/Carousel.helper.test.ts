@@ -5,6 +5,7 @@ import {
   createHandleCarouselMove,
   createHandleCarouselSelect,
   createSyncCarouselIndex,
+  getCanMoveCarousel,
   getCanMoveCarouselNext,
   getCanMoveCarouselPrevious,
   getCarouselButtonClassName,
@@ -16,6 +17,7 @@ import {
   getCarouselSizeHeight,
   getCarouselSlideClassName,
   getCarouselStyleVars,
+  getCarouselTrackClassName,
   getCarouselWindowStart,
   getInitialCarouselActiveItemIndex,
   getNextCarouselIndex,
@@ -118,17 +120,44 @@ describe('Carousel.helper', () => {
     expect(getCanMoveCarouselPrevious(1)).toBe(true);
     expect(getCanMoveCarouselNext(1, 4)).toBe(true);
     expect(getCanMoveCarouselNext(3, 4)).toBe(false);
+    expect(getCanMoveCarousel('previous', 0, 4, false)).toBe(false);
+    expect(getCanMoveCarousel('next', 3, 4, false)).toBe(false);
+    expect(getCanMoveCarousel('previous', 0, 4, true)).toBe(true);
+    expect(getCanMoveCarousel('next', 3, 4, true)).toBe(true);
+    expect(getCanMoveCarousel('next', 0, 0, true)).toBe(false);
     expect(getNextCarouselIndex('previous', 0, 4)).toBe(0);
     expect(getNextCarouselIndex('next', 1, 4)).toBe(2);
+    expect(getNextCarouselIndex('previous', 0, 4, true)).toBe(3);
+    expect(getNextCarouselIndex('previous', 2, 4, true)).toBe(1);
+    expect(getNextCarouselIndex('next', 3, 4, true)).toBe(0);
+    expect(getNextCarouselIndex('next', 0, 0, true)).toBe(0);
   });
 
   it('Should resolve class names, button icons and size heights', () => {
     expect(
       getCarouselClassName({
         carouselSize: 'medium',
+        showBorder: false,
+        removeItemGap: true,
         customClasses: 'custom-carousel',
       }),
     ).toContain('custom-carousel');
+    expect(
+      getCarouselClassName({
+        carouselSize: 'medium',
+        showBorder: false,
+        removeItemGap: true,
+        customClasses: '',
+      }),
+    ).toContain('hans-carousel-borderless');
+    expect(
+      getCarouselClassName({
+        carouselSize: 'medium',
+        showBorder: true,
+        removeItemGap: true,
+        customClasses: '',
+      }),
+    ).toContain('hans-carousel-without-gap');
     expect(getCarouselSlideClassName(true)).toContain(
       'hans-carousel-slide-active',
     );
@@ -144,6 +173,7 @@ describe('Carousel.helper', () => {
     expect(getCarouselButtonClassName('previous')).toContain(
       'hans-carousel-nav-previous',
     );
+    expect(getCarouselTrackClassName()).toBe('hans-carousel-track');
     expect(getCarouselButtonIconName('previous')).toBe('IoIosArrowBack');
     expect(getCarouselButtonIconName('next')).toBe('IoIosArrowForward');
     expect(getCarouselSizeHeight('small')).toBe('180px');
@@ -215,6 +245,7 @@ describe('Carousel.helper', () => {
       direction: 'previous',
       resolvedActiveItemIndex: 0,
       itemsLength: 4,
+      infiniteLoop: false,
       activeItemIndex: undefined,
       setInternalActiveItemIndex,
       onActiveItemChange,
@@ -227,6 +258,7 @@ describe('Carousel.helper', () => {
       direction: 'next',
       resolvedActiveItemIndex: 1,
       itemsLength: 4,
+      infiniteLoop: false,
       activeItemIndex: undefined,
       setInternalActiveItemIndex,
       onActiveItemChange,
@@ -235,14 +267,26 @@ describe('Carousel.helper', () => {
       direction: 'next',
       resolvedActiveItemIndex: 2,
       itemsLength: 4,
+      infiniteLoop: true,
       activeItemIndex: 2,
+      setInternalActiveItemIndex,
+      onActiveItemChange,
+    })();
+    createHandleCarouselMove({
+      direction: 'previous',
+      resolvedActiveItemIndex: 0,
+      itemsLength: 4,
+      infiniteLoop: true,
+      activeItemIndex: undefined,
       setInternalActiveItemIndex,
       onActiveItemChange,
     })();
 
     expect(setInternalActiveItemIndex).toHaveBeenCalledWith(2);
+    expect(setInternalActiveItemIndex).toHaveBeenLastCalledWith(3);
     expect(onActiveItemChange).toHaveBeenNthCalledWith(1, 2);
     expect(onActiveItemChange).toHaveBeenNthCalledWith(2, 3);
+    expect(onActiveItemChange).toHaveBeenNthCalledWith(3, 3);
   });
 
   it('Should select carousel items in controlled and uncontrolled modes', () => {
