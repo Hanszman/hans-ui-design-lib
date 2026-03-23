@@ -2,8 +2,8 @@
 -Accoridon
 -Carousel
 -Message?
--Publi/propaganda?
 -Translation?
+-AdSense (Publi/propaganda)
 
 Recap Prompt:
 Fala GPT! Bom dia, tudo bem?
