@@ -72,6 +72,14 @@
   @apply flex min-w-0 flex-col gap-1;
 }
 
+.hans-carousel-image-top-copy {
+  @apply items-start;
+}
+
+.hans-carousel-copy-top {
+  @apply max-w-[calc(100%-3rem)];
+}
+
 .hans-carousel-title {
   @apply text-base font-semibold leading-6 text-white;
 }

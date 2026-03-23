@@ -206,6 +206,18 @@ export const getCarouselSlideClassName = (isActive: boolean): string =>
     ${isActive ? 'hans-carousel-slide-active' : ''}
   `;
 
+export const getCarouselImageClassName = (showTextOnTop: boolean): string =>
+  `
+    hans-carousel-image
+    ${showTextOnTop ? 'hans-carousel-image-top-copy' : ''}
+  `;
+
+export const getCarouselCopyClassName = (showTextOnTop: boolean): string =>
+  `
+    hans-carousel-copy
+    ${showTextOnTop ? 'hans-carousel-copy-top' : ''}
+  `;
+
 export const getCarouselIndicatorClassName = (
   isActive: boolean,
   isFaded: boolean,

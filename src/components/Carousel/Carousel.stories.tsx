@@ -63,6 +63,7 @@ const meta: Meta<typeof HansCarousel> = {
     maxIndicators: 7,
     removeItemGap: false,
     infiniteLoop: false,
+    showTextOnTop: false,
     carouselSize: 'medium',
     carouselColor: 'base',
     carouselVariant: 'outline',
@@ -80,6 +81,7 @@ const meta: Meta<typeof HansCarousel> = {
     maxIndicators: { control: 'number' },
     removeItemGap: { control: 'boolean' },
     infiniteLoop: { control: 'boolean' },
+    showTextOnTop: { control: 'boolean' },
     carouselSize: { control: 'select', options: ['small', 'medium', 'large'] },
     carouselColor: {
       control: 'select',
@@ -224,12 +226,21 @@ export const WithoutItemGap: Story = {
   },
 };
 
+export const TextOnTop: Story = {
+  args: {
+    items: carouselItems,
+    visibleItemsCount: 2,
+    showTextOnTop: true,
+  },
+};
+
 export const WithoutBorder: Story = {
   args: {
     items: carouselItems,
     visibleItemsCount: 2,
     showBorder: false,
     removeItemGap: true,
+    showTextOnTop: true,
   },
 };
 

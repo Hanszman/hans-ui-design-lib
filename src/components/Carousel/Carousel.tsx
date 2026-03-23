@@ -12,8 +12,10 @@ import {
   getCarouselButtonClassName,
   getCarouselButtonIconName,
   getCarouselClassName,
+  getCarouselCopyClassName,
   getCarouselIndicatorClassName,
   getCarouselIndicatorItems,
+  getCarouselImageClassName,
   getCarouselSizeHeight,
   getCarouselSlideClassName,
   getCarouselStyleVars,
@@ -33,6 +35,7 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
     maxIndicators = 7,
     removeItemGap = false,
     infiniteLoop = false,
+    showTextOnTop = false,
     carouselSize = 'medium',
     carouselColor = 'base',
     carouselVariant = 'outline',
@@ -228,7 +231,7 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
                 )}
               >
                 <div
-                  className="hans-carousel-image"
+                  className={getCarouselImageClassName(showTextOnTop)}
                   role="img"
                   aria-label={item.imageAlt}
                   style={
@@ -238,7 +241,7 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
                   }
                 >
                   {item.title || item.description ? (
-                    <div className="hans-carousel-copy">
+                    <div className={getCarouselCopyClassName(showTextOnTop)}>
                       {item.title ? (
                         <strong className="hans-carousel-title">
                           {item.title}

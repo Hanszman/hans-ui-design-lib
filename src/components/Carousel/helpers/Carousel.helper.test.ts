@@ -11,8 +11,10 @@ import {
   getCarouselButtonClassName,
   getCarouselButtonIconName,
   getCarouselClassName,
+  getCarouselCopyClassName,
   getCarouselIndicatorClassName,
   getCarouselIndicatorItems,
+  getCarouselImageClassName,
   getCarouselItemId,
   getCarouselSizeHeight,
   getCarouselSlideClassName,
@@ -161,6 +163,12 @@ describe('Carousel.helper', () => {
     expect(getCarouselSlideClassName(true)).toContain(
       'hans-carousel-slide-active',
     );
+    expect(getCarouselImageClassName(true)).toContain(
+      'hans-carousel-image-top-copy',
+    );
+    expect(getCarouselImageClassName(false)).toContain('hans-carousel-image');
+    expect(getCarouselCopyClassName(true)).toContain('hans-carousel-copy-top');
+    expect(getCarouselCopyClassName(false)).toContain('hans-carousel-copy');
     expect(getCarouselSlideClassName(false)).not.toContain(
       'hans-carousel-slide-active',
     );

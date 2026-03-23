@@ -215,6 +215,19 @@ describe('HansCarousel', () => {
     expect(screen.getByText('Description only')).toBeInTheDocument();
   });
 
+  it('Should render copy at the top when showTextOnTop is true', () => {
+    const { container } = render(
+      <HansCarousel
+        items={items}
+        visibleItemsCount={1}
+        showTextOnTop
+      />,
+    );
+
+    expect(container.querySelector('.hans-carousel-image-top-copy')).toBeInTheDocument();
+    expect(container.querySelector('.hans-carousel-copy-top')).toBeInTheDocument();
+  });
+
   it('Should disable next navigation on the last image', () => {
     render(
       <HansCarousel
