@@ -41,6 +41,11 @@ import {
   type HansCardProps,
   HansCardPropsList,
 } from './components/Card/Card.types';
+import { HansCarousel } from './components/Carousel/Carousel';
+import {
+  type HansCarouselProps,
+  HansCarouselPropsList,
+} from './components/Carousel/Carousel.types';
 import { HansTag } from './components/Tag/Tag';
 import {
   type HansTagProps,
@@ -148,6 +153,11 @@ registerReactAsWebComponent<HansCardProps>(
   'hans-card',
   HansCard,
   HansCardPropsList,
+);
+registerReactAsWebComponent<HansCarouselProps>(
+  'hans-carousel',
+  HansCarousel,
+  HansCarouselPropsList,
 );
 registerReactAsWebComponent<HansTagProps>(
   'hans-tag',

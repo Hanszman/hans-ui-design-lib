@@ -1,0 +1,103 @@
+import {
+  Canvas,
+  Controls,
+  Meta,
+  Title,
+} from '@storybook/addon-docs/blocks';
+import * as HansCarouselStories from './Carousel.stories';
+
+<Meta of={HansCarouselStories} />
+
+<Title />
+
+The **Carousel** component displays image galleries with previous and next
+navigation, progress indicators, loading skeletons and an empty state.
+Each slide can optionally render a title and description above the image, using
+the same visual direction as the image layout from the card component.
+
+## Usage
+
+```tsx
+import { HansCarousel } from 'hans-ui-design-lib';
+
+const items = [
+  {
+    id: 'cover-1',
+    title: 'Campaign',
+    description: 'A highlighted hero image.',
+    imageSrc: 'https://example.com/cover.jpg',
+    imageAlt: 'Campaign cover',
+  },
+];
+
+export const Example = () => (
+  <HansCarousel
+    items={items}
+    visibleItemsCount={1}
+    carouselColor="primary"
+    carouselVariant="outline"
+  />
+);
+```
+
+## Properties
+
+Use the controls below to test the component API.
+
+<Controls />
+
+## One Image Per View
+
+Use a single image when the carousel should behave like a hero gallery.
+
+<Canvas of={HansCarouselStories.OneImagePerView} />
+
+## Two Images Per View
+
+Use two images side by side for balanced media layouts.
+
+<Canvas of={HansCarouselStories.TwoImagesPerView} />
+
+## Three Images Per View
+
+Use three visible images when the carousel should feel more like a gallery strip.
+
+<Canvas of={HansCarouselStories.ThreeImagesPerView} />
+
+## Limited Indicators
+
+Use `maxIndicators` to keep the progress area compact when the gallery contains
+many images. The edge indicators fade when there are more items outside the visible set.
+
+<Canvas of={HansCarouselStories.LimitedIndicators} />
+
+## Colors And Variants
+
+Use `carouselColor` and `carouselVariant` to style controls, indicators and borders.
+
+<Canvas of={HansCarouselStories.ColorsAndVariants} />
+
+## Sizes
+
+Use `carouselSize` to control the overall image height and navigation scale.
+
+<Canvas of={HansCarouselStories.Sizes} />
+
+## Controlled State
+
+Use `activeItemIndex` with `onActiveItemChange` to synchronize the selected image
+with external state.
+
+<Canvas of={HansCarouselStories.Controlled} />
+
+## Loading State
+
+Use `loading` while images are still being fetched.
+
+<Canvas of={HansCarouselStories.Loading} />
+
+## Empty State
+
+Use `emptyText` when there are no images available.
+
+<Canvas of={HansCarouselStories.Empty} />

@@ -12,6 +12,7 @@
 @import '../components/Forms/DatePicker/datepicker.scss';
 @import '../components/Avatar/avatar.scss';
 @import '../components/Card/card.scss';
+@import '../components/Carousel/carousel.scss';
 @import '../components/Tag/tag.scss';
 @import '../components/Chart/chart.scss';
 @import '../components/Accordion/accordion.scss';

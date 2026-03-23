@@ -1,0 +1,139 @@
+.hans-carousel {
+  @apply w-full rounded-2xl border p-4;
+  background: var(--hans-carousel-shell-bg, var(--white));
+  border-color: var(--hans-carousel-shell-border, var(--gray-200));
+}
+
+.hans-carousel-small {
+  @apply p-3;
+}
+
+.hans-carousel-medium {
+  @apply p-4;
+}
+
+.hans-carousel-large {
+  @apply p-5;
+}
+
+.hans-carousel-frame {
+  @apply flex w-full flex-col gap-4;
+}
+
+.hans-carousel-viewport {
+  @apply relative w-full overflow-hidden;
+}
+
+.hans-carousel-track {
+  @apply grid gap-4;
+  grid-template-columns: repeat(var(--hans-carousel-columns, 1), minmax(0, 1fr));
+}
+
+.hans-carousel-slide {
+  @apply min-w-0 overflow-hidden rounded-2xl border transition duration-200;
+  min-height: var(--hans-carousel-height, 240px);
+  border-color: color-mix(
+    in srgb,
+    var(--hans-carousel-shell-border, var(--gray-200)) 40%,
+    transparent
+  );
+}
+
+.hans-carousel-slide-active {
+  border-color: var(--hans-carousel-accent-border, var(--gray-400));
+}
+
+.hans-carousel-slide-loading {
+  @apply bg-[var(--white)];
+}
+
+.hans-carousel-image {
+  @apply relative flex h-full min-h-full w-full items-end overflow-hidden bg-cover bg-center bg-no-repeat p-4;
+  background-image:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--black) 8%, transparent) 0%,
+      color-mix(in srgb, var(--black) 58%, transparent) 100%
+    ),
+    var(--hans-carousel-slide-image);
+}
+
+.hans-carousel-copy {
+  @apply flex min-w-0 flex-col gap-1;
+}
+
+.hans-carousel-title {
+  @apply text-base font-semibold leading-6 text-white;
+}
+
+.hans-carousel-description {
+  @apply text-sm leading-5 text-white;
+}
+
+.hans-carousel-nav {
+  @apply absolute top-1/2 z-10 flex -translate-y-1/2 items-center justify-center rounded-full border transition duration-200;
+  @apply h-10 w-10;
+  background: var(--hans-carousel-accent-bg, var(--white));
+  color: var(--hans-carousel-accent-text, var(--text-color));
+  border-color: var(--hans-carousel-accent-border, var(--gray-300));
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--black) 16%, transparent);
+}
+
+.hans-carousel-nav:not(:disabled) {
+  @apply cursor-pointer;
+}
+
+.hans-carousel-nav:not(:disabled):hover {
+  filter: brightness(0.97);
+}
+
+.hans-carousel-nav:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.hans-carousel-nav-previous {
+  @apply left-3;
+}
+
+.hans-carousel-nav-next {
+  @apply right-3;
+}
+
+.hans-carousel-nav .hans-icon,
+.hans-carousel-nav .hans-loading {
+  color: currentColor;
+}
+
+.hans-carousel-controls {
+  @apply flex items-center justify-center gap-4;
+}
+
+.hans-carousel-indicators {
+  @apply flex max-w-full items-center justify-center gap-2 overflow-hidden;
+}
+
+.hans-carousel-indicator {
+  @apply h-2.5 w-2.5 rounded-full border-0 transition duration-200;
+  @apply cursor-pointer;
+  background: var(--hans-carousel-indicator-inactive, var(--gray-300));
+}
+
+.hans-carousel-indicator-active {
+  @apply scale-110;
+  background: var(--hans-carousel-indicator-active, var(--gray-700));
+}
+
+.hans-carousel-indicator-faded {
+  opacity: 0.45;
+}
+
+.hans-carousel-empty {
+  @apply flex items-center justify-center rounded-2xl border border-dashed px-4 py-10 text-center text-sm;
+  color: var(--hans-carousel-accent-text, var(--text-color));
+  border-color: color-mix(
+    in srgb,
+    var(--hans-carousel-shell-border, var(--gray-300)) 60%,
+    transparent
+  );
+  min-height: var(--hans-carousel-height, 240px);
+}
