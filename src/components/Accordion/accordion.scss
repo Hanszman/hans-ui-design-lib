@@ -1,13 +1,13 @@
 .hans-accordion {
-  @apply flex w-full flex-col gap-3;
+  @apply flex w-full flex-col overflow-hidden rounded-xl border border-[var(--gray-200)] bg-[var(--white)];
 }
 
 .hans-accordion-item {
-  @apply overflow-hidden rounded-xl border border-[var(--gray-200)] bg-[var(--white)] transition-colors duration-200;
+  @apply overflow-hidden bg-[var(--white)] transition-colors duration-200;
 }
 
-.hans-accordion-item-open {
-  @apply border-[var(--base-default-color)] shadow-sm;
+.hans-accordion-item + .hans-accordion-item {
+  @apply border-t border-[var(--gray-200)];
 }
 
 .hans-accordion-item-disabled {
@@ -15,7 +15,10 @@
 }
 
 .hans-accordion-trigger {
-  @apply flex w-full items-center justify-between gap-4 bg-transparent px-4 py-4 text-left transition-colors duration-200;
+  @apply flex w-full items-center justify-between gap-4 px-4 py-4 text-left transition duration-200;
+  background: var(--hans-accordion-title-bg, transparent);
+  color: var(--hans-accordion-title-text, var(--text-color));
+  box-shadow: inset 0 0 0 1px var(--hans-accordion-title-border, transparent);
 }
 
 .hans-accordion-trigger:not(:disabled) {
@@ -23,7 +26,7 @@
 }
 
 .hans-accordion-trigger:not(:disabled):hover {
-  @apply bg-[var(--gray-50)];
+  filter: brightness(0.98);
 }
 
 .hans-accordion-trigger:disabled {
@@ -32,28 +35,36 @@
 
 .hans-accordion-title {
   @apply text-sm font-semibold leading-6;
-  color: var(--text-color);
 }
 
 .hans-accordion-icon {
   @apply shrink-0;
-  color: var(--text-color);
+  color: currentColor;
 }
 
 .hans-accordion-panel {
   @apply flex flex-col gap-2 border-t border-[var(--gray-100)] px-4 pb-4 pt-3;
+  background: var(--hans-accordion-description-bg, transparent);
+  color: var(--hans-accordion-description-text, var(--text-color));
+  box-shadow: inset 0 0 0 1px
+    var(--hans-accordion-description-border, transparent);
 }
 
 .hans-accordion-description {
   @apply text-sm leading-6;
-  color: var(--text-color);
 }
 
 .hans-accordion-empty {
-  @apply rounded-xl border border-dashed border-[var(--gray-300)] px-4 py-6 text-center text-sm;
+  @apply px-4 py-6 text-center text-sm;
   color: var(--gray-600);
 }
 
 .hans-accordion-skeleton-item .hans-accordion-trigger {
   @apply items-center;
+  background: transparent;
+  box-shadow: none;
+}
+
+.hans-accordion-skeleton-item .hans-accordion-panel {
+  box-shadow: none;
 }

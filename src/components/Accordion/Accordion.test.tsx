@@ -164,4 +164,28 @@ describe('HansAccordion', () => {
     expect(screen.getByTestId('accordion-wrapper')).toBeInTheDocument();
     expect(container.firstChild).toHaveClass('custom-accordion');
   });
+
+  it('Should apply title and description color variants', () => {
+    render(
+      <HansAccordion
+        items={items}
+        defaultOpenItemIds={['faq-1']}
+        titleColor="primary"
+        titleVariant="default"
+        descriptionColor="secondary"
+        descriptionVariant="neutral"
+      />,
+    );
+
+    const trigger = screen.getByText('What is Hans UI?')
+      .closest('button') as HTMLButtonElement;
+    const panel = screen.getByRole('region');
+
+    expect(
+      trigger.style.getPropertyValue('--hans-accordion-title-bg'),
+    ).toBe('var(--primary-default-color)');
+    expect(
+      panel.style.getPropertyValue('--hans-accordion-description-bg'),
+    ).toBe('var(--secondary-neutral-color)');
+  });
 });

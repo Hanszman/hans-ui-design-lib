@@ -40,6 +40,10 @@ const meta: Meta<typeof HansAccordion> = {
   args: {
     items: multipleItems,
     allowMultipleOpen: true,
+    titleColor: 'base',
+    titleVariant: 'transparent',
+    descriptionColor: 'base',
+    descriptionVariant: 'transparent',
     loading: false,
     loadingColor: 'base',
     loadingAriaLabel: 'Loading accordion',
@@ -52,6 +56,38 @@ const meta: Meta<typeof HansAccordion> = {
     defaultOpenItemIds: { control: 'object' },
     allowMultipleOpen: { control: 'boolean' },
     loading: { control: 'boolean' },
+    titleColor: {
+      control: 'select',
+      options: [
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
+    },
+    titleVariant: {
+      control: 'select',
+      options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
+    },
+    descriptionColor: {
+      control: 'select',
+      options: [
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
+    },
+    descriptionVariant: {
+      control: 'select',
+      options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
+    },
     loadingColor: {
       control: 'select',
       options: [
@@ -97,6 +133,37 @@ export const MultipleItems: Story = {
         items={multipleItems}
         allowMultipleOpen={false}
         defaultOpenItemIds={['faq-2']}
+      />
+    </div>
+  ),
+};
+
+export const Colors: Story = {
+  render: () => (
+    <div className="flex w-full flex-col gap-4">
+      <HansAccordion
+        items={multipleItems}
+        defaultOpenItemIds={['faq-1']}
+        titleColor="primary"
+        titleVariant="default"
+        descriptionColor="primary"
+        descriptionVariant="neutral"
+      />
+      <HansAccordion
+        items={multipleItems}
+        defaultOpenItemIds={['faq-2']}
+        titleColor="secondary"
+        titleVariant="outline"
+        descriptionColor="secondary"
+        descriptionVariant="transparent"
+      />
+      <HansAccordion
+        items={multipleItems}
+        defaultOpenItemIds={['faq-3']}
+        titleColor="success"
+        titleVariant="strong"
+        descriptionColor="base"
+        descriptionVariant="outline"
       />
     </div>
   ),

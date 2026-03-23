@@ -9,6 +9,7 @@ import {
   getAccordionItemId,
   getAccordionPanelId,
   getAccordionSkeletonItems,
+  getAccordionSurfaceStyleVars,
   getAccordionTriggerId,
   getInitialAccordionOpenItemIds,
   getResolvedAccordionOpenItemIds,
@@ -113,10 +114,10 @@ describe('Accordion.helper', () => {
     expect(getAccordionIconName(true)).toBe('IoIosArrowUp');
     expect(getAccordionIconName(false)).toBe('IoIosArrowDown');
     expect(getAccordionClassName('custom-class')).toContain('custom-class');
-    expect(getAccordionItemClassName(true, true)).toContain(
-      'hans-accordion-item-open',
+    expect(getAccordionItemClassName(true)).toContain(
+      'hans-accordion-item-disabled',
     );
-    expect(getAccordionItemClassName(true, true)).toContain(
+    expect(getAccordionItemClassName(false)).not.toContain(
       'hans-accordion-item-disabled',
     );
     expect(getAccordionPanelId('faq', 'faq-1')).toBe('faq-panel-faq-1');
@@ -124,6 +125,40 @@ describe('Accordion.helper', () => {
     expect(getAccordionSkeletonItems(2)).toEqual([0, 1]);
     expect(getAccordionSkeletonItems(0)).toEqual([0]);
     expect(getAccordionSkeletonItems(Number.NaN)).toEqual([0]);
+  });
+
+  it('Should resolve surface style vars for title and description variants', () => {
+    const titleStyleVars = getAccordionSurfaceStyleVars({
+      color: 'primary',
+      variant: 'default',
+      surface: 'title',
+    });
+    const descriptionStyleVars = getAccordionSurfaceStyleVars({
+      color: 'base',
+      variant: 'outline',
+      surface: 'description',
+    });
+    const transparentStyleVars = getAccordionSurfaceStyleVars({
+      color: 'secondary',
+      variant: 'transparent',
+      surface: 'title',
+    });
+
+    expect(titleStyleVars).toMatchObject({
+      '--hans-accordion-title-bg': 'var(--primary-default-color)',
+      '--hans-accordion-title-text': 'var(--white)',
+      '--hans-accordion-title-border': 'var(--primary-default-color)',
+    });
+    expect(descriptionStyleVars).toMatchObject({
+      '--hans-accordion-description-bg': 'transparent',
+      '--hans-accordion-description-text': 'var(--text-color)',
+      '--hans-accordion-description-border': 'var(--base-default-color)',
+    });
+    expect(transparentStyleVars).toMatchObject({
+      '--hans-accordion-title-bg': 'transparent',
+      '--hans-accordion-title-text': 'var(--secondary-default-color)',
+      '--hans-accordion-title-border': 'transparent',
+    });
   });
 
   it('Should compare arrays preserving order', () => {

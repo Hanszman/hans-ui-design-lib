@@ -10,6 +10,7 @@ import {
   getAccordionItemClassName,
   getAccordionPanelId,
   getAccordionSkeletonItems,
+  getAccordionSurfaceStyleVars,
   getAccordionTriggerId,
   getInitialAccordionOpenItemIds,
   getResolvedAccordionOpenItemIds,
@@ -22,6 +23,10 @@ export const HansAccordion = React.memo((props: HansAccordionProps) => {
     openItemIds,
     defaultOpenItemIds = [],
     allowMultipleOpen = true,
+    titleColor = 'base',
+    titleVariant = 'transparent',
+    descriptionColor = 'base',
+    descriptionVariant = 'transparent',
     loading = false,
     loadingColor = 'base',
     loadingAriaLabel = 'Loading accordion',
@@ -71,6 +76,24 @@ export const HansAccordion = React.memo((props: HansAccordionProps) => {
   const skeletonItems = React.useMemo(
     () => getAccordionSkeletonItems(skeletonItemsCount),
     [skeletonItemsCount],
+  );
+  const titleStyleVars = React.useMemo(
+    () =>
+      getAccordionSurfaceStyleVars({
+        color: titleColor,
+        variant: titleVariant,
+        surface: 'title',
+      }),
+    [titleColor, titleVariant],
+  );
+  const descriptionStyleVars = React.useMemo(
+    () =>
+      getAccordionSurfaceStyleVars({
+        color: descriptionColor,
+        variant: descriptionVariant,
+        surface: 'description',
+      }),
+    [descriptionColor, descriptionVariant],
   );
 
   if (loading) {
@@ -145,10 +168,7 @@ export const HansAccordion = React.memo((props: HansAccordionProps) => {
         });
 
         return (
-          <div
-            key={item.resolvedId}
-            className={getAccordionItemClassName(isOpen, disabled)}
-          >
+          <div key={item.resolvedId} className={getAccordionItemClassName(disabled)}>
             <button
               id={triggerId}
               type="button"
@@ -157,6 +177,7 @@ export const HansAccordion = React.memo((props: HansAccordionProps) => {
               aria-expanded={isOpen}
               onClick={handleToggle}
               disabled={disabled}
+              style={titleStyleVars}
             >
               <span className="hans-accordion-title">{item.title}</span>
               <HansIcon
@@ -172,6 +193,7 @@ export const HansAccordion = React.memo((props: HansAccordionProps) => {
                 role="region"
                 aria-labelledby={triggerId}
                 className="hans-accordion-panel"
+                style={descriptionStyleVars}
               >
                 <div className="hans-accordion-description">
                   {item.description}

@@ -3,7 +3,7 @@ import {
   createPropsList,
   type InferPropsFromSchema,
 } from '../../types/Schema.types';
-import type { Color } from '../../types/Common.types';
+import type { Color, Variant } from '../../types/Common.types';
 
 export type HansAccordionItem = {
   id?: string;
@@ -17,6 +17,10 @@ const HansAccordionSchema = {
   openItemIds: { type: 'custom', ref: {} as string[] },
   defaultOpenItemIds: { type: 'custom', ref: {} as string[] },
   allowMultipleOpen: 'boolean',
+  titleColor: { type: 'custom', ref: {} as Color },
+  titleVariant: { type: 'custom', ref: {} as Variant },
+  descriptionColor: { type: 'custom', ref: {} as Color },
+  descriptionVariant: { type: 'custom', ref: {} as Variant },
   loading: 'boolean',
   loadingColor: { type: 'custom', ref: {} as Color },
   loadingAriaLabel: 'string',

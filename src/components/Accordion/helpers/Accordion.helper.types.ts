@@ -1,4 +1,5 @@
 import type React from 'react';
+import type { Color, Variant } from '../../../types/Common.types';
 import type { HansAccordionItem } from '../Accordion.types';
 
 export type NormalizedAccordionItem = HansAccordionItem & {
@@ -20,4 +21,10 @@ export type CreateSyncAccordionOpenItemIdsParams = {
   normalizedItems: NormalizedAccordionItem[];
   allowMultipleOpen: boolean;
   setInternalOpenItemIds: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+export type AccordionSurfaceStyleArgs = {
+  color: Color;
+  variant: Variant;
+  surface: 'title' | 'description';
 };

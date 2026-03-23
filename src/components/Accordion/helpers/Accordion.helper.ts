@@ -1,5 +1,8 @@
+import type React from 'react';
+import type { Variant } from '../../../types/Common.types';
 import type { HansAccordionItem } from '../Accordion.types';
 import type {
+  AccordionSurfaceStyleArgs,
   CreateHandleAccordionToggleParams,
   CreateSyncAccordionOpenItemIdsParams,
   NormalizedAccordionItem,
@@ -112,14 +115,61 @@ export const getAccordionClassName = (customClasses: string): string =>
   `hans-accordion ${customClasses}`;
 
 export const getAccordionItemClassName = (
-  isOpen: boolean,
   disabled: boolean,
 ): string =>
   `
     hans-accordion-item
-    ${isOpen ? 'hans-accordion-item-open' : ''}
     ${disabled ? 'hans-accordion-item-disabled' : ''}
   `;
+
+export const getAccordionSurfaceStyleVars = ({
+  color,
+  variant,
+  surface,
+}: AccordionSurfaceStyleArgs): React.CSSProperties => {
+  const tokenPrefix = `--${color}`;
+  const surfacePrefix = `--hans-accordion-${surface}`;
+  const isBase = color === 'base';
+
+  const variantMap: Record<
+    Variant,
+    { bg: string; text: string; border: string }
+  > = {
+    strong: {
+      bg: `var(${tokenPrefix}-strong-color)`,
+      text: `var(${tokenPrefix}-neutral-color)`,
+      border: `var(${tokenPrefix}-strong-color)`,
+    },
+    default: {
+      bg: `var(${tokenPrefix}-default-color)`,
+      text: 'var(--white)',
+      border: `var(${tokenPrefix}-default-color)`,
+    },
+    neutral: {
+      bg: `var(${tokenPrefix}-neutral-color)`,
+      text: isBase ? 'var(--base-strong-color)' : `var(${tokenPrefix}-strong-color)`,
+      border: `var(${tokenPrefix}-neutral-color)`,
+    },
+    outline: {
+      bg: 'transparent',
+      text: isBase ? 'var(--text-color)' : `var(${tokenPrefix}-strong-color)`,
+      border: `var(${tokenPrefix}-default-color)`,
+    },
+    transparent: {
+      bg: 'transparent',
+      text: isBase ? 'var(--text-color)' : `var(${tokenPrefix}-default-color)`,
+      border: 'transparent',
+    },
+  };
+
+  const resolvedVariant = variantMap[variant];
+
+  return {
+    [`${surfacePrefix}-bg`]: resolvedVariant.bg,
+    [`${surfacePrefix}-text`]: resolvedVariant.text,
+    [`${surfacePrefix}-border`]: resolvedVariant.border,
+  } as React.CSSProperties;
+};
 
 export const getAccordionPanelId = (
   accordionId: string,
