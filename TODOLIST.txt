@@ -1,4 +1,6 @@
 * Continuar próximos componentes:
+-Accoridon
+-Carousel
 -Publi/propaganda?
 -Translation?
 
