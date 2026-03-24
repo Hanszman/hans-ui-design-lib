@@ -1,3 +1,2 @@
 registry=https://registry.npmjs.org/
 //registry.npmjs.org/:_authToken=YOUR_TOKEN_HERE
-always-auth=true
