@@ -5,7 +5,7 @@ This library provides reusable, styled and documented UI components with a consi
 
 ## 🚀 Features
 
-- ⚛️ **React 19.1.1** with **TypeScript 5.8.3** for type safety
+- ⚛️ **React 19.2.4** with **TypeScript 5.8.3** for type safety
 - 🎨 **TailwindCSS + SCSS** for styling flexibility
 - 📖 **Storybook** for interactive component documentation
 - ✅ **Vitest + React Testing Library + JSDOM** for unit and integration testing
@@ -14,7 +14,7 @@ This library provides reusable, styled and documented UI components with a consi
 - ⚡ **Vite** as the bundler for fast builds and DX
 - 🌍 Ready to be published and consumed via **npm**
 - 📖 Documentation ready to be used (deployed by **Vercel**) at https://hans-ui-design-lib-doc.vercel.app/
-- **Node Version to build this project: 22.18.0 and npm 11.8.0**
+- **Node Version to build this project: 24.14.1 and npm 11.11.0**
 
 ## 📦 Installation
 
@@ -335,7 +335,7 @@ http://localhost:5173/hans-ui-web-components.js
 
 ## 🛠️ Tech Stack
 
-- **React 19.1.1**
+- **React 19.2.4**
 - **TypeScript 5.8.3**
 - **Vite**
 - **Storybook**
