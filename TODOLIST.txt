@@ -2,6 +2,8 @@
 -Message?
 -Translation?
 -AdSense (Publi/propaganda)
+-Criar pipeline ci/cd e docker no projeto
+-Criar skills para criação de componentes, assim como descrito abaixo
 
 Recap Prompt:
 Fala GPT! Bom dia, tudo bem?
