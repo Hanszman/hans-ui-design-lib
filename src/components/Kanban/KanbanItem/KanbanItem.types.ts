@@ -7,7 +7,11 @@ import type { Color } from '../../../types/Common.types';
 import type { HansKanbanItemData } from '../Kanban.types';
 
 const HansKanbanItemSchema = {
-  item: { type: 'custom', ref: {} as HansKanbanItemData },
+  item: {
+    type: 'custom',
+    ref: {} as HansKanbanItemData,
+    webComponentType: 'property',
+  },
   draggable: 'boolean',
   isDragging: 'boolean',
   showDropIndicator: 'boolean',

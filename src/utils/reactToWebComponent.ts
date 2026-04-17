@@ -1,19 +1,46 @@
 import React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
+import type { R2WCOptions } from '@r2wc/core';
 import reactToWebcomponent from 'react-to-webcomponent';
 
 type shadowOptions = 'open' | 'closed' | undefined;
 
-type ReactToWebComponentOptions<T> = {
-  props?:
-    | (keyof T)[]
-    | Partial<Record<Extract<keyof T, string>, string | undefined>>;
-  events?: string[] | Partial<Record<string, CustomEventInit>>;
+type ReactToWebComponentProps<T extends object> =
+  | readonly Exclude<Extract<keyof T, string>, 'container'>[]
+  | R2WCOptions<T>['props'];
+
+type ReactToWebComponentEvents<T extends object> =
+  | readonly Exclude<Extract<keyof T, string>, 'container'>[]
+  | R2WCOptions<T>['events'];
+
+type ReactToWebComponentOptions<T extends object> = {
+  props?: ReactToWebComponentProps<T>;
+  events?: ReactToWebComponentEvents<T>;
   shadow?: shadowOptions;
   stylesheetHref?: string;
 };
 
-export function createWebComponent<T>(
+const cloneReadonlyList = <T>(items: readonly T[]): T[] => [...items];
+
+const normalizeProps = <T extends object>(
+  props?:
+    | ReactToWebComponentProps<T>
+    | ReactToWebComponentOptions<object>['props'],
+): R2WCOptions<object>['props'] =>
+  Array.isArray(props)
+    ? cloneReadonlyList(props as readonly string[])
+    : (props as R2WCOptions<object>['props']);
+
+const normalizeEvents = <T extends object>(
+  events?:
+    | ReactToWebComponentEvents<T>
+    | ReactToWebComponentOptions<object>['events'],
+): R2WCOptions<object>['events'] =>
+  Array.isArray(events)
+    ? cloneReadonlyList(events as readonly string[])
+    : (events as R2WCOptions<object>['events']);
+
+export function createWebComponent<T extends object>(
   Component: React.ComponentType<T>,
   options?: ReactToWebComponentOptions<T>,
 ): CustomElementConstructor {
@@ -31,8 +58,8 @@ export function createWebComponent<T>(
     React,
     ReactDOMClient as unknown as Parameters<typeof reactToWebcomponent>[2],
     {
-      props: elementOptions.props as string[],
-      events: elementOptions.events as string[],
+      props: normalizeProps(elementOptions.props),
+      events: normalizeEvents(elementOptions.events),
       shadow: elementOptions.shadow as shadowOptions,
     },
   );
@@ -69,20 +96,18 @@ export function createWebComponent<T>(
   };
 }
 
-export function registerReactAsWebComponent<T>(
+export function registerReactAsWebComponent<T extends object>(
   tagName: string,
   Component: React.ComponentType<T>,
-  propsList:
-    | readonly (keyof T)[]
-    | Partial<Record<Extract<keyof T, string>, string | undefined>>,
-  eventsList: readonly string[] = [],
+  propsList: ReactToWebComponentProps<T>,
+  eventsList: ReactToWebComponentEvents<T> = [],
 ): void {
   if (customElements.get(tagName)) return;
 
   const stylesheetUrl = `${import.meta.env.VITE_HANS_UI_URL}${import.meta.env.VITE_HANS_UI_STYLESHEET_FILE}`;
   const WebComp = createWebComponent(Component, {
-    props: Array.isArray(propsList) ? [...propsList] : propsList,
-    events: [...eventsList],
+    props: normalizeProps(propsList) as ReactToWebComponentProps<T>,
+    events: normalizeEvents(eventsList) as ReactToWebComponentEvents<T>,
     shadow: 'open',
     stylesheetHref: stylesheetUrl,
   });

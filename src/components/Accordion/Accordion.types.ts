@@ -13,9 +13,21 @@ export type HansAccordionItem = {
 };
 
 const HansAccordionSchema = {
-  items: { type: 'custom', ref: {} as HansAccordionItem[] },
-  openItemIds: { type: 'custom', ref: {} as string[] },
-  defaultOpenItemIds: { type: 'custom', ref: {} as string[] },
+  items: {
+    type: 'custom',
+    ref: {} as HansAccordionItem[],
+    webComponentType: 'property',
+  },
+  openItemIds: {
+    type: 'custom',
+    ref: {} as string[],
+    webComponentType: 'property',
+  },
+  defaultOpenItemIds: {
+    type: 'custom',
+    ref: {} as string[],
+    webComponentType: 'property',
+  },
   allowMultipleOpen: 'boolean',
   titleColor: { type: 'custom', ref: {} as Color },
   titleVariant: { type: 'custom', ref: {} as Variant },

@@ -112,6 +112,62 @@ describe('reactToWebComponent', () => {
     expect(changeSpy).toHaveBeenCalledWith(false);
   });
 
+  it('Should support custom event options when registering framework events', async () => {
+    type DummyProps = {
+      onNotify?: (message: string) => void;
+    };
+    const Dummy: React.FC<DummyProps> = ({ onNotify }) =>
+      React.createElement(
+        'button',
+        {
+          type: 'button',
+          onClick: () => onNotify?.('ready'),
+        },
+        'Notify',
+      );
+    const tag = 'event-options-element';
+    const WebComp = createWebComponent(Dummy, {
+      props: {},
+      events: {
+        onNotify: {
+          bubbles: true,
+          composed: true,
+        },
+      },
+      shadow: 'open',
+    });
+    customElements.define(tag, WebComp);
+
+    const instance = document.createElement(tag);
+    const notifySpy = vi.fn();
+
+    instance.addEventListener('notify', (event) =>
+      notifySpy({
+        bubbles: event.bubbles,
+        composed: event.composed,
+        detail: (event as CustomEvent<string>).detail,
+      }),
+    );
+
+    await act(async () => {
+      document.body.appendChild(instance);
+      await Promise.resolve();
+    });
+
+    await act(async () => {
+      instance.shadowRoot?.querySelector('button')?.dispatchEvent(
+        new MouseEvent('click', { bubbles: true }),
+      );
+      await Promise.resolve();
+    });
+
+    expect(notifySpy).toHaveBeenCalledWith({
+      bubbles: true,
+      composed: true,
+      detail: 'ready',
+    });
+  });
+
   it('Should not register again a custom element that already exists', () => {
     const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
     const tag = 'existing-element';

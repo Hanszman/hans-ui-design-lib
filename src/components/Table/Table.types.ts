@@ -45,8 +45,16 @@ export type HansTableColumn = {
 };
 
 const HansTableSchema = {
-  columns: { type: 'custom', ref: {} as HansTableColumn[] },
-  rows: { type: 'custom', ref: {} as HansTableRow[] },
+  columns: {
+    type: 'custom',
+    ref: {} as HansTableColumn[],
+    webComponentType: 'property',
+  },
+  rows: {
+    type: 'custom',
+    ref: {} as HansTableRow[],
+    webComponentType: 'property',
+  },
   headerColor: { type: 'custom', ref: {} as Color },
   rowColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',

@@ -134,6 +134,7 @@ registerReactAsWebComponent<HansSelectOptionProps>(
   'hans-select-option',
   HansSelectOption,
   HansSelectOptionPropsList,
+  ['onSearch', 'onChange', 'onInputChange'],
 );
 registerReactAsWebComponent<HansToggleProps>(
   'hans-toggle',
@@ -145,6 +146,7 @@ registerReactAsWebComponent<HansDatePickerProps>(
   'hans-date-picker',
   HansDatePicker,
   HansDatePickerPropsList,
+  ['onChange', 'onOpenChange'],
 );
 registerReactAsWebComponent<HansAvatarProps>(
   'hans-avatar',
@@ -160,21 +162,25 @@ registerReactAsWebComponent<HansCarouselProps>(
   'hans-carousel',
   HansCarousel,
   HansCarouselPropsList,
+  ['onActiveItemChange'],
 );
 registerReactAsWebComponent<HansTagProps>(
   'hans-tag',
   HansTag,
   HansTagPropsList,
+  ['onAction'],
 );
 registerReactAsWebComponent<HansChartProps>(
   'hans-chart',
   HansChart,
   HansChartPropsList,
+  ['onPointClick'],
 );
 registerReactAsWebComponent<HansAccordionProps>(
   'hans-accordion',
   HansAccordion,
   HansAccordionPropsList,
+  ['onOpenItemIdsChange'],
 );
 registerReactAsWebComponent<HansIconProps>(
   'hans-icon',
@@ -190,6 +196,7 @@ registerReactAsWebComponent<HansKanbanProps>(
   'hans-kanban',
   HansKanban,
   HansKanbanPropsList,
+  ['onItemsChange', 'onMoveItem', 'onItemClick'],
 );
 registerReactAsWebComponent<HansKanbanColumnProps>(
   'hans-kanban-column',
@@ -205,24 +212,29 @@ registerReactAsWebComponent<HansPopupProps>(
   'hans-popup',
   HansPopup,
   HansPopupPropsList,
+  ['onOpenChange', 'onDirectionChange'],
 );
 registerReactAsWebComponent<HansToastProps>(
   'hans-toast',
   HansToast,
   HansToastPropsList,
+  ['onClose', 'onVisibilityChange'],
 );
 registerReactAsWebComponent<HansModalProps>(
   'hans-modal',
   HansModal,
   HansModalPropsList,
+  ['onOpenChange', 'onClose', 'onConfirm', 'onCancel'],
 );
 registerReactAsWebComponent<HansTableProps>(
   'hans-table',
   HansTable,
   HansTablePropsList,
+  ['onSortChange', 'onFiltersChange'],
 );
 registerReactAsWebComponent<HansTabsProps>(
   'hans-tabs',
   HansTabs,
   HansTabsPropsList,
+  ['onTabChange', 'onTabClose', 'onTabsChange'],
 );

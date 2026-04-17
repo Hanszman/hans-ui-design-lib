@@ -69,16 +69,32 @@ export const DEFAULT_COMBINATION_COLORS = Object.values(COLOR_TOKEN_MAP).map(
 const HansChartSchema = {
   title: 'string',
   chartType: { type: 'custom', ref: {} as HansChartType },
-  categories: { type: 'custom', ref: [] as string[] },
-  series: { type: 'custom', ref: [] as HansChartSeries[] },
-  colors: { type: 'custom', ref: [] as HansChartColor[] },
+  categories: {
+    type: 'custom',
+    ref: [] as string[],
+    webComponentType: 'property',
+  },
+  series: {
+    type: 'custom',
+    ref: [] as HansChartSeries[],
+    webComponentType: 'property',
+  },
+  colors: {
+    type: 'custom',
+    ref: [] as HansChartColor[],
+    webComponentType: 'property',
+  },
   height: 'number',
   showLegend: 'boolean',
   isLoading: 'boolean',
   loadingType: { type: 'custom', ref: {} as LoadingType },
   customClasses: 'string',
   emptyText: 'string',
-  optionOverrides: 'json',
+  optionOverrides: {
+    type: 'custom',
+    ref: {} as Record<string, unknown>,
+    webComponentType: 'property',
+  },
 } as const;
 
 export type HansChartProps = InferPropsFromSchema<typeof HansChartSchema> &

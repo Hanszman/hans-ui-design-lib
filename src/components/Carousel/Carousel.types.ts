@@ -14,7 +14,11 @@ export type HansCarouselItem = {
 };
 
 const HansCarouselSchema = {
-  items: { type: 'custom', ref: {} as HansCarouselItem[] },
+  items: {
+    type: 'custom',
+    ref: {} as HansCarouselItem[],
+    webComponentType: 'property',
+  },
   activeItemIndex: 'number',
   defaultActiveItemIndex: 'number',
   visibleItemsCount: 'number',

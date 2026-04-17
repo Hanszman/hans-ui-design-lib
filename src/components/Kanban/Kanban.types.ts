@@ -38,9 +38,21 @@ export type HansKanbanMoveEvent = {
 };
 
 const HansKanbanSchema = {
-  columns: { type: 'custom', ref: {} as HansKanbanColumnData[] },
-  items: { type: 'custom', ref: {} as HansKanbanItemData[] },
-  defaultItems: { type: 'custom', ref: {} as HansKanbanItemData[] },
+  columns: {
+    type: 'custom',
+    ref: {} as HansKanbanColumnData[],
+    webComponentType: 'property',
+  },
+  items: {
+    type: 'custom',
+    ref: {} as HansKanbanItemData[],
+    webComponentType: 'property',
+  },
+  defaultItems: {
+    type: 'custom',
+    ref: {} as HansKanbanItemData[],
+    webComponentType: 'property',
+  },
   boardLabel: 'string',
   emptyColumnText: 'string',
   customClasses: 'string',

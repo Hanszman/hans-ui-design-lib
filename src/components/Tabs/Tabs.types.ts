@@ -16,7 +16,11 @@ export type HansTabItem = {
 };
 
 const HansTabsSchema = {
-  tabs: { type: 'custom', ref: {} as HansTabItem[] },
+  tabs: {
+    type: 'custom',
+    ref: {} as HansTabItem[],
+    webComponentType: 'property',
+  },
   activeTabId: 'string',
   defaultActiveTabId: 'string',
   tabsColor: { type: 'custom', ref: {} as Color },

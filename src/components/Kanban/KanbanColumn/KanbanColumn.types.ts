@@ -7,7 +7,11 @@ import type { Color } from '../../../types/Common.types';
 import type { HansKanbanColumnData } from '../Kanban.types';
 
 const HansKanbanColumnSchema = {
-  column: { type: 'custom', ref: {} as HansKanbanColumnData },
+  column: {
+    type: 'custom',
+    ref: {} as HansKanbanColumnData,
+    webComponentType: 'property',
+  },
   itemCount: 'number',
   emptyColumnText: 'string',
   showColumnCount: 'boolean',
