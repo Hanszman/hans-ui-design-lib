@@ -128,6 +128,7 @@ registerReactAsWebComponent<HansDropdownProps>(
   'hans-dropdown',
   HansDropdown,
   HansDropdownPropsList,
+  ['onSelect', 'onOpenChange'],
 );
 registerReactAsWebComponent<HansSelectOptionProps>(
   'hans-select-option',
@@ -138,6 +139,7 @@ registerReactAsWebComponent<HansToggleProps>(
   'hans-toggle',
   HansToggle,
   HansTogglePropsList,
+  ['onChange', 'onValueChange'],
 );
 registerReactAsWebComponent<HansDatePickerProps>(
   'hans-date-picker',

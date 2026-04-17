@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import React from 'react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import React, { act } from 'react';
 import {
   createWebComponent,
   registerReactAsWebComponent,
@@ -9,6 +9,13 @@ describe('reactToWebComponent', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     customElements.define = vi.fn(customElements.define);
+  });
+
+  afterEach(async () => {
+    await act(async () => {
+      document.body.replaceChildren();
+      await Promise.resolve();
+    });
   });
 
   it('Should create a Web Component from a React Component', () => {
@@ -34,6 +41,77 @@ describe('reactToWebComponent', () => {
     expect(customElements.get(tag)).toBeDefined();
   });
 
+  it('Should register a custom element with typed props definition', () => {
+    const Dummy: React.FC<{ active?: boolean }> = ({ active }) =>
+      React.createElement('div', null, active ? 'active' : 'inactive');
+    const tag = 'typed-props-element';
+
+    registerReactAsWebComponent(tag, Dummy, { active: 'boolean' });
+
+    expect(customElements.get(tag)).toBeDefined();
+  });
+
+  it('Should support typed properties and custom events for framework consumers', async () => {
+    type DummyProps = {
+      checked?: boolean;
+      items?: { label: string }[];
+      onChange?: (checked: boolean) => void;
+    };
+    const Dummy: React.FC<DummyProps> = ({ checked, items = [], onChange }) =>
+      React.createElement(
+        'button',
+        {
+          type: 'button',
+          onClick: () => onChange?.(!checked),
+        },
+        `${checked ? 'on' : 'off'}-${items.length}`,
+      );
+    const tag = 'typed-event-element';
+    const WebComp = createWebComponent(Dummy, {
+      props: {
+        checked: 'boolean',
+        items: undefined,
+      },
+      events: ['onChange'],
+      shadow: 'open',
+    });
+    customElements.define(tag, WebComp);
+
+    const instance = document.createElement(tag) as HTMLElement & {
+      checked: boolean;
+      items: { label: string }[];
+    };
+    const changeSpy = vi.fn();
+
+    instance.checked = false;
+    instance.items = [{ label: 'Alpha' }];
+    instance.addEventListener('change', (event) =>
+      changeSpy((event as CustomEvent<boolean>).detail),
+    );
+    await act(async () => {
+      document.body.appendChild(instance);
+      await Promise.resolve();
+    });
+
+    expect(instance.shadowRoot?.textContent).toContain('off-1');
+
+    await act(async () => {
+      instance.checked = true;
+      await Promise.resolve();
+    });
+
+    expect(instance.shadowRoot?.textContent).toContain('on-1');
+
+    await act(async () => {
+      instance.shadowRoot?.querySelector('button')?.dispatchEvent(
+        new MouseEvent('click', { bubbles: true }),
+      );
+      await Promise.resolve();
+    });
+
+    expect(changeSpy).toHaveBeenCalledWith(false);
+  });
+
   it('Should not register again a custom element that already exists', () => {
     const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
     const tag = 'existing-element';
@@ -43,7 +121,7 @@ describe('reactToWebComponent', () => {
 
     expect(customElements.get(tag)).toBeDefined();
   });
-  it('Should inject stylesheet when stylesheetHref is given', () => {
+  it('Should inject stylesheet when stylesheetHref is given', async () => {
     const Dummy: React.FC = () => React.createElement('div');
     const href = 'https://example.com/style.css';
     const tag = 'styled-element';
@@ -52,14 +130,17 @@ describe('reactToWebComponent', () => {
     const instance = document.createElement(tag) as HTMLElement & {
       connectedCallback: () => void;
     };
-    instance.connectedCallback();
+    await act(async () => {
+      instance.connectedCallback();
+      await Promise.resolve();
+    });
     const shadow = instance.shadowRoot!;
     const link = shadow.querySelector(`link[href="${href}"]`);
 
     expect(link).not.toBeNull();
   });
 
-  it('Should not inject stylesheet if already exists', () => {
+  it('Should not inject stylesheet if already exists', async () => {
     const Dummy: React.FC = () => React.createElement('div');
     const href = 'https://example.com/style.css';
     const tag = 'already-styled';
@@ -74,13 +155,16 @@ describe('reactToWebComponent', () => {
     existingLink.href = href;
 
     shadow.appendChild(existingLink);
-    instance.connectedCallback();
+    await act(async () => {
+      instance.connectedCallback();
+      await Promise.resolve();
+    });
 
     const links = shadow.querySelectorAll(`link[href="${href}"]`);
     expect(links.length).toBe(1);
   });
 
-  it('Should log warning if stylesheet injection fails', () => {
+  it('Should log warning if stylesheet injection fails', async () => {
     const Dummy: React.FC = () => React.createElement('div');
     const href = 'https://example.com/style.css';
     const tag = 'error-element';
@@ -101,7 +185,10 @@ describe('reactToWebComponent', () => {
       configurable: true,
     });
     const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    instance.connectedCallback();
+    await act(async () => {
+      instance.connectedCallback();
+      await Promise.resolve();
+    });
 
     expect(consoleSpy).toHaveBeenCalledWith(
       'could not inject stylesheet into shadowRoot',

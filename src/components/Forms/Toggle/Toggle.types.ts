@@ -31,7 +31,11 @@ const HansToggleSchema = {
   thumbContent: 'node',
   value: 'string',
   defaultValue: 'string',
-  options: { type: 'custom', ref: {} as HansToggleOption[] },
+  options: {
+    type: 'custom',
+    ref: {} as HansToggleOption[],
+    webComponentType: 'property',
+  },
   customClasses: 'string',
   inputId: 'string',
 } as const;

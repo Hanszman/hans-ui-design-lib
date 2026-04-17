@@ -5,7 +5,10 @@ import reactToWebcomponent from 'react-to-webcomponent';
 type shadowOptions = 'open' | 'closed' | undefined;
 
 type ReactToWebComponentOptions<T> = {
-  props?: (keyof T)[] | Partial<Record<Extract<keyof T, string>, string>>;
+  props?:
+    | (keyof T)[]
+    | Partial<Record<Extract<keyof T, string>, string | undefined>>;
+  events?: string[] | Partial<Record<string, CustomEventInit>>;
   shadow?: shadowOptions;
   stylesheetHref?: string;
 };
@@ -16,6 +19,7 @@ export function createWebComponent<T>(
 ): CustomElementConstructor {
   const elementOptions = {
     props: (options as ReactToWebComponentOptions<object>)?.props ?? [],
+    events: (options as ReactToWebComponentOptions<object>)?.events ?? [],
     shadow: (options as ReactToWebComponentOptions<object>)?.shadow ?? 'open',
     stylesheetHref:
       (options as ReactToWebComponentOptions<object>)?.stylesheetHref ??
@@ -28,6 +32,7 @@ export function createWebComponent<T>(
     ReactDOMClient as unknown as Parameters<typeof reactToWebcomponent>[2],
     {
       props: elementOptions.props as string[],
+      events: elementOptions.events as string[],
       shadow: elementOptions.shadow as shadowOptions,
     },
   );
@@ -67,13 +72,17 @@ export function createWebComponent<T>(
 export function registerReactAsWebComponent<T>(
   tagName: string,
   Component: React.ComponentType<T>,
-  propsList: readonly (keyof T)[],
+  propsList:
+    | readonly (keyof T)[]
+    | Partial<Record<Extract<keyof T, string>, string | undefined>>,
+  eventsList: readonly string[] = [],
 ): void {
   if (customElements.get(tagName)) return;
 
   const stylesheetUrl = `${import.meta.env.VITE_HANS_UI_URL}${import.meta.env.VITE_HANS_UI_STYLESHEET_FILE}`;
   const WebComp = createWebComponent(Component, {
-    props: [...propsList],
+    props: Array.isArray(propsList) ? [...propsList] : propsList,
+    events: [...eventsList],
     shadow: 'open',
     stylesheetHref: stylesheetUrl,
   });

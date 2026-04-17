@@ -25,7 +25,11 @@ const HansDropdownSchema = {
   disabled: 'boolean',
   loading: 'boolean',
   loadingColor: { type: 'custom', ref: {} as Color },
-  options: { type: 'custom', ref: {} as PopupOptionItem[] },
+  options: {
+    type: 'custom',
+    ref: {} as PopupOptionItem[],
+    webComponentType: 'property',
+  },
   customClasses: 'string',
   noOptionsText: 'string',
 } as const;
