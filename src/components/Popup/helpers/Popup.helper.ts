@@ -48,7 +48,9 @@ export const handlePopupOutsideClick = ({
   close,
 }: HandlePopupOutsideClickParams): void => {
   if (!container || !target) return;
-  if (!container.contains(target)) close();
+  const root = container.getRootNode();
+  const isShadowHostTarget = root instanceof ShadowRoot && root.host === target;
+  if (!container.contains(target) && !isShadowHostTarget) close();
 };
 
 export const createPopupOutsideMouseDownHandler = ({

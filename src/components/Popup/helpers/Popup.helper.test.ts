@@ -70,6 +70,19 @@ describe('Popup.helper', () => {
     expect(close).toHaveBeenCalledTimes(1);
   });
 
+  it('Should keep popup open when shadow DOM events are retargeted to the host', () => {
+    const close = vi.fn();
+    const host = document.createElement('hans-dropdown');
+    const shadow = host.attachShadow({ mode: 'open' });
+    const container = document.createElement('div');
+
+    shadow.appendChild(container);
+
+    handlePopupOutsideClick({ container, target: host, close });
+
+    expect(close).not.toHaveBeenCalled();
+  });
+
   it('Should create outside mouse down handler from refs', () => {
     const close = vi.fn();
     const container = document.createElement('div');

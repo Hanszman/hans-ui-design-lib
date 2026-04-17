@@ -20,6 +20,8 @@ type ReactToWebComponentOptions<T extends object> = {
   stylesheetHref?: string;
 };
 
+const SHADOW_BRIDGE_EVENT_TYPES = ['mousedown', 'click'] as const;
+
 const cloneReadonlyList = <T>(items: readonly T[]): T[] => [...items];
 
 const normalizeProps = <T extends object>(
@@ -39,6 +41,63 @@ const normalizeEvents = <T extends object>(
   Array.isArray(events)
     ? cloneReadonlyList(events as readonly string[])
     : (events as R2WCOptions<object>['events']);
+
+const eventStartedInsideShadow = (
+  event: Event,
+  shadow: ShadowRoot,
+): boolean =>
+  event.composedPath().some((target) => {
+    return target instanceof Node && shadow.contains(target);
+  });
+
+const getShadowTargetFromHostEvent = (
+  host: HTMLElement,
+  event: MouseEvent,
+): Element | null => {
+  const shadow = host.shadowRoot;
+  if (!shadow || eventStartedInsideShadow(event, shadow)) return null;
+
+  const elementFromPoint = shadow.elementFromPoint;
+  if (!elementFromPoint) return null;
+
+  const target = elementFromPoint.call(
+    shadow,
+    event.clientX,
+    event.clientY,
+  );
+
+  if (!(target instanceof Element) || !shadow.contains(target)) return null;
+  return target;
+};
+
+const createForwardedMouseEvent = (event: MouseEvent): MouseEvent =>
+  new MouseEvent(event.type, {
+    bubbles: true,
+    button: event.button,
+    buttons: event.buttons,
+    cancelable: event.cancelable,
+    clientX: event.clientX,
+    clientY: event.clientY,
+    composed: true,
+    ctrlKey: event.ctrlKey,
+    detail: event.detail,
+    metaKey: event.metaKey,
+    screenX: event.screenX,
+    screenY: event.screenY,
+    shiftKey: event.shiftKey,
+  });
+
+const bridgeShadowHostEvent = (
+  host: HTMLElement,
+  event: MouseEvent,
+): void => {
+  const target = getShadowTargetFromHostEvent(host, event);
+  if (!target) return;
+
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  target.dispatchEvent(createForwardedMouseEvent(event));
+};
 
 export function createWebComponent<T extends object>(
   Component: React.ComponentType<T>,
@@ -67,12 +126,20 @@ export function createWebComponent<T extends object>(
   return class HansElement extends (BaseElement as unknown as {
     new (): HTMLElement;
   }) {
+    private readonly handleShadowBridgeEvent = (event: Event): void => {
+      if (event instanceof MouseEvent) bridgeShadowHostEvent(this, event);
+    };
+
     connectedCallback(): void {
       const elementPrototype = Object.getPrototypeOf(HansElement.prototype);
       const superConnected = elementPrototype.connectedCallback as
         | (() => void)
         | undefined;
       if (typeof superConnected === 'function') superConnected.call(this);
+
+      SHADOW_BRIDGE_EVENT_TYPES.forEach((eventType) => {
+        this.addEventListener(eventType, this.handleShadowBridgeEvent, true);
+      });
 
       try {
         const shadow = (this as HTMLElement & { shadowRoot?: ShadowRoot })
@@ -92,6 +159,22 @@ export function createWebComponent<T extends object>(
       } catch (error) {
         console.warn('could not inject stylesheet into shadowRoot', error);
       }
+    }
+
+    disconnectedCallback(): void {
+      SHADOW_BRIDGE_EVENT_TYPES.forEach((eventType) => {
+        this.removeEventListener(
+          eventType,
+          this.handleShadowBridgeEvent,
+          true,
+        );
+      });
+
+      const elementPrototype = Object.getPrototypeOf(HansElement.prototype);
+      const superDisconnected = elementPrototype.disconnectedCallback as
+        | (() => void)
+        | undefined;
+      if (typeof superDisconnected === 'function') superDisconnected.call(this);
     }
   };
 }
