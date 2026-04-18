@@ -63,7 +63,7 @@ describe('HansPopup', () => {
   });
 
   it('Should render default no-content message when children are empty', () => {
-    render(
+    const { container } = render(
       <HansPopup
         isOpen
         renderTrigger={() => <button type="button">Trigger</button>}
@@ -73,5 +73,8 @@ describe('HansPopup', () => {
     );
 
     expect(screen.getByText('No content')).toBeInTheDocument();
+    expect(
+      container.querySelector('.hans-popup-panel')?.getAttribute('style'),
+    ).toContain('--hans-popup-bg: var(--background-color, var(--white))');
   });
 });

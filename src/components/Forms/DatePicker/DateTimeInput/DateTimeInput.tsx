@@ -51,7 +51,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     defaultValue = '',
     calendarColor = 'primary',
     calendarVariant = 'default',
-    popupBackgroundColor = 'var(--white)',
+    popupBackgroundColor = 'var(--background-color, var(--white))',
     clearLabel = 'Clear',
     todayLabel = 'Today',
     applyLabel = 'Apply',

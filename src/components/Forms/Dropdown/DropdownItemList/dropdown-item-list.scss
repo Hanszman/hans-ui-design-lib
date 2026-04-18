@@ -3,7 +3,7 @@
 }
 
 .hans-dropdown-list-nested {
-  @apply absolute top-0 min-w-[220px] rounded-lg border border-[var(--base-neutral-color)] bg-[var(--white)] shadow-md z-20;
+  @apply absolute top-0 min-w-[220px] rounded-lg border border-[var(--base-neutral-color)] bg-[var(--background-color)] shadow-md z-20;
   max-width: min(420px, calc(100vw - 16px));
   width: max-content;
 }

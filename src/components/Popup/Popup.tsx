@@ -13,7 +13,7 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
   const {
     isOpen = false,
     disabled = false,
-    popupBackgroundColor = 'var(--white)',
+    popupBackgroundColor = 'var(--background-color, var(--white))',
     noContentText = 'No content',
     popupClassName = '',
     panelClassName = '',

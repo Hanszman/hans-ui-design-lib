@@ -79,11 +79,14 @@ describe('HansDropdown', () => {
   });
 
   it('Should render empty text when options are missing', () => {
-    render(
+    const { container } = render(
       <HansDropdown triggerLabel="Menu" options={[]} noOptionsText="Nothing" />,
     );
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     expect(screen.getByText('Nothing')).toBeInTheDocument();
+    expect(
+      container.querySelector('.hans-popup-panel')?.getAttribute('style'),
+    ).toContain('--hans-popup-bg: var(--background-color, var(--white))');
   });
 
   it('Should render option icon when iconName is provided', () => {

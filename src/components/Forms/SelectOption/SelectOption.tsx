@@ -46,7 +46,7 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
     value,
     defaultValue,
     noOptionsText = 'No options',
-    dropdownBackgroundColor = 'var(--white)',
+    dropdownBackgroundColor = 'var(--background-color, var(--white))',
     dropdownHoverColor = 'var(--gray-100)',
     isLoadingOptions = false,
     loadingOptionsText = 'Loading options...',
