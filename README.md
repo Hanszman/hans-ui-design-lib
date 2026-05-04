@@ -13,7 +13,10 @@ This library provides reusable, styled and documented UI components with a consi
 - 🧹 **ESLint + Prettier** for code quality and formatting
 - ⚡ **Vite** as the bundler for fast builds and DX
 - 🌍 Ready to be published and consumed via **npm**
-- 📖 Documentation ready to be used (deployed by **Vercel**) at https://hans-ui-design-lib-doc.vercel.app/
+- 🚢 Deployed by **Vercel**
+- 📖 Documentation ready for consultation at https://hans-ui-design-lib-doc.vercel.app/
+- 📦 Package available at https://www.npmjs.com/package/hans-ui-design-lib
+- 🛠️ CDN ready to be used at https://hans-ui-design-lib-cdn.vercel.app/
 - **Node Version to build this project: 24.14.1 and npm 11.11.0**
 
 ## 📦 Installation
