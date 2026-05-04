@@ -2,6 +2,7 @@
 -Message?
 -Translation?
 -AdSense (Publi/propaganda)
+-Separar .env entre original e example e ignorar do git o original
 -Criar pipeline ci/cd e docker no projeto
 -Criar skills para criação de componentes, assim como descrito abaixo
 
