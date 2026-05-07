@@ -14,6 +14,8 @@ const HansButtonSchema = {
   buttonSize: { type: 'custom', ref: {} as Size },
   buttonColor: { type: 'custom', ref: {} as Color },
   buttonVariant: { type: 'custom', ref: {} as Variant },
+  hoverButtonColor: { type: 'custom', ref: {} as Color },
+  hoverButtonVariant: { type: 'custom', ref: {} as Variant },
   buttonShape: { type: 'custom', ref: {} as ButtonShape },
   buttonType: { type: 'custom', ref: {} as ButtonType },
   customClasses: 'string',

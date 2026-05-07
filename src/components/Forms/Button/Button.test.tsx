@@ -33,6 +33,8 @@ describe('HansButton', () => {
         buttonSize="small"
         buttonColor="success"
         buttonVariant="strong"
+        hoverButtonColor="base"
+        hoverButtonVariant="transparent"
         buttonShape="square"
         disabled
         customClasses="custom-test"
@@ -45,10 +47,42 @@ describe('HansButton', () => {
       'hans-button-small',
       'hans-button-success',
       'hans-button-strong',
+      'hans-button-hover-color-base',
+      'hans-button-hover-variant-transparent',
       'hans-button-square',
       'custom-test',
     );
     expect(button).toBeDisabled();
+  });
+
+  it('Should resolve missing hover color from the base button color', () => {
+    render(
+      <HansButton
+        label="Hover Variant Only"
+        buttonColor="secondary"
+        hoverButtonVariant="outline"
+      />,
+    );
+
+    expect(screen.getByRole('button')).toHaveClass(
+      'hans-button-hover-color-secondary',
+      'hans-button-hover-variant-outline',
+    );
+  });
+
+  it('Should resolve missing hover variant from the base button variant', () => {
+    render(
+      <HansButton
+        label="Hover Color Only"
+        buttonVariant="neutral"
+        hoverButtonColor="info"
+      />,
+    );
+
+    expect(screen.getByRole('button')).toHaveClass(
+      'hans-button-hover-color-info',
+      'hans-button-hover-variant-neutral',
+    );
   });
 
   it('Should use default type="button" if not specified', () => {

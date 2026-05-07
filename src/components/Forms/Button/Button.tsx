@@ -9,6 +9,8 @@ export const HansButton = React.memo((props: HansButtonProps) => {
     buttonSize = 'medium',
     buttonColor = 'primary',
     buttonVariant = 'default',
+    hoverButtonColor,
+    hoverButtonVariant,
     buttonShape = 'rounded',
     buttonType = 'button',
     customClasses = '',
@@ -18,6 +20,17 @@ export const HansButton = React.memo((props: HansButtonProps) => {
     ...rest
   } = props;
   const isDisabled = disabled || loading;
+  const resolvedHoverButtonColor =
+    hoverButtonColor ?? (hoverButtonVariant ? buttonColor : undefined);
+  const resolvedHoverButtonVariant =
+    hoverButtonVariant ?? (hoverButtonColor ? buttonVariant : undefined);
+  const hoverButtonClasses =
+    resolvedHoverButtonColor && resolvedHoverButtonVariant
+      ? `
+        hans-button-hover-color-${resolvedHoverButtonColor}
+        hans-button-hover-variant-${resolvedHoverButtonVariant}
+      `
+      : '';
   const loadingSizeByButtonSize = {
     small: { width: '72px', height: '32px' },
     medium: { width: '88px', height: '40px' },
@@ -51,6 +64,7 @@ export const HansButton = React.memo((props: HansButtonProps) => {
         hans-button-${buttonColor}
         hans-button-${buttonVariant}
         hans-button-${buttonShape}
+        ${hoverButtonClasses}
         ${customClasses}
       `}
       {...rest}

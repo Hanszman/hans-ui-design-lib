@@ -12,6 +12,8 @@ const meta: Meta<typeof HansButton> = {
     buttonSize: 'medium',
     buttonColor: 'primary',
     buttonVariant: 'default',
+    hoverButtonColor: undefined,
+    hoverButtonVariant: undefined,
     buttonShape: 'rounded',
     disabled: false,
     loading: false,
@@ -34,6 +36,23 @@ const meta: Meta<typeof HansButton> = {
     buttonVariant: {
       control: 'select',
       options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
+    },
+    hoverButtonColor: {
+      control: 'select',
+      options: [
+        undefined,
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
+    },
+    hoverButtonVariant: {
+      control: 'select',
+      options: [undefined, 'strong', 'default', 'neutral', 'outline', 'transparent'],
     },
   },
   parameters: {
@@ -138,6 +157,33 @@ export const Loading: Story = {
         buttonShape="square"
         buttonSize="large"
       />
+    </div>
+  ),
+};
+
+export const HoverStates: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-3 flex-wrap">
+        <HansButton
+          label="Text Accent Hover"
+          buttonColor="base"
+          buttonVariant="transparent"
+          hoverButtonColor="primary"
+          hoverButtonVariant="transparent"
+        />
+        <HansButton
+          label="Invert Surface Hover"
+          buttonColor="primary"
+          buttonVariant="default"
+          hoverButtonColor="primary"
+          hoverButtonVariant="neutral"
+        />
+      </div>
+      <p className="text-sm text-[var(--gray-700)]">
+        Hover states are optional and only apply when `hoverButtonColor` or
+        `hoverButtonVariant` is provided.
+      </p>
     </div>
   ),
 };

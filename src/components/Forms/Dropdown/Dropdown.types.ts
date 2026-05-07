@@ -17,6 +17,8 @@ const HansDropdownSchema = {
   triggerLabel: 'string',
   triggerColor: { type: 'custom', ref: {} as Color },
   triggerVariant: { type: 'custom', ref: {} as Variant },
+  triggerHoverColor: { type: 'custom', ref: {} as Color },
+  triggerHoverVariant: { type: 'custom', ref: {} as Variant },
   triggerShape: { type: 'custom', ref: {} as ButtonShape },
   triggerSize: { type: 'custom', ref: {} as Size },
   popupId: 'string',

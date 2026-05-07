@@ -212,6 +212,22 @@ describe('HansDropdown', () => {
     );
   });
 
+  it('Should pass hover trigger styles to the internal HansButton', () => {
+    render(
+      <HansDropdown
+        triggerLabel="Menu"
+        options={options}
+        triggerHoverColor="primary"
+        triggerHoverVariant="neutral"
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: /menu/i })).toHaveClass(
+      'hans-button-hover-color-primary',
+      'hans-button-hover-variant-neutral',
+    );
+  });
+
   it('Should keep nested submenu open while moving mouse to child panel', () => {
     vi.useFakeTimers();
     try {

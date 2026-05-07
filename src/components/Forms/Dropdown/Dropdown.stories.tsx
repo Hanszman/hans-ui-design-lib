@@ -94,6 +94,8 @@ const meta: Meta<typeof HansDropdown> = {
     triggerLabel: 'Dropdown',
     triggerColor: 'base',
     triggerVariant: 'outline',
+    triggerHoverColor: undefined,
+    triggerHoverVariant: undefined,
     triggerShape: 'square',
     triggerSize: 'medium',
     options,
@@ -380,6 +382,30 @@ export const Loading: Story = {
         loading
         triggerColor="secondary"
         triggerVariant="strong"
+      />
+    </div>
+  ),
+};
+
+export const TriggerHoverStates: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <HansDropdown
+        triggerLabel="Accent text on hover"
+        triggerColor="base"
+        triggerVariant="transparent"
+        triggerHoverColor="primary"
+        triggerHoverVariant="transparent"
+        options={options}
+      />
+      <HansDropdown
+        triggerLabel="Invert on hover"
+        triggerColor="primary"
+        triggerVariant="default"
+        triggerHoverColor="primary"
+        triggerHoverVariant="neutral"
+        triggerShape="rounded"
+        options={options}
       />
     </div>
   ),

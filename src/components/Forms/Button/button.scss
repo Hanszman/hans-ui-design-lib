@@ -1,5 +1,10 @@
 .hans-button {
   @apply cursor-pointer flex items-center justify-center gap-1;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    outline-color 0.2s ease;
 }
 
 .hans-button-rounded {
@@ -173,4 +178,220 @@
 
 .hans-button-info.hans-button-transparent {
   @apply bg-transparent text-[var(--info-default-color)];
+}
+
+.hans-button[class*='hans-button-hover-color-'][class*='hans-button-hover-variant-']:hover {
+  border-width: 0;
+  border-color: transparent;
+  outline-offset: 0;
+}
+
+.hans-button.hans-button-hover-color-base.hans-button-hover-variant-strong:hover {
+  background-color: var(--base-strong-color);
+  color: var(--base-neutral-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-base.hans-button-hover-variant-default:hover {
+  background-color: var(--base-default-color);
+  color: var(--white);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-base.hans-button-hover-variant-neutral:hover {
+  background-color: var(--base-neutral-color);
+  color: var(--base-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-base.hans-button-hover-variant-outline:hover {
+  background-color: transparent;
+  color: var(--text-color);
+  outline: 1px solid var(--base-default-color);
+}
+
+.hans-button.hans-button-hover-color-base.hans-button-hover-variant-transparent:hover {
+  background-color: transparent;
+  color: var(--text-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-primary.hans-button-hover-variant-strong:hover {
+  background-color: var(--primary-strong-color);
+  color: var(--primary-neutral-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-primary.hans-button-hover-variant-default:hover {
+  background-color: var(--primary-default-color);
+  color: var(--white);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-primary.hans-button-hover-variant-neutral:hover {
+  background-color: var(--primary-neutral-color);
+  color: var(--primary-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-primary.hans-button-hover-variant-outline:hover {
+  background-color: transparent;
+  color: var(--primary-strong-color);
+  outline: 1px solid var(--primary-default-color);
+}
+
+.hans-button.hans-button-hover-color-primary.hans-button-hover-variant-transparent:hover {
+  background-color: transparent;
+  color: var(--primary-default-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-secondary.hans-button-hover-variant-strong:hover {
+  background-color: var(--secondary-strong-color);
+  color: var(--secondary-neutral-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-secondary.hans-button-hover-variant-default:hover {
+  background-color: var(--secondary-default-color);
+  color: var(--white);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-secondary.hans-button-hover-variant-neutral:hover {
+  background-color: var(--secondary-neutral-color);
+  color: var(--secondary-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-secondary.hans-button-hover-variant-outline:hover {
+  background-color: transparent;
+  color: var(--secondary-strong-color);
+  outline: 1px solid var(--secondary-default-color);
+}
+
+.hans-button.hans-button-hover-color-secondary.hans-button-hover-variant-transparent:hover {
+  background-color: transparent;
+  color: var(--secondary-default-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-success.hans-button-hover-variant-strong:hover {
+  background-color: var(--success-strong-color);
+  color: var(--success-neutral-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-success.hans-button-hover-variant-default:hover {
+  background-color: var(--success-default-color);
+  color: var(--white);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-success.hans-button-hover-variant-neutral:hover {
+  background-color: var(--success-neutral-color);
+  color: var(--success-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-success.hans-button-hover-variant-outline:hover {
+  background-color: transparent;
+  color: var(--success-strong-color);
+  outline: 1px solid var(--success-default-color);
+}
+
+.hans-button.hans-button-hover-color-success.hans-button-hover-variant-transparent:hover {
+  background-color: transparent;
+  color: var(--success-default-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-danger.hans-button-hover-variant-strong:hover {
+  background-color: var(--danger-strong-color);
+  color: var(--danger-neutral-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-danger.hans-button-hover-variant-default:hover {
+  background-color: var(--danger-default-color);
+  color: var(--white);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-danger.hans-button-hover-variant-neutral:hover {
+  background-color: var(--danger-neutral-color);
+  color: var(--danger-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-danger.hans-button-hover-variant-outline:hover {
+  background-color: transparent;
+  color: var(--danger-strong-color);
+  outline: 1px solid var(--danger-default-color);
+}
+
+.hans-button.hans-button-hover-color-danger.hans-button-hover-variant-transparent:hover {
+  background-color: transparent;
+  color: var(--danger-default-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-warning.hans-button-hover-variant-strong:hover {
+  background-color: var(--warning-strong-color);
+  color: var(--warning-neutral-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-warning.hans-button-hover-variant-default:hover {
+  background-color: var(--warning-default-color);
+  color: var(--white);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-warning.hans-button-hover-variant-neutral:hover {
+  background-color: var(--warning-neutral-color);
+  color: var(--warning-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-warning.hans-button-hover-variant-outline:hover {
+  background-color: transparent;
+  color: var(--warning-strong-color);
+  outline: 1px solid var(--warning-default-color);
+}
+
+.hans-button.hans-button-hover-color-warning.hans-button-hover-variant-transparent:hover {
+  background-color: transparent;
+  color: var(--warning-default-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-info.hans-button-hover-variant-strong:hover {
+  background-color: var(--info-strong-color);
+  color: var(--info-neutral-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-info.hans-button-hover-variant-default:hover {
+  background-color: var(--info-default-color);
+  color: var(--white);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-info.hans-button-hover-variant-neutral:hover {
+  background-color: var(--info-neutral-color);
+  color: var(--info-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-info.hans-button-hover-variant-outline:hover {
+  background-color: transparent;
+  color: var(--info-strong-color);
+  outline: 1px solid var(--info-default-color);
+}
+
+.hans-button.hans-button-hover-color-info.hans-button-hover-variant-transparent:hover {
+  background-color: transparent;
+  color: var(--info-default-color);
+  outline: none;
 }
