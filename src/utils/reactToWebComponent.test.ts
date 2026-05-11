@@ -6,6 +6,25 @@ import {
 } from './reactToWebComponent';
 
 describe('reactToWebComponent', () => {
+  const withStylesheetEnv = (
+    nextUrl: string | undefined,
+    nextFile: string | undefined,
+    callback: () => void,
+  ) => {
+    const previousUrl = import.meta.env.VITE_HANS_UI_URL;
+    const previousFile = import.meta.env.VITE_HANS_UI_STYLESHEET_FILE;
+
+    import.meta.env.VITE_HANS_UI_URL = nextUrl;
+    import.meta.env.VITE_HANS_UI_STYLESHEET_FILE = nextFile;
+
+    try {
+      callback();
+    } finally {
+      import.meta.env.VITE_HANS_UI_URL = previousUrl;
+      import.meta.env.VITE_HANS_UI_STYLESHEET_FILE = previousFile;
+    }
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
     customElements.define = vi.fn(customElements.define);
@@ -363,6 +382,123 @@ describe('reactToWebComponent', () => {
 
     expect(customElements.get(tag)).toBeDefined();
   });
+
+  it('Should register without document using the stylesheet env fallback', () => {
+    const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
+    const tag = 'no-document-element';
+    const originalDocument = globalThis.document;
+
+    Object.defineProperty(globalThis, 'document', {
+      value: undefined,
+      configurable: true,
+    });
+
+    expect(() => {
+      registerReactAsWebComponent(tag, Dummy, []);
+    }).not.toThrow();
+
+    Object.defineProperty(globalThis, 'document', {
+      value: originalDocument,
+      configurable: true,
+    });
+
+    expect(customElements.get(tag)).toBeDefined();
+  });
+
+  it('Should return undefined stylesheet fallback without document when env is empty', () => {
+    const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
+    const tag = 'no-document-empty-env-element';
+    const originalDocument = globalThis.document;
+
+    Object.defineProperty(globalThis, 'document', {
+      value: undefined,
+      configurable: true,
+    });
+
+    withStylesheetEnv('', '', () => {
+      expect(() => {
+        registerReactAsWebComponent(tag, Dummy, []);
+      }).not.toThrow();
+    });
+
+    Object.defineProperty(globalThis, 'document', {
+      value: originalDocument,
+      configurable: true,
+    });
+
+    expect(customElements.get(tag)).toBeDefined();
+  });
+
+  it('Should return undefined stylesheet fallback when currentScript has no src and env is empty', () => {
+    const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
+    const tag = 'missing-script-src-element';
+    const originalCurrentScript = document.currentScript;
+
+    Object.defineProperty(document, 'currentScript', {
+      configurable: true,
+      value: null,
+    });
+
+    withStylesheetEnv('', '', () => {
+      expect(() => {
+        registerReactAsWebComponent(tag, Dummy, []);
+      }).not.toThrow();
+    });
+
+    Object.defineProperty(document, 'currentScript', {
+      configurable: true,
+      value: originalCurrentScript,
+    });
+
+    expect(customElements.get(tag)).toBeDefined();
+  });
+
+  it('Should fallback to the env stylesheet when currentScript src is invalid', () => {
+    const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
+    const tag = 'invalid-script-src-element';
+    const originalCurrentScript = document.currentScript;
+
+    Object.defineProperty(document, 'currentScript', {
+      configurable: true,
+      value: { src: '::not-a-valid-url::' },
+    });
+
+    expect(() => {
+      registerReactAsWebComponent(tag, Dummy, []);
+    }).not.toThrow();
+
+    Object.defineProperty(document, 'currentScript', {
+      configurable: true,
+      value: originalCurrentScript,
+    });
+
+    expect(customElements.get(tag)).toBeDefined();
+  });
+
+  it('Should return undefined stylesheet fallback when currentScript src is invalid and env is empty', () => {
+    const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
+    const tag = 'invalid-script-src-empty-env-element';
+    const originalCurrentScript = document.currentScript;
+
+    Object.defineProperty(document, 'currentScript', {
+      configurable: true,
+      value: { src: '::not-a-valid-url::' },
+    });
+
+    withStylesheetEnv('', '', () => {
+      expect(() => {
+        registerReactAsWebComponent(tag, Dummy, []);
+      }).not.toThrow();
+    });
+
+    Object.defineProperty(document, 'currentScript', {
+      configurable: true,
+      value: originalCurrentScript,
+    });
+
+    expect(customElements.get(tag)).toBeDefined();
+  });
+
   it('Should inject stylesheet when stylesheetHref is given', async () => {
     const Dummy: React.FC = () => React.createElement('div');
     const href = 'https://example.com/style.css';
