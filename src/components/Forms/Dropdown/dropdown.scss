@@ -1,13 +1,17 @@
 .hans-dropdown {
-  @apply w-full;
+  @apply inline-flex w-auto max-w-full;
 }
 
 .hans-dropdown-popup-wrapper.hans-popup {
-  @apply inline-block w-auto;
+  @apply inline-flex w-auto max-w-full;
 }
 
 .hans-dropdown-trigger {
   @apply min-w-[120px] justify-between;
+}
+
+.hans-dropdown-trigger-icon-only {
+  @apply min-w-0 gap-2 px-4;
 }
 
 .hans-dropdown-popup {

@@ -52,6 +52,15 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     Record<string, 'left' | 'right'>
   >({});
   const hasCustomContent = hasCustomDropdownContent(children);
+  const hasVisibleTriggerLabel = triggerLabel.trim().length > 0;
+  const triggerClasses = [
+    'hans-dropdown-trigger',
+    !hasVisibleTriggerLabel && triggerIconName
+      ? 'hans-dropdown-trigger-icon-only'
+      : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
   const setOpen = createDropdownOpenSetter({ setIsOpen, onOpenChange });
   const handleSelect = createHandleDropdownSelect({
     closeOnSelect,
@@ -134,7 +143,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
             buttonShape={triggerShape}
             buttonSize={triggerSize}
             disabled={disabled}
-            customClasses="hans-dropdown-trigger"
+            customClasses={triggerClasses}
             aria-label={triggerAriaLabel}
             onClick={toggle}
           >
@@ -145,7 +154,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
                 customClasses="hans-dropdown-trigger-icon"
               />
             ) : null}
-            <span>{triggerLabel}</span>
+            {hasVisibleTriggerLabel ? <span>{triggerLabel}</span> : null}
             {loading ? (
               <HansLoading
                 loadingType="spinner"

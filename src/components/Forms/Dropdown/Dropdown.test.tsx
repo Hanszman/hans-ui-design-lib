@@ -234,9 +234,9 @@ describe('HansDropdown', () => {
         triggerLabel="Language"
         triggerIconName="FaGlobe"
         triggerColor="primary"
-        triggerVariant="inverse"
+        triggerVariant="default"
         triggerHoverColor="primary"
-        triggerHoverVariant="default"
+        triggerHoverVariant="inverse"
         options={options}
       />,
     );
@@ -244,14 +244,32 @@ describe('HansDropdown', () => {
     const trigger = screen.getByRole('button', { name: /language/i });
     expect(trigger).toHaveClass(
       'hans-button-primary',
-      'hans-button-inverse',
+      'hans-button-default',
       'hans-button-hover-color-primary',
-      'hans-button-hover-variant-default',
+      'hans-button-hover-variant-inverse',
     );
 
     fireEvent.click(trigger);
 
-    expect(trigger).toHaveClass('hans-button-default');
+    expect(trigger).toHaveClass('hans-button-inverse');
+  });
+
+  it('Should avoid rendering an empty label span for icon-only triggers', () => {
+    const { container } = render(
+      <HansDropdown
+        triggerLabel=""
+        triggerAriaLabel="Icon only"
+        triggerIconName="FaGlobe"
+        options={options}
+      />,
+    );
+
+    expect(
+      container.querySelector('.hans-dropdown-trigger > span'),
+    ).toBeFalsy();
+    expect(
+      container.querySelector('.hans-dropdown-trigger-icon-only'),
+    ).toBeTruthy();
   });
 
   it('Should apply custom option colors through dropdown list CSS variables', () => {

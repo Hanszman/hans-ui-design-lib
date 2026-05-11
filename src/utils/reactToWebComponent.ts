@@ -184,15 +184,15 @@ export function registerReactAsWebComponent<T extends object>(
   Component: React.ComponentType<T>,
   propsList: ReactToWebComponentProps<T>,
   eventsList: ReactToWebComponentEvents<T> = [],
+  stylesheetHref?: string,
 ): void {
   if (customElements.get(tagName)) return;
 
-  const stylesheetUrl = `${import.meta.env.VITE_HANS_UI_URL}${import.meta.env.VITE_HANS_UI_STYLESHEET_FILE}`;
   const WebComp = createWebComponent(Component, {
     props: normalizeProps(propsList) as ReactToWebComponentProps<T>,
     events: normalizeEvents(eventsList) as ReactToWebComponentEvents<T>,
     shadow: 'open',
-    stylesheetHref: stylesheetUrl,
+    stylesheetHref,
   });
 
   customElements.define(tagName, WebComp);

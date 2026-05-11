@@ -376,18 +376,49 @@ export const TriggerHoverStates: Story = {
 
 export const LegacyLanguageStyle: Story = {
   render: () => (
-    <div className="bg-[var(--base-neutral-color)] p-4">
+    <div className="flex flex-col gap-4 bg-[var(--background-color)] p-4">
       <HansDropdown
         triggerLabel=""
+        triggerAriaLabel="Languages primary"
         triggerIconName="FaGlobe"
         triggerColor="primary"
-        triggerVariant="inverse"
+        triggerVariant="default"
         triggerHoverColor="primary"
-        triggerHoverVariant="default"
+        triggerHoverVariant="inverse"
         triggerShape="rounded"
         popupBackgroundColor="var(--white)"
         optionTextColor="var(--base-strong-color)"
         optionHoverBackgroundColor="var(--primary-default-color)"
+        optionHoverTextColor="var(--white)"
+        options={optionsWithImages}
+      />
+      <HansDropdown
+        triggerLabel=""
+        triggerAriaLabel="Languages secondary"
+        triggerIconName="FaGlobe"
+        triggerColor="secondary"
+        triggerVariant="default"
+        triggerHoverColor="secondary"
+        triggerHoverVariant="inverse"
+        triggerShape="rounded"
+        popupBackgroundColor="var(--white)"
+        optionTextColor="var(--base-strong-color)"
+        optionHoverBackgroundColor="var(--secondary-default-color)"
+        optionHoverTextColor="var(--white)"
+        options={optionsWithImages}
+      />
+      <HansDropdown
+        triggerLabel=""
+        triggerAriaLabel="Languages success"
+        triggerIconName="FaGlobe"
+        triggerColor="success"
+        triggerVariant="default"
+        triggerHoverColor="success"
+        triggerHoverVariant="inverse"
+        triggerShape="rounded"
+        popupBackgroundColor="var(--white)"
+        optionTextColor="var(--base-strong-color)"
+        optionHoverBackgroundColor="var(--success-default-color)"
         optionHoverTextColor="var(--white)"
         options={optionsWithImages}
       />

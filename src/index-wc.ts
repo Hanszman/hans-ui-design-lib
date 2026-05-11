@@ -114,127 +114,180 @@ import {
 
 registerHansThemeApi();
 
+const resolveHansUiStylesheetUrl = (): string => {
+  const envUrl = `${import.meta.env.VITE_HANS_UI_URL}${import.meta.env.VITE_HANS_UI_STYLESHEET_FILE}`;
+
+  if (typeof document === 'undefined') {
+    return envUrl;
+  }
+
+  const currentScript = document.currentScript as HTMLScriptElement | null;
+  const scriptSrc = currentScript?.src;
+
+  if (!scriptSrc) {
+    return envUrl;
+  }
+
+  try {
+    return new URL(import.meta.env.VITE_HANS_UI_STYLESHEET_FILE, scriptSrc).toString();
+  } catch {
+    return envUrl;
+  }
+};
+
+const hansUiStylesheetUrl = resolveHansUiStylesheetUrl();
+
 registerReactAsWebComponent<HansButtonProps>(
   'hans-button',
   HansButton,
   HansButtonPropsList,
+  [],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansInputProps>(
   'hans-input',
   HansInput,
   HansInputPropsList,
+  [],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansDropdownProps>(
   'hans-dropdown',
   HansDropdown,
   HansDropdownPropsList,
   ['onSelect', 'onOpenChange'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansSelectOptionProps>(
   'hans-select-option',
   HansSelectOption,
   HansSelectOptionPropsList,
   ['onSearch', 'onChange', 'onInputChange'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansToggleProps>(
   'hans-toggle',
   HansToggle,
   HansTogglePropsList,
   ['onChange', 'onValueChange'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansDatePickerProps>(
   'hans-date-picker',
   HansDatePicker,
   HansDatePickerPropsList,
   ['onChange', 'onOpenChange'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansAvatarProps>(
   'hans-avatar',
   HansAvatar,
   HansAvatarPropsList,
+  [],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansCardProps>(
   'hans-card',
   HansCard,
   HansCardPropsList,
+  [],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansCarouselProps>(
   'hans-carousel',
   HansCarousel,
   HansCarouselPropsList,
   ['onActiveItemChange'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansTagProps>(
   'hans-tag',
   HansTag,
   HansTagPropsList,
   ['onAction'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansChartProps>(
   'hans-chart',
   HansChart,
   HansChartPropsList,
   ['onPointClick'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansAccordionProps>(
   'hans-accordion',
   HansAccordion,
   HansAccordionPropsList,
   ['onOpenItemIdsChange'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansIconProps>(
   'hans-icon',
   HansIcon,
   HansIconPropsList,
+  [],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansLoadingProps>(
   'hans-loading',
   HansLoading,
   HansLoadingPropsList,
+  [],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansKanbanProps>(
   'hans-kanban',
   HansKanban,
   HansKanbanPropsList,
   ['onItemsChange', 'onMoveItem', 'onItemClick'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansKanbanColumnProps>(
   'hans-kanban-column',
   HansKanbanColumn,
   HansKanbanColumnPropsList,
+  [],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansKanbanItemProps>(
   'hans-kanban-item',
   HansKanbanItem,
   HansKanbanItemPropsList,
+  [],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansPopupProps>(
   'hans-popup',
   HansPopup,
   HansPopupPropsList,
   ['onOpenChange', 'onDirectionChange'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansToastProps>(
   'hans-toast',
   HansToast,
   HansToastPropsList,
   ['onClose', 'onVisibilityChange'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansModalProps>(
   'hans-modal',
   HansModal,
   HansModalPropsList,
   ['onOpenChange', 'onClose', 'onConfirm', 'onCancel'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansTableProps>(
   'hans-table',
   HansTable,
   HansTablePropsList,
   ['onSortChange', 'onFiltersChange'],
+  hansUiStylesheetUrl,
 );
 registerReactAsWebComponent<HansTabsProps>(
   'hans-tabs',
   HansTabs,
   HansTabsPropsList,
   ['onTabChange', 'onTabClose', 'onTabsChange'],
+  hansUiStylesheetUrl,
 );
