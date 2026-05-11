@@ -52,7 +52,14 @@ const meta: Meta<typeof HansButton> = {
     },
     hoverButtonVariant: {
       control: 'select',
-      options: [undefined, 'strong', 'default', 'neutral', 'outline', 'transparent'],
+      options: [
+        undefined,
+        'strong',
+        'default',
+        'neutral',
+        'outline',
+        'transparent',
+      ],
     },
   },
   parameters: {
@@ -140,27 +147,6 @@ export const WithChildren: Story = {
   ),
 };
 
-export const Loading: Story = {
-  render: () => (
-    <div className="flex items-center gap-3 flex-wrap">
-      <HansButton loading label="Loading" />
-      <HansButton
-        loading
-        buttonColor="secondary"
-        buttonVariant="strong"
-        buttonShape="square"
-      />
-      <HansButton
-        loading
-        buttonColor="success"
-        buttonVariant="outline"
-        buttonShape="square"
-        buttonSize="large"
-      />
-    </div>
-  ),
-};
-
 export const HoverStates: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
@@ -184,6 +170,27 @@ export const HoverStates: Story = {
         Hover states are optional and only apply when `hoverButtonColor` or
         `hoverButtonVariant` is provided.
       </p>
+    </div>
+  ),
+};
+
+export const Loading: Story = {
+  render: () => (
+    <div className="flex items-center gap-3 flex-wrap">
+      <HansButton loading label="Loading" />
+      <HansButton
+        loading
+        buttonColor="secondary"
+        buttonVariant="strong"
+        buttonShape="square"
+      />
+      <HansButton
+        loading
+        buttonColor="success"
+        buttonVariant="outline"
+        buttonShape="square"
+        buttonSize="large"
+      />
     </div>
   ),
 };
