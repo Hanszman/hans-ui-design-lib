@@ -22,6 +22,27 @@ type ReactToWebComponentOptions<T extends object> = {
 
 const SHADOW_BRIDGE_EVENT_TYPES = ['mousedown', 'click'] as const;
 
+const getDefaultStylesheetHref = (): string | undefined => {
+  const envUrl = `${import.meta.env.VITE_HANS_UI_URL}${import.meta.env.VITE_HANS_UI_STYLESHEET_FILE}`;
+
+  if (typeof document === 'undefined') {
+    return envUrl || undefined;
+  }
+
+  const currentScript = document.currentScript as HTMLScriptElement | null;
+  const scriptSrc = currentScript?.src;
+
+  if (!scriptSrc) {
+    return envUrl || undefined;
+  }
+
+  try {
+    return new URL(import.meta.env.VITE_HANS_UI_STYLESHEET_FILE, scriptSrc).toString();
+  } catch {
+    return envUrl || undefined;
+  }
+};
+
 const cloneReadonlyList = <T>(items: readonly T[]): T[] => [...items];
 
 const normalizeProps = <T extends object>(
@@ -184,7 +205,6 @@ export function registerReactAsWebComponent<T extends object>(
   Component: React.ComponentType<T>,
   propsList: ReactToWebComponentProps<T>,
   eventsList: ReactToWebComponentEvents<T> = [],
-  stylesheetHref?: string,
 ): void {
   if (customElements.get(tagName)) return;
 
@@ -192,7 +212,7 @@ export function registerReactAsWebComponent<T extends object>(
     props: normalizeProps(propsList) as ReactToWebComponentProps<T>,
     events: normalizeEvents(eventsList) as ReactToWebComponentEvents<T>,
     shadow: 'open',
-    stylesheetHref,
+    stylesheetHref: getDefaultStylesheetHref(),
   });
 
   customElements.define(tagName, WebComp);

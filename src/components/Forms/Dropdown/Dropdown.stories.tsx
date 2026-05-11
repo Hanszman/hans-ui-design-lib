@@ -376,7 +376,7 @@ export const TriggerHoverStates: Story = {
 
 export const LegacyLanguageStyle: Story = {
   render: () => (
-    <div className="flex flex-col gap-4 bg-[var(--background-color)] p-4">
+    <div className="flex flex-col gap-4 p-4">
       <HansDropdown
         triggerLabel=""
         triggerAriaLabel="Languages primary"
