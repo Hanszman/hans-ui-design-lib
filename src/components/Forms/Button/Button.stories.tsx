@@ -35,7 +35,7 @@ const meta: Meta<typeof HansButton> = {
     },
     buttonVariant: {
       control: 'select',
-      options: ['strong', 'default', 'neutral', 'outline', 'transparent'],
+      options: ['strong', 'default', 'neutral', 'inverse', 'outline', 'transparent'],
     },
     hoverButtonColor: {
       control: 'select',
@@ -57,6 +57,7 @@ const meta: Meta<typeof HansButton> = {
         'strong',
         'default',
         'neutral',
+        'inverse',
         'outline',
         'transparent',
       ],
@@ -94,7 +95,7 @@ export const Sizes: Story = {
 export const VariantsAndColors: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
-      {['strong', 'default', 'neutral', 'outline', 'transparent'].map(
+      {['strong', 'default', 'neutral', 'inverse', 'outline', 'transparent'].map(
         (variant) => (
           <div key={variant}>
             <p className="font-bold mb-2">{variant}</p>
@@ -164,6 +165,13 @@ export const HoverStates: Story = {
           buttonVariant="default"
           hoverButtonColor="primary"
           hoverButtonVariant="neutral"
+        />
+        <HansButton
+          label="White To Accent"
+          buttonColor="primary"
+          buttonVariant="inverse"
+          hoverButtonColor="primary"
+          hoverButtonVariant="default"
         />
       </div>
       <p className="text-sm text-[var(--gray-700)]">

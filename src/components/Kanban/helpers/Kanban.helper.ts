@@ -65,6 +65,14 @@ export const createSurfaceVariantMap = ({
         ? 'color-mix(in srgb, var(--text-color) 68%, transparent)'
         : `color-mix(in srgb, var(${tokenPrefix}-strong-color) 72%, transparent)`,
     },
+    inverse: {
+      bg: 'var(--white)',
+      border: 'var(--white)',
+      text: isBase ? 'var(--base-default-color)' : `var(${tokenPrefix}-default-color)`,
+      muted: isBase
+        ? 'color-mix(in srgb, var(--base-default-color) 68%, transparent)'
+        : `color-mix(in srgb, var(${tokenPrefix}-default-color) 72%, transparent)`,
+    },
     outline: {
       bg: 'var(--white)',
       border: `var(${tokenPrefix}-default-color)`,

@@ -52,6 +52,10 @@
   @apply bg-[var(--base-neutral-color)] text-[var(--base-strong-color)];
 }
 
+.hans-button-base.hans-button-inverse {
+  @apply bg-[var(--white)] text-[var(--base-default-color)];
+}
+
 .hans-button-base.hans-button-outline {
   @apply bg-transparent text-[var(--text-color)] border-[var(--base-default-color)] outline;
 }
@@ -70,6 +74,10 @@
 
 .hans-button-primary.hans-button-neutral {
   @apply bg-[var(--primary-neutral-color)] text-[var(--primary-strong-color)];
+}
+
+.hans-button-primary.hans-button-inverse {
+  @apply bg-[var(--white)] text-[var(--primary-default-color)];
 }
 
 .hans-button-primary.hans-button-outline {
@@ -92,6 +100,10 @@
   @apply bg-[var(--secondary-neutral-color)] text-[var(--secondary-strong-color)];
 }
 
+.hans-button-secondary.hans-button-inverse {
+  @apply bg-[var(--white)] text-[var(--secondary-default-color)];
+}
+
 .hans-button-secondary.hans-button-outline {
   @apply bg-transparent text-[var(--secondary-strong-color)] border-[var(--secondary-default-color)] outline;
 }
@@ -110,6 +122,10 @@
 
 .hans-button-success.hans-button-neutral {
   @apply bg-[var(--success-neutral-color)] text-[var(--success-strong-color)];
+}
+
+.hans-button-success.hans-button-inverse {
+  @apply bg-[var(--white)] text-[var(--success-default-color)];
 }
 
 .hans-button-success.hans-button-outline {
@@ -132,6 +148,10 @@
   @apply bg-[var(--danger-neutral-color)] text-[var(--danger-strong-color)];
 }
 
+.hans-button-danger.hans-button-inverse {
+  @apply bg-[var(--white)] text-[var(--danger-default-color)];
+}
+
 .hans-button-danger.hans-button-outline {
   @apply bg-transparent text-[var(--danger-strong-color)] border-[var(--danger-default-color)] outline;
 }
@@ -152,6 +172,10 @@
   @apply bg-[var(--warning-neutral-color)] text-[var(--warning-strong-color)];
 }
 
+.hans-button-warning.hans-button-inverse {
+  @apply bg-[var(--white)] text-[var(--warning-default-color)];
+}
+
 .hans-button-warning.hans-button-outline {
   @apply bg-transparent text-[var(--warning-strong-color)] border-[var(--warning-default-color)] outline;
 }
@@ -170,6 +194,10 @@
 
 .hans-button-info.hans-button-neutral {
   @apply bg-[var(--info-neutral-color)] text-[var(--info-strong-color)];
+}
+
+.hans-button-info.hans-button-inverse {
+  @apply bg-[var(--white)] text-[var(--info-default-color)];
 }
 
 .hans-button-info.hans-button-outline {
@@ -204,6 +232,12 @@
   outline: none;
 }
 
+.hans-button.hans-button-hover-color-base.hans-button-hover-variant-inverse:hover {
+  background-color: var(--white);
+  color: var(--base-default-color);
+  outline: none;
+}
+
 .hans-button.hans-button-hover-color-base.hans-button-hover-variant-outline:hover {
   background-color: transparent;
   color: var(--text-color);
@@ -231,6 +265,12 @@
 .hans-button.hans-button-hover-color-primary.hans-button-hover-variant-neutral:hover {
   background-color: var(--primary-neutral-color);
   color: var(--primary-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-primary.hans-button-hover-variant-inverse:hover {
+  background-color: var(--white);
+  color: var(--primary-default-color);
   outline: none;
 }
 
@@ -264,6 +304,12 @@
   outline: none;
 }
 
+.hans-button.hans-button-hover-color-secondary.hans-button-hover-variant-inverse:hover {
+  background-color: var(--white);
+  color: var(--secondary-default-color);
+  outline: none;
+}
+
 .hans-button.hans-button-hover-color-secondary.hans-button-hover-variant-outline:hover {
   background-color: transparent;
   color: var(--secondary-strong-color);
@@ -291,6 +337,12 @@
 .hans-button.hans-button-hover-color-success.hans-button-hover-variant-neutral:hover {
   background-color: var(--success-neutral-color);
   color: var(--success-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-success.hans-button-hover-variant-inverse:hover {
+  background-color: var(--white);
+  color: var(--success-default-color);
   outline: none;
 }
 
@@ -324,6 +376,12 @@
   outline: none;
 }
 
+.hans-button.hans-button-hover-color-danger.hans-button-hover-variant-inverse:hover {
+  background-color: var(--white);
+  color: var(--danger-default-color);
+  outline: none;
+}
+
 .hans-button.hans-button-hover-color-danger.hans-button-hover-variant-outline:hover {
   background-color: transparent;
   color: var(--danger-strong-color);
@@ -354,6 +412,12 @@
   outline: none;
 }
 
+.hans-button.hans-button-hover-color-warning.hans-button-hover-variant-inverse:hover {
+  background-color: var(--white);
+  color: var(--warning-default-color);
+  outline: none;
+}
+
 .hans-button.hans-button-hover-color-warning.hans-button-hover-variant-outline:hover {
   background-color: transparent;
   color: var(--warning-strong-color);
@@ -381,6 +445,12 @@
 .hans-button.hans-button-hover-color-info.hans-button-hover-variant-neutral:hover {
   background-color: var(--info-neutral-color);
   color: var(--info-strong-color);
+  outline: none;
+}
+
+.hans-button.hans-button-hover-color-info.hans-button-hover-variant-inverse:hover {
+  background-color: var(--white);
+  color: var(--info-default-color);
   outline: none;
 }
 

@@ -228,6 +228,61 @@ describe('HansDropdown', () => {
     );
   });
 
+  it('Should render the trigger icon and keep hover visual while open', () => {
+    render(
+      <HansDropdown
+        triggerLabel="Language"
+        triggerIconName="FaGlobe"
+        triggerColor="primary"
+        triggerVariant="inverse"
+        triggerHoverColor="primary"
+        triggerHoverVariant="default"
+        options={options}
+      />,
+    );
+
+    const trigger = screen.getByRole('button', { name: /language/i });
+    expect(trigger).toHaveClass(
+      'hans-button-primary',
+      'hans-button-inverse',
+      'hans-button-hover-color-primary',
+      'hans-button-hover-variant-default',
+    );
+
+    fireEvent.click(trigger);
+
+    expect(trigger).toHaveClass('hans-button-default');
+  });
+
+  it('Should apply custom option colors through dropdown list CSS variables', () => {
+    const { container } = render(
+      <HansDropdown
+        triggerLabel="Theme"
+        options={options}
+        optionTextColor="var(--base-strong-color)"
+        optionHoverBackgroundColor="var(--primary-default-color)"
+        optionHoverTextColor="var(--white)"
+        emptyTextColor="var(--base-default-color)"
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /theme/i }));
+
+    const list = container.querySelector('.hans-dropdown-list') as HTMLElement;
+    expect(list.getAttribute('style')).toContain(
+      '--hans-dropdown-option-text-color: var(--base-strong-color)',
+    );
+    expect(list.getAttribute('style')).toContain(
+      '--hans-dropdown-option-hover-background-color: var(--primary-default-color)',
+    );
+    expect(list.getAttribute('style')).toContain(
+      '--hans-dropdown-option-hover-text-color: var(--white)',
+    );
+    expect(list.getAttribute('style')).toContain(
+      '--hans-dropdown-empty-text-color: var(--base-default-color)',
+    );
+  });
+
   it('Should keep nested submenu open while moving mouse to child panel', () => {
     vi.useFakeTimers();
     try {

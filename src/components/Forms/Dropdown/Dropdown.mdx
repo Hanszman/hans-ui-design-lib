@@ -63,6 +63,21 @@ Use `action` in each `PopupOptionItem` to execute custom callbacks when the opti
 
 <Canvas of={HansDropdownStories.OptionActions} />
 
+## Trigger Hover States
+
+Use `triggerHoverColor` and `triggerHoverVariant` when the dropdown trigger
+needs a different hover treatment from its resting button style.
+
+<Canvas of={HansDropdownStories.TriggerHoverStates} />
+
+## Trigger Icons And Menu Surface
+
+Use `triggerIconName` to place an icon inside the trigger itself and combine
+`popupBackgroundColor`, `optionTextColor`, `optionHoverBackgroundColor`, and
+`optionHoverTextColor` when the menu needs a stronger visual treatment.
+
+<Canvas of={HansDropdownStories.LegacyLanguageStyle} />
+
 ## No Content
 
 Use empty `options` to render an explicit empty state via `noOptionsText`.
@@ -74,10 +89,3 @@ Use empty `options` to render an explicit empty state via `noOptionsText`.
 Use `loading` to render a loading state inside popup content.
 
 <Canvas of={HansDropdownStories.Loading} />
-
-## Trigger Hover States
-
-Use `triggerHoverColor` and `triggerHoverVariant` when the dropdown trigger
-needs a different hover treatment from its resting button style.
-
-<Canvas of={HansDropdownStories.TriggerHoverStates} />

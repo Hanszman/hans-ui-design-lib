@@ -6,6 +6,10 @@ export type HansDropdownItemListProps = {
   noOptionsText: string;
   hoveredPath: string | null;
   submenuDirections: Record<string, 'left' | 'right'>;
+  optionTextColor?: string;
+  optionHoverBackgroundColor?: string;
+  optionHoverTextColor?: string;
+  emptyTextColor?: string;
   parentPath?: string;
   nested?: boolean;
   popupId?: string;

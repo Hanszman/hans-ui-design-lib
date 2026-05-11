@@ -8,6 +8,7 @@ import type {
   Size,
   Variant,
 } from '../../../types/Common.types';
+import type { HansIconProps } from '../../Icon/Icon.types';
 import type { PopupOptionItem } from '../../Popup/Popup.types';
 import type { ButtonShape } from '../Button/Button.types';
 
@@ -15,10 +16,12 @@ export type DropdownItem = PopupOptionItem;
 
 const HansDropdownSchema = {
   triggerLabel: 'string',
+  triggerAriaLabel: 'string',
   triggerColor: { type: 'custom', ref: {} as Color },
   triggerVariant: { type: 'custom', ref: {} as Variant },
   triggerHoverColor: { type: 'custom', ref: {} as Color },
   triggerHoverVariant: { type: 'custom', ref: {} as Variant },
+  triggerIconName: { type: 'custom', ref: {} as HansIconProps['name'] },
   triggerShape: { type: 'custom', ref: {} as ButtonShape },
   triggerSize: { type: 'custom', ref: {} as Size },
   popupId: 'string',
@@ -34,6 +37,10 @@ const HansDropdownSchema = {
   },
   customClasses: 'string',
   noOptionsText: 'string',
+  optionTextColor: 'string',
+  optionHoverBackgroundColor: 'string',
+  optionHoverTextColor: 'string',
+  emptyTextColor: 'string',
 } as const;
 
 export type HansDropdownProps = InferPropsFromSchema<typeof HansDropdownSchema> &

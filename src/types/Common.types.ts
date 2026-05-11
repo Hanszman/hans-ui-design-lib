@@ -11,5 +11,6 @@ export type Variant =
   | 'strong'
   | 'default'
   | 'neutral'
+  | 'inverse'
   | 'outline'
   | 'transparent';

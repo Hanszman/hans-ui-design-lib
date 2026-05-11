@@ -16,6 +16,10 @@ export const HansDropdownItemList = React.memo(
       noOptionsText,
       hoveredPath,
       submenuDirections,
+      optionTextColor,
+      optionHoverBackgroundColor,
+      optionHoverTextColor,
+      emptyTextColor,
       parentPath = '',
       nested = false,
       popupId,
@@ -29,6 +33,14 @@ export const HansDropdownItemList = React.memo(
       <HansPopupItemList
         id={nested ? undefined : popupId}
         className={`hans-dropdown-list ${nested ? 'hans-dropdown-list-nested' : ''}`}
+        style={
+          {
+            '--hans-dropdown-option-text-color': optionTextColor,
+            '--hans-dropdown-option-hover-background-color': optionHoverBackgroundColor,
+            '--hans-dropdown-option-hover-text-color': optionHoverTextColor,
+            '--hans-dropdown-empty-text-color': emptyTextColor,
+          } as React.CSSProperties
+        }
         role="menu"
         itemRole="menuitem"
         items={items}
@@ -65,6 +77,10 @@ export const HansDropdownItemList = React.memo(
               noOptionsText={noOptionsText}
               hoveredPath={hoveredPath}
               submenuDirections={submenuDirections}
+              optionTextColor={optionTextColor}
+              optionHoverBackgroundColor={optionHoverBackgroundColor}
+              optionHoverTextColor={optionHoverTextColor}
+              emptyTextColor={emptyTextColor}
               parentPath={state.itemPath}
               nested
               onItemEnter={onItemEnter}

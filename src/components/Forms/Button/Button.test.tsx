@@ -55,6 +55,25 @@ describe('HansButton', () => {
     expect(button).toBeDisabled();
   });
 
+  it('Should support the inverse visual variant', () => {
+    render(
+      <HansButton
+        label="Inverse"
+        buttonColor="primary"
+        buttonVariant="inverse"
+        hoverButtonColor="primary"
+        hoverButtonVariant="default"
+      />,
+    );
+
+    expect(screen.getByRole('button')).toHaveClass(
+      'hans-button-primary',
+      'hans-button-inverse',
+      'hans-button-hover-color-primary',
+      'hans-button-hover-variant-default',
+    );
+  });
+
   it('Should resolve missing hover color from the base button color', () => {
     render(
       <HansButton

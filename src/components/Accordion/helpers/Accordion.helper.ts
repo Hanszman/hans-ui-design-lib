@@ -150,6 +150,11 @@ export const getAccordionSurfaceStyleVars = ({
       text: isBase ? 'var(--base-strong-color)' : `var(${tokenPrefix}-strong-color)`,
       border: `var(${tokenPrefix}-neutral-color)`,
     },
+    inverse: {
+      bg: 'var(--white)',
+      text: isBase ? 'var(--base-default-color)' : `var(${tokenPrefix}-default-color)`,
+      border: 'var(--white)',
+    },
     outline: {
       bg: 'transparent',
       text: isBase ? 'var(--text-color)' : `var(${tokenPrefix}-strong-color)`,

@@ -287,6 +287,14 @@ export const getCarouselStyleVars = ({
       shellBg: 'var(--white)',
       indicatorInactive: `color-mix(in srgb, var(${tokenPrefix}-strong-color) 22%, transparent)`,
     },
+    inverse: {
+      accentBg: 'var(--white)',
+      accentText: isBase ? 'var(--base-default-color)' : `var(${tokenPrefix}-default-color)`,
+      accentBorder: 'var(--white)',
+      shellBorder: 'var(--white)',
+      shellBg: 'var(--white)',
+      indicatorInactive: `color-mix(in srgb, var(${tokenPrefix}-default-color) 22%, transparent)`,
+    },
     outline: {
       accentBg: 'var(--white)',
       accentText: isBase ? 'var(--text-color)' : `var(${tokenPrefix}-strong-color)`,

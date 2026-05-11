@@ -18,10 +18,15 @@
 
 .hans-dropdown-option {
   @apply px-3 py-2 flex items-center gap-2 cursor-pointer relative whitespace-nowrap;
+  color: var(--hans-dropdown-option-text-color, var(--text-color));
 }
 
 .hans-dropdown-option:hover {
-  @apply bg-[var(--base-neutral-color)];
+  background-color: var(
+    --hans-dropdown-option-hover-background-color,
+    var(--base-neutral-color)
+  );
+  color: var(--hans-dropdown-option-hover-text-color, inherit);
 }
 
 .hans-dropdown-option-disabled {
@@ -34,4 +39,8 @@
 
 .hans-dropdown-option-arrow {
   @apply ml-auto;
+}
+
+.hans-dropdown-list .hans-popup-item-list-empty {
+  color: var(--hans-dropdown-empty-text-color, var(--gray-500));
 }

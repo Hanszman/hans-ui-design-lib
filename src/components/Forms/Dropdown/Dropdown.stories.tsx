@@ -70,8 +70,16 @@ const nestedOptions = [
             label: 'Web app',
             value: 'template-web',
             children: [
-              { id: 'template-web-react', label: 'React starter', value: 'template-web-react' },
-              { id: 'template-web-vue', label: 'Vue starter', value: 'template-web-vue' },
+              {
+                id: 'template-web-react',
+                label: 'React starter',
+                value: 'template-web-react',
+              },
+              {
+                id: 'template-web-vue',
+                label: 'Vue starter',
+                value: 'template-web-vue',
+              },
             ],
           },
           { id: 'template-api', label: 'API service', value: 'template-api' },
@@ -96,6 +104,7 @@ const meta: Meta<typeof HansDropdown> = {
     triggerVariant: 'outline',
     triggerHoverColor: undefined,
     triggerHoverVariant: undefined,
+    triggerIconName: undefined,
     triggerShape: 'square',
     triggerSize: 'medium',
     options,
@@ -175,7 +184,12 @@ export const WithIconsAndImages: Story = {
         triggerColor="secondary"
         triggerVariant="strong"
         options={[
-          { id: 'icon-item', label: 'Icon item', value: 'icon-item', iconName: 'IoMdDesktop' },
+          {
+            id: 'icon-item',
+            label: 'Icon item',
+            value: 'icon-item',
+            iconName: 'IoMdDesktop',
+          },
           optionsWithImages[0],
           optionsWithImages[1],
         ]}
@@ -336,6 +350,51 @@ const OptionActionsExample = () => {
   );
 };
 
+export const TriggerHoverStates: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <HansDropdown
+        triggerLabel="Accent text on hover"
+        triggerColor="base"
+        triggerVariant="transparent"
+        triggerHoverColor="primary"
+        triggerHoverVariant="transparent"
+        options={options}
+      />
+      <HansDropdown
+        triggerLabel="Invert on hover"
+        triggerColor="primary"
+        triggerVariant="inverse"
+        triggerHoverColor="primary"
+        triggerHoverVariant="default"
+        triggerShape="rounded"
+        options={options}
+      />
+    </div>
+  ),
+};
+
+export const LegacyLanguageStyle: Story = {
+  render: () => (
+    <div className="bg-[var(--base-neutral-color)] p-4">
+      <HansDropdown
+        triggerLabel=""
+        triggerIconName="FaGlobe"
+        triggerColor="primary"
+        triggerVariant="inverse"
+        triggerHoverColor="primary"
+        triggerHoverVariant="default"
+        triggerShape="rounded"
+        popupBackgroundColor="var(--white)"
+        optionTextColor="var(--base-strong-color)"
+        optionHoverBackgroundColor="var(--primary-default-color)"
+        optionHoverTextColor="var(--white)"
+        options={optionsWithImages}
+      />
+    </div>
+  ),
+};
+
 export const NoContent: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
@@ -382,30 +441,6 @@ export const Loading: Story = {
         loading
         triggerColor="secondary"
         triggerVariant="strong"
-      />
-    </div>
-  ),
-};
-
-export const TriggerHoverStates: Story = {
-  render: () => (
-    <div className="flex flex-col gap-4">
-      <HansDropdown
-        triggerLabel="Accent text on hover"
-        triggerColor="base"
-        triggerVariant="transparent"
-        triggerHoverColor="primary"
-        triggerHoverVariant="transparent"
-        options={options}
-      />
-      <HansDropdown
-        triggerLabel="Invert on hover"
-        triggerColor="primary"
-        triggerVariant="default"
-        triggerHoverColor="primary"
-        triggerHoverVariant="neutral"
-        triggerShape="rounded"
-        options={options}
       />
     </div>
   ),

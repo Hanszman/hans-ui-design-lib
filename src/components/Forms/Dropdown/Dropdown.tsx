@@ -19,10 +19,12 @@ import {
 export const HansDropdown = React.memo((props: HansDropdownProps) => {
   const {
     triggerLabel = 'Dropdown',
+    triggerAriaLabel,
     triggerColor = 'base',
     triggerVariant = 'outline',
     triggerHoverColor,
     triggerHoverVariant,
+    triggerIconName,
     triggerShape = 'square',
     triggerSize = 'medium',
     popupId = 'hans-dropdown',
@@ -34,6 +36,10 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     options = [],
     customClasses = '',
     noOptionsText = 'No options',
+    optionTextColor,
+    optionHoverBackgroundColor,
+    optionHoverTextColor,
+    emptyTextColor,
     children,
     onSelect,
     onOpenChange,
@@ -119,18 +125,26 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
         customClasses="hans-dropdown-popup-wrapper"
         popupClassName="hans-dropdown-popup"
         panelClassName="hans-dropdown-popup-content"
-        renderTrigger={({ toggle }) => (
+        renderTrigger={({ isOpen, toggle }) => (
           <HansButton
-            buttonColor={triggerColor}
-            buttonVariant={triggerVariant}
+            buttonColor={isOpen ? (triggerHoverColor ?? triggerColor) : triggerColor}
+            buttonVariant={isOpen ? (triggerHoverVariant ?? triggerVariant) : triggerVariant}
             hoverButtonColor={triggerHoverColor}
             hoverButtonVariant={triggerHoverVariant}
             buttonShape={triggerShape}
             buttonSize={triggerSize}
             disabled={disabled}
             customClasses="hans-dropdown-trigger"
+            aria-label={triggerAriaLabel}
             onClick={toggle}
           >
+            {triggerIconName ? (
+              <HansIcon
+                name={triggerIconName}
+                iconSize="small"
+                customClasses="hans-dropdown-trigger-icon"
+              />
+            ) : null}
             <span>{triggerLabel}</span>
             {loading ? (
               <HansLoading
@@ -169,6 +183,10 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
             noOptionsText={noOptionsText}
             hoveredPath={hoveredPath}
             submenuDirections={submenuDirections}
+            optionTextColor={optionTextColor}
+            optionHoverBackgroundColor={optionHoverBackgroundColor}
+            optionHoverTextColor={optionHoverTextColor}
+            emptyTextColor={emptyTextColor}
             onItemEnter={handleDropdownItemEnter}
             onListEnter={handleListEnter}
             onListLeave={handleListLeave}
