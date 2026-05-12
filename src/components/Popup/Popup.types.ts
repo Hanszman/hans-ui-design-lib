@@ -5,6 +5,7 @@ import {
 } from '../../types/Schema.types';
 
 export type PopupDirection = 'up' | 'down';
+export type PopupHorizontalPosition = 'start' | 'end';
 
 export type PopupOptionItem = {
   id?: string;
@@ -39,6 +40,9 @@ export type HansPopupProps = InferPropsFromSchema<typeof HansPopupSchema> &
       toggle: () => void;
     }) => React.ReactNode;
     onDirectionChange?: (direction: PopupDirection) => void;
+    onHorizontalPositionChange?: (
+      horizontalPosition: PopupHorizontalPosition,
+    ) => void;
   };
 
 export const HansPopupPropsList = createPropsList(HansPopupSchema);

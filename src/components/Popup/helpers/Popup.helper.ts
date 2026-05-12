@@ -9,10 +9,12 @@ import type {
   CreatePopupOutsideMouseDownHandlerParams,
   CreatePopupStateHandlersParams,
   GetPopupDirectionParams,
+  GetPopupHorizontalPositionParams,
   GetPopupPanelStyleParams,
   HandlePopupOutsideClickParams,
   CreatePopupDirectionFrameHandlerParams,
   ResolvePopupDirectionParams,
+  ResolvePopupHorizontalPositionParams,
 } from './Popup.helper.types';
 
 export const getPopupDirection = ({
@@ -21,6 +23,13 @@ export const getPopupDirection = ({
   panelHeight,
 }: GetPopupDirectionParams): PopupDirection =>
   spaceBelow < panelHeight && spaceAbove > panelHeight ? 'up' : 'down';
+
+export const getPopupHorizontalPosition = ({
+  spaceRight,
+  spaceLeft,
+  panelWidth,
+}: GetPopupHorizontalPositionParams): 'start' | 'end' =>
+  spaceRight < panelWidth && spaceLeft > panelWidth ? 'end' : 'start';
 
 export const createPopupOpenSetter =
   ({ disabled, onOpenChange }: CreatePopupOpenSetterParams) =>
@@ -80,11 +89,28 @@ export const resolvePopupDirection = ({
   });
 };
 
+export const resolvePopupHorizontalPosition = ({
+  container,
+  panel,
+  viewportWidth,
+}: ResolvePopupHorizontalPositionParams): 'start' | 'end' | null => {
+  if (!container || !panel) return null;
+  const containerRect = container.getBoundingClientRect();
+  const panelRect = panel.getBoundingClientRect();
+  return getPopupHorizontalPosition({
+    spaceRight: viewportWidth - containerRect.left,
+    spaceLeft: containerRect.right,
+    panelWidth: panelRect.width,
+  });
+};
+
 export const createPopupDirectionFrameHandler = ({
   containerRef,
   panelRef,
   setDirection,
+  setHorizontalPosition,
   onDirectionChange,
+  onHorizontalPositionChange,
 }: CreatePopupDirectionFrameHandlerParams) =>
   (): void => {
     if (typeof window === 'undefined') return;
@@ -93,9 +119,21 @@ export const createPopupDirectionFrameHandler = ({
       panel: panelRef.current,
       viewportHeight: window.innerHeight,
     });
-    if (!nextDirection) return;
-    setDirection(nextDirection);
-    if (onDirectionChange) onDirectionChange(nextDirection);
+    const nextHorizontalPosition = resolvePopupHorizontalPosition({
+      container: containerRef.current,
+      panel: panelRef.current,
+      viewportWidth: window.innerWidth,
+    });
+    if (nextDirection) {
+      setDirection(nextDirection);
+      if (onDirectionChange) onDirectionChange(nextDirection);
+    }
+    if (nextHorizontalPosition) {
+      setHorizontalPosition(nextHorizontalPosition);
+      if (onHorizontalPositionChange) {
+        onHorizontalPositionChange(nextHorizontalPosition);
+      }
+    }
   };
 
 export const hasPopupRenderableContent = (children: React.ReactNode): boolean =>

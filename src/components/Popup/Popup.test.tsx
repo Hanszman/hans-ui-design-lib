@@ -77,4 +77,22 @@ describe('HansPopup', () => {
       container.querySelector('.hans-popup-panel')?.getAttribute('style'),
     ).toContain('--hans-popup-bg: var(--background-color, var(--white))');
   });
+
+  it('Should expose the computed horizontal popup position on the panel', () => {
+    const onHorizontalPositionChange = vi.fn();
+    const { container } = render(
+      <HansPopup
+        isOpen
+        onHorizontalPositionChange={onHorizontalPositionChange}
+        renderTrigger={() => <button type="button">Trigger</button>}
+      >
+        <div>Popup content</div>
+      </HansPopup>,
+    );
+
+    const panel = container.querySelector('.hans-popup-panel');
+
+    expect(panel?.getAttribute('data-horizontal-position')).toBe('start');
+    expect(onHorizontalPositionChange).not.toHaveBeenCalled();
+  });
 });

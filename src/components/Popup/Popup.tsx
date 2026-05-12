@@ -1,5 +1,9 @@
 import React from 'react';
-import type { HansPopupProps, PopupDirection } from './Popup.types';
+import type {
+  HansPopupProps,
+  PopupDirection,
+  PopupHorizontalPosition,
+} from './Popup.types';
 import {
   createPopupDirectionFrameHandler,
   createPopupOpenSetter,
@@ -20,6 +24,7 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
     customClasses = '',
     onOpenChange,
     onDirectionChange,
+    onHorizontalPositionChange,
     renderTrigger,
     children,
     ...rest
@@ -28,6 +33,8 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [direction, setDirection] = React.useState<PopupDirection>('down');
+  const [horizontalPosition, setHorizontalPosition] =
+    React.useState<PopupHorizontalPosition>('start');
   const hasContent = hasPopupRenderableContent(children);
 
   const setOpen = createPopupOpenSetter({ disabled, onOpenChange });
@@ -45,9 +52,11 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
         containerRef,
         panelRef,
         setDirection,
+        setHorizontalPosition,
         onDirectionChange,
+        onHorizontalPositionChange,
       }),
-    [onDirectionChange],
+    [onDirectionChange, onHorizontalPositionChange],
   );
 
   React.useEffect(() => {
@@ -71,6 +80,7 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
           ref={panelRef}
           className={`hans-popup-panel ${popupClassName}`}
           data-direction={direction}
+          data-horizontal-position={horizontalPosition}
           style={getPopupPanelStyle({ popupBackgroundColor })}
         >
           <div className={`hans-popup-panel-content ${panelClassName}`}>

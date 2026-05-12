@@ -3,7 +3,15 @@
 }
 
 .hans-popup-panel {
-  @apply absolute left-0 z-[9999] min-w-full;
+  @apply absolute z-[9999] min-w-full;
+}
+
+.hans-popup-panel[data-horizontal-position='start'] {
+  @apply left-0 right-auto;
+}
+
+.hans-popup-panel[data-horizontal-position='end'] {
+  @apply left-auto right-0;
 }
 
 .hans-popup-panel[data-direction='down'] {

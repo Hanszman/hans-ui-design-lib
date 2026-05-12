@@ -6,12 +6,14 @@ import {
   createPopupOutsideMouseDownHandler,
   createPopupStateHandlers,
   getPopupDirection,
+  getPopupHorizontalPosition,
   getPopupPanelStyle,
   hasPopupRenderableContent,
   handlePopupOutsideClick,
   resolvePopupItemClassName,
   resolvePopupItemPath,
   resolvePopupDirection,
+  resolvePopupHorizontalPosition,
 } from './Popup.helper';
 
 describe('Popup.helper', () => {
@@ -25,6 +27,23 @@ describe('Popup.helper', () => {
     expect(
       getPopupDirection({ spaceBelow: 80, spaceAbove: 220, panelHeight: 120 }),
     ).toBe('up');
+  });
+
+  it('Should align popup to the end when there is not enough horizontal room on the right', () => {
+    expect(
+      getPopupHorizontalPosition({
+        spaceRight: 120,
+        spaceLeft: 280,
+        panelWidth: 200,
+      }),
+    ).toBe('end');
+    expect(
+      getPopupHorizontalPosition({
+        spaceRight: 280,
+        spaceLeft: 120,
+        panelWidth: 200,
+      }),
+    ).toBe('start');
   });
 
   it('Should create popup open setter and honor disabled', () => {
@@ -134,29 +153,65 @@ describe('Popup.helper', () => {
     ).toBeNull();
   });
 
-  it('Should create popup direction frame handler and notify direction', () => {
-    const setDirection = vi.fn();
-    const onDirectionChange = vi.fn();
+  it('Should resolve popup horizontal position from dom measurements', () => {
     const container = document.createElement('div');
     const panel = document.createElement('div');
     vi.spyOn(container, 'getBoundingClientRect').mockReturnValue({
-      x: 0,
-      y: 300,
-      width: 100,
+      x: 250,
+      y: 32,
+      width: 60,
       height: 40,
-      top: 300,
-      right: 100,
-      bottom: 340,
-      left: 0,
+      top: 32,
+      right: 310,
+      bottom: 72,
+      left: 250,
       toJSON: () => ({}),
     } as DOMRect);
     vi.spyOn(panel, 'getBoundingClientRect').mockReturnValue({
       x: 0,
       y: 0,
-      width: 100,
+      width: 180,
       height: 120,
       top: 0,
-      right: 100,
+      right: 180,
+      bottom: 120,
+      left: 0,
+      toJSON: () => ({}),
+    } as DOMRect);
+
+    expect(
+      resolvePopupHorizontalPosition({ container, panel, viewportWidth: 360 }),
+    ).toBe('end');
+    expect(
+      resolvePopupHorizontalPosition({ container: null, panel, viewportWidth: 360 }),
+    ).toBeNull();
+  });
+
+  it('Should create popup direction frame handler and notify direction', () => {
+    const setDirection = vi.fn();
+    const setHorizontalPosition = vi.fn();
+    const onDirectionChange = vi.fn();
+    const onHorizontalPositionChange = vi.fn();
+    const container = document.createElement('div');
+    const panel = document.createElement('div');
+    vi.spyOn(container, 'getBoundingClientRect').mockReturnValue({
+      x: 250,
+      y: 300,
+      width: 100,
+      height: 40,
+      top: 300,
+      right: 350,
+      bottom: 340,
+      left: 250,
+      toJSON: () => ({}),
+    } as DOMRect);
+    vi.spyOn(panel, 'getBoundingClientRect').mockReturnValue({
+      x: 0,
+      y: 0,
+      width: 180,
+      height: 120,
+      top: 0,
+      right: 180,
       bottom: 120,
       left: 0,
       toJSON: () => ({}),
@@ -166,22 +221,32 @@ describe('Popup.helper', () => {
       value: 360,
       writable: true,
     });
+    Object.defineProperty(window, 'innerWidth', {
+      value: 360,
+      writable: true,
+    });
 
     createPopupDirectionFrameHandler({
       containerRef: { current: container },
       panelRef: { current: panel },
       setDirection,
+      setHorizontalPosition,
       onDirectionChange,
+      onHorizontalPositionChange,
     })();
 
     expect(setDirection).toHaveBeenCalledWith('up');
+    expect(setHorizontalPosition).toHaveBeenCalledWith('end');
     expect(onDirectionChange).toHaveBeenCalledWith('up');
+    expect(onHorizontalPositionChange).toHaveBeenCalledWith('end');
   });
 
   it('Should skip popup direction frame handling when window is unavailable', () => {
     const originalWindow = globalThis.window;
     const setDirection = vi.fn();
+    const setHorizontalPosition = vi.fn();
     const onDirectionChange = vi.fn();
+    const onHorizontalPositionChange = vi.fn();
 
     Object.defineProperty(globalThis, 'window', {
       value: undefined,
@@ -193,11 +258,15 @@ describe('Popup.helper', () => {
         containerRef: { current: document.createElement('div') },
         panelRef: { current: document.createElement('div') },
         setDirection,
+        setHorizontalPosition,
         onDirectionChange,
+        onHorizontalPositionChange,
       })();
 
       expect(setDirection).not.toHaveBeenCalled();
+      expect(setHorizontalPosition).not.toHaveBeenCalled();
       expect(onDirectionChange).not.toHaveBeenCalled();
+      expect(onHorizontalPositionChange).not.toHaveBeenCalled();
     } finally {
       Object.defineProperty(globalThis, 'window', {
         value: originalWindow,
@@ -208,17 +277,23 @@ describe('Popup.helper', () => {
 
   it('Should skip popup direction notifications when direction cannot be resolved', () => {
     const setDirection = vi.fn();
+    const setHorizontalPosition = vi.fn();
     const onDirectionChange = vi.fn();
+    const onHorizontalPositionChange = vi.fn();
 
     createPopupDirectionFrameHandler({
       containerRef: { current: null },
       panelRef: { current: document.createElement('div') },
       setDirection,
+      setHorizontalPosition,
       onDirectionChange,
+      onHorizontalPositionChange,
     })();
 
     expect(setDirection).not.toHaveBeenCalled();
+    expect(setHorizontalPosition).not.toHaveBeenCalled();
     expect(onDirectionChange).not.toHaveBeenCalled();
+    expect(onHorizontalPositionChange).not.toHaveBeenCalled();
   });
 
   it('Should detect popup renderable content correctly', () => {
