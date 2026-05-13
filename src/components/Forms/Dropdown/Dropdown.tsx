@@ -56,6 +56,8 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
   const isOpen = open ?? internalIsOpen;
   const hasCustomContent = hasCustomDropdownContent(children);
   const hasVisibleTriggerLabel = triggerLabel.trim().length > 0;
+  const triggerIconSize =
+    !hasVisibleTriggerLabel && triggerIconName ? 'medium' : 'small';
   const triggerClasses = [
     'hans-dropdown-trigger',
     !hasVisibleTriggerLabel && triggerIconName
@@ -164,7 +166,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
             {triggerIconName ? (
               <HansIcon
                 name={triggerIconName}
-                iconSize="small"
+                iconSize={triggerIconSize}
                 customClasses="hans-dropdown-trigger-icon"
               />
             ) : null}

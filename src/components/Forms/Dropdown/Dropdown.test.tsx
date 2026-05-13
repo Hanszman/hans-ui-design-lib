@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import { HansDropdown } from './Dropdown';
 
@@ -316,6 +316,23 @@ describe('HansDropdown', () => {
     ).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: /menu icon only/i }));
     expect(screen.getByText('One')).toBeInTheDocument();
+  });
+
+  it('Should use a larger icon size for icon-only trigger buttons', async () => {
+    const { container } = render(
+      <HansDropdown
+        triggerLabel=""
+        triggerAriaLabel="Language icon only"
+        triggerIconName="FaGlobe"
+        options={options}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(
+        container.querySelector('.hans-dropdown-trigger-icon.hans-icon-medium'),
+      ).toBeTruthy();
+    });
   });
 
   it('Should apply custom option colors through dropdown list CSS variables', () => {
