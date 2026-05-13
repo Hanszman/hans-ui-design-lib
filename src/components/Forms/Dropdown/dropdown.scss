@@ -11,7 +11,15 @@
 }
 
 .hans-dropdown-trigger-icon-only {
-  @apply min-w-0 gap-1.5 px-4 py-2;
+  @apply min-h-12 min-w-[4.5rem] justify-center gap-2 px-4 py-3;
+}
+
+.hans-dropdown-trigger-no-caret {
+  @apply justify-center;
+}
+
+.hans-dropdown-trigger-icon-only-no-caret {
+  @apply min-w-[3.5rem] px-3;
 }
 
 .hans-dropdown-popup {

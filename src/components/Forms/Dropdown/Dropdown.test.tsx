@@ -254,6 +254,33 @@ describe('HansDropdown', () => {
     expect(trigger).toHaveClass('hans-button-inverse');
   });
 
+  it('Should support a controlled open state', () => {
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <HansDropdown
+        triggerLabel="Controlled menu"
+        open={false}
+        options={options}
+        onOpenChange={onOpenChange}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /controlled menu/i }));
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+    expect(screen.queryByText('One')).not.toBeInTheDocument();
+
+    rerender(
+      <HansDropdown
+        triggerLabel="Controlled menu"
+        open
+        options={options}
+        onOpenChange={onOpenChange}
+      />,
+    );
+
+    expect(screen.getByText('One')).toBeInTheDocument();
+  });
+
   it('Should avoid rendering an empty label span for icon-only triggers', () => {
     const { container } = render(
       <HansDropdown
@@ -270,6 +297,25 @@ describe('HansDropdown', () => {
     expect(
       container.querySelector('.hans-dropdown-trigger-icon-only'),
     ).toBeTruthy();
+  });
+
+  it('Should allow hiding the trigger caret for icon-only dropdown triggers', () => {
+    const { container } = render(
+      <HansDropdown
+        triggerLabel=""
+        triggerAriaLabel="Menu icon only"
+        triggerIconName="FaBars"
+        showTriggerCaret={false}
+        options={options}
+      />,
+    );
+
+    expect(container.querySelector('.hans-dropdown-trigger-no-caret')).toBeTruthy();
+    expect(
+      container.querySelector('.hans-dropdown-trigger-icon-only-no-caret'),
+    ).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /menu icon only/i }));
+    expect(screen.getByText('One')).toBeInTheDocument();
   });
 
   it('Should apply custom option colors through dropdown list CSS variables', () => {

@@ -15,6 +15,7 @@ import type { ButtonShape } from '../Button/Button.types';
 export type DropdownItem = PopupOptionItem;
 
 const HansDropdownSchema = {
+  open: 'boolean',
   triggerLabel: 'string',
   triggerAriaLabel: 'string',
   triggerColor: { type: 'custom', ref: {} as Color },
@@ -22,6 +23,7 @@ const HansDropdownSchema = {
   triggerHoverColor: { type: 'custom', ref: {} as Color },
   triggerHoverVariant: { type: 'custom', ref: {} as Variant },
   triggerIconName: { type: 'custom', ref: {} as HansIconProps['name'] },
+  showTriggerCaret: 'boolean',
   triggerShape: { type: 'custom', ref: {} as ButtonShape },
   triggerSize: { type: 'custom', ref: {} as Size },
   popupId: 'string',

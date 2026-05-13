@@ -18,6 +18,7 @@ import {
 
 export const HansDropdown = React.memo((props: HansDropdownProps) => {
   const {
+    open,
     triggerLabel = 'Dropdown',
     triggerAriaLabel,
     triggerColor = 'base',
@@ -25,6 +26,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     triggerHoverColor,
     triggerHoverVariant,
     triggerIconName,
+    showTriggerCaret = true,
     triggerShape = 'square',
     triggerSize = 'medium',
     popupId = 'hans-dropdown',
@@ -46,11 +48,12 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     ...rest
   } = props;
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [internalIsOpen, setInternalIsOpen] = React.useState(false);
   const [hoveredPath, setHoveredPath] = React.useState<string | null>(null);
   const [submenuDirections, setSubmenuDirections] = React.useState<
     Record<string, 'left' | 'right'>
   >({});
+  const isOpen = open ?? internalIsOpen;
   const hasCustomContent = hasCustomDropdownContent(children);
   const hasVisibleTriggerLabel = triggerLabel.trim().length > 0;
   const triggerClasses = [
@@ -58,10 +61,21 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     !hasVisibleTriggerLabel && triggerIconName
       ? 'hans-dropdown-trigger-icon-only'
       : '',
+    !showTriggerCaret ? 'hans-dropdown-trigger-no-caret' : '',
+    !showTriggerCaret && !hasVisibleTriggerLabel && triggerIconName
+      ? 'hans-dropdown-trigger-icon-only-no-caret'
+      : '',
   ]
     .filter(Boolean)
     .join(' ');
-  const setOpen = createDropdownOpenSetter({ setIsOpen, onOpenChange });
+  const setOpen = createDropdownOpenSetter({
+    setIsOpen: (nextOpen) => {
+      if (typeof open !== 'boolean') {
+        setInternalIsOpen(nextOpen);
+      }
+    },
+    onOpenChange,
+  });
   const handleSelect = createHandleDropdownSelect({
     closeOnSelect,
     setOpen,
@@ -162,12 +176,13 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
                 loadingColor={loadingColor}
                 ariaLabel="Loading dropdown"
               />
-            ) : (
+            ) : showTriggerCaret ? (
               <HansIcon
                 name={isOpen ? 'IoIosArrowUp' : 'IoIosArrowDown'}
                 iconSize="small"
               />
-            )}
+            ) : null
+            }
           </HansButton>
         )}
       >
