@@ -29,6 +29,10 @@ export const getHansCardClassName = ({
 export const getHansCardStyleVars = ({
   cardColor,
   cardVariant,
+  cardBackgroundColor,
+  cardBorderColor,
+  cardTextColor,
+  cardMutedColor,
   imageSrc,
 }: HansCardStyleArgs): HansCardStyleVars => {
   const tokenPrefix = `--${cardColor}`;
@@ -94,10 +98,10 @@ export const getHansCardStyleVars = ({
   const resolvedVariant = variantMap[cardVariant];
 
   return {
-    '--hans-card-bg': resolvedVariant.bg,
-    '--hans-card-border': resolvedVariant.border,
-    '--hans-card-text': resolvedVariant.text,
-    '--hans-card-muted': resolvedVariant.muted,
+    '--hans-card-bg': cardBackgroundColor || resolvedVariant.bg,
+    '--hans-card-border': cardBorderColor || resolvedVariant.border,
+    '--hans-card-text': cardTextColor || resolvedVariant.text,
+    '--hans-card-muted': cardMutedColor || resolvedVariant.muted,
     '--hans-card-image': imageSrc ? `url("${imageSrc}")` : 'none',
   };
 };

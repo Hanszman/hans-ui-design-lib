@@ -96,6 +96,15 @@ export const ColorsAndSizes: Story = {
   ),
 };
 
+export const CustomCard: Story = {
+  render: () => (
+    <HansCard cardLayout="custom" cardColor="primary" cardVariant="neutral">
+      <strong>Custom composition</strong>
+      <span>Use this layout when the consumer owns the card content.</span>
+    </HansCard>
+  ),
+};
+
 export const LoadingCards: Story = {
   render: () => (
     <div className="grid gap-4 md:grid-cols-2">

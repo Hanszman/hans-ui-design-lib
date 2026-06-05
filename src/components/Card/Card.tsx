@@ -21,6 +21,10 @@ export const HansCard = React.memo((props: HansCardProps) => {
     cardSize = 'medium',
     cardColor = 'base',
     cardVariant = 'neutral',
+    cardBackgroundColor,
+    cardBorderColor,
+    cardTextColor,
+    cardMutedColor,
     loading = false,
     loadingColor,
     loadingAriaLabel = 'Loading card',
@@ -38,6 +42,10 @@ export const HansCard = React.memo((props: HansCardProps) => {
   const styleVars = getHansCardStyleVars({
     cardColor,
     cardVariant,
+    cardBackgroundColor,
+    cardBorderColor,
+    cardTextColor,
+    cardMutedColor,
     imageSrc,
   });
   const resolvedLoadingColor = loadingColor ?? cardColor;
@@ -79,6 +87,15 @@ export const HansCard = React.memo((props: HansCardProps) => {
             {children ? <div className="hans-card-extra">{children}</div> : null}
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (resolvedLayout === 'custom') {
+    return (
+      <div className={className} style={styleVars} {...rest}>
+        {children}
+        <slot />
       </div>
     );
   }

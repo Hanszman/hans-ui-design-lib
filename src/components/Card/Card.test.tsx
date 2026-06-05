@@ -121,6 +121,18 @@ describe('HansCard', () => {
     expect(screen.queryByRole('strong')).not.toBeInTheDocument();
   });
 
+  it('Should render a custom card without the predefined profile or image content', () => {
+    const { container } = render(
+      <HansCard cardLayout="custom">
+        <span>Custom content</span>
+      </HansCard>,
+    );
+
+    expect(screen.getByText('Custom content')).toBeInTheDocument();
+    expect(container.querySelector('slot')).toBeInTheDocument();
+    expect(screen.queryByTestId('mock-card-avatar')).not.toBeInTheDocument();
+  });
+
   it('Should render skeleton loading when requested', () => {
     render(<HansCard loading loadingAriaLabel="Loading marketing card" />);
 

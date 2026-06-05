@@ -1,4 +1,10 @@
-import { Canvas, Controls, Meta, Primary, Title } from '@storybook/addon-docs/blocks';
+import {
+  Canvas,
+  Controls,
+  Meta,
+  Primary,
+  Title,
+} from '@storybook/addon-docs/blocks';
 import * as HansCardStories from './Card.stories';
 
 <Meta of={HansCardStories} />
@@ -44,6 +50,12 @@ Use `cardLayout="image"` for full-cover artwork blocks with optional text above 
 The component follows the common semantic `color`, `variant` and `size` patterns used across the design system.
 
 <Canvas of={HansCardStories.ColorsAndSizes} />
+
+## Custom Cards
+
+You can also can also create customized cards using children properties.
+
+<Canvas of={HansCardStories.CustomCard} />
 
 ## Loading State
 

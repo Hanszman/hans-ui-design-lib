@@ -1,7 +1,7 @@
 import type React from 'react';
 import type { Color, Size, Variant } from '../../../types/Common.types';
 
-export type HansCardLayout = 'profile' | 'image';
+export type HansCardLayout = 'profile' | 'image' | 'custom';
 
 export type HansCardClassNameArgs = {
   cardLayout: HansCardLayout;
@@ -12,6 +12,10 @@ export type HansCardClassNameArgs = {
 export type HansCardStyleArgs = {
   cardColor: Color;
   cardVariant: Variant;
+  cardBackgroundColor?: string;
+  cardBorderColor?: string;
+  cardTextColor?: string;
+  cardMutedColor?: string;
   imageSrc: string;
 };
 

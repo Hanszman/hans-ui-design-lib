@@ -25,6 +25,10 @@
   @apply flex-col;
 }
 
+.hans-card-custom {
+  @apply flex-col;
+}
+
 .hans-card-profile-main {
   @apply flex items-start gap-3;
 }

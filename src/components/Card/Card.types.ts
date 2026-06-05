@@ -21,6 +21,10 @@ const HansCardSchema = {
   cardSize: { type: 'custom', ref: {} as Size },
   cardColor: { type: 'custom', ref: {} as Color },
   cardVariant: { type: 'custom', ref: {} as Variant },
+  cardBackgroundColor: 'string',
+  cardBorderColor: 'string',
+  cardTextColor: 'string',
+  cardMutedColor: 'string',
   customClasses: 'string',
 } as const;
 

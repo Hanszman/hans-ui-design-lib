@@ -51,4 +51,23 @@ describe('Card.helper', () => {
     expect(styleVars['--hans-card-border']).toBe('var(--primary-default-color)');
     expect(styleVars['--hans-card-text']).toBe('var(--primary-strong-color)');
   });
+
+  it('Should prioritize consumer color overrides', () => {
+    const styleVars = getHansCardStyleVars({
+      cardColor: 'base',
+      cardVariant: 'neutral',
+      cardBackgroundColor: 'var(--custom-bg)',
+      cardBorderColor: 'var(--custom-border)',
+      cardTextColor: 'var(--custom-text)',
+      cardMutedColor: 'var(--custom-muted)',
+      imageSrc: '',
+    });
+
+    expect(styleVars).toMatchObject({
+      '--hans-card-bg': 'var(--custom-bg)',
+      '--hans-card-border': 'var(--custom-border)',
+      '--hans-card-text': 'var(--custom-text)',
+      '--hans-card-muted': 'var(--custom-muted)',
+    });
+  });
 });
