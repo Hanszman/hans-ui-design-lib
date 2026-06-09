@@ -11,7 +11,7 @@ import * as HansTagStories from './Tag.stories';
 
 <Title />
 
-The **Tag** component shows small labels with optional removable action.
+The **Tag** component shows small labels with optional removable action and media.
 
 ## Usage
 
@@ -19,7 +19,11 @@ The **Tag** component shows small labels with optional removable action.
 import { HansTag } from 'hans-ui-design-lib';
 
 export const Example = () => (
-  <HansTag label="Tag" actionIcon="MdClose" onAction={() => {}} />
+  <HansTag
+    label="Angular"
+    imageSrc="/assets/angular.svg"
+    imageAlt="Angular logo"
+  />
 );
 ```
 
@@ -50,3 +54,9 @@ Use `tagColor` to style the tag.
 Set `actionIcon` and `onAction` to enable remove action.
 
 <Canvas of={HansTagStories.Removable} />
+
+## Image Media
+
+Set `imageSrc`, `imageAlt` and `mediaPosition` to render an image inside the tag, either before or after the label.
+
+<Canvas of={HansTagStories.WithImage} />

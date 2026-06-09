@@ -300,4 +300,22 @@ describe('HansModal', () => {
       'hans-modal-body-loading',
     );
   });
+
+  it('Should render body slot when requested for web component projection', () => {
+    renderWithAct(<HansModal isOpen title="Projected content" renderBody />);
+
+    expect(screen.getByText('Projected content')).toBeInTheDocument();
+    expect(document.body.querySelector('slot')).toBeInTheDocument();
+  });
+
+  it('Should prefer explicit children over slot when render body is enabled', () => {
+    renderWithAct(
+      <HansModal isOpen title="Children content" renderBody>
+        <strong>Explicit body</strong>
+      </HansModal>,
+    );
+
+    expect(screen.getByText('Explicit body')).toBeInTheDocument();
+    expect(document.body.querySelector('slot')).not.toBeInTheDocument();
+  });
 });

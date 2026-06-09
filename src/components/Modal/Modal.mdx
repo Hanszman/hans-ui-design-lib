@@ -77,6 +77,14 @@ Header, body and footer are optional. You can keep only the custom children area
 
 <Canvas of={HansModalStories.SectionOptions} />
 
+When consuming the modal as a web component, use `renderBody` to force the body slot to render projected framework content:
+
+```html
+<hans-modal render-body="true">
+  <section>Projected Angular content</section>
+</hans-modal>
+```
+
 ## Scroll Behavior
 
 The body area uses its own scroll container so large forms, wide content grids and long informational layouts continue working without breaking the overlay shell.

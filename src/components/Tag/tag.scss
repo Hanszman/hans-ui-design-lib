@@ -6,6 +6,18 @@
   @apply leading-none;
 }
 
+.hans-tag-image {
+  @apply h-4 w-4 rounded-full object-cover;
+}
+
+.hans-tag-medium .hans-tag-image {
+  @apply h-5 w-5;
+}
+
+.hans-tag-large .hans-tag-image {
+  @apply h-6 w-6;
+}
+
 .hans-tag-action {
   @apply inline-flex items-center justify-center rounded-full cursor-pointer bg-transparent p-0 border-none;
 }

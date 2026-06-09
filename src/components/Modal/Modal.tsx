@@ -36,6 +36,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
     lockBodyScroll = true,
     showHeaderDivider = true,
     showFooterDivider = true,
+    renderBody = false,
     loading = false,
     confirmLabel = '',
     cancelLabel = '',
@@ -103,7 +104,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
     [close, closeOnBackdropClick],
   );
   const hasHeader = shouldRenderModalHeader({ title, dismissible, header });
-  const hasBody = loading || hasRenderableModalContent(children);
+  const hasBody = loading || renderBody || hasRenderableModalContent(children);
   const hasFooter = shouldRenderModalFooter({
     footer,
     confirmLabel,
@@ -111,6 +112,18 @@ export const HansModal = React.memo((props: HansModalProps) => {
   });
   const resolvedMaxBodyHeight =
     placement === 'center' ? maxBodyHeight : '100vh';
+  const modalBodyContent = loading ? (
+    <HansLoading
+      loadingType="spinner"
+      loadingSize="medium"
+      loadingColor={modalColor}
+      ariaLabel="Modal loading"
+    />
+  ) : hasRenderableModalContent(children) ? (
+    children
+  ) : (
+    <slot />
+  );
 
   React.useEffect(() => {
     return createModalEscapeKeyEffect({
@@ -213,16 +226,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
                     loading ? 'hans-modal-body-loading' : ''
                   }`}
                 >
-                  {loading ? (
-                    <HansLoading
-                      loadingType="spinner"
-                      loadingSize="medium"
-                      loadingColor={modalColor}
-                      ariaLabel="Modal loading"
-                    />
-                  ) : (
-                    children
-                  )}
+                  {modalBodyContent}
                 </div>
               </div>
             ) : null}

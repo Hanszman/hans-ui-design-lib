@@ -10,6 +10,9 @@ const HansTagSchema = {
   tagSize: { type: 'custom', ref: {} as Size },
   tagColor: { type: 'custom', ref: {} as Color },
   actionIcon: 'string',
+  imageSrc: 'string',
+  imageAlt: 'string',
+  mediaPosition: { type: 'custom', ref: {} as 'left' | 'right' },
   customClasses: 'string',
   disabled: 'boolean',
 } as const;

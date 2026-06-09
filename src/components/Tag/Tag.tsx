@@ -8,6 +8,9 @@ export const HansTag = React.memo((props: HansTagProps) => {
     tagSize = 'small',
     tagColor = 'base',
     actionIcon = '',
+    imageSrc = '',
+    imageAlt = '',
+    mediaPosition = 'right',
     customClasses = '',
     disabled = false,
     onAction,
@@ -15,18 +18,17 @@ export const HansTag = React.memo((props: HansTagProps) => {
   } = props;
 
   const hasAction = Boolean(onAction && actionIcon);
-
-  return (
-    <span
-      className={`
-        hans-tag
-        hans-tag-${tagSize}
-        hans-tag-${tagColor}
-        ${customClasses}
-      `}
-      {...rest}
-    >
-      <span className="hans-tag-label">{label}</span>
+  const hasImage = Boolean(imageSrc);
+  const media = (
+    <>
+      {hasImage ? (
+        <img
+          className="hans-tag-image"
+          src={imageSrc}
+          alt={imageAlt || ''}
+          loading="lazy"
+        />
+      ) : null}
       {hasAction ? (
         <button
           type="button"
@@ -40,6 +42,23 @@ export const HansTag = React.memo((props: HansTagProps) => {
           </span>
         </button>
       ) : null}
+    </>
+  );
+
+  return (
+    <span
+      className={`
+        hans-tag
+        hans-tag-${tagSize}
+        hans-tag-${tagColor}
+        hans-tag-media-${mediaPosition}
+        ${customClasses}
+      `}
+      {...rest}
+    >
+      {mediaPosition === 'left' ? media : null}
+      <span className="hans-tag-label">{label}</span>
+      {mediaPosition === 'right' ? media : null}
     </span>
   );
 });

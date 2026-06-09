@@ -74,3 +74,17 @@ export const Removable: Story = {
     onAction: () => alert('Action!'),
   },
 };
+
+export const WithImage: Story = {
+  render: () => (
+    <div className="flex items-center gap-2">
+      <HansTag
+        label="Angular"
+        tagColor="info"
+        imageSrc="https://angular.dev/assets/images/press-kit/angular_icon_gradient.gif"
+        imageAlt="Angular logo"
+        mediaPosition="left"
+      />
+    </div>
+  ),
+};
