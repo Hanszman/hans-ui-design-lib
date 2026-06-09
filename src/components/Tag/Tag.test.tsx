@@ -54,6 +54,26 @@ describe('HansTag', () => {
     );
   });
 
+  it('Should render left-positioned media before the label', () => {
+    const { container } = render(
+      <HansTag
+        label="React"
+        imageSrc="/react.svg"
+        imageAlt="React logo"
+        mediaPosition="left"
+      />,
+    );
+
+    const tag = container.querySelector('.hans-tag');
+    const image = container.querySelector('.hans-tag-image');
+    const label = screen.getByText('React');
+
+    expect(tag).toHaveClass('hans-tag-media-left');
+    expect(image).toBeInTheDocument();
+    expect(tag?.firstElementChild).toBe(image);
+    expect(label.previousElementSibling).toBe(image);
+  });
+
   it('Should render action button when icon and action are provided', () => {
     const onAction = vi.fn();
     render(<HansTag label="Tag" actionIcon="MdClose" onAction={onAction} />);
