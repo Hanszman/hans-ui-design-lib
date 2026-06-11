@@ -48,6 +48,7 @@ Required validation before a task is done:
 - `npm run test:coverage`
 - `npm run build`
 - `npm run build:cdn`
+- `npm run build:storybook`
 
 Coverage must stay at `100%` statements, branches, functions, and lines for relevant files. Lint must pass with no errors and no warnings. Builds must pass. Storybook behavior must stay valid for all changed components.
 
@@ -195,8 +196,6 @@ Do not expose helper internals from `src/index.ts` unless they are intentionally
 
 - `npm run dev` - Vite dev server.
 - `npm run start` - Vite dev server alias.
-- `npm run storybook` - local Storybook at port 6006.
-- `npm run build:storybook` - static Storybook build.
 - `npm run lint` - ESLint.
 - `npm run test` - Vitest run.
 - `npm run test:coverage` - Vitest with V8 coverage.
@@ -204,6 +203,8 @@ Do not expose helper internals from `src/index.ts` unless they are intentionally
 - `npm run build:local` - package build plus local npm tarball.
 - `npm run build:cdn` - CDN/web component build.
 - `npm run build:cdn-local` - CDN build plus local preview.
+- `npm run build:storybook` - static Storybook build.
+- `npm run storybook` - local Storybook at port 6006.
 - `npm run publish:patch`, `npm run publish:minor`, `npm run publish:major` - version and publish to npm.
 
 ## Collaboration rules
@@ -212,4 +213,4 @@ Do not expose helper internals from `src/index.ts` unless they are intentionally
 - Do not make breaking API changes without explicit alignment.
 - Keep changes narrow and intentional.
 - If a consumer project needs a reusable component or missing generic capability, prefer implementing it here instead of duplicating it in the app.
-- If the need is portfolio-specific, it belongs in `hans-portfolio-app`, not here.
+- If the need is portfolio-specific or other project specific component, it belongs in the other project, not here.
