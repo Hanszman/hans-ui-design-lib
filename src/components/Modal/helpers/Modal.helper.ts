@@ -214,10 +214,21 @@ export const createModalBodyScrollLockEffect =
 
     const { body } = document;
     const previousOverflow = body.style.overflow;
+    const previousPaddingRight = body.style.paddingRight;
+    const previousScrollbarGutter = body.style.scrollbarGutter;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
     body.style.overflow = 'hidden';
+    body.style.scrollbarGutter = 'stable';
+
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `calc(${previousPaddingRight || '0px'} + ${scrollbarWidth}px)`;
+    }
 
     return () => {
       body.style.overflow = previousOverflow;
+      body.style.paddingRight = previousPaddingRight;
+      body.style.scrollbarGutter = previousScrollbarGutter;
     };
   };
 

@@ -218,16 +218,28 @@ describe('Modal.helper', () => {
     expect(removeEventListenerSpy).toHaveBeenCalled();
 
     document.body.style.overflow = 'auto';
+    document.body.style.paddingRight = '4px';
+    document.body.style.scrollbarGutter = '';
+    const innerWidthSpy = vi.spyOn(window, 'innerWidth', 'get').mockReturnValue(1024);
+    const clientWidthSpy = vi
+      .spyOn(document.documentElement, 'clientWidth', 'get')
+      .mockReturnValue(1008);
     const cleanupScroll = createModalBodyScrollLockEffect({
       isOpen: true,
       lockBodyScroll: true,
     })!();
 
     expect(document.body.style.overflow).toBe('hidden');
+    expect(document.body.style.paddingRight).toBe('calc(20px)');
+    expect(document.body.style.scrollbarGutter).toBe('stable');
     expect(typeof cleanupScroll).toBe('function');
     if (!cleanupScroll) throw new Error('cleanupScroll should be defined');
     cleanupScroll();
     expect(document.body.style.overflow).toBe('auto');
+    expect(document.body.style.paddingRight).toBe('4px');
+    expect(document.body.style.scrollbarGutter).toBe('');
+    innerWidthSpy.mockRestore();
+    clientWidthSpy.mockRestore();
 
     expect(
       createModalEscapeKeyEffect({

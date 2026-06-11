@@ -37,6 +37,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
     showHeaderDivider = true,
     showFooterDivider = true,
     renderBody = false,
+    disablePortal = false,
     loading = false,
     confirmLabel = '',
     cancelLabel = '',
@@ -267,6 +268,8 @@ export const HansModal = React.memo((props: HansModalProps) => {
       </div>
     </div>
   );
+
+  if (disablePortal) return modalContent;
 
   const target = getModalPortalTarget(portalTarget);
   return target ? createPortal(modalContent, target) : modalContent;

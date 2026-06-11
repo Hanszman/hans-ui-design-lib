@@ -32,6 +32,7 @@ const HansModalSchema = {
   showHeaderDivider: 'boolean',
   showFooterDivider: 'boolean',
   renderBody: 'boolean',
+  disablePortal: 'boolean',
   loading: 'boolean',
   confirmLabel: 'string',
   cancelLabel: 'string',

@@ -302,10 +302,23 @@ describe('HansModal', () => {
   });
 
   it('Should render body slot when requested for web component projection', () => {
-    renderWithAct(<HansModal isOpen title="Projected content" renderBody />);
+    renderWithAct(
+      <HansModal isOpen title="Projected content" renderBody disablePortal />,
+    );
 
     expect(screen.getByText('Projected content')).toBeInTheDocument();
-    expect(document.body.querySelector('slot')).toBeInTheDocument();
+    expect(screen.getByRole('dialog').querySelector('slot')).toBeInTheDocument();
+  });
+
+  it('Should keep modal in place when portal is disabled', () => {
+    const { container } = renderWithAct(
+      <HansModal isOpen title="Inline modal" disablePortal>
+        <span>Inline body</span>
+      </HansModal>,
+    );
+
+    expect(container.querySelector('.hans-modal-portal')).toBeInTheDocument();
+    expect(screen.getByText('Inline body')).toBeInTheDocument();
   });
 
   it('Should prefer explicit children over slot when render body is enabled', () => {
