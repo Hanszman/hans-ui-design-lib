@@ -18,6 +18,42 @@ import {
   shouldRenderModalHeader,
 } from './helpers/Modal.helper';
 
+const getProjectionHost = (
+  container: HTMLElement | ShadowRoot,
+): HTMLElement | null => {
+  if (!('host' in container)) return null;
+  return container.host instanceof HTMLElement ? container.host : null;
+};
+
+const ModalProjectedContent = ({
+  container,
+}: {
+  container: HTMLElement | ShadowRoot;
+}) => {
+  const projectionRef = React.useRef<HTMLDivElement>(null);
+
+  React.useLayoutEffect(() => {
+    const projection = projectionRef.current as HTMLDivElement;
+    const host = getProjectionHost(container);
+
+    if (!host) return undefined;
+
+    const projectedNodes = Array.from(host.childNodes);
+
+    for (const node of projectedNodes) {
+      projection.appendChild(node);
+    }
+
+    return () => {
+      for (const node of projectedNodes) {
+        host.appendChild(node);
+      }
+    };
+  }, [container]);
+
+  return <div ref={projectionRef} className="hans-modal-projected-content" />;
+};
+
 export const HansModal = React.memo((props: HansModalProps) => {
   const {
     isOpen,
@@ -54,6 +90,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
     contentClassName = '',
     maxBodyHeight = 'calc(100vh - 14rem)',
     children,
+    container,
     onOpenChange,
     onClose,
     onConfirm,
@@ -113,6 +150,8 @@ export const HansModal = React.memo((props: HansModalProps) => {
   });
   const resolvedMaxBodyHeight =
     placement === 'center' ? maxBodyHeight : '100vh';
+  const shouldProjectWebComponentContent =
+    renderBody && !hasRenderableModalContent(children) && Boolean(container);
   const modalBodyContent = loading ? (
     <HansLoading
       loadingType="spinner"
@@ -122,6 +161,8 @@ export const HansModal = React.memo((props: HansModalProps) => {
     />
   ) : hasRenderableModalContent(children) ? (
     children
+  ) : shouldProjectWebComponentContent ? (
+    <ModalProjectedContent container={container!} />
   ) : (
     <slot />
   );

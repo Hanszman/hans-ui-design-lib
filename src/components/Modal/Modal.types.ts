@@ -53,6 +53,7 @@ const HansModalSchema = {
 export type HansModalProps = InferPropsFromSchema<typeof HansModalSchema> &
   Omit<React.HTMLAttributes<HTMLDivElement>, 'children' | 'color' | 'title'> & {
     children?: React.ReactNode;
+    container?: HTMLElement | ShadowRoot | null;
     onOpenChange?: (open: boolean) => void;
     onClose?: (reason: ModalCloseReason) => void;
     onConfirm?: () => void;

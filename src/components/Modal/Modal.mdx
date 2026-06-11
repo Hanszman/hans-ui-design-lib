@@ -77,10 +77,10 @@ Header, body and footer are optional. You can keep only the custom children area
 
 <Canvas of={HansModalStories.SectionOptions} />
 
-When consuming the modal as a web component, use `renderBody` to force the body slot to render projected framework content and `disablePortal` so the framework projection stays inside the custom element shadow root:
+When consuming the modal as a web component, use `renderBody` to force the body area to receive projected framework content while the modal still renders through the portal:
 
 ```html
-<hans-modal render-body="true" disable-portal="true">
+<hans-modal render-body="true">
   <section>Projected Angular content</section>
 </hans-modal>
 ```

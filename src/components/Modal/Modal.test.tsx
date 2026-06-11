@@ -302,12 +302,70 @@ describe('HansModal', () => {
   });
 
   it('Should render body slot when requested for web component projection', () => {
-    renderWithAct(
-      <HansModal isOpen title="Projected content" renderBody disablePortal />,
-    );
+    renderWithAct(<HansModal isOpen title="Projected content" renderBody />);
 
     expect(screen.getByText('Projected content')).toBeInTheDocument();
-    expect(screen.getByRole('dialog').querySelector('slot')).toBeInTheDocument();
+    expect(document.body.querySelector('slot')).toBeInTheDocument();
+  });
+
+  it('Should project web component light DOM content into the portal body', () => {
+    const host = document.createElement('hans-modal-test-host');
+    const projectedContent = document.createElement('section');
+    const shadow = host.attachShadow({ mode: 'open' });
+
+    projectedContent.textContent = 'Projected Angular body';
+    host.appendChild(projectedContent);
+    document.body.appendChild(host);
+
+    const { unmount } = renderWithAct(
+      <HansModal isOpen title="Framework modal" renderBody container={shadow} />,
+    );
+
+    expect(screen.getByText('Projected Angular body')).toBeInTheDocument();
+    expect(host).not.toContainElement(projectedContent);
+
+    act(() => {
+      unmount();
+    });
+
+    expect(host).toContainElement(projectedContent);
+    document.body.removeChild(host);
+  });
+
+  it('Should ignore projection containers without a web component host', () => {
+    renderWithAct(
+      <HansModal
+        isOpen
+        title="Container without host"
+        renderBody
+        container={document.createElement('div')}
+      />,
+    );
+
+    expect(screen.getByText('Container without host')).toBeInTheDocument();
+    expect(
+      document.body.querySelector('.hans-modal-projected-content'),
+    ).toBeInTheDocument();
+  });
+
+  it('Should ignore projection containers with a non-element host', () => {
+    const container = {
+      host: document.createTextNode('not an element'),
+    } as unknown as ShadowRoot;
+
+    renderWithAct(
+      <HansModal
+        isOpen
+        title="Non element host"
+        renderBody
+        container={container}
+      />,
+    );
+
+    expect(screen.getByText('Non element host')).toBeInTheDocument();
+    expect(
+      document.body.querySelector('.hans-modal-projected-content'),
+    ).toBeInTheDocument();
   });
 
   it('Should keep modal in place when portal is disabled', () => {
