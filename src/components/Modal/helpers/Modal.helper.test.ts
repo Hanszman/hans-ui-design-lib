@@ -6,8 +6,10 @@ import {
   createModalBodyScrollLockEffect,
   createModalCloseHandler,
   createModalEscapeKeyEffect,
+  createModalProjectionEffect,
   getModalClassName,
   getModalInlineStyle,
+  getModalProjectionHost,
   getModalPortalTarget,
   getModalTokenPrefix,
   hasRenderableModalContent,
@@ -69,6 +71,7 @@ describe('Modal.helper', () => {
       getModalInlineStyle({
         modalColor: 'secondary',
         modalVariant: 'outline',
+        dismissButtonColor: 'base',
         style: { opacity: 0.9 },
       }),
     ).toEqual(
@@ -76,6 +79,18 @@ describe('Modal.helper', () => {
         '--hans-modal-bg': 'var(--white)',
         '--hans-modal-border': 'var(--secondary-default-color)',
         opacity: 0.9,
+      }),
+    );
+
+    expect(
+      getModalInlineStyle({
+        modalColor: 'secondary',
+        modalVariant: 'outline',
+        dismissButtonColor: 'danger',
+      }),
+    ).toEqual(
+      expect.objectContaining({
+        '--hans-modal-dismiss-color': 'var(--danger-strong-color)',
       }),
     );
   });
@@ -220,7 +235,9 @@ describe('Modal.helper', () => {
     document.body.style.overflow = 'auto';
     document.body.style.paddingRight = '4px';
     document.body.style.scrollbarGutter = '';
-    const innerWidthSpy = vi.spyOn(window, 'innerWidth', 'get').mockReturnValue(1024);
+    const innerWidthSpy = vi
+      .spyOn(window, 'innerWidth', 'get')
+      .mockReturnValue(1024);
     const clientWidthSpy = vi
       .spyOn(document.documentElement, 'clientWidth', 'get')
       .mockReturnValue(1008);
@@ -282,5 +299,55 @@ describe('Modal.helper', () => {
         configurable: true,
       });
     }
+  });
+
+  it('Should project web component light DOM content and restore it on cleanup', () => {
+    const host = document.createElement('hans-modal');
+    const firstProjectedNode = document.createElement('p');
+    const secondProjectedNode = document.createElement('button');
+    const projection = document.createElement('div');
+    const shadowRoot = host.attachShadow({ mode: 'open' });
+
+    firstProjectedNode.textContent = 'Projected body';
+    secondProjectedNode.textContent = 'Projected action';
+    host.append(firstProjectedNode, secondProjectedNode);
+
+    expect(getModalProjectionHost(shadowRoot)).toBe(host);
+    expect(getModalProjectionHost(document.createElement('div'))).toBeNull();
+
+    const cleanup = createModalProjectionEffect({
+      container: shadowRoot,
+      projection,
+    })();
+
+    expect(Array.from(projection.childNodes)).toEqual([
+      firstProjectedNode,
+      secondProjectedNode,
+    ]);
+    expect(host.childNodes).toHaveLength(0);
+
+    cleanup?.();
+
+    expect(Array.from(host.childNodes)).toEqual([
+      firstProjectedNode,
+      secondProjectedNode,
+    ]);
+    expect(projection.childNodes).toHaveLength(0);
+  });
+
+  it('Should skip projection when host or projection target is missing', () => {
+    expect(
+      createModalProjectionEffect({
+        container: document.createElement('div'),
+        projection: document.createElement('div'),
+      })(),
+    ).toBeUndefined();
+
+    expect(
+      createModalProjectionEffect({
+        container: document.createElement('div').attachShadow({ mode: 'open' }),
+        projection: null,
+      })(),
+    ).toBeUndefined();
   });
 });

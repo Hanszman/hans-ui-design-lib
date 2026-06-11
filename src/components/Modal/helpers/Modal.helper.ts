@@ -5,8 +5,11 @@ import type {
   CreateModalBodyScrollLockEffectParams,
   CreateModalCloseHandlerParams,
   CreateModalEscapeKeyEffectParams,
+  CreateModalProjectionEffectParams,
   GetModalClassNameParams,
   GetModalInlineStyleParams,
+  ModalProjectedContentProps,
+  ModalProjectionContainer,
   ModalTone,
   ResolveModalToneParams,
 } from './Modal.helper.types';
@@ -238,4 +241,51 @@ export const getModalPortalTarget = (
   if (portalTarget) return portalTarget;
   if (typeof document === 'undefined') return null;
   return document.body;
+};
+
+export const getModalProjectionHost = (
+  container: ModalProjectionContainer,
+): HTMLElement | null => {
+  if (!('host' in container)) return null;
+  return container.host instanceof HTMLElement ? container.host : null;
+};
+
+export const createModalProjectionEffect =
+  ({ container, projection }: CreateModalProjectionEffectParams) =>
+  (): VoidFunction | undefined => {
+    const host = getModalProjectionHost(container);
+
+    if (!host || !projection) return undefined;
+
+    const projectedNodes = Array.from(host.childNodes);
+
+    for (const node of projectedNodes) {
+      projection.appendChild(node);
+    }
+
+    return () => {
+      for (const node of projectedNodes) {
+        host.appendChild(node);
+      }
+    };
+  };
+
+export const ModalProjectedContent = ({
+  container,
+}: ModalProjectedContentProps): React.ReactElement => {
+  const projectionRef = React.useRef<HTMLDivElement>(null);
+
+  React.useLayoutEffect(
+    () =>
+      createModalProjectionEffect({
+        container,
+        projection: projectionRef.current,
+      })(),
+    [container],
+  );
+
+  return React.createElement('div', {
+    ref: projectionRef,
+    className: 'hans-modal-projected-content',
+  });
 };

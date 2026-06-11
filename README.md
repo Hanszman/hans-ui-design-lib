@@ -235,6 +235,13 @@ Start the server:
 npm run start
 ```
 
+### Component architecture
+
+- Keep component files focused on rendering, composition, props and accessibility wiring.
+- Move auxiliary logic to the nearest `helpers/*.helper.ts` file, including DOM orchestration, class/style resolution, derived state builders, event handler factories and reusable predicates.
+- Keep helper contracts in `helpers/*.helper.types.ts` and cover helper behavior in `helpers/*.helper.test.ts`.
+- Prefer small helpers with explicit inputs and outputs so components remain easy to scan and web component integrations can be tested without mounting full screens.
+
 ## 🚢 Exporting
 
 When developing a component, to export it to the lib, you can add those lines into the files:

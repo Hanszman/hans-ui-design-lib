@@ -50,6 +50,17 @@ export type CreateModalBodyScrollLockEffectParams = {
   lockBodyScroll: boolean;
 };
 
+export type ModalProjectionContainer = HTMLElement | ShadowRoot;
+
+export type ModalProjectedContentProps = {
+  container: ModalProjectionContainer;
+};
+
+export type CreateModalProjectionEffectParams = {
+  container: ModalProjectionContainer;
+  projection: HTMLElement | null;
+};
+
 export type GetModalClassNameParams = {
   modalSize: 'small' | 'medium' | 'large';
   placement: ModalPlacement;
