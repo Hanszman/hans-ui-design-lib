@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
-import { render, screen, cleanup } from '@testing-library/react';
+import { vi } from 'vitest';
+import { fireEvent, render, screen, cleanup } from '@testing-library/react';
 import { HansInput } from './Input';
 
 describe('HansInput', () => {
@@ -74,23 +75,40 @@ describe('HansInput', () => {
     expect(input).toHaveClass('hans-input-has-right-icon');
   });
 
+  it('Should render icon names with HansIcon for web component consumers', () => {
+    render(
+      <HansInput placeholder="Search" leftIcon="LuSearch" rightIcon="LuX" />,
+    );
+
+    const input = screen.getByPlaceholderText('Search');
+    expect(screen.getByLabelText('Loading icon LuSearch')).toBeInTheDocument();
+    expect(screen.getByLabelText('Loading icon LuX')).toBeInTheDocument();
+    expect(input).toHaveClass('hans-input-has-left-icon');
+    expect(input).toHaveClass('hans-input-has-right-icon');
+  });
+
   it('Should support controlled and uncontrolled values', () => {
     render(
-      <HansInput
-        placeholder="Controlled"
-        value="abc"
-        onChange={() => {}}
-      />,
+      <HansInput placeholder="Controlled" value="abc" onChange={() => {}} />,
     );
     const controlledInput = screen.getByPlaceholderText('Controlled');
     expect(controlledInput).toHaveValue('abc');
 
     cleanup();
-    render(
-      <HansInput placeholder="Uncontrolled" defaultValue="init" />,
-    );
+    render(<HansInput placeholder="Uncontrolled" defaultValue="init" />);
     const uncontrolledInput = screen.getByPlaceholderText('Uncontrolled');
     expect(uncontrolledInput).toHaveValue('init');
+  });
+
+  it('Should emit normalized value changes', () => {
+    const onValueChange = vi.fn();
+    render(<HansInput placeholder="Search" onValueChange={onValueChange} />);
+
+    fireEvent.change(screen.getByPlaceholderText('Search'), {
+      target: { value: 'portfolio' },
+    });
+
+    expect(onValueChange).toHaveBeenCalledWith('portfolio');
   });
 
   it('Should pass validation props and disabled state', () => {

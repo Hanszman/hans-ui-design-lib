@@ -15,6 +15,9 @@ export type InputType =
   | 'file'
   | 'hidden';
 
+export type InputIcon = React.ReactNode | string;
+export type InputValueChangeHandler = (value: string) => void;
+
 const HansInputSchema = {
   label: 'string',
   labelColor: { type: 'custom', ref: {} as Color },
@@ -28,8 +31,13 @@ const HansInputSchema = {
   messageColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',
   disabled: 'boolean',
-  leftIcon: 'node',
-  rightIcon: 'node',
+  leftIcon: { type: 'custom', ref: {} as InputIcon },
+  rightIcon: { type: 'custom', ref: {} as InputIcon },
+  onValueChange: {
+    type: 'custom',
+    ref: {} as InputValueChangeHandler,
+    webComponentType: 'function',
+  },
 } as const;
 
 export type HansInputProps = InferPropsFromSchema<typeof HansInputSchema> &

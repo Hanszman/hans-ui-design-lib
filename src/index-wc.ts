@@ -123,6 +123,7 @@ registerReactAsWebComponent<HansInputProps>(
   'hans-input',
   HansInput,
   HansInputPropsList,
+  ['onChange', 'onInput', 'onValueChange'],
 );
 registerReactAsWebComponent<HansDropdownProps>(
   'hans-dropdown',

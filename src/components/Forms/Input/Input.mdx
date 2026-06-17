@@ -52,8 +52,22 @@ Use the color props to align input, label, and helper messages.
 ## Icons
 
 You can place icons inside the input using `leftIcon` or `rightIcon`.
+React consumers can pass a React node:
 
 <Canvas of={HansInputStories.WithIcons} />
+
+Web Component consumers can pass a Hans icon name,
+for example `leftIcon="LuSearch"`, so Angular and plain HTML integrations do not need
+React-specific nodes:
+
+<Canvas of={HansInputStories.WithIconNames} />
+
+## Web Component Events
+
+When used as `<hans-input>`, the component exposes a normalized `valueChange`
+event from `onValueChange`. The event detail is the current input value, so
+framework consumers can update local state without parsing React or native event
+objects.
 
 ## Validation
 

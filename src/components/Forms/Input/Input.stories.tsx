@@ -145,6 +145,15 @@ export const WithIcons: Story = {
   ),
 };
 
+export const WithIconNames: Story = {
+  args: {
+    label: 'Search',
+    placeholder: 'Search...',
+    inputColor: 'base',
+    leftIcon: 'LuSearch',
+  },
+};
+
 export const ValidationProps: Story = {
   args: {
     label: 'Username',

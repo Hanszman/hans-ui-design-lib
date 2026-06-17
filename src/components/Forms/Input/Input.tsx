@@ -1,5 +1,7 @@
 import React from 'react';
+import { HansIcon } from '../../Icon/Icon';
 import type { HansInputProps } from './Input.types';
+import { createInputValueEventHandlers } from './helpers/Input.helper';
 
 export const HansInput = React.memo((props: HansInputProps) => {
   const {
@@ -18,10 +20,18 @@ export const HansInput = React.memo((props: HansInputProps) => {
     leftIcon,
     rightIcon,
     children,
+    onChange,
+    onInput,
+    onValueChange,
     ...rest
   } = props;
 
   const valueProps = typeof value === 'undefined' ? {} : { value };
+  const { handleChange, handleInput } = createInputValueEventHandlers({
+    onChange,
+    onInput,
+    onValueChange,
+  });
 
   return (
     <div className="hans-input-div">
@@ -46,7 +56,11 @@ export const HansInput = React.memo((props: HansInputProps) => {
               hans-input-icon-${inputColor}
             `}
           >
-            {leftIcon}
+            {typeof leftIcon === 'string' ? (
+              <HansIcon name={leftIcon} iconSize="small" />
+            ) : (
+              leftIcon
+            )}
           </span>
         ) : null}
         <input
@@ -63,6 +77,8 @@ export const HansInput = React.memo((props: HansInputProps) => {
             ${customClasses}
           `}
           {...valueProps}
+          onChange={handleChange}
+          onInput={handleInput}
           {...rest}
         />
         {rightIcon ? (
@@ -73,7 +89,11 @@ export const HansInput = React.memo((props: HansInputProps) => {
               hans-input-icon-${inputColor}
             `}
           >
-            {rightIcon}
+            {typeof rightIcon === 'string' ? (
+              <HansIcon name={rightIcon} iconSize="small" />
+            ) : (
+              rightIcon
+            )}
           </span>
         ) : null}
       </div>
