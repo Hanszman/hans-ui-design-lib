@@ -64,10 +64,17 @@ React-specific nodes:
 
 ## Web Component Events
 
-When used as `<hans-input>`, the component exposes a normalized `valueChange`
-event from `onValueChange`. The event detail is the current input value, so
-framework consumers can update local state without parsing React or native event
-objects.
+When used as `<hans-input>`, the component exposes normalized value events from
+`onValueChange`. Prefer `valuechange` in Angular templates because it is
+case-insensitive friendly:
+
+```html
+<hans-input leftIcon="LuSearch" (valuechange)="search($event.detail)"></hans-input>
+```
+
+For compatibility, the Web Component also dispatches `valueChange` and
+`value-change`. The event detail is always the current input value, so framework
+consumers can update local state without parsing React or native event objects.
 
 ## Validation
 
