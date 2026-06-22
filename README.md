@@ -115,9 +115,9 @@ If you're using other Technologies like Angular for example, you don't have to i
     ...
     <link
       rel="stylesheet"
-      href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css?v=1.0.21"
+      href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css?v=1.0.22"
     />
-    <script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js?v=1.0.21"></script>
+    <script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js?v=1.0.22"></script>
   </head>
   <body>
     ...
@@ -362,9 +362,9 @@ Example:
 ```html
 <link
   rel="stylesheet"
-  href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css?v=1.0.21"
+  href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css?v=1.0.22"
 />
-<script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js?v=1.0.21"></script>
+<script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js?v=1.0.22"></script>
 ```
 
 Or with immutable versioned files:
@@ -372,9 +372,9 @@ Or with immutable versioned files:
 ```html
 <link
   rel="stylesheet"
-  href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib-1.0.21.css"
+  href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib-1.0.22.css"
 />
-<script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components-1.0.21.js"></script>
+<script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components-1.0.22.js"></script>
 ```
 
 ### Release flow for npm + CDN

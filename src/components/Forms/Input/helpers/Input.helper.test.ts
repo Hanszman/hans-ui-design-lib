@@ -1,9 +1,12 @@
-import type React from 'react';
 import { vi } from 'vitest';
 import {
   createInputValueEventHandlers,
   INPUT_VALUE_EVENT_NAMES,
 } from './Input.helper';
+
+type InputValueChangeEvent = Parameters<
+  ReturnType<typeof createInputValueEventHandlers>['handleChange']
+>[0];
 
 const createInputEvent = (value: string) => {
   const host = document.createElement('hans-input');
@@ -15,7 +18,7 @@ const createInputEvent = (value: string) => {
   return {
     currentTarget: input,
     host,
-  } as React.ChangeEvent<HTMLInputElement> & React.FormEvent<HTMLInputElement>;
+  } as unknown as InputValueChangeEvent & { host: HTMLElement };
 };
 
 describe('Input helper', () => {
