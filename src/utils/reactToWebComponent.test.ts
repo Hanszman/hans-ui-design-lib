@@ -131,6 +131,50 @@ describe('reactToWebComponent', () => {
     expect(changeSpy).toHaveBeenCalledWith(false);
   });
 
+  it('Should normalize lowercase and kebab-case attribute names to declared camelCase props', async () => {
+    type DummyProps = {
+      inputId?: string;
+      leftIcon?: string;
+    };
+    const Dummy: React.FC<DummyProps> = ({ inputId = 'missing-id', leftIcon = 'missing-icon' }) =>
+      React.createElement('div', null, `${inputId}-${leftIcon}`);
+    const tag = 'camel-props-element';
+    const WebComp = createWebComponent(Dummy, {
+      props: {
+        inputId: 'string',
+        leftIcon: 'string',
+      },
+      shadow: 'open',
+    });
+    customElements.define(tag, WebComp);
+
+    const lowerCaseInstance = document.createElement(tag);
+    lowerCaseInstance.setAttribute('inputid', 'skills-search');
+    lowerCaseInstance.setAttribute('lefticon', 'FaSearch');
+
+    await act(async () => {
+      document.body.appendChild(lowerCaseInstance);
+      await Promise.resolve();
+    });
+
+    expect(lowerCaseInstance.shadowRoot?.textContent).toContain(
+      'skills-search-FaSearch',
+    );
+
+    const kebabCaseInstance = document.createElement(tag);
+    kebabCaseInstance.setAttribute('input-id', 'projects-search');
+    kebabCaseInstance.setAttribute('left-icon', 'FaSearch');
+
+    await act(async () => {
+      document.body.appendChild(kebabCaseInstance);
+      await Promise.resolve();
+    });
+
+    expect(kebabCaseInstance.shadowRoot?.textContent).toContain(
+      'projects-search-FaSearch',
+    );
+  });
+
   it('Should support custom event options when registering framework events', async () => {
     type DummyProps = {
       onNotify?: (message: string) => void;

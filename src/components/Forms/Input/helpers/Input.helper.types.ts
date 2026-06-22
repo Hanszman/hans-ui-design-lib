@@ -2,7 +2,12 @@ import type React from 'react';
 
 export type InputValueChangeHandler = (value: string) => void;
 
-export type InputValueEventName = 'valueChange' | 'valuechange' | 'value-change';
+export type InputValueEventName =
+  | 'valueChange'
+  | 'valuechange'
+  | 'value-change';
+
+export type StandardInputEventName = 'input' | 'change';
 
 export type CreateInputValueEventHandlersParams = {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -13,4 +18,5 @@ export type CreateInputValueEventHandlersParams = {
 export type DispatchInputValueEventsParams = {
   target: HTMLInputElement;
   value: string;
+  eventName: StandardInputEventName;
 };

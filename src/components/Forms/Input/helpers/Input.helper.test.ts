@@ -60,8 +60,22 @@ describe('Input helper', () => {
       event.host.addEventListener(eventName, spy);
       return spy;
     });
+    const inputSpy = vi.fn();
+
+    event.host.addEventListener('input', inputSpy);
 
     handleInput(event);
+
+    expect(event.host.getAttribute('value')).toBe('portfolio');
+    expect((event.host as HTMLElement & { value?: string }).value).toBe(
+      'portfolio',
+    );
+    expect(inputSpy).toHaveBeenCalledTimes(1);
+    expect(inputSpy.mock.calls[0][0]).toMatchObject({
+      bubbles: true,
+      composed: true,
+      detail: 'portfolio',
+    });
 
     hostEventSpies.forEach((spy) => {
       expect(spy).toHaveBeenCalledTimes(1);
@@ -70,6 +84,23 @@ describe('Input helper', () => {
         composed: true,
         detail: 'portfolio',
       });
+    });
+  });
+
+  it('Should dispatch change events with the normalized value', () => {
+    const { handleChange } = createInputValueEventHandlers({});
+    const event = createInputEvent('typescript');
+    const changeSpy = vi.fn();
+
+    event.host.addEventListener('change', changeSpy);
+
+    handleChange(event);
+
+    expect(changeSpy).toHaveBeenCalledTimes(1);
+    expect(changeSpy.mock.calls[0][0]).toMatchObject({
+      bubbles: true,
+      composed: true,
+      detail: 'typescript',
     });
   });
 });

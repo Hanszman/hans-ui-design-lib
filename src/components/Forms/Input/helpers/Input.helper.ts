@@ -3,6 +3,7 @@ import type {
   CreateInputValueEventHandlersParams,
   DispatchInputValueEventsParams,
   InputValueEventName,
+  StandardInputEventName,
 } from './Input.helper.types';
 
 export const INPUT_VALUE_EVENT_NAMES: readonly InputValueEventName[] = [
@@ -14,17 +15,23 @@ export const INPUT_VALUE_EVENT_NAMES: readonly InputValueEventName[] = [
 export const dispatchInputValueEvents = ({
   target,
   value,
+  eventName,
 }: DispatchInputValueEventsParams): void => {
-  for (const eventTarget of resolveInputValueEventTargets(target)) {
-    for (const eventName of INPUT_VALUE_EVENT_NAMES) {
-      eventTarget.dispatchEvent(
-        new CustomEvent(eventName, {
-          bubbles: true,
-          composed: true,
-          detail: value,
-        }),
-      );
-    }
+  const host = resolveInputValueHost(target);
+
+  if (!host) {
+    return;
+  }
+
+  syncHostValue(host, value);
+  host.dispatchEvent(
+    createValueEvent(eventName, value),
+  );
+
+  for (const valueEventName of INPUT_VALUE_EVENT_NAMES) {
+    host.dispatchEvent(
+      createValueEvent(valueEventName, value),
+    );
   }
 };
 
@@ -40,24 +47,50 @@ export const createInputValueEventHandlers = ({
     onChange?.(event);
     const value = event.currentTarget.value;
     onValueChange?.(value);
-    dispatchInputValueEvents({ target: event.currentTarget, value });
+    dispatchInputValueEvents({
+      target: event.currentTarget,
+      value,
+      eventName: 'change',
+    });
   },
   handleInput: (event) => {
     onInput?.(event);
     const value = event.currentTarget.value;
     onValueChange?.(value);
-    dispatchInputValueEvents({ target: event.currentTarget, value });
+    dispatchInputValueEvents({
+      target: event.currentTarget,
+      value,
+      eventName: 'input',
+    });
   },
 });
 
-const resolveInputValueEventTargets = (
+const createValueEvent = (
+  eventName: InputValueEventName | StandardInputEventName,
+  value: string,
+): CustomEvent<string> =>
+  new CustomEvent(eventName, {
+    bubbles: true,
+    composed: true,
+    detail: value,
+  });
+
+const resolveInputValueHost = (
   target: HTMLInputElement,
-): readonly EventTarget[] => {
+): HTMLElement | null => {
   const rootNode = target.getRootNode();
 
   if (rootNode instanceof ShadowRoot && rootNode.host) {
-    return [rootNode.host];
+    return rootNode.host as HTMLElement;
   }
 
-  return [target];
+  return null;
+};
+
+const syncHostValue = (
+  host: HTMLElement & { value?: string },
+  value: string,
+): void => {
+  host.value = value;
+  host.setAttribute('value', value);
 };
