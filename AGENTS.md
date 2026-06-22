@@ -234,7 +234,45 @@ When props or events change:
 - `npm run build:cdn-local` - CDN build plus local preview.
 - `npm run build:storybook` - static Storybook build.
 - `npm run storybook` - local Storybook at port 6006.
+- `npm run release:patch`, `npm run release:minor`, `npm run release:major` - validated release flow with version bump, npm build, CDN build, Storybook build and npm publish.
 - `npm run publish:patch`, `npm run publish:minor`, `npm run publish:major` - version and publish to npm.
+
+## CDN cache busting and release versioning
+
+The CDN output must be version-aware.
+
+Rules:
+
+- `src/scripts/create-cdn-index.js` must read the current `package.json` version.
+- `npm run build:cdn` must generate versioned URLs for both CSS and JS using the same version value.
+- the CDN output must keep raw asset URLs available and also expose versioned URLs.
+- the CDN output must generate `cdn/version.json` with the current version plus raw, query-versioned and file-versioned asset paths.
+- README examples that show CDN usage must document the `?v=` cache-busting parameter and explain that it is based on the release version.
+
+Expected behavior:
+
+- CSS example: `/hans-ui-design-lib.css?v=<package-version>`
+- JS example: `/hans-ui-web-components.js?v=<package-version>`
+- CSS immutable file: `/hans-ui-design-lib-<package-version>.css`
+- JS immutable file: `/hans-ui-web-components-<package-version>.js`
+- Manifest: `/version.json`
+
+Release flow:
+
+1. run `npm run release:[patch|minor|major]`
+2. lint and coverage validation run first
+3. `package.json` version is bumped
+4. npm package, CDN bundle and Storybook are rebuilt
+5. npm publish runs
+6. commit and push the version bump
+7. Vercel rebuilds the CDN and serves the new versioned asset URLs
+
+Consumer guidance:
+
+- consumers should pin both CDN assets with the same version
+- consumers should never mix CSS from one version with JS from another
+- if a consumer wants immutable production assets, it should consume the versioned file names
+- if a consumer wants to automate cache invalidation, it can read `version.json` or inject the release version during its own deploy
 
 ## Collaboration rules
 

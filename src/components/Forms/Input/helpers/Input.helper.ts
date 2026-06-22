@@ -15,14 +15,16 @@ export const dispatchInputValueEvents = ({
   target,
   value,
 }: DispatchInputValueEventsParams): void => {
-  for (const eventName of INPUT_VALUE_EVENT_NAMES) {
-    target.dispatchEvent(
-      new CustomEvent(eventName, {
-        bubbles: true,
-        composed: true,
-        detail: value,
-      }),
-    );
+  for (const eventTarget of resolveInputValueEventTargets(target)) {
+    for (const eventName of INPUT_VALUE_EVENT_NAMES) {
+      eventTarget.dispatchEvent(
+        new CustomEvent(eventName, {
+          bubbles: true,
+          composed: true,
+          detail: value,
+        }),
+      );
+    }
   }
 };
 
@@ -47,3 +49,15 @@ export const createInputValueEventHandlers = ({
     dispatchInputValueEvents({ target: event.currentTarget, value });
   },
 });
+
+const resolveInputValueEventTargets = (
+  target: HTMLInputElement,
+): readonly EventTarget[] => {
+  const rootNode = target.getRootNode();
+
+  if (rootNode instanceof ShadowRoot && rootNode.host) {
+    return [rootNode.host];
+  }
+
+  return [target];
+};

@@ -6,11 +6,15 @@ import {
 } from './Input.helper';
 
 const createInputEvent = (value: string) => {
+  const host = document.createElement('hans-input');
+  const shadowRoot = host.attachShadow({ mode: 'open' });
   const input = document.createElement('input');
   input.value = value;
+  shadowRoot.appendChild(input);
 
   return {
     currentTarget: input,
+    host,
   } as React.ChangeEvent<HTMLInputElement> & React.FormEvent<HTMLInputElement>;
 };
 
@@ -48,15 +52,15 @@ describe('Input helper', () => {
   it('Should dispatch web component friendly value events', () => {
     const { handleInput } = createInputValueEventHandlers({});
     const event = createInputEvent('portfolio');
-    const eventSpies = INPUT_VALUE_EVENT_NAMES.map((eventName) => {
+    const hostEventSpies = INPUT_VALUE_EVENT_NAMES.map((eventName) => {
       const spy = vi.fn();
-      event.currentTarget.addEventListener(eventName, spy);
+      event.host.addEventListener(eventName, spy);
       return spy;
     });
 
     handleInput(event);
 
-    eventSpies.forEach((spy) => {
+    hostEventSpies.forEach((spy) => {
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy.mock.calls[0][0]).toMatchObject({
         bubbles: true,

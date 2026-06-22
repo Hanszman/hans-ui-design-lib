@@ -11,6 +11,6 @@ export type CreateInputValueEventHandlersParams = {
 };
 
 export type DispatchInputValueEventsParams = {
-  target: EventTarget;
+  target: HTMLInputElement;
   value: string;
 };

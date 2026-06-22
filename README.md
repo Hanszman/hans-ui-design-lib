@@ -115,9 +115,9 @@ If you're using other Technologies like Angular for example, you don't have to i
     ...
     <link
       rel="stylesheet"
-      href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css"
+      href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css?v=1.0.21"
     />
-    <script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js"></script>
+    <script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js?v=1.0.21"></script>
   </head>
   <body>
     ...
@@ -323,6 +323,87 @@ These are the production URL's:
 https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css
 
 https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js
+
+These are the versioned production URL's generated from `package.json` during `npm run build:cdn`:
+
+https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css?v=<package-version>
+
+https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js?v=<package-version>
+
+The CDN build also generates immutable versioned file names:
+
+https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib-<package-version>.css
+
+https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components-<package-version>.js
+
+The CDN build also generates:
+
+https://hans-ui-design-lib-cdn.vercel.app/version.json
+
+`version.json` contains the current package version plus the raw, query-versioned and file-versioned asset URLs. Consumers can use it as a deterministic source for cache-busting automation.
+
+### CDN cache busting
+
+The `?v=` query string is a cache-busting marker for browsers and CDNs. It is not a runtime option consumed by the library itself.
+
+For production consumers, prefer the versioned file names when you want immutable asset URLs tied to a specific release. Use the `?v=` pattern when you need a stable path plus explicit cache invalidation.
+
+Rules:
+
+- use the same version value for both CSS and JS
+- prefer the published `package.json` version
+- update the value whenever a new release should invalidate the consumer cache
+- do not mix assets from different versions in the same page
+- prefer file-versioned URLs for long-lived production integrations
+- prefer `version.json` when a deploy pipeline needs to discover the latest published release automatically
+
+Example:
+
+```html
+<link
+  rel="stylesheet"
+  href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib.css?v=1.0.21"
+/>
+<script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components.js?v=1.0.21"></script>
+```
+
+Or with immutable versioned files:
+
+```html
+<link
+  rel="stylesheet"
+  href="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-design-lib-1.0.21.css"
+/>
+<script src="https://hans-ui-design-lib-cdn.vercel.app/hans-ui-web-components-1.0.21.js"></script>
+```
+
+### Release flow for npm + CDN
+
+The recommended release flow is now:
+
+```bash
+npm run release:[UPDATE-TYPE]
+```
+
+UPDATE-TYPES: patch | minor | major
+
+What this does:
+
+1. runs lint
+2. runs the full coverage suite
+3. bumps `package.json` version
+4. rebuilds the npm package
+5. rebuilds the CDN output
+6. rebuilds Storybook
+7. publishes the npm package
+
+After that:
+
+1. commit the updated `package.json` and lockfile
+2. push `main`
+3. Vercel rebuilds the CDN from the new source state
+4. `build:cdn` reads the bumped package version automatically
+5. `version.json` and `cdn/index.html` expose the new versioned URLs
 
 To run CDN locally and feed your projects in development, run this command:
 
