@@ -1,6 +1,6 @@
 import React from 'react';
 import { HansIcon } from '../../Icon/Icon';
-import type { HansInputProps } from './Input.types';
+import type { HansInputProps, InputValue } from './Input.types';
 import { createInputValueEventHandlers } from './helpers/Input.helper';
 
 export const HansInput = React.memo((props: HansInputProps) => {
@@ -9,6 +9,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
     labelColor = 'base',
     placeholder = '',
     value,
+    defaultValue,
     inputId = 'hans-input',
     inputColor = 'base',
     inputSize = 'medium',
@@ -26,12 +27,43 @@ export const HansInput = React.memo((props: HansInputProps) => {
     ...rest
   } = props;
 
-  const valueProps = typeof value === 'undefined' ? {} : { value };
-  const { handleChange, handleInput } = createInputValueEventHandlers({
-    onChange,
-    onInput,
-    onValueChange,
-  });
+  const isControlled = typeof value !== 'undefined';
+  const [inputValue, setInputValue] = React.useState<string>(() =>
+    resolveInitialInputValue(value, defaultValue),
+  );
+
+  React.useLayoutEffect(() => {
+    if (!isControlled) {
+      return;
+    }
+
+    const normalizedValue = normalizeInputValue(value);
+
+    setInputValue((currentValue) =>
+      currentValue === normalizedValue ? currentValue : normalizedValue,
+    );
+  }, [isControlled, value]);
+
+  const { handleChange: dispatchChange, handleInput: dispatchInput } =
+    createInputValueEventHandlers({
+      onChange,
+      onInput,
+      onValueChange,
+    });
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (!isControlled) {
+      setInputValue(event.currentTarget.value);
+    }
+    dispatchChange(event);
+  };
+
+  const handleInput: React.FormEventHandler<HTMLInputElement> = (event) => {
+    if (!isControlled) {
+      setInputValue(event.currentTarget.value);
+    }
+    dispatchInput(event);
+  };
 
   return (
     <div className="hans-input-div">
@@ -76,7 +108,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
             ${rightIcon ? 'hans-input-has-right-icon' : ''}
             ${customClasses}
           `}
-          {...valueProps}
+          value={inputValue}
           onChange={handleChange}
           onInput={handleInput}
           {...rest}
@@ -112,3 +144,30 @@ export const HansInput = React.memo((props: HansInputProps) => {
 });
 
 HansInput.displayName = 'HansInput';
+
+const resolveInitialInputValue = (
+  value: HansInputProps['value'],
+  defaultValue: HansInputProps['defaultValue'],
+): string => {
+  if (typeof value !== 'undefined') {
+    return normalizeInputValue(value);
+  }
+
+  return normalizeInputValue(defaultValue);
+};
+
+const normalizeInputValue = (value: InputValue | undefined): string => {
+  if (Array.isArray(value)) {
+    return value.join(', ');
+  }
+
+  if (typeof value === 'number') {
+    return String(value);
+  }
+
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  return '';
+};

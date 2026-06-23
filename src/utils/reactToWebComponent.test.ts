@@ -1,7 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import React, { act } from 'react';
 import {
+  createPropAliasMap,
   createWebComponent,
+  getObservedAttributeList,
+  normalizeWebComponentProps,
+  parseWebComponentAttributeValue,
   registerReactAsWebComponent,
 } from './reactToWebComponent';
 
@@ -37,9 +41,62 @@ describe('reactToWebComponent', () => {
     });
   });
 
+  it('Should parse observed attribute lists safely', () => {
+    expect(getObservedAttributeList(['value', 'left-icon'])).toEqual([
+      'value',
+      'left-icon',
+    ]);
+    expect(getObservedAttributeList('value')).toEqual([]);
+  });
+
+  it('Should parse typed web component attribute values safely', () => {
+    expect(parseWebComponentAttributeValue('true', 'boolean')).toBe(true);
+    expect(parseWebComponentAttributeValue('false', 'boolean')).toBe(false);
+    expect(parseWebComponentAttributeValue('12', 'number')).toBe(12);
+    expect(parseWebComponentAttributeValue('abc', 'number')).toBe('abc');
+    expect(parseWebComponentAttributeValue('{"label":"Angular"}', 'json')).toEqual({
+      label: 'Angular',
+    });
+    expect(parseWebComponentAttributeValue('{oops', 'json')).toBe('{oops');
+    expect(parseWebComponentAttributeValue('plain', 'string')).toBe('plain');
+  });
+
+  it('Should create empty prop aliases when no props are declared', () => {
+    expect(Array.from(createPropAliasMap())).toEqual([]);
+  });
+
+  it('Should normalize aliased raw props without overwriting canonical values', () => {
+    const propAliases = createPropAliasMap({ leftIcon: 'string', inputId: 'string' });
+
+    expect(
+      normalizeWebComponentProps(
+        {
+          'left-icon': 'FaSearch',
+          inputid: 'skills-search',
+        },
+        propAliases,
+      ),
+    ).toEqual({
+      leftIcon: 'FaSearch',
+      inputId: 'skills-search',
+    });
+
+    expect(
+      normalizeWebComponentProps(
+        {
+          leftIcon: 'LuSearch',
+          'left-icon': 'FaSearch',
+        },
+        propAliases,
+      ),
+    ).toEqual({
+      leftIcon: 'LuSearch',
+    });
+  });
+
   it('Should create a Web Component from a React Component', () => {
     const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
-    const WebComp = createWebComponent(Dummy, { shadow: 'open' });
+    const WebComp = createWebComponent(Dummy);
     const tag = 'dummy-test';
     customElements.define(tag, WebComp);
     const instance = document.createElement(tag);
@@ -173,6 +230,61 @@ describe('reactToWebComponent', () => {
     expect(kebabCaseInstance.shadowRoot?.textContent).toContain(
       'projects-search-FaSearch',
     );
+  });
+
+  it('Should ignore unknown aliased attributes during attribute sync', () => {
+    const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
+    const tag = 'unknown-attribute-element';
+    const WebComp = createWebComponent(Dummy, {
+      props: { leftIcon: 'string' },
+      shadow: 'open',
+    });
+    customElements.define(tag, WebComp);
+
+    const instance = document.createElement(tag) as HTMLElement & {
+      attributeChangedCallback: (
+        name: string,
+        oldValue: string | null,
+        newValue: string | null,
+      ) => void;
+    };
+
+    expect(() => {
+      instance.attributeChangedCallback('ghost-prop', null, 'value');
+    }).not.toThrow();
+  });
+
+  it('Should skip aliased sync when the host reports a null attribute value', () => {
+    const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
+    const tag = 'null-attribute-element';
+    const WebComp = createWebComponent(Dummy, {
+      props: { leftIcon: 'string' },
+      shadow: 'open',
+    });
+    customElements.define(tag, WebComp);
+
+    const instance = document.createElement(tag) as HTMLElement & {
+      attributeChangedCallback: (
+        name: string,
+        oldValue: string | null,
+        newValue: string | null,
+      ) => void;
+      leftIcon?: string;
+    };
+
+    Object.defineProperty(instance, 'hasAttribute', {
+      configurable: true,
+      value: vi.fn(() => true),
+    });
+    Object.defineProperty(instance, 'getAttribute', {
+      configurable: true,
+      value: vi.fn(() => null),
+    });
+
+    expect(() => {
+      instance.attributeChangedCallback('left-icon', null, 'FaSearch');
+    }).not.toThrow();
+    expect(instance.getAttribute).toHaveBeenCalledWith('left-icon');
   });
 
   it('Should support custom event options when registering framework events', async () => {
@@ -619,3 +731,5 @@ describe('reactToWebComponent', () => {
     consoleSpy.mockRestore();
   });
 });
+
+

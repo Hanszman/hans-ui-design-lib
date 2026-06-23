@@ -24,14 +24,10 @@ export const dispatchInputValueEvents = ({
   }
 
   syncHostValue(host, value);
-  host.dispatchEvent(
-    createValueEvent(eventName, value),
-  );
+  host.dispatchEvent(createStandardInputEvent(eventName, value));
 
   for (const valueEventName of INPUT_VALUE_EVENT_NAMES) {
-    host.dispatchEvent(
-      createValueEvent(valueEventName, value),
-    );
+    host.dispatchEvent(createValueEvent(valueEventName, value));
   }
 };
 
@@ -66,7 +62,7 @@ export const createInputValueEventHandlers = ({
 });
 
 const createValueEvent = (
-  eventName: InputValueEventName | StandardInputEventName,
+  eventName: InputValueEventName,
   value: string,
 ): CustomEvent<string> =>
   new CustomEvent(eventName, {
@@ -74,6 +70,25 @@ const createValueEvent = (
     composed: true,
     detail: value,
   });
+
+const createStandardInputEvent = (
+  eventName: StandardInputEventName,
+  value: string,
+): Event => {
+  if (eventName === 'input' && typeof InputEvent !== 'undefined') {
+    return new InputEvent(eventName, {
+      bubbles: true,
+      composed: true,
+      data: value,
+      inputType: value ? 'insertText' : 'deleteContentBackward',
+    });
+  }
+
+  return new Event(eventName, {
+    bubbles: true,
+    composed: true,
+  });
+};
 
 const resolveInputValueHost = (
   target: HTMLInputElement,
@@ -92,5 +107,11 @@ const syncHostValue = (
   value: string,
 ): void => {
   host.value = value;
-  host.setAttribute('value', value);
+
+  if (value) {
+    host.setAttribute('value', value);
+    return;
+  }
+
+  host.removeAttribute('value');
 };

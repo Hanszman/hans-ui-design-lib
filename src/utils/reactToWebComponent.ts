@@ -21,6 +21,8 @@ type ReactToWebComponentOptions<T extends object> = {
 };
 
 type NormalizedPropDefinitions = Readonly<Record<string, string | undefined>>;
+type NormalizedRawProps = Readonly<Record<string, unknown>>;
+type AliasSyncEntry = readonly [alias: string, canonical: string];
 
 const SHADOW_BRIDGE_EVENT_TYPES = ['mousedown', 'click'] as const;
 
@@ -39,7 +41,10 @@ const getDefaultStylesheetHref = (): string | undefined => {
   }
 
   try {
-    return new URL(import.meta.env.VITE_HANS_UI_STYLESHEET_FILE, scriptSrc).toString();
+    return new URL(
+      import.meta.env.VITE_HANS_UI_STYLESHEET_FILE,
+      scriptSrc,
+    ).toString();
   } catch {
     return envUrl || undefined;
   }
@@ -76,7 +81,7 @@ const getDeclaredPropNames = <T extends object>(
   return Object.keys(props as Record<string, unknown>);
 };
 
-const createPropAliasMap = <T extends object>(
+export const createPropAliasMap = <T extends object>(
   props?: ReactToWebComponentProps<T>,
 ): ReadonlyMap<string, string> => {
   const propNames = getDeclaredPropNames(props);
@@ -92,25 +97,26 @@ const createPropAliasMap = <T extends object>(
 };
 
 const createPropTypeMap = <T extends object>(
-  props?: ReactToWebComponentProps<T>,
+  props: ReactToWebComponentProps<T> = [],
 ): NormalizedPropDefinitions => {
-  if (!props) return {};
   if (Array.isArray(props)) {
-    return Object.fromEntries(
-      props.map((propName) => [propName, 'string']),
-    );
+    return Object.fromEntries(props.map((propName) => [propName, 'string']));
   }
 
   return props as NormalizedPropDefinitions;
 };
 
-const normalizeWebComponentProps = <T extends object>(
+const normalizeRawProps = (rawProps: Record<string, unknown>): NormalizedRawProps =>
+  rawProps;
+
+export const normalizeWebComponentProps = <T extends Record<string, unknown>>(
   rawProps: Record<string, unknown>,
   propAliases: ReadonlyMap<string, string>,
 ): T => {
-  const normalizedProps: Record<string, unknown> = { ...rawProps };
+  const normalizedSource = normalizeRawProps(rawProps);
+  const normalizedProps: Record<string, unknown> = { ...normalizedSource };
 
-  for (const [rawKey, rawValue] of Object.entries(rawProps)) {
+  for (const [rawKey, rawValue] of Object.entries(normalizedSource)) {
     const canonicalKey = propAliases.get(rawKey);
     if (!canonicalKey || canonicalKey === rawKey) continue;
     if (typeof normalizedProps[canonicalKey] === 'undefined') {
@@ -122,7 +128,7 @@ const normalizeWebComponentProps = <T extends object>(
   return normalizedProps as T;
 };
 
-const parseWebComponentAttributeValue = (
+export const parseWebComponentAttributeValue = (
   value: string,
   propType: string | undefined,
 ): unknown => {
@@ -146,36 +152,43 @@ const parseWebComponentAttributeValue = (
   return value;
 };
 
+export const getObservedAttributeList = (
+  observedAttributes: unknown,
+): string[] => (Array.isArray(observedAttributes) ? observedAttributes : []);
+
+const createAliasesToSync = (
+  propAliases: ReadonlyMap<string, string>,
+  attributeName?: string,
+): readonly AliasSyncEntry[] => {
+  if (attributeName) {
+    const canonical = propAliases.get(attributeName);
+    return canonical ? [[attributeName, canonical] as const] : [];
+  }
+
+  return Array.from(propAliases.entries());
+};
+
 const syncAliasedAttributesToProperties = (
   element: HTMLElement,
   propAliases: ReadonlyMap<string, string>,
   propTypes: NormalizedPropDefinitions,
   attributeName?: string,
 ): void => {
-  const aliasesToSync = attributeName
-    ? [[attributeName, propAliases.get(attributeName)]]
-    : Array.from(propAliases.entries());
+  const aliasesToSync = createAliasesToSync(propAliases, attributeName);
 
   for (const [alias, canonical] of aliasesToSync) {
-    if (!canonical || alias === canonical) continue;
+    if (alias === canonical) continue;
     if (!element.hasAttribute(alias)) continue;
 
     const rawValue = element.getAttribute(alias);
     if (rawValue === null) continue;
 
-    (
-      element as HTMLElement & Record<string, unknown>
-    )[canonical] = parseWebComponentAttributeValue(
-      rawValue,
-      propTypes[canonical],
-    );
+    (element as HTMLElement & Record<string, unknown>)[canonical] =
+      parseWebComponentAttributeValue(rawValue, propTypes[canonical]);
   }
 };
 
-const eventStartedInsideShadow = (
-  event: Event,
-  shadow: ShadowRoot,
-): boolean =>
+const eventStartedInsideShadow = (event: Event, shadow: ShadowRoot): boolean =>
   event.composedPath().some((target) => {
     return target instanceof Node && shadow.contains(target);
   });
@@ -190,11 +203,7 @@ const getShadowTargetFromHostEvent = (
   const elementFromPoint = shadow.elementFromPoint;
   if (!elementFromPoint) return null;
 
-  const target = elementFromPoint.call(
-    shadow,
-    event.clientX,
-    event.clientY,
-  );
+  const target = elementFromPoint.call(shadow, event.clientX, event.clientY);
 
   if (!(target instanceof Element) || !shadow.contains(target)) return null;
   return target;
@@ -217,10 +226,7 @@ const createForwardedMouseEvent = (event: MouseEvent): MouseEvent =>
     shiftKey: event.shiftKey,
   });
 
-const bridgeShadowHostEvent = (
-  host: HTMLElement,
-  event: MouseEvent,
-): void => {
+const bridgeShadowHostEvent = (host: HTMLElement, event: MouseEvent): void => {
   const target = getShadowTargetFromHostEvent(host, event);
   if (!target) return;
 
@@ -243,11 +249,17 @@ export function createWebComponent<T extends object>(
   } as ReactToWebComponentOptions<T>;
   const propAliases = createPropAliasMap(elementOptions.props);
   const propTypes = createPropTypeMap(elementOptions.props);
-  const WrappedComponent: React.FC<object> = (rawProps) =>
-    React.createElement(
-      Component as React.ComponentType<object>,
-      normalizeWebComponentProps(rawProps, propAliases),
+  const WrappedComponent: React.FC<Record<string, unknown>> = (rawProps) => {
+    const normalizedProps = normalizeWebComponentProps<Record<string, unknown>>(
+      rawProps,
+      propAliases,
     );
+
+    return React.createElement(
+      Component as React.ComponentType<Record<string, unknown>>,
+      normalizedProps,
+    );
+  };
 
   const BaseElement = reactToWebcomponent(
     WrappedComponent,
@@ -265,15 +277,19 @@ export function createWebComponent<T extends object>(
     observedAttributes?: string[];
   }) {
     static get observedAttributes(): string[] {
-      const baseAttributes = Array.isArray((BaseElement as { observedAttributes?: string[] }).observedAttributes)
-        ? (BaseElement as { observedAttributes?: string[] }).observedAttributes ?? []
-        : [];
+      const baseAttributes = getObservedAttributeList(
+        (BaseElement as { observedAttributes?: unknown }).observedAttributes,
+      );
 
       return Array.from(
         new Set([
           ...baseAttributes,
-          ...Array.from(propAliases.keys()).filter((alias) => alias.includes('-')),
-          ...Array.from(propAliases.keys()).filter((alias) => alias === alias.toLowerCase()),
+          ...Array.from(propAliases.keys()).filter((alias) =>
+            alias.includes('-'),
+          ),
+          ...Array.from(propAliases.keys()).filter(
+            (alias) => alias === alias.toLowerCase(),
+          ),
         ]),
       );
     }
@@ -288,9 +304,14 @@ export function createWebComponent<T extends object>(
       newValue: string | null,
     ): void {
       const elementPrototype = Object.getPrototypeOf(HansElement.prototype);
-      const superAttributeChanged = elementPrototype.attributeChangedCallback as
-        | ((attributeName: string, previousValue: string | null, nextValue: string | null) => void)
-        | undefined;
+      const superAttributeChanged =
+        elementPrototype.attributeChangedCallback as
+          | ((
+              attributeName: string,
+              previousValue: string | null,
+              nextValue: string | null,
+            ) => void)
+          | undefined;
 
       syncAliasedAttributesToProperties(this, propAliases, propTypes, name);
 
@@ -334,11 +355,7 @@ export function createWebComponent<T extends object>(
 
     disconnectedCallback(): void {
       SHADOW_BRIDGE_EVENT_TYPES.forEach((eventType) => {
-        this.removeEventListener(
-          eventType,
-          this.handleShadowBridgeEvent,
-          true,
-        );
+        this.removeEventListener(eventType, this.handleShadowBridgeEvent, true);
       });
 
       const elementPrototype = Object.getPrototypeOf(HansElement.prototype);
@@ -367,3 +384,4 @@ export function registerReactAsWebComponent<T extends object>(
 
   customElements.define(tagName, WebComp);
 }
+

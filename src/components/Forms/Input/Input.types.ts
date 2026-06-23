@@ -17,6 +17,7 @@ export type InputType =
 
 export type InputIcon = React.ReactNode | string;
 export type InputValueChangeHandler = (value: string) => void;
+export type InputValue = string | number | readonly string[];
 
 const HansInputSchema = {
   label: 'string',
@@ -40,7 +41,20 @@ const HansInputSchema = {
   },
 } as const;
 
-export type HansInputProps = InferPropsFromSchema<typeof HansInputSchema> &
-  React.InputHTMLAttributes<HTMLInputElement>;
+type HansInputSchemaProps = InferPropsFromSchema<typeof HansInputSchema>;
+type NativeInputProps = Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'value' | 'defaultValue'
+>;
+
+export type HansInputProps = Omit<
+  HansInputSchemaProps,
+  'value' | 'onValueChange'
+> &
+  NativeInputProps & {
+    value?: InputValue;
+    defaultValue?: InputValue;
+    onValueChange?: InputValueChangeHandler;
+  };
 
 export const HansInputPropsList = createPropsList(HansInputSchema);

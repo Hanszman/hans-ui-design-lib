@@ -88,16 +88,40 @@ describe('HansInput', () => {
   });
 
   it('Should support controlled and uncontrolled values', () => {
-    render(
+    const { rerender } = render(
       <HansInput placeholder="Controlled" value="abc" onChange={() => {}} />,
     );
     const controlledInput = screen.getByPlaceholderText('Controlled');
     expect(controlledInput).toHaveValue('abc');
 
+    rerender(
+      <HansInput placeholder="Controlled" value="" onChange={() => {}} />,
+    );
+    expect(controlledInput).toHaveValue('');
+
     cleanup();
     render(<HansInput placeholder="Uncontrolled" defaultValue="init" />);
     const uncontrolledInput = screen.getByPlaceholderText('Uncontrolled');
     expect(uncontrolledInput).toHaveValue('init');
+  });
+
+  it('Should normalize numeric and array values', () => {
+    const { rerender } = render(
+      <HansInput placeholder="Normalized" value={123} onChange={() => {}} />,
+    );
+
+    const input = screen.getByPlaceholderText('Normalized');
+    expect(input).toHaveValue('123');
+
+    rerender(
+      <HansInput
+        placeholder="Normalized"
+        value={['Angular', 'React']}
+        onChange={() => {}}
+      />,
+    );
+
+    expect(input).toHaveValue('Angular, React');
   });
 
   it('Should emit normalized value changes', () => {
@@ -109,6 +133,22 @@ describe('HansInput', () => {
     });
 
     expect(onValueChange).toHaveBeenCalledWith('portfolio');
+  });
+
+  it('Should keep the rendered value in sync while typing', () => {
+    render(<HansInput placeholder="Search" />);
+
+    const input = screen.getByPlaceholderText('Search');
+
+    fireEvent.input(input, {
+      target: { value: 'angular' },
+    });
+    expect(input).toHaveValue('angular');
+
+    fireEvent.input(input, {
+      target: { value: '' },
+    });
+    expect(input).toHaveValue('');
   });
 
   it('Should pass validation props and disabled state', () => {

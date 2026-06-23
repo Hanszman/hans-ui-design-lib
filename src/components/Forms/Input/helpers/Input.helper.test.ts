@@ -18,7 +18,9 @@ const createInputEvent = (value: string) => {
   return {
     currentTarget: input,
     host,
-  } as unknown as InputValueChangeEvent & { host: HTMLElement };
+  } as unknown as InputValueChangeEvent & {
+    host: HTMLElement & { value?: string };
+  };
 };
 
 describe('Input helper', () => {
@@ -52,7 +54,7 @@ describe('Input helper', () => {
     expect(onValueChange).toHaveBeenCalledWith('react');
   });
 
-  it('Should dispatch web component friendly value events', () => {
+  it('Should dispatch standard host input events and framework friendly value events', () => {
     const { handleInput } = createInputValueEventHandlers({});
     const event = createInputEvent('portfolio');
     const hostEventSpies = INPUT_VALUE_EVENT_NAMES.map((eventName) => {
@@ -67,14 +69,12 @@ describe('Input helper', () => {
     handleInput(event);
 
     expect(event.host.getAttribute('value')).toBe('portfolio');
-    expect((event.host as HTMLElement & { value?: string }).value).toBe(
-      'portfolio',
-    );
+    expect(event.host.value).toBe('portfolio');
     expect(inputSpy).toHaveBeenCalledTimes(1);
     expect(inputSpy.mock.calls[0][0]).toMatchObject({
       bubbles: true,
       composed: true,
-      detail: 'portfolio',
+      type: 'input',
     });
 
     hostEventSpies.forEach((spy) => {
@@ -87,7 +87,19 @@ describe('Input helper', () => {
     });
   });
 
-  it('Should dispatch change events with the normalized value', () => {
+  it('Should remove the host value attribute when the normalized value becomes empty', () => {
+    const { handleInput } = createInputValueEventHandlers({});
+    const event = createInputEvent('');
+
+    event.host.setAttribute('value', 'previous');
+
+    handleInput(event);
+
+    expect(event.host.hasAttribute('value')).toBe(false);
+    expect(event.host.value).toBe('');
+  });
+
+  it('Should dispatch standard change events with the normalized value on the host property', () => {
     const { handleChange } = createInputValueEventHandlers({});
     const event = createInputEvent('typescript');
     const changeSpy = vi.fn();
@@ -96,11 +108,15 @@ describe('Input helper', () => {
 
     handleChange(event);
 
+    expect(event.host.value).toBe('typescript');
     expect(changeSpy).toHaveBeenCalledTimes(1);
     expect(changeSpy.mock.calls[0][0]).toMatchObject({
       bubbles: true,
       composed: true,
-      detail: 'typescript',
+      type: 'change',
     });
+    expect(
+      (changeSpy.mock.calls[0][0] as Event & { detail?: string }).detail,
+    ).toBeUndefined();
   });
 });
