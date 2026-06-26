@@ -10,11 +10,13 @@
   @apply h-4 w-4 rounded-full object-cover;
 }
 
-.hans-tag-medium .hans-tag-image {
+.hans-tag-medium .hans-tag-image,
+.hans-tag-md .hans-tag-image {
   @apply h-5 w-5;
 }
 
-.hans-tag-large .hans-tag-image {
+.hans-tag-large .hans-tag-image,
+.hans-tag-lg .hans-tag-image {
   @apply h-6 w-6;
 }
 
@@ -26,15 +28,18 @@
   @apply opacity-50 cursor-not-allowed;
 }
 
-.hans-tag-small {
+.hans-tag-small,
+.hans-tag-sm {
   @apply px-3 py-2 text-xs;
 }
 
-.hans-tag-medium {
+.hans-tag-medium,
+.hans-tag-md {
   @apply px-4 py-3 text-sm;
 }
 
-.hans-tag-large {
+.hans-tag-large,
+.hans-tag-lg {
   @apply px-5 py-4 text-base;
 }
 

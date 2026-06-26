@@ -23,7 +23,11 @@ const HansInputSchema = {
   label: 'string',
   labelColor: { type: 'custom', ref: {} as Color },
   placeholder: 'string',
-  value: 'string',
+  value: {
+    type: 'custom',
+    ref: {} as InputValue,
+    webComponentType: 'property',
+  },
   inputId: 'string',
   inputColor: { type: 'custom', ref: {} as Color },
   inputSize: { type: 'custom', ref: {} as Size },

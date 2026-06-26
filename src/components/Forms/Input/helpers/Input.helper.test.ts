@@ -65,10 +65,11 @@ describe('Input helper', () => {
     const inputSpy = vi.fn();
 
     event.host.addEventListener('input', inputSpy);
+    event.host.setAttribute('value', 'stale');
 
     handleInput(event);
 
-    expect(event.host.getAttribute('value')).toBe('portfolio');
+    expect(event.host.getAttribute('value')).toBeNull();
     expect(event.host.value).toBe('portfolio');
     expect(inputSpy).toHaveBeenCalledTimes(1);
     expect(inputSpy.mock.calls[0][0]).toMatchObject({

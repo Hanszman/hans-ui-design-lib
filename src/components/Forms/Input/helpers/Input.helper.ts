@@ -107,11 +107,5 @@ const syncHostValue = (
   value: string,
 ): void => {
   host.value = value;
-
-  if (value) {
-    host.setAttribute('value', value);
-    return;
-  }
-
   host.removeAttribute('value');
 };
