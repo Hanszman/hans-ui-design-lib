@@ -6,11 +6,8 @@ import {
 } from './Chart.types';
 import { HansLoading } from '../Loading/Loading';
 import {
-  buildCartesianSeries,
-  buildPieSeries,
   buildRandomPalette,
-  hasPieSeries,
-  isPieLikeType,
+  buildChartOption,
   resolveColor,
 } from './helpers/Chart.helper';
 
@@ -43,69 +40,19 @@ export const HansChart = React.memo((props: HansChartProps) => {
     return colors.map(resolveColor);
   }, [colors]);
 
-  const chartOption = React.useMemo(() => {
-    const pieLike = isPieLikeType(chartType, series);
-    const pieSeries = hasPieSeries(chartType, series);
-    const allSeries: echarts.SeriesOption[] = pieSeries
-      ? buildPieSeries(chartType, series, categories)
-      : buildCartesianSeries(chartType, series);
-    const pieCenter: [string, string] = showLegend ? ['50%', '42%'] : ['50%', '50%'];
-    const chartSeries = pieLike
-      ? allSeries.map((item) =>
-          item.type === 'pie'
-            ? {
-                ...item,
-                center: (item as echarts.PieSeriesOption).center ?? pieCenter,
-              }
-            : item,
-        )
-      : allSeries;
-
-    const baseOption: echarts.EChartsOption = {
-      animation: false,
-      title: title ? { text: title } : undefined,
-      tooltip: {
-        trigger: pieLike ? 'item' : 'axis',
-        axisPointer: pieLike ? undefined : { type: 'line' },
-      },
-      legend: showLegend
-        ? {
-            bottom: 0,
-            left: 'center',
-            type: 'plain',
-            width: '90%',
-            itemGap: 16,
-            padding: [0, 8, 0, 8],
-          }
-        : undefined,
-      color: palette,
-      grid: pieLike
-        ? undefined
-        : {
-            left: 8,
-            right: 8,
-            top: 16,
-            bottom: showLegend ? 56 : 16,
-            containLabel: true,
-          },
-      xAxis: pieLike ? undefined : { type: 'category', data: categories },
-      yAxis: pieLike ? undefined : { type: 'value' },
-      series: chartSeries,
-    };
-
-    return {
-      ...baseOption,
-      ...(optionOverrides as echarts.EChartsOption),
-    };
-  }, [
-    categories,
-    chartType,
-    optionOverrides,
-    palette,
-    series,
-    showLegend,
-    title,
-  ]);
+  const chartOption = React.useMemo(
+    () =>
+      buildChartOption(
+        chartType,
+        categories,
+        series,
+        palette,
+        showLegend,
+        title,
+        optionOverrides,
+      ),
+    [categories, chartType, optionOverrides, palette, series, showLegend, title],
+  );
 
   React.useEffect(() => {
     if (!wrapperRef.current || series.length === 0) return;

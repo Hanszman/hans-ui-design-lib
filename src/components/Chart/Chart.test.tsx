@@ -179,6 +179,7 @@ describe('HansChart', () => {
     const { rerender } = render(
       <HansChart
         chartType="pie"
+        title="Traffic"
         categories={['Organic', 'Paid']}
         series={[{ name: 'Traffic', type: 'pie', data: [30, 70], label: { position: 'vertical' } }]}
       />,
@@ -186,6 +187,11 @@ describe('HansChart', () => {
 
     let option = echartsMocks.mockSetOption.mock.calls[0][0];
     expect(option.tooltip.trigger).toBe('item');
+    expect(option.title).toMatchObject({
+      text: 'Traffic',
+      left: 'center',
+      top: 8,
+    });
     expect(option.legend).toMatchObject({
       bottom: 0,
       left: 'center',
@@ -194,13 +200,14 @@ describe('HansChart', () => {
     expect(option.series[0]).toMatchObject({
       type: 'pie',
       radius: '70%',
-      center: ['50%', '42%'],
+      center: ['50%', '46%'],
       label: { show: true, position: 'outside', rotate: 90 },
     });
 
     rerender(
       <HansChart
         chartType="doughnut"
+        title="Users"
         categories={['A', 'B']}
         series={[{ name: 'Users', type: 'doughnut', data: [{ name: 'A', value: 10 }, 20] }]}
       />,
@@ -208,7 +215,7 @@ describe('HansChart', () => {
 
     option = echartsMocks.mockSetOption.mock.calls[1][0];
     expect(option.series[0].radius).toEqual(['45%', '70%']);
-    expect(option.series[0].center).toEqual(['50%', '42%']);
+    expect(option.series[0].center).toEqual(['50%', '46%']);
     expect(option.series[0].data).toEqual([
       { name: 'A', value: 10 },
       { name: 'B', value: 20 },

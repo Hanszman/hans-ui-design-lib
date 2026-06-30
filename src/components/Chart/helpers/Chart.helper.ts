@@ -106,6 +106,73 @@ export const buildCommonSeriesStyle = (): Pick<
   },
 });
 
+export const resolveChartTitle = (
+  title: string,
+): echarts.EChartsOption['title'] =>
+  title
+    ? {
+        text: title,
+        left: 'center',
+        top: 8,
+        padding: [0, 0, 12, 0],
+        textStyle: {
+          fontSize: 16,
+          fontWeight: 600,
+        },
+      }
+    : undefined;
+
+export const resolveChartLegend = (
+  showLegend: boolean,
+): echarts.EChartsOption['legend'] =>
+  showLegend
+    ? {
+        bottom: 0,
+        left: 'center',
+        type: 'plain',
+        width: '90%',
+        itemGap: 16,
+        padding: [0, 8, 0, 8],
+      }
+    : undefined;
+
+export const resolveChartGrid = (
+  pieLike: boolean,
+  showLegend: boolean,
+): echarts.EChartsOption['grid'] =>
+  pieLike
+    ? undefined
+    : {
+        left: 8,
+        right: 8,
+        top: 16,
+        bottom: showLegend ? 56 : 16,
+        containLabel: true,
+      };
+
+export const resolvePieCenter = (
+  showLegend: boolean,
+  hasTitle: boolean,
+): [string, string] => {
+  if (showLegend && hasTitle) return ['50%', '46%'];
+  if (showLegend) return ['50%', '42%'];
+  if (hasTitle) return ['50%', '46%'];
+  return ['50%', '50%'];
+};
+
+export const applyPieCenterToSeries = (
+  series: echarts.SeriesOption[],
+  pieCenter: [string, string],
+): echarts.SeriesOption[] =>
+  series.map((item) =>
+    item.type === 'pie'
+      ? {
+          ...item,
+          center: (item as echarts.PieSeriesOption).center ?? pieCenter,
+        }
+      : item,
+  );
+
 export const resolveCartesianType = (
   chartType: HansChartType,
   seriesType: HansChartSeriesType | undefined,
@@ -195,4 +262,42 @@ export const hasPieSeries = (
   return series.some(
     (item) => item.type === 'pie' || item.type === 'doughnut',
   );
+};
+
+export const buildChartOption = (
+  chartType: HansChartType,
+  categories: string[],
+  series: HansChartSeries[],
+  palette: readonly string[],
+  showLegend: boolean,
+  title: string,
+  optionOverrides: Record<string, unknown>,
+): echarts.EChartsOption => {
+  const pieLike = isPieLikeType(chartType, series);
+  const pieSeries = hasPieSeries(chartType, series);
+  const allSeries: echarts.SeriesOption[] = pieSeries
+    ? buildPieSeries(chartType, series, categories)
+    : buildCartesianSeries(chartType, series);
+  const chartSeries = pieLike
+    ? applyPieCenterToSeries(
+        allSeries,
+        resolvePieCenter(showLegend, Boolean(title)),
+      )
+    : allSeries;
+
+  return {
+    animation: false,
+    title: resolveChartTitle(title),
+    tooltip: {
+      trigger: pieLike ? 'item' : 'axis',
+      axisPointer: pieLike ? undefined : { type: 'line' },
+    },
+    legend: resolveChartLegend(showLegend),
+    color: [...palette],
+    grid: resolveChartGrid(pieLike, showLegend),
+    xAxis: pieLike ? undefined : { type: 'category', data: categories },
+    yAxis: pieLike ? undefined : { type: 'value' },
+    series: chartSeries,
+    ...(optionOverrides as echarts.EChartsOption),
+  };
 };

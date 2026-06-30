@@ -1,8 +1,10 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 import {
+  applyPieCenterToSeries,
   buildCartesianLabel,
   buildCartesianSeries,
+  buildChartOption,
   buildCommonSeriesStyle,
   buildPieLabel,
   buildPieSeries,
@@ -16,6 +18,10 @@ import {
   resolveCartesianType,
   resolveColor,
   resolvePieRadius,
+  resolveChartGrid,
+  resolveChartLegend,
+  resolveChartTitle,
+  resolvePieCenter,
   resolveTokenColor,
 } from './Chart.helper';
 
@@ -93,6 +99,34 @@ describe('Chart.helper', () => {
     expect(style.blur).toBeTruthy();
   });
 
+  it('Should resolve chart title, legend, grid and pie center positions', () => {
+    expect(resolveChartTitle('Revenue')).toMatchObject({
+      text: 'Revenue',
+      left: 'center',
+      top: 8,
+    });
+    expect(resolveChartTitle('')).toBeUndefined();
+    expect(resolveChartLegend(true)).toMatchObject({
+      bottom: 0,
+      left: 'center',
+      type: 'plain',
+      width: '90%',
+    });
+    expect(resolveChartLegend(false)).toBeUndefined();
+    expect(resolveChartGrid(false, true)).toMatchObject({
+      left: 8,
+      right: 8,
+      top: 16,
+      bottom: 56,
+      containLabel: true,
+    });
+    expect(resolveChartGrid(true, true)).toBeUndefined();
+    expect(resolvePieCenter(true, true)).toEqual(['50%', '46%']);
+    expect(resolvePieCenter(true, false)).toEqual(['50%', '42%']);
+    expect(resolvePieCenter(false, true)).toEqual(['50%', '46%']);
+    expect(resolvePieCenter(false, false)).toEqual(['50%', '50%']);
+  });
+
   it('Should resolve cartesian type and build cartesian series', () => {
     expect(resolveCartesianType('mixed', 'bar')).toBe('bar');
     expect(resolveCartesianType('mixed', 'line')).toBe('line');
@@ -117,6 +151,62 @@ describe('Chart.helper', () => {
       ['A', 'B'],
     );
     expect(result[0]).toMatchObject({ type: 'pie', radius: '70%' });
+  });
+
+  it('Should apply pie centers and build chart options', () => {
+    expect(
+      applyPieCenterToSeries(
+        [
+          {
+            type: 'pie',
+            name: 'Traffic',
+            radius: '70%',
+            avoidLabelOverlap: true,
+            data: [{ name: 'Organic', value: 10 }],
+            label: { show: true, position: 'outside' },
+            emphasis: { focus: 'none', scale: false, itemStyle: { opacity: 1 } },
+            select: { disabled: true },
+            blur: { itemStyle: { opacity: 1 } },
+          },
+          {
+            type: 'line',
+            name: 'Fallback',
+            data: [2],
+            smooth: false,
+            emphasis: { focus: 'none', scale: false, itemStyle: { opacity: 1 } },
+            select: { disabled: true },
+            blur: { itemStyle: { opacity: 1 } },
+          },
+        ],
+        ['50%', '46%'],
+      ),
+    ).toMatchObject([
+      { type: 'pie', center: ['50%', '46%'] },
+      { type: 'line', name: 'Fallback' },
+    ]);
+
+    expect(
+      buildChartOption(
+        'pie',
+        ['Organic'],
+        [{ name: 'Traffic', type: 'pie', data: [10] }],
+        ['#8257e5'],
+        true,
+        'Traffic By Channel',
+        {},
+      ),
+    ).toMatchObject({
+      title: {
+        text: 'Traffic By Channel',
+        left: 'center',
+        top: 8,
+      },
+      legend: {
+        bottom: 0,
+        left: 'center',
+      },
+      series: [{ center: ['50%', '46%'] }],
+    });
   });
 
   it('Should detect pie-like and pie-series modes', () => {
