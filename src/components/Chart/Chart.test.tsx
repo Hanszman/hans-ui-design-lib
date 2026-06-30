@@ -113,6 +113,31 @@ describe('HansChart', () => {
     });
   });
 
+  it('Should reserve space for the legend on cartesian charts', () => {
+    render(
+      <HansChart
+        title="Orders"
+        chartType="bar"
+        categories={['Q1', 'Q2']}
+        series={[{ name: 'Orders', type: 'bar', data: [4, 6] }]}
+      />,
+    );
+
+    const option = echartsMocks.mockSetOption.mock.calls[0][0];
+    expect(option.legend).toMatchObject({
+      bottom: 0,
+      left: 'center',
+      type: 'plain',
+    });
+    expect(option.grid).toMatchObject({
+      left: 8,
+      right: 8,
+      top: 16,
+      bottom: 56,
+      containLabel: true,
+    });
+  });
+
   it('Should normalize object datapoints in cartesian charts', () => {
     render(
       <HansChart
@@ -161,9 +186,15 @@ describe('HansChart', () => {
 
     let option = echartsMocks.mockSetOption.mock.calls[0][0];
     expect(option.tooltip.trigger).toBe('item');
+    expect(option.legend).toMatchObject({
+      bottom: 0,
+      left: 'center',
+      type: 'plain',
+    });
     expect(option.series[0]).toMatchObject({
       type: 'pie',
       radius: '70%',
+      center: ['50%', '42%'],
       label: { show: true, position: 'outside', rotate: 90 },
     });
 
@@ -177,6 +208,7 @@ describe('HansChart', () => {
 
     option = echartsMocks.mockSetOption.mock.calls[1][0];
     expect(option.series[0].radius).toEqual(['45%', '70%']);
+    expect(option.series[0].center).toEqual(['50%', '42%']);
     expect(option.series[0].data).toEqual([
       { name: 'A', value: 10 },
       { name: 'B', value: 20 },

@@ -49,6 +49,17 @@ export const HansChart = React.memo((props: HansChartProps) => {
     const allSeries: echarts.SeriesOption[] = pieSeries
       ? buildPieSeries(chartType, series, categories)
       : buildCartesianSeries(chartType, series);
+    const pieCenter: [string, string] = showLegend ? ['50%', '42%'] : ['50%', '50%'];
+    const chartSeries = pieLike
+      ? allSeries.map((item) =>
+          item.type === 'pie'
+            ? {
+                ...item,
+                center: (item as echarts.PieSeriesOption).center ?? pieCenter,
+              }
+            : item,
+        )
+      : allSeries;
 
     const baseOption: echarts.EChartsOption = {
       animation: false,
@@ -57,11 +68,29 @@ export const HansChart = React.memo((props: HansChartProps) => {
         trigger: pieLike ? 'item' : 'axis',
         axisPointer: pieLike ? undefined : { type: 'line' },
       },
-      legend: showLegend ? {} : undefined,
+      legend: showLegend
+        ? {
+            bottom: 0,
+            left: 'center',
+            type: 'plain',
+            width: '90%',
+            itemGap: 16,
+            padding: [0, 8, 0, 8],
+          }
+        : undefined,
       color: palette,
+      grid: pieLike
+        ? undefined
+        : {
+            left: 8,
+            right: 8,
+            top: 16,
+            bottom: showLegend ? 56 : 16,
+            containLabel: true,
+          },
       xAxis: pieLike ? undefined : { type: 'category', data: categories },
       yAxis: pieLike ? undefined : { type: 'value' },
-      series: allSeries,
+      series: chartSeries,
     };
 
     return {
