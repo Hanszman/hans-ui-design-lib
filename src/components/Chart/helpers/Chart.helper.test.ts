@@ -104,6 +104,9 @@ describe('Chart.helper', () => {
       text: 'Revenue',
       left: 'center',
       top: 8,
+      textStyle: {
+        color: 'var(--text-color)',
+      },
     });
     expect(resolveChartTitle('')).toBeUndefined();
     expect(resolveChartLegend(true)).toMatchObject({
@@ -111,6 +114,9 @@ describe('Chart.helper', () => {
       left: 'center',
       type: 'plain',
       width: '90%',
+      textStyle: {
+        color: 'color-mix(in srgb, var(--text-color) 68%, transparent)',
+      },
     });
     expect(resolveChartLegend(false)).toBeUndefined();
     expect(resolveChartGrid(false, true)).toMatchObject({
@@ -202,10 +208,16 @@ describe('Chart.helper', () => {
         text: 'Traffic By Channel',
         left: 'center',
         top: 8,
+        textStyle: {
+          color: 'var(--text-color)',
+        },
       },
       legend: {
         bottom: 0,
         left: 'center',
+        textStyle: {
+          color: 'color-mix(in srgb, var(--text-color) 68%, transparent)',
+        },
       },
       series: [{ center: ['50%', '46%'] }],
     });

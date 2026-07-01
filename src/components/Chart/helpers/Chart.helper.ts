@@ -118,6 +118,7 @@ export const resolveChartTitle = (
         textStyle: {
           fontSize: 16,
           fontWeight: 600,
+          color: 'var(--text-color)',
         },
       }
     : undefined;
@@ -133,6 +134,9 @@ export const resolveChartLegend = (
         width: '90%',
         itemGap: 16,
         padding: [0, 8, 0, 8],
+        textStyle: {
+          color: 'color-mix(in srgb, var(--text-color) 68%, transparent)',
+        },
       }
     : undefined;
 
