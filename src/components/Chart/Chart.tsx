@@ -114,6 +114,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
         style={{ height, backgroundColor }}
         {...rest}
       >
+        {title ? <span className="hans-chart-title">{title}</span> : null}
         <HansLoading
           loadingType={loadingType}
           loadingSize="large"
@@ -132,6 +133,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
         style={{ height, backgroundColor }}
         {...rest}
       >
+        {title ? <span className="hans-chart-title">{title}</span> : null}
         <span className="hans-chart-empty-text">{emptyText}</span>
       </div>
     );
@@ -143,6 +145,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
       style={{ height, backgroundColor }}
       {...rest}
     >
+      {title ? <span className="hans-chart-title">{title}</span> : null}
       <div className="hans-chart-canvas" ref={wrapperRef} />
     </div>
   );

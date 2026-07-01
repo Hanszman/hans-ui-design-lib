@@ -20,7 +20,6 @@ import {
   resolvePieRadius,
   resolveChartGrid,
   resolveChartLegend,
-  resolveChartTitle,
   resolvePieCenter,
   resolveTokenColor,
 } from './Chart.helper';
@@ -100,15 +99,6 @@ describe('Chart.helper', () => {
   });
 
   it('Should resolve chart title, legend, grid and pie center positions', () => {
-    expect(resolveChartTitle('Revenue')).toMatchObject({
-      text: 'Revenue',
-      left: 'center',
-      top: 8,
-      textStyle: {
-        color: 'var(--text-color)',
-      },
-    });
-    expect(resolveChartTitle('')).toBeUndefined();
     expect(resolveChartLegend(true)).toMatchObject({
       bottom: 0,
       left: 'center',
@@ -127,10 +117,8 @@ describe('Chart.helper', () => {
       containLabel: true,
     });
     expect(resolveChartGrid(true, true)).toBeUndefined();
-    expect(resolvePieCenter(true, true)).toEqual(['50%', '46%']);
-    expect(resolvePieCenter(true, false)).toEqual(['50%', '42%']);
-    expect(resolvePieCenter(false, true)).toEqual(['50%', '46%']);
-    expect(resolvePieCenter(false, false)).toEqual(['50%', '50%']);
+    expect(resolvePieCenter(true)).toEqual(['50%', '42%']);
+    expect(resolvePieCenter(false)).toEqual(['50%', '50%']);
   });
 
   it('Should resolve cartesian type and build cartesian series', () => {
@@ -184,10 +172,10 @@ describe('Chart.helper', () => {
             blur: { itemStyle: { opacity: 1 } },
           },
         ],
-        ['50%', '46%'],
+        ['50%', '42%'],
       ),
     ).toMatchObject([
-      { type: 'pie', center: ['50%', '46%'] },
+      { type: 'pie', center: ['50%', '42%'] },
       { type: 'line', name: 'Fallback' },
     ]);
 
@@ -196,31 +184,23 @@ describe('Chart.helper', () => {
         'pie',
         ['Organic'],
         [{ name: 'Traffic', type: 'pie', data: [10] }],
-        ['#8257e5'],
-        true,
-        'Traffic By Channel',
-        'transparent',
-        {},
-      ),
-    ).toMatchObject({
-      backgroundColor: 'transparent',
-      title: {
-        text: 'Traffic By Channel',
-        left: 'center',
-        top: 8,
-        textStyle: {
-          color: 'var(--text-color)',
-        },
+      ['#8257e5'],
+      true,
+      'Traffic By Channel',
+      'transparent',
+      {},
+    ),
+  ).toMatchObject({
+    backgroundColor: 'transparent',
+    legend: {
+      bottom: 0,
+      left: 'center',
+      textStyle: {
+        color: 'color-mix(in srgb, var(--text-color) 68%, transparent)',
       },
-      legend: {
-        bottom: 0,
-        left: 'center',
-        textStyle: {
-          color: 'color-mix(in srgb, var(--text-color) 68%, transparent)',
-        },
-      },
-      series: [{ center: ['50%', '46%'] }],
-    });
+    },
+    series: [{ center: ['50%', '42%'] }],
+  });
   });
 
   it('Should detect pie-like and pie-series modes', () => {

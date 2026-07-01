@@ -106,23 +106,6 @@ export const buildCommonSeriesStyle = (): Pick<
   },
 });
 
-export const resolveChartTitle = (
-  title: string,
-): echarts.EChartsOption['title'] =>
-  title
-    ? {
-        text: title,
-        left: 'center',
-        top: 8,
-        padding: [0, 0, 12, 0],
-        textStyle: {
-          fontSize: 16,
-          fontWeight: 600,
-          color: 'var(--text-color)',
-        },
-      }
-    : undefined;
-
 export const resolveChartLegend = (
   showLegend: boolean,
 ): echarts.EChartsOption['legend'] =>
@@ -156,11 +139,8 @@ export const resolveChartGrid = (
 
 export const resolvePieCenter = (
   showLegend: boolean,
-  hasTitle: boolean,
 ): [string, string] => {
-  if (showLegend && hasTitle) return ['50%', '46%'];
   if (showLegend) return ['50%', '42%'];
-  if (hasTitle) return ['50%', '46%'];
   return ['50%', '50%'];
 };
 
@@ -286,14 +266,13 @@ export const buildChartOption = (
   const chartSeries = pieLike
     ? applyPieCenterToSeries(
         allSeries,
-        resolvePieCenter(showLegend, Boolean(title)),
+        resolvePieCenter(showLegend),
       )
     : allSeries;
 
   return {
     animation: false,
     backgroundColor,
-    title: resolveChartTitle(title),
     tooltip: {
       trigger: pieLike ? 'item' : 'axis',
       axisPointer: pieLike ? undefined : { type: 'line' },

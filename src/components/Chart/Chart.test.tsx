@@ -38,6 +38,15 @@ describe('HansChart', () => {
 
   it('Should render empty state when no series is provided', () => {
     render(<HansChart title="Empty" series={[]} emptyText="No data" />);
+    expect(screen.getByText('Empty')).toBeInTheDocument();
+    expect(screen.getByText('No data')).toBeInTheDocument();
+    expect(echartsMocks.mockInit).not.toHaveBeenCalled();
+  });
+
+  it('Should render empty state without title when title is not provided', () => {
+    render(<HansChart series={[]} emptyText="No data" />);
+
+    expect(screen.queryByText('No data available')).not.toBeInTheDocument();
     expect(screen.getByText('No data')).toBeInTheDocument();
     expect(echartsMocks.mockInit).not.toHaveBeenCalled();
   });
@@ -54,6 +63,22 @@ describe('HansChart', () => {
     );
 
     expect(container.querySelector('.hans-chart-loading')).toBeInTheDocument();
+    expect(screen.getByText('Loading')).toBeInTheDocument();
+    expect(screen.getByLabelText('Loading chart')).toBeInTheDocument();
+    expect(echartsMocks.mockInit).not.toHaveBeenCalled();
+  });
+
+  it('Should render loading state without title when title is not provided', () => {
+    render(
+      <HansChart
+        chartType="line"
+        categories={['Jan']}
+        series={[{ name: 'Revenue', data: [10] }]}
+        isLoading
+      />,
+    );
+
+    expect(screen.queryByText('Loading')).not.toBeInTheDocument();
     expect(screen.getByLabelText('Loading chart')).toBeInTheDocument();
     expect(echartsMocks.mockInit).not.toHaveBeenCalled();
   });
@@ -87,6 +112,20 @@ describe('HansChart', () => {
       smooth: true,
       label: { show: true, position: 'top', rotate: 0, formatter: '{c}' },
     });
+  });
+
+  it('Should render chart without title when title is not provided', () => {
+    const { container } = render(
+      <HansChart
+        chartType="line"
+        categories={['Jan', 'Feb']}
+        series={[{ name: 'Revenue', type: 'line', data: [10, 20] }]}
+        colors={['primary']}
+      />,
+    );
+
+    expect(container.querySelector('.hans-chart-title')).not.toBeInTheDocument();
+    expect(echartsMocks.mockInit).toHaveBeenCalledTimes(1);
   });
 
   it('Should create bar option with overrides and keep bar visible on hover', () => {
@@ -205,11 +244,7 @@ describe('HansChart', () => {
 
     let option = echartsMocks.mockSetOption.mock.calls[0][0];
     expect(option.tooltip.trigger).toBe('item');
-    expect(option.title).toMatchObject({
-      text: 'Traffic',
-      left: 'center',
-      top: 8,
-    });
+    expect(screen.getByText('Traffic')).toBeInTheDocument();
     expect(option.legend).toMatchObject({
       bottom: 0,
       left: 'center',
@@ -218,7 +253,7 @@ describe('HansChart', () => {
     expect(option.series[0]).toMatchObject({
       type: 'pie',
       radius: '70%',
-      center: ['50%', '46%'],
+      center: ['50%', '42%'],
       label: { show: true, position: 'outside', rotate: 90 },
     });
 
@@ -233,7 +268,7 @@ describe('HansChart', () => {
 
     option = echartsMocks.mockSetOption.mock.calls[1][0];
     expect(option.series[0].radius).toEqual(['45%', '70%']);
-    expect(option.series[0].center).toEqual(['50%', '46%']);
+    expect(option.series[0].center).toEqual(['50%', '42%']);
     expect(option.series[0].data).toEqual([
       { name: 'A', value: 10 },
       { name: 'B', value: 20 },

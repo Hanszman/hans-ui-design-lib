@@ -1,9 +1,13 @@
 .hans-chart {
-  @apply w-full rounded-lg bg-transparent p-3;
+  @apply flex w-full flex-col rounded-lg bg-transparent p-3;
+}
+
+.hans-chart-title {
+  @apply block pb-3 text-base font-semibold leading-6 text-[var(--text-color)];
 }
 
 .hans-chart-canvas {
-  @apply w-full h-full min-h-[220px];
+  @apply min-h-[220px] w-full flex-1;
 }
 
 .hans-chart-empty {
