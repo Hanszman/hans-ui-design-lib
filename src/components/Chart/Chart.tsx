@@ -22,6 +22,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
     showLegend = true,
     isLoading = false,
     loadingType = 'skeleton',
+    backgroundColor = 'transparent',
     customClasses = '',
     emptyText = 'No data available',
     optionOverrides = {},
@@ -49,9 +50,19 @@ export const HansChart = React.memo((props: HansChartProps) => {
         palette,
         showLegend,
         title,
+        backgroundColor,
         optionOverrides,
       ),
-    [categories, chartType, optionOverrides, palette, series, showLegend, title],
+    [
+      backgroundColor,
+      categories,
+      chartType,
+      optionOverrides,
+      palette,
+      series,
+      showLegend,
+      title,
+    ],
   );
 
   React.useEffect(() => {
@@ -98,7 +109,11 @@ export const HansChart = React.memo((props: HansChartProps) => {
 
   if (isLoading) {
     return (
-      <div className={`hans-chart hans-chart-loading ${customClasses}`} style={{ height }} {...rest}>
+      <div
+        className={`hans-chart hans-chart-loading ${customClasses}`}
+        style={{ height, backgroundColor }}
+        {...rest}
+      >
         <HansLoading
           loadingType={loadingType}
           loadingSize="large"
@@ -114,7 +129,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
     return (
       <div
         className={`hans-chart hans-chart-empty ${customClasses}`}
-        style={{ height }}
+        style={{ height, backgroundColor }}
         {...rest}
       >
         <span className="hans-chart-empty-text">{emptyText}</span>
@@ -123,7 +138,11 @@ export const HansChart = React.memo((props: HansChartProps) => {
   }
 
   return (
-    <div className={`hans-chart ${customClasses}`} style={{ height }} {...rest}>
+    <div
+      className={`hans-chart ${customClasses}`}
+      style={{ height, backgroundColor }}
+      {...rest}
+    >
       <div className="hans-chart-canvas" ref={wrapperRef} />
     </div>
   );

@@ -84,6 +84,7 @@ const HansChartSchema = {
     ref: [] as HansChartColor[],
     webComponentType: 'property',
   },
+  backgroundColor: 'string',
   height: 'number',
   showLegend: 'boolean',
   isLoading: 'boolean',

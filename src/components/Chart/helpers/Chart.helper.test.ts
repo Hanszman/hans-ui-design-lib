@@ -193,9 +193,11 @@ describe('Chart.helper', () => {
         ['#8257e5'],
         true,
         'Traffic By Channel',
+        'transparent',
         {},
       ),
     ).toMatchObject({
+      backgroundColor: 'transparent',
       title: {
         text: 'Traffic By Channel',
         left: 'center',

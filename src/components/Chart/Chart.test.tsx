@@ -105,11 +105,29 @@ describe('HansChart', () => {
     const option = echartsMocks.mockSetOption.mock.calls[0][0];
     expect(option.legend).toBeUndefined();
     expect(option.grid).toEqual({ left: 16 });
+    expect(option.backgroundColor).toBe('transparent');
     expect(option.series[0]).toMatchObject({
       type: 'bar',
       label: { show: true, position: 'inside' },
       emphasis: { focus: 'none', scale: false, itemStyle: { opacity: 1 } },
       select: { disabled: true },
+    });
+  });
+
+  it('Should allow customizing chart background color', () => {
+    const { container } = render(
+      <HansChart
+        chartType="line"
+        categories={['Jan']}
+        series={[{ name: 'Revenue', data: [10] }]}
+        backgroundColor="rgb(1, 2, 3)"
+      />,
+    );
+
+    const option = echartsMocks.mockSetOption.mock.calls[0][0];
+    expect(option.backgroundColor).toBe('rgb(1, 2, 3)');
+    expect(container.querySelector('.hans-chart')).toHaveStyle({
+      backgroundColor: 'rgb(1, 2, 3)',
     });
   });
 

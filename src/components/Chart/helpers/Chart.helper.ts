@@ -271,6 +271,7 @@ export const buildChartOption = (
   palette: readonly string[],
   showLegend: boolean,
   title: string,
+  backgroundColor: string,
   optionOverrides: Record<string, unknown>,
 ): echarts.EChartsOption => {
   const pieLike = isPieLikeType(chartType, series);
@@ -287,6 +288,7 @@ export const buildChartOption = (
 
   return {
     animation: false,
+    backgroundColor,
     title: resolveChartTitle(title),
     tooltip: {
       trigger: pieLike ? 'item' : 'axis',
