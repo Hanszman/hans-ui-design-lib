@@ -1,6 +1,10 @@
 import type React from 'react';
 
 export type InputValueChangeHandler = (value: string) => void;
+export type InputActionEventName =
+  | 'rightIconClick'
+  | 'righticonclick'
+  | 'right-icon-click';
 
 export type InputValueEventName =
   | 'valueChange'
@@ -19,4 +23,8 @@ export type DispatchInputValueEventsParams = {
   target: HTMLInputElement;
   value: string;
   eventName: StandardInputEventName;
+};
+
+export type DispatchInputActionEventsParams = {
+  target: HTMLElement;
 };

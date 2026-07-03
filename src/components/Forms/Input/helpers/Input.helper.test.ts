@@ -1,5 +1,7 @@
 import { vi } from 'vitest';
 import {
+  dispatchInputActionEvents,
+  INPUT_ACTION_EVENT_NAMES,
   createInputValueEventHandlers,
   INPUT_VALUE_EVENT_NAMES,
 } from './Input.helper';
@@ -119,5 +121,27 @@ describe('Input helper', () => {
     expect(
       (changeSpy.mock.calls[0][0] as Event & { detail?: string }).detail,
     ).toBeUndefined();
+  });
+
+  it('Should dispatch framework friendly right icon action events', () => {
+    const event = createInputEvent('visibility');
+    const hostEventSpies = INPUT_ACTION_EVENT_NAMES.map((eventName) => {
+      const spy = vi.fn();
+      event.host.addEventListener(eventName, spy);
+      return spy;
+    });
+
+    dispatchInputActionEvents({
+      target: event.currentTarget,
+    });
+
+    hostEventSpies.forEach((spy) => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy.mock.calls[0][0]).toMatchObject({
+        bubbles: true,
+        composed: true,
+        detail: null,
+      });
+    });
   });
 });

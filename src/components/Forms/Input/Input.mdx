@@ -62,6 +62,14 @@ React-specific nodes:
 
 <Canvas of={HansInputStories.WithIconNames} />
 
+## Action Icons
+
+When the trailing icon should behave like a real action, use `rightIcon` together with
+`rightIconAriaLabel` and `onRightIconClick` instead of creating an overlay button in the
+consumer application:
+
+<Canvas of={HansInputStories.WithActionIcon} />
+
 ## Web Component Events
 
 When used as `<hans-input>`, the component exposes normalized value events from
@@ -75,6 +83,19 @@ case-insensitive friendly:
 For compatibility, the Web Component also dispatches `valueChange` and
 `value-change`. The event detail is always the current input value, so framework
 consumers can update local state without parsing React or native event objects.
+
+For trailing icon actions, prefer `righticonclick` in Angular templates:
+
+```html
+<hans-input
+  rightIcon="LuEye"
+  rightIconAriaLabel="Show password"
+  (righticonclick)="togglePasswordVisibility()"
+></hans-input>
+```
+
+For compatibility, the component also dispatches `rightIconClick` and
+`right-icon-click`.
 
 ## Validation
 

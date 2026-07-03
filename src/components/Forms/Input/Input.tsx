@@ -1,7 +1,10 @@
 import React from 'react';
 import { HansIcon } from '../../Icon/Icon';
 import type { HansInputProps, InputValue } from './Input.types';
-import { createInputValueEventHandlers } from './helpers/Input.helper';
+import {
+  createInputValueEventHandlers,
+  dispatchInputActionEvents,
+} from './helpers/Input.helper';
 
 export const HansInput = React.memo((props: HansInputProps) => {
   const {
@@ -20,6 +23,8 @@ export const HansInput = React.memo((props: HansInputProps) => {
     disabled = false,
     leftIcon,
     rightIcon,
+    rightIconAriaLabel = 'Input action',
+    onRightIconClick,
     children,
     onChange,
     onInput,
@@ -57,6 +62,16 @@ export const HansInput = React.memo((props: HansInputProps) => {
     }
 
     dispatchInput(event);
+  };
+
+  const handleRightIconClick: React.MouseEventHandler<HTMLButtonElement> = (
+    event,
+  ) => {
+    onRightIconClick?.(event);
+
+    dispatchInputActionEvents({
+      target: event.currentTarget,
+    });
   };
 
   const inputClassName = [
@@ -108,15 +123,31 @@ export const HansInput = React.memo((props: HansInputProps) => {
         />
 
         {rightIcon ? (
-          <span
-            className={`hans-input-icon hans-input-icon-right hans-input-icon-${inputColor}`}
-          >
-            {typeof rightIcon === 'string' ? (
-              <HansIcon name={rightIcon} iconSize="small" />
-            ) : (
-              rightIcon
-            )}
-          </span>
+          onRightIconClick ? (
+            <button
+              type="button"
+              className={`hans-input-icon hans-input-icon-right hans-input-icon-action hans-input-icon-${inputColor}`}
+              aria-label={rightIconAriaLabel}
+              onClick={handleRightIconClick}
+              disabled={disabled}
+            >
+              {typeof rightIcon === 'string' ? (
+                <HansIcon name={rightIcon} iconSize="small" />
+              ) : (
+                rightIcon
+              )}
+            </button>
+          ) : (
+            <span
+              className={`hans-input-icon hans-input-icon-right hans-input-icon-${inputColor}`}
+            >
+              {typeof rightIcon === 'string' ? (
+                <HansIcon name={rightIcon} iconSize="small" />
+              ) : (
+                rightIcon
+              )}
+            </span>
+          )
         ) : null}
       </div>
 

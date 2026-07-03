@@ -87,6 +87,50 @@ describe('HansInput', () => {
     expect(input).toHaveClass('hans-input-has-right-icon');
   });
 
+  it('Should render the trailing icon as an accessible action when requested', () => {
+    const onRightIconClick = vi.fn();
+
+    render(
+      <HansInput
+        placeholder="Password"
+        rightIcon="LuEye"
+        rightIconAriaLabel="Show password"
+        onRightIconClick={onRightIconClick}
+      />,
+    );
+
+    const actionButton = screen.getByRole('button', {
+      name: 'Show password',
+    });
+
+    fireEvent.click(actionButton);
+
+    expect(actionButton).toHaveClass('hans-input-icon-action');
+    expect(onRightIconClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should support a custom trailing action node', () => {
+    const onRightIconClick = vi.fn();
+
+    render(
+      <HansInput
+        placeholder="Password"
+        rightIcon={<span data-testid="custom-action-icon">A</span>}
+        rightIconAriaLabel="Toggle visibility"
+        onRightIconClick={onRightIconClick}
+      />,
+    );
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'Toggle visibility',
+      }),
+    );
+
+    expect(screen.getByTestId('custom-action-icon')).toBeInTheDocument();
+    expect(onRightIconClick).toHaveBeenCalledTimes(1);
+  });
+
   it('Should support controlled and uncontrolled values', () => {
     const { rerender } = render(
       <HansInput placeholder="Controlled" value="abc" onChange={() => {}} />,
@@ -165,5 +209,23 @@ describe('HansInput', () => {
     expect(input).toHaveAttribute('minLength', '2');
     expect(input).toHaveAttribute('maxLength', '5');
     expect(input).toBeDisabled();
+  });
+
+  it('Should disable the trailing icon action when the input is disabled', () => {
+    render(
+      <HansInput
+        placeholder="Disabled action"
+        rightIcon="LuEye"
+        rightIconAriaLabel="Show password"
+        onRightIconClick={() => {}}
+        disabled
+      />,
+    );
+
+    expect(
+      screen.getByRole('button', {
+        name: 'Show password',
+      }),
+    ).toBeDisabled();
   });
 });

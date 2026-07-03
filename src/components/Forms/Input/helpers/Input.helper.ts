@@ -1,7 +1,9 @@
 import type React from 'react';
 import type {
   CreateInputValueEventHandlersParams,
+  DispatchInputActionEventsParams,
   DispatchInputValueEventsParams,
+  InputActionEventName,
   InputValueEventName,
   StandardInputEventName,
 } from './Input.helper.types';
@@ -11,13 +13,18 @@ export const INPUT_VALUE_EVENT_NAMES: readonly InputValueEventName[] = [
   'valuechange',
   'value-change',
 ];
+export const INPUT_ACTION_EVENT_NAMES: readonly InputActionEventName[] = [
+  'rightIconClick',
+  'righticonclick',
+  'right-icon-click',
+];
 
 export const dispatchInputValueEvents = ({
   target,
   value,
   eventName,
 }: DispatchInputValueEventsParams): void => {
-  const host = resolveInputValueHost(target);
+  const host = resolveInputHost(target);
 
   if (!host) {
     return;
@@ -28,6 +35,20 @@ export const dispatchInputValueEvents = ({
 
   for (const valueEventName of INPUT_VALUE_EVENT_NAMES) {
     host.dispatchEvent(createValueEvent(valueEventName, value));
+  }
+};
+
+export const dispatchInputActionEvents = ({
+  target,
+}: DispatchInputActionEventsParams): void => {
+  const host = resolveInputHost(target);
+
+  if (!host) {
+    return;
+  }
+
+  for (const eventName of INPUT_ACTION_EVENT_NAMES) {
+    host.dispatchEvent(createActionEvent(eventName));
   }
 };
 
@@ -90,8 +111,15 @@ const createStandardInputEvent = (
   });
 };
 
-const resolveInputValueHost = (
-  target: HTMLInputElement,
+const createActionEvent = (eventName: InputActionEventName): CustomEvent<null> =>
+  new CustomEvent(eventName, {
+    bubbles: true,
+    composed: true,
+    detail: null,
+  });
+
+const resolveInputHost = (
+  target: HTMLElement,
 ): HTMLElement | null => {
   const rootNode = target.getRootNode();
 

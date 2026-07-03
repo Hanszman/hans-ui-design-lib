@@ -145,6 +145,21 @@ export const WithIcons: Story = {
   ),
 };
 
+export const WithActionIcon: Story = {
+  args: {
+    label: 'Password',
+    inputType: 'password',
+    placeholder: 'Enter your password',
+    inputColor: 'base',
+    leftIcon: 'LuLockKeyhole',
+    rightIcon: 'LuEye',
+    rightIconAriaLabel: 'Show password',
+    onRightIconClick: () => {
+      console.log('Right icon action clicked');
+    },
+  },
+};
+
 export const WithIconNames: Story = {
   args: {
     label: 'Search',

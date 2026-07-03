@@ -18,6 +18,9 @@ export type InputType =
 export type InputIcon = React.ReactNode | string;
 export type InputValueChangeHandler = (value: string) => void;
 export type InputValue = string | number | readonly string[];
+export type InputIconClickHandler = (
+  event: React.MouseEvent<HTMLButtonElement>,
+) => void;
 
 const HansInputSchema = {
   label: 'string',
@@ -38,6 +41,12 @@ const HansInputSchema = {
   disabled: 'boolean',
   leftIcon: { type: 'custom', ref: {} as InputIcon },
   rightIcon: { type: 'custom', ref: {} as InputIcon },
+  rightIconAriaLabel: 'string',
+  onRightIconClick: {
+    type: 'custom',
+    ref: {} as InputIconClickHandler,
+    webComponentType: 'function',
+  },
   onValueChange: {
     type: 'custom',
     ref: {} as InputValueChangeHandler,
