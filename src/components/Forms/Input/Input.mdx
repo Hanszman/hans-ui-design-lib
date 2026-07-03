@@ -64,9 +64,9 @@ React-specific nodes:
 
 ## Action Icons
 
-When the trailing icon should behave like a real action, use `rightIcon` together with
-`rightIconAriaLabel` and `onRightIconClick` instead of creating an overlay button in the
-consumer application:
+When an input icon should behave like a real action, use `leftIcon` or `rightIcon`
+together with the matching `*IconAriaLabel` and `on*IconClick` props instead of creating
+overlay buttons in the consumer application:
 
 <Canvas of={HansInputStories.WithActionIcon} />
 
@@ -96,6 +96,9 @@ For trailing icon actions, prefer `righticonclick` in Angular templates:
 
 For compatibility, the component also dispatches `rightIconClick` and
 `right-icon-click`.
+
+Leading icon actions follow the same pattern with `onLeftIconClick`,
+`leftIconAriaLabel`, `lefticonclick`, `leftIconClick` and `left-icon-click`.
 
 ## Validation
 

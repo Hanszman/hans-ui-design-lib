@@ -154,9 +154,7 @@ export const WithActionIcon: Story = {
     leftIcon: 'LuLockKeyhole',
     rightIcon: 'LuEye',
     rightIconAriaLabel: 'Show password',
-    onRightIconClick: () => {
-      console.log('Right icon action clicked');
-    },
+    onRightIconClick: () => window.alert('Password visibility action triggered.'),
   },
 };
 

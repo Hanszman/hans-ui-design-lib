@@ -40,6 +40,12 @@ const HansInputSchema = {
   customClasses: 'string',
   disabled: 'boolean',
   leftIcon: { type: 'custom', ref: {} as InputIcon },
+  leftIconAriaLabel: 'string',
+  onLeftIconClick: {
+    type: 'custom',
+    ref: {} as InputIconClickHandler,
+    webComponentType: 'function',
+  },
   rightIcon: { type: 'custom', ref: {} as InputIcon },
   rightIconAriaLabel: 'string',
   onRightIconClick: {

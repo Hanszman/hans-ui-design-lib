@@ -109,6 +109,28 @@ describe('HansInput', () => {
     expect(onRightIconClick).toHaveBeenCalledTimes(1);
   });
 
+  it('Should render the leading icon as an accessible action when requested', () => {
+    const onLeftIconClick = vi.fn();
+
+    render(
+      <HansInput
+        placeholder="Search"
+        leftIcon="LuSearch"
+        leftIconAriaLabel="Search action"
+        onLeftIconClick={onLeftIconClick}
+      />,
+    );
+
+    const actionButton = screen.getByRole('button', {
+      name: 'Search action',
+    });
+
+    fireEvent.click(actionButton);
+
+    expect(actionButton).toHaveClass('hans-input-icon-action');
+    expect(onLeftIconClick).toHaveBeenCalledTimes(1);
+  });
+
   it('Should support a custom trailing action node', () => {
     const onRightIconClick = vi.fn();
 
@@ -225,6 +247,24 @@ describe('HansInput', () => {
     expect(
       screen.getByRole('button', {
         name: 'Show password',
+      }),
+    ).toBeDisabled();
+  });
+
+  it('Should disable the leading icon action when the input is disabled', () => {
+    render(
+      <HansInput
+        placeholder="Disabled action"
+        leftIcon="LuSearch"
+        leftIconAriaLabel="Search action"
+        onLeftIconClick={() => {}}
+        disabled
+      />,
+    );
+
+    expect(
+      screen.getByRole('button', {
+        name: 'Search action',
       }),
     ).toBeDisabled();
   });

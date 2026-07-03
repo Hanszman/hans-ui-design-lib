@@ -188,6 +188,10 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
                 />
               )
             }
+            rightIconAriaLabel={
+              isOpen ? 'Collapse select options' : 'Expand select options'
+            }
+            onRightIconClick={!isLoadingOptions ? handleToggle : undefined}
             {...rest}
           />
         )}

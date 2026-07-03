@@ -1,6 +1,6 @@
 import React from 'react';
-import { HansIcon } from '../../Icon/Icon';
 import type { HansInputProps, InputValue } from './Input.types';
+import { HansInputActionIcon } from './InputActionIcon/InputActionIcon';
 import {
   createInputValueEventHandlers,
   dispatchInputActionEvents,
@@ -22,8 +22,10 @@ export const HansInput = React.memo((props: HansInputProps) => {
     customClasses = '',
     disabled = false,
     leftIcon,
+    leftIconAriaLabel = 'Left input action',
+    onLeftIconClick,
     rightIcon,
-    rightIconAriaLabel = 'Input action',
+    rightIconAriaLabel = 'Right input action',
     onRightIconClick,
     children,
     onChange,
@@ -64,6 +66,17 @@ export const HansInput = React.memo((props: HansInputProps) => {
     dispatchInput(event);
   };
 
+  const handleLeftIconClick: React.MouseEventHandler<HTMLButtonElement> = (
+    event,
+  ) => {
+    onLeftIconClick?.(event);
+
+    dispatchInputActionEvents({
+      target: event.currentTarget,
+      side: 'left',
+    });
+  };
+
   const handleRightIconClick: React.MouseEventHandler<HTMLButtonElement> = (
     event,
   ) => {
@@ -71,6 +84,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
 
     dispatchInputActionEvents({
       target: event.currentTarget,
+      side: 'right',
     });
   };
 
@@ -99,15 +113,14 @@ export const HansInput = React.memo((props: HansInputProps) => {
 
       <div className="hans-input-field">
         {leftIcon ? (
-          <span
-            className={`hans-input-icon hans-input-icon-left hans-input-icon-${inputColor}`}
-          >
-            {typeof leftIcon === 'string' ? (
-              <HansIcon name={leftIcon} iconSize="small" />
-            ) : (
-              leftIcon
-            )}
-          </span>
+          <HansInputActionIcon
+            icon={leftIcon}
+            side="left"
+            inputColor={inputColor}
+            disabled={disabled}
+            ariaLabel={leftIconAriaLabel}
+            onClick={onLeftIconClick ? handleLeftIconClick : undefined}
+          />
         ) : null}
 
         <input
@@ -123,31 +136,14 @@ export const HansInput = React.memo((props: HansInputProps) => {
         />
 
         {rightIcon ? (
-          onRightIconClick ? (
-            <button
-              type="button"
-              className={`hans-input-icon hans-input-icon-right hans-input-icon-action hans-input-icon-${inputColor}`}
-              aria-label={rightIconAriaLabel}
-              onClick={handleRightIconClick}
-              disabled={disabled}
-            >
-              {typeof rightIcon === 'string' ? (
-                <HansIcon name={rightIcon} iconSize="small" />
-              ) : (
-                rightIcon
-              )}
-            </button>
-          ) : (
-            <span
-              className={`hans-input-icon hans-input-icon-right hans-input-icon-${inputColor}`}
-            >
-              {typeof rightIcon === 'string' ? (
-                <HansIcon name={rightIcon} iconSize="small" />
-              ) : (
-                rightIcon
-              )}
-            </span>
-          )
+          <HansInputActionIcon
+            icon={rightIcon}
+            side="right"
+            inputColor={inputColor}
+            disabled={disabled}
+            ariaLabel={rightIconAriaLabel}
+            onClick={onRightIconClick ? handleRightIconClick : undefined}
+          />
         ) : null}
       </div>
 

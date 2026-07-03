@@ -2,6 +2,7 @@ import type React from 'react';
 import type {
   CreateInputValueEventHandlersParams,
   DispatchInputActionEventsParams,
+  InputActionSide,
   DispatchInputValueEventsParams,
   InputActionEventName,
   InputValueEventName,
@@ -13,11 +14,12 @@ export const INPUT_VALUE_EVENT_NAMES: readonly InputValueEventName[] = [
   'valuechange',
   'value-change',
 ];
-export const INPUT_ACTION_EVENT_NAMES: readonly InputActionEventName[] = [
-  'rightIconClick',
-  'righticonclick',
-  'right-icon-click',
-];
+export const INPUT_ACTION_EVENT_NAMES_BY_SIDE: Readonly<
+  Record<InputActionSide, readonly InputActionEventName[]>
+> = {
+  left: ['leftIconClick', 'lefticonclick', 'left-icon-click'],
+  right: ['rightIconClick', 'righticonclick', 'right-icon-click'],
+};
 
 export const dispatchInputValueEvents = ({
   target,
@@ -40,6 +42,7 @@ export const dispatchInputValueEvents = ({
 
 export const dispatchInputActionEvents = ({
   target,
+  side,
 }: DispatchInputActionEventsParams): void => {
   const host = resolveInputHost(target);
 
@@ -47,7 +50,7 @@ export const dispatchInputActionEvents = ({
     return;
   }
 
-  for (const eventName of INPUT_ACTION_EVENT_NAMES) {
+  for (const eventName of INPUT_ACTION_EVENT_NAMES_BY_SIDE[side]) {
     host.dispatchEvent(createActionEvent(eventName));
   }
 };

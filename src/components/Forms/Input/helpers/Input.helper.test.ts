@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 import {
   dispatchInputActionEvents,
-  INPUT_ACTION_EVENT_NAMES,
+  INPUT_ACTION_EVENT_NAMES_BY_SIDE,
   createInputValueEventHandlers,
   INPUT_VALUE_EVENT_NAMES,
 } from './Input.helper';
@@ -125,7 +125,7 @@ describe('Input helper', () => {
 
   it('Should dispatch framework friendly right icon action events', () => {
     const event = createInputEvent('visibility');
-    const hostEventSpies = INPUT_ACTION_EVENT_NAMES.map((eventName) => {
+    const hostEventSpies = INPUT_ACTION_EVENT_NAMES_BY_SIDE.right.map((eventName) => {
       const spy = vi.fn();
       event.host.addEventListener(eventName, spy);
       return spy;
@@ -133,6 +133,30 @@ describe('Input helper', () => {
 
     dispatchInputActionEvents({
       target: event.currentTarget,
+      side: 'right',
+    });
+
+    hostEventSpies.forEach((spy) => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy.mock.calls[0][0]).toMatchObject({
+        bubbles: true,
+        composed: true,
+        detail: null,
+      });
+    });
+  });
+
+  it('Should dispatch framework friendly left icon action events', () => {
+    const event = createInputEvent('mail');
+    const hostEventSpies = INPUT_ACTION_EVENT_NAMES_BY_SIDE.left.map((eventName) => {
+      const spy = vi.fn();
+      event.host.addEventListener(eventName, spy);
+      return spy;
+    });
+
+    dispatchInputActionEvents({
+      target: event.currentTarget,
+      side: 'left',
     });
 
     hostEventSpies.forEach((spy) => {

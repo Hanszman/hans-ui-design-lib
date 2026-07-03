@@ -1,7 +1,11 @@
 import type React from 'react';
 
 export type InputValueChangeHandler = (value: string) => void;
+export type InputActionSide = 'left' | 'right';
 export type InputActionEventName =
+  | 'leftIconClick'
+  | 'lefticonclick'
+  | 'left-icon-click'
   | 'rightIconClick'
   | 'righticonclick'
   | 'right-icon-click';
@@ -27,4 +31,5 @@ export type DispatchInputValueEventsParams = {
 
 export type DispatchInputActionEventsParams = {
   target: HTMLElement;
+  side: InputActionSide;
 };

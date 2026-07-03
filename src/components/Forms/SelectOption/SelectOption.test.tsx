@@ -383,6 +383,25 @@ describe('HansSelectOption', () => {
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });
 
+  it('Should toggle dropdown when clicking the right action icon', async () => {
+    const user = userEvent.setup();
+    render(<HansSelectOption label="Dropdown" options={options} />);
+
+    const actionButton = screen.getByRole('button', {
+      name: 'Expand select options',
+    });
+
+    await user.click(actionButton);
+    expect(screen.getByRole('listbox')).toBeInTheDocument();
+
+    const collapseButton = screen.getByRole('button', {
+      name: 'Collapse select options',
+    });
+
+    await user.click(collapseButton);
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
   it('Should ignore focus right after closing with toggle', async () => {
     const user = userEvent.setup();
     render(<HansSelectOption label="Dropdown" options={options} />);
