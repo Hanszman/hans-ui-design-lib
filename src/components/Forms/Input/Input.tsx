@@ -1,9 +1,12 @@
 import React from 'react';
-import type { HansInputProps, InputValue } from './Input.types';
+import type { HansInputProps } from './Input.types';
 import { HansInputActionIcon } from './InputActionIcon/InputActionIcon';
 import {
   createInputValueEventHandlers,
   dispatchInputActionEvents,
+  normalizeInputValue,
+  resolveInitialInputValue,
+  shouldRenderInputAction,
 } from './helpers/Input.helper';
 
 export const HansInput = React.memo((props: HansInputProps) => {
@@ -39,9 +42,15 @@ export const HansInput = React.memo((props: HansInputProps) => {
     resolveInitialInputValue(defaultValue),
   );
 
-  const inputValue = isControlled
-    ? normalizeInputValue(value)
-    : uncontrolledValue;
+  const inputValue = isControlled ? normalizeInputValue(value) : uncontrolledValue;
+  const shouldHandleLeftIconAction = shouldRenderInputAction({
+    ariaLabel: props.leftIconAriaLabel,
+    onIconClick: onLeftIconClick,
+  });
+  const shouldHandleRightIconAction = shouldRenderInputAction({
+    ariaLabel: props.rightIconAriaLabel,
+    onIconClick: onRightIconClick,
+  });
 
   const { handleChange: dispatchChange, handleInput: dispatchInput } =
     createInputValueEventHandlers({
@@ -66,9 +75,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
     dispatchInput(event);
   };
 
-  const handleLeftIconClick: React.MouseEventHandler<HTMLButtonElement> = (
-    event,
-  ) => {
+  const handleLeftIconClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     onLeftIconClick?.(event);
 
     dispatchInputActionEvents({
@@ -77,9 +84,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
     });
   };
 
-  const handleRightIconClick: React.MouseEventHandler<HTMLButtonElement> = (
-    event,
-  ) => {
+  const handleRightIconClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     onRightIconClick?.(event);
 
     dispatchInputActionEvents({
@@ -119,7 +124,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
             inputColor={inputColor}
             disabled={disabled}
             ariaLabel={leftIconAriaLabel}
-            onClick={onLeftIconClick ? handleLeftIconClick : undefined}
+            onClick={shouldHandleLeftIconAction ? handleLeftIconClick : undefined}
           />
         ) : null}
 
@@ -142,7 +147,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
             inputColor={inputColor}
             disabled={disabled}
             ariaLabel={rightIconAriaLabel}
-            onClick={onRightIconClick ? handleRightIconClick : undefined}
+            onClick={shouldHandleRightIconAction ? handleRightIconClick : undefined}
           />
         ) : null}
       </div>
@@ -157,23 +162,3 @@ export const HansInput = React.memo((props: HansInputProps) => {
 });
 
 HansInput.displayName = 'HansInput';
-
-const resolveInitialInputValue = (
-  defaultValue: HansInputProps['defaultValue'],
-): string => normalizeInputValue(defaultValue);
-
-const normalizeInputValue = (value: InputValue | undefined): string => {
-  if (Array.isArray(value)) {
-    return value.join(', ');
-  }
-
-  if (typeof value === 'number') {
-    return String(value);
-  }
-
-  if (typeof value === 'string') {
-    return value;
-  }
-
-  return '';
-};

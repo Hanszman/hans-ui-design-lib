@@ -1,0 +1,11 @@
+.hans-input-icon {
+  @apply absolute top-1/2 -translate-y-1/2 flex items-center justify-center;
+}
+
+.hans-input-icon-action {
+  @apply border-0 bg-transparent p-0 cursor-pointer;
+}
+
+.hans-input-icon-action:disabled {
+  @apply cursor-not-allowed;
+}

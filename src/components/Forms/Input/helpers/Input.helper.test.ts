@@ -1,9 +1,12 @@
 import { vi } from 'vitest';
 import {
+  createInputValueEventHandlers,
   dispatchInputActionEvents,
   INPUT_ACTION_EVENT_NAMES_BY_SIDE,
-  createInputValueEventHandlers,
   INPUT_VALUE_EVENT_NAMES,
+  normalizeInputValue,
+  resolveInitialInputValue,
+  shouldRenderInputAction,
 } from './Input.helper';
 
 type InputValueChangeEvent = Parameters<
@@ -167,5 +170,36 @@ describe('Input helper', () => {
         detail: null,
       });
     });
+  });
+
+  it('Should normalize primitive and array input values through the helper', () => {
+    expect(normalizeInputValue('mail')).toBe('mail');
+    expect(normalizeInputValue(123)).toBe('123');
+    expect(normalizeInputValue(['Angular', 'React'])).toBe('Angular, React');
+    expect(normalizeInputValue(undefined)).toBe('');
+  });
+
+  it('Should resolve the initial input value through the normalization helper', () => {
+    expect(resolveInitialInputValue('secret')).toBe('secret');
+    expect(resolveInitialInputValue(['A', 'B'])).toBe('A, B');
+    expect(resolveInitialInputValue(undefined)).toBe('');
+  });
+
+  it('Should treat explicit aria labels as an input action contract', () => {
+    expect(
+      shouldRenderInputAction({
+        ariaLabel: 'Show password',
+      }),
+    ).toBe(true);
+    expect(
+      shouldRenderInputAction({
+        onIconClick: vi.fn(),
+      }),
+    ).toBe(true);
+    expect(
+      shouldRenderInputAction({
+        ariaLabel: '   ',
+      }),
+    ).toBe(false);
   });
 });

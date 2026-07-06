@@ -1,4 +1,5 @@
 import type React from 'react';
+import type { InputIconClickHandler, InputValue } from '../Input.types';
 
 export type InputValueChangeHandler = (value: string) => void;
 export type InputActionSide = 'left' | 'right';
@@ -21,6 +22,13 @@ export type CreateInputValueEventHandlersParams = {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onInput?: React.FormEventHandler<HTMLInputElement>;
   onValueChange?: InputValueChangeHandler;
+};
+
+export type ResolveInitialInputValueParams = InputValue | undefined;
+
+export type ResolveInputActionParams = {
+  ariaLabel?: string;
+  onIconClick?: InputIconClickHandler;
 };
 
 export type DispatchInputValueEventsParams = {

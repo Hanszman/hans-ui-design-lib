@@ -4,6 +4,7 @@
 /* Component-level overrides */
 @import '../components/Forms/Button/button.scss';
 @import '../components/Forms/Input/input.scss';
+@import '../components/Forms/Input/InputActionIcon/input-action-icon.scss';
 @import '../components/Forms/Dropdown/dropdown.scss';
 @import '../components/Forms/Dropdown/DropdownItemList/dropdown-item-list.scss';
 @import '../components/Forms/SelectOption/select-option.scss';

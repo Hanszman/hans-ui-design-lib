@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
-import { fireEvent, render, screen, cleanup } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { HansInput } from './Input';
 
 describe('HansInput', () => {
@@ -151,6 +151,29 @@ describe('HansInput', () => {
 
     expect(screen.getByTestId('custom-action-icon')).toBeInTheDocument();
     expect(onRightIconClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('Should expose a trailing icon action for web-component consumers with aria label only', () => {
+    render(
+      <HansInput
+        placeholder="Password"
+        rightIcon="LuEye"
+        rightIconAriaLabel="Show password"
+      />,
+    );
+
+    expect(
+      screen.getByRole('button', {
+        name: 'Show password',
+      }),
+    ).toHaveClass('hans-input-icon-action');
+  });
+
+  it('Should keep decorative icons passive when no action contract is provided', () => {
+    render(<HansInput placeholder="Search" leftIcon="LuSearch" />);
+
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Loading icon LuSearch').tagName).toBe('SPAN');
   });
 
   it('Should support controlled and uncontrolled values', () => {

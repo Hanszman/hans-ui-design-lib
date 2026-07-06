@@ -2,10 +2,12 @@ import type React from 'react';
 import type {
   CreateInputValueEventHandlersParams,
   DispatchInputActionEventsParams,
-  InputActionSide,
   DispatchInputValueEventsParams,
   InputActionEventName,
+  InputActionSide,
   InputValueEventName,
+  ResolveInitialInputValueParams,
+  ResolveInputActionParams,
   StandardInputEventName,
 } from './Input.helper.types';
 
@@ -54,6 +56,35 @@ export const dispatchInputActionEvents = ({
     host.dispatchEvent(createActionEvent(eventName));
   }
 };
+
+export const normalizeInputValue = (
+  value: ResolveInitialInputValueParams,
+): string => {
+  if (Array.isArray(value)) {
+    return value.join(', ');
+  }
+
+  if (typeof value === 'number') {
+    return String(value);
+  }
+
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  return '';
+};
+
+export const resolveInitialInputValue = (
+  defaultValue: ResolveInitialInputValueParams,
+): string => normalizeInputValue(defaultValue);
+
+export const shouldRenderInputAction = ({
+  ariaLabel,
+  onIconClick,
+}: ResolveInputActionParams): boolean =>
+  typeof onIconClick === 'function' ||
+  (typeof ariaLabel === 'string' && ariaLabel.trim().length > 0);
 
 export const createInputValueEventHandlers = ({
   onChange,
@@ -121,9 +152,7 @@ const createActionEvent = (eventName: InputActionEventName): CustomEvent<null> =
     detail: null,
   });
 
-const resolveInputHost = (
-  target: HTMLElement,
-): HTMLElement | null => {
+const resolveInputHost = (target: HTMLElement): HTMLElement | null => {
   const rootNode = target.getRootNode();
 
   if (rootNode instanceof ShadowRoot && rootNode.host) {
