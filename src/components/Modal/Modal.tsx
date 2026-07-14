@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { HansButton } from '../Forms/Button/Button';
 import { HansIcon } from '../Icon/Icon';
 import { HansLoading } from '../Loading/Loading';
+import { HansPagination } from '../Pagination/Pagination';
 import type { HansModalProps } from './Modal.types';
 import {
   createModalActionHandler,
@@ -34,6 +35,8 @@ export const HansModal = React.memo((props: HansModalProps) => {
     showOverlay = true,
     closeOnBackdropClick = true,
     closeOnEscape = true,
+    closeOnConfirm = true,
+    closeOnCancel = true,
     lockBodyScroll = true,
     showHeaderDivider = true,
     showFooterDivider = true,
@@ -46,6 +49,20 @@ export const HansModal = React.memo((props: HansModalProps) => {
     confirmButtonColor = 'primary',
     cancelButtonColor = 'base',
     dismissButtonColor = 'base',
+    confirmDisabled = false,
+    cancelDisabled = false,
+    confirmLoading = false,
+    paginationCurrentPage = 1,
+    paginationTotalPages = 0,
+    paginationDisabled = false,
+    paginationAriaLabel = 'Pagination',
+    paginationPreviousLabel = 'Previous',
+    paginationNextLabel = 'Next',
+    paginationPageLabel = 'Page',
+    paginationColor = 'primary',
+    paginationSize = 'medium',
+    paginationActivePageVariant = 'default',
+    paginationInactivePageVariant = 'outline',
     customClasses = '',
     overlayClassName = '',
     dialogClassName = '',
@@ -60,6 +77,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
     onClose,
     onConfirm,
     onCancel,
+    onPageChange,
     portalTarget,
     style,
     ...rest
@@ -86,8 +104,9 @@ export const HansModal = React.memo((props: HansModalProps) => {
         onAction: onConfirm,
         close,
         reason: 'confirm',
+        shouldClose: closeOnConfirm,
       }),
-    [close, onConfirm],
+    [close, closeOnConfirm, onConfirm],
   );
   const handleCancel = React.useMemo(
     () =>
@@ -95,8 +114,9 @@ export const HansModal = React.memo((props: HansModalProps) => {
         onAction: onCancel,
         close,
         reason: 'cancel',
+        shouldClose: closeOnCancel,
       }),
-    [close, onCancel],
+    [close, closeOnCancel, onCancel],
   );
   const handleBackdropClick = React.useMemo(
     () =>
@@ -108,10 +128,13 @@ export const HansModal = React.memo((props: HansModalProps) => {
   );
   const hasHeader = shouldRenderModalHeader({ title, dismissible, header });
   const hasBody = loading || renderBody || hasRenderableModalContent(children);
+  const hasFooterContent = hasRenderableModalContent(footer);
+  const hasPagination = paginationTotalPages > 1;
   const hasFooter = shouldRenderModalFooter({
     footer,
     confirmLabel,
     cancelLabel,
+    hasPagination,
   });
   const resolvedMaxBodyHeight =
     placement === 'center' ? maxBodyHeight : '100vh';
@@ -156,7 +179,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
 
   const modalContent = (
     <div
-      className={`hans-modal-portal ${overlayClassName}`}
+      className={['hans-modal-portal', overlayClassName].filter(Boolean).join(' ')}
       style={getModalInlineStyle({
         modalColor,
         modalVariant,
@@ -186,14 +209,16 @@ export const HansModal = React.memo((props: HansModalProps) => {
           tabIndex={-1}
           {...rest}
         >
-          <div className={`hans-modal-content ${contentClassName}`}>
+          <div className={['hans-modal-content', contentClassName].filter(Boolean).join(' ')}>
             {hasHeader ? (
               <div
-                className={`
-                  hans-modal-header
-                  ${showHeaderDivider && hasBody ? 'hans-modal-header-divider' : ''}
-                  ${headerClassName}
-                `}
+                className={[
+                  'hans-modal-header',
+                  showHeaderDivider ? 'hans-modal-header-divider' : '',
+                  headerClassName,
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
               >
                 <div className="hans-modal-header-main">
                   {hasRenderableModalContent(title) ? (
@@ -221,7 +246,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
 
             {hasBody ? (
               <div
-                className={`hans-modal-body ${bodyClassName}`}
+                className={['hans-modal-body', bodyClassName].filter(Boolean).join(' ')}
                 style={
                   {
                     '--hans-modal-body-max-height': resolvedMaxBodyHeight,
@@ -229,9 +254,12 @@ export const HansModal = React.memo((props: HansModalProps) => {
                 }
               >
                 <div
-                  className={`hans-modal-body-content ${
-                    loading ? 'hans-modal-body-loading' : ''
-                  }`}
+                  className={[
+                    'hans-modal-body-content',
+                    loading ? 'hans-modal-body-loading' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
                 >
                   {modalBodyContent}
                 </div>
@@ -240,33 +268,63 @@ export const HansModal = React.memo((props: HansModalProps) => {
 
             {hasFooter ? (
               <div
-                className={`
-                  hans-modal-footer
-                  ${showFooterDivider && hasBody ? 'hans-modal-footer-divider' : ''}
-                  ${footerClassName}
-                `}
+                className={[
+                  'hans-modal-footer',
+                  showFooterDivider ? 'hans-modal-footer-divider' : '',
+                  footerClassName,
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
               >
-                {hasRenderableModalContent(footer) ? (
-                  <div className="hans-modal-footer-content">{footer}</div>
+                {hasPagination || hasFooterContent ? (
+                  <div className="hans-modal-footer-support">
+                    {hasPagination ? (
+                      <div className="hans-modal-footer-pagination">
+                        <HansPagination
+                          currentPage={paginationCurrentPage}
+                          totalPages={paginationTotalPages}
+                          disabled={paginationDisabled}
+                          ariaLabel={paginationAriaLabel}
+                          previousLabel={paginationPreviousLabel}
+                          nextLabel={paginationNextLabel}
+                          pageLabel={paginationPageLabel}
+                          paginationColor={paginationColor}
+                          paginationSize={paginationSize}
+                          activePageVariant={paginationActivePageVariant}
+                          inactivePageVariant={paginationInactivePageVariant}
+                          onPageChange={onPageChange}
+                        />
+                      </div>
+                    ) : null}
+
+                    {hasFooterContent ? (
+                      <div className="hans-modal-footer-content">{footer}</div>
+                    ) : null}
+                  </div>
                 ) : null}
 
-                {cancelLabel ? (
-                  <HansButton
-                    label={cancelLabel}
-                    buttonVariant="outline"
-                    buttonColor={cancelButtonColor}
-                    onClick={handleCancel}
-                  />
-                ) : null}
+                <div className="hans-modal-footer-actions">
+                  {cancelLabel ? (
+                    <HansButton
+                      label={cancelLabel}
+                      buttonVariant="outline"
+                      buttonColor={cancelButtonColor}
+                      disabled={cancelDisabled}
+                      onClick={handleCancel}
+                    />
+                  ) : null}
 
-                {confirmLabel ? (
-                  <HansButton
-                    label={confirmLabel}
-                    buttonVariant="default"
-                    buttonColor={confirmButtonColor}
-                    onClick={handleConfirm}
-                  />
-                ) : null}
+                  {confirmLabel ? (
+                    <HansButton
+                      label={confirmLabel}
+                      buttonVariant="default"
+                      buttonColor={confirmButtonColor}
+                      disabled={confirmDisabled}
+                      loading={confirmLoading}
+                      onClick={handleConfirm}
+                    />
+                  ) : null}
+                </div>
               </div>
             ) : null}
           </div>

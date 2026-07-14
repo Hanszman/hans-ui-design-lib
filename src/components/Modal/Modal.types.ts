@@ -28,6 +28,8 @@ const HansModalSchema = {
   showOverlay: 'boolean',
   closeOnBackdropClick: 'boolean',
   closeOnEscape: 'boolean',
+  closeOnConfirm: 'boolean',
+  closeOnCancel: 'boolean',
   lockBodyScroll: 'boolean',
   showHeaderDivider: 'boolean',
   showFooterDivider: 'boolean',
@@ -40,6 +42,20 @@ const HansModalSchema = {
   confirmButtonColor: { type: 'custom', ref: {} as Color },
   cancelButtonColor: { type: 'custom', ref: {} as Color },
   dismissButtonColor: { type: 'custom', ref: {} as Color },
+  confirmDisabled: 'boolean',
+  cancelDisabled: 'boolean',
+  confirmLoading: 'boolean',
+  paginationCurrentPage: 'number',
+  paginationTotalPages: 'number',
+  paginationDisabled: 'boolean',
+  paginationAriaLabel: 'string',
+  paginationPreviousLabel: 'string',
+  paginationNextLabel: 'string',
+  paginationPageLabel: 'string',
+  paginationColor: { type: 'custom', ref: {} as Color },
+  paginationSize: { type: 'custom', ref: {} as Size },
+  paginationActivePageVariant: { type: 'custom', ref: {} as Variant },
+  paginationInactivePageVariant: { type: 'custom', ref: {} as Variant },
   customClasses: 'string',
   overlayClassName: 'string',
   dialogClassName: 'string',
@@ -58,6 +74,7 @@ export type HansModalProps = InferPropsFromSchema<typeof HansModalSchema> &
     onClose?: (reason: ModalCloseReason) => void;
     onConfirm?: () => void;
     onCancel?: () => void;
+    onPageChange?: (page: number) => void;
     portalTarget?: HTMLElement | null;
   };
 

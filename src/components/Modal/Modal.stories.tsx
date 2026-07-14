@@ -446,3 +446,29 @@ export const LoadingState: Story = {
     </div>
   ),
 };
+
+export const FooterPagination: Story = {
+  render: () => (
+    <div className="flex gap-4">
+      <ModalLauncher
+        buttonLabel="Footer pagination"
+        triggerColor="primary"
+        modalProps={{
+          title: 'Paginated records',
+          modalSize: 'large',
+          cancelLabel: 'Close',
+          paginationCurrentPage: 2,
+          paginationTotalPages: 5,
+          paginationAriaLabel: 'Pagination',
+          paginationPreviousLabel: 'Previous',
+          paginationNextLabel: 'Next',
+          paginationPageLabel: 'Page',
+          onPageChange: (page) => alert('Selected page ' + page),
+        }}
+      >
+        <SummaryContent />
+      </ModalLauncher>
+    </div>
+  ),
+};
+

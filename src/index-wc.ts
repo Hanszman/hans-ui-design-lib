@@ -86,6 +86,11 @@ import {
   type HansKanbanItemProps,
   HansKanbanItemPropsList,
 } from './components/Kanban/KanbanItem/KanbanItem.types';
+import { HansPagination } from './components/Pagination/Pagination';
+import {
+  type HansPaginationProps,
+  HansPaginationPropsList,
+} from './components/Pagination/Pagination.types';
 import { HansPopup } from './components/Popup/Popup';
 import {
   type HansPopupProps,
@@ -208,6 +213,12 @@ registerReactAsWebComponent<HansKanbanItemProps>(
   HansKanbanItem,
   HansKanbanItemPropsList,
 );
+registerReactAsWebComponent<HansPaginationProps>(
+  'hans-pagination',
+  HansPagination,
+  HansPaginationPropsList,
+  ['onPageChange'],
+);
 registerReactAsWebComponent<HansPopupProps>(
   'hans-popup',
   HansPopup,
@@ -224,7 +235,7 @@ registerReactAsWebComponent<HansModalProps>(
   'hans-modal',
   HansModal,
   HansModalPropsList,
-  ['onOpenChange', 'onClose', 'onConfirm', 'onCancel'],
+  ['onOpenChange', 'onClose', 'onConfirm', 'onCancel', 'onPageChange'],
 );
 registerReactAsWebComponent<HansTableProps>(
   'hans-table',

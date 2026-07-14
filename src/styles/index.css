@@ -20,6 +20,7 @@
 @import '../components/Loading/loading.scss';
 @import '../components/Kanban/kanban.scss';
 @import '../components/Icon/icon.scss';
+@import '../components/Pagination/pagination.scss';
 @import '../components/Popup/popup.scss';
 @import '../components/Popup/PopupItemList/popup-item-list.scss';
 @import '../components/Toast/toast.scss';

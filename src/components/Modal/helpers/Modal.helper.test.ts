@@ -131,6 +131,7 @@ describe('Modal.helper', () => {
         footer: null,
         confirmLabel: 'Save',
         cancelLabel: '',
+        hasPagination: false,
       }),
     ).toBe(true);
     expect(
@@ -138,6 +139,7 @@ describe('Modal.helper', () => {
         footer: React.createElement('span', null, 'Footer'),
         confirmLabel: '',
         cancelLabel: '',
+        hasPagination: false,
       }),
     ).toBe(true);
     expect(
@@ -145,6 +147,15 @@ describe('Modal.helper', () => {
         footer: null,
         confirmLabel: '',
         cancelLabel: '',
+        hasPagination: true,
+      }),
+    ).toBe(true);
+    expect(
+      shouldRenderModalFooter({
+        footer: null,
+        confirmLabel: '',
+        cancelLabel: '',
+        hasPagination: false,
       }),
     ).toBe(false);
   });
@@ -171,10 +182,21 @@ describe('Modal.helper', () => {
       onAction,
       close,
       reason: 'confirm',
+      shouldClose: true,
     })();
 
     expect(onAction).toHaveBeenCalledTimes(1);
     expect(onClose).toHaveBeenCalledWith('confirm');
+
+    createModalActionHandler({
+      onAction,
+      close,
+      reason: 'cancel',
+      shouldClose: false,
+    })();
+
+    expect(onAction).toHaveBeenCalledTimes(2);
+    expect(onClose).not.toHaveBeenCalledWith('cancel');
 
     const closeBackdrop = vi.fn();
     const backdropHandler = createModalBackdropClickHandler({
@@ -206,14 +228,13 @@ describe('Modal.helper', () => {
     const addEventListenerSpy = vi.spyOn(document, 'addEventListener');
     const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener');
 
-    addEventListenerSpy.mockImplementation(((
-      eventName: string,
-      listener: EventListenerOrEventListenerObject,
-    ) => {
-      if (eventName === 'keydown' && typeof listener === 'function') {
-        keydownHandler = listener as (event: KeyboardEvent) => void;
+    addEventListenerSpy.mockImplementation((
+      (eventName: string, listener: EventListenerOrEventListenerObject) => {
+        if (eventName === 'keydown' && typeof listener === 'function') {
+          keydownHandler = listener as (event: KeyboardEvent) => void;
+        }
       }
-    }) as typeof document.addEventListener);
+    ) as typeof document.addEventListener);
     removeEventListenerSpy.mockImplementation(() => undefined);
 
     const cleanupEscape = createModalEscapeKeyEffect({
@@ -247,7 +268,7 @@ describe('Modal.helper', () => {
     })!();
 
     expect(document.body.style.overflow).toBe('hidden');
-    expect(document.body.style.paddingRight).toBe('calc(20px)');
+    expect(document.body.style.paddingRight).toBe('calc(16px)');
     expect(document.body.style.scrollbarGutter).toBe('stable');
     expect(typeof cleanupScroll).toBe('function');
     if (!cleanupScroll) throw new Error('cleanupScroll should be defined');
@@ -290,6 +311,7 @@ describe('Modal.helper', () => {
           footer: null,
           confirmLabel: '',
           cancelLabel: 'Close',
+          hasPagination: false,
         }),
       ).toBe(true);
       expect(getModalPortalTarget()).toBeNull();

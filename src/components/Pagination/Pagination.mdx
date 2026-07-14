@@ -1,0 +1,49 @@
+import { Canvas, Controls, Meta, Primary, Title } from '@storybook/addon-docs/blocks';
+import * as HansPaginationStories from './Pagination.stories';
+
+<Meta of={HansPaginationStories} />
+
+<Title />
+
+The **Pagination** component renders previous, numbered and next navigation controls using the same semantic button tokens from the design system. It is reusable on its own and also powers modal footers that need fixed page navigation without recreating local pagination shells in each consumer app.
+
+## Usage
+
+```tsx
+import { HansPagination } from 'hans-ui-design-lib';
+
+export const Example = () => (
+  <HansPagination
+    currentPage={2}
+    totalPages={5}
+    previousLabel="Previous"
+    nextLabel="Next"
+    pageLabel="Page"
+    onPageChange={(page) => alert(page)}
+  />
+);
+```
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Sizes
+
+Use `paginationSize` to align the control density with narrow toolbars or larger footer actions.
+
+<Canvas of={HansPaginationStories.Sizes} />
+
+## Colors And Variants
+
+Use `paginationColor`, `activePageVariant` and `inactivePageVariant` when the current page emphasis needs to match a semantic flow such as primary actions, warnings or success confirmations.
+
+<Canvas of={HansPaginationStories.ColorVariants} />
+
+## Disabled State
+
+Use `disabled` to freeze navigation while an async request is replacing the current page items.
+
+<Canvas of={HansPaginationStories.Disabled} />

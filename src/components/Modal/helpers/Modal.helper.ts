@@ -117,13 +117,16 @@ export const getModalClassName = ({
   placement,
   customClasses,
   dialogClassName,
-}: GetModalClassNameParams): string => `
-  hans-modal-dialog
-  hans-modal-${modalSize}
-  hans-modal-placement-${placement}
-  ${dialogClassName}
-  ${customClasses}
-`;
+}: GetModalClassNameParams): string =>
+  [
+    'hans-modal-dialog',
+    `hans-modal-${modalSize}`,
+    `hans-modal-placement-${placement}`,
+    customClasses,
+    dialogClassName,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
 export const hasRenderableModalContent = (
   content: React.ReactNode,
@@ -152,15 +155,18 @@ export const shouldRenderModalFooter = ({
   footer,
   confirmLabel,
   cancelLabel,
+  hasPagination,
 }: {
   footer?: React.ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
+  hasPagination: boolean;
 }): boolean =>
   Boolean(
     hasRenderableModalContent(footer) ||
       (confirmLabel && confirmLabel.trim().length > 0) ||
-      (cancelLabel && cancelLabel.trim().length > 0),
+      (cancelLabel && cancelLabel.trim().length > 0) ||
+      hasPagination,
   );
 
 export const createModalCloseHandler =
@@ -177,10 +183,10 @@ export const createModalCloseHandler =
   };
 
 export const createModalActionHandler =
-  ({ onAction, close, reason }: CreateModalActionHandlerParams) =>
+  ({ onAction, close, reason, shouldClose }: CreateModalActionHandlerParams) =>
   (): void => {
     if (onAction) onAction();
-    close(reason);
+    if (shouldClose) close(reason);
   };
 
 export const createModalBackdropClickHandler =
@@ -225,7 +231,7 @@ export const createModalBodyScrollLockEffect =
     body.style.scrollbarGutter = 'stable';
 
     if (scrollbarWidth > 0) {
-      body.style.paddingRight = `calc(${previousPaddingRight || '0px'} + ${scrollbarWidth}px)`;
+      body.style.paddingRight = `calc(${scrollbarWidth}px)`;
     }
 
     return () => {

@@ -15,16 +15,22 @@ vi.mock('../Forms/Button/Button', () => ({
     onClick,
     buttonVariant,
     buttonColor,
+    disabled,
+    loading,
   }: {
     label: string;
     onClick?: () => void;
     buttonVariant?: string;
     buttonColor?: string;
+    disabled?: boolean;
+    loading?: boolean;
   }) => (
     <button
       type="button"
       data-variant={buttonVariant}
       data-color={buttonColor}
+      data-loading={loading ? 'true' : 'false'}
+      disabled={disabled}
       onClick={onClick}
     >
       {label}
@@ -51,6 +57,28 @@ vi.mock('../Loading/Loading', () => ({
       data-size={loadingSize}
       data-type={loadingType}
     />
+  ),
+}));
+
+vi.mock('../Pagination/Pagination', () => ({
+  HansPagination: ({
+    currentPage,
+    totalPages,
+    onPageChange,
+  }: {
+    currentPage: number;
+    totalPages: number;
+    onPageChange?: (page: number) => void;
+  }) => (
+    <button
+      type="button"
+      data-testid="mock-modal-pagination"
+      data-current-page={currentPage}
+      data-total-pages={totalPages}
+      onClick={() => onPageChange?.(currentPage + 1)}
+    >
+      pagination
+    </button>
   ),
 }));
 
@@ -137,6 +165,31 @@ describe('HansModal', () => {
     expect(screen.queryByText('Escape modal')).not.toBeInTheDocument();
   });
 
+  it('Should keep confirm flow open when closeOnConfirm is disabled', () => {
+    const onClose = vi.fn();
+    const onConfirm = vi.fn();
+
+    renderWithAct(
+      <HansModal
+        isOpen
+        title="Persistent confirm"
+        confirmLabel="Save"
+        cancelLabel="Close"
+        closeOnConfirm={false}
+        onConfirm={onConfirm}
+        onClose={onClose}
+      >
+        <div>Body</div>
+      </HansModal>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+
+    expect(onConfirm).toHaveBeenCalledTimes(1);
+    expect(onClose).not.toHaveBeenCalledWith('confirm');
+    expect(screen.getByText('Persistent confirm')).toBeInTheDocument();
+  });
+
   it('Should close with dismiss button when dismissible', () => {
     const onClose = vi.fn();
 
@@ -203,7 +256,9 @@ describe('HansModal', () => {
     document.body.removeChild(portalTarget);
   });
 
-  it('Should render side modal custom footer and keep body scroll unlocked when disabled', () => {
+  it('Should render side modal custom footer and pagination support', () => {
+    const onPageChange = vi.fn();
+
     renderWithAct(
       <HansModal
         isOpen
@@ -213,6 +268,9 @@ describe('HansModal', () => {
         modalColor="primary"
         modalVariant="outline"
         footer={<span>Custom footer content</span>}
+        paginationCurrentPage={2}
+        paginationTotalPages={4}
+        onPageChange={onPageChange}
         dismissible={false}
         lockBodyScroll={false}
         showHeaderDivider={false}
@@ -225,7 +283,40 @@ describe('HansModal', () => {
     const dialog = screen.getByRole('dialog');
     expect(dialog).toHaveClass('hans-modal-placement-right', 'hans-modal-large');
     expect(screen.getByText('Custom footer content')).toBeInTheDocument();
+    expect(screen.getByTestId('mock-modal-pagination')).toHaveAttribute(
+      'data-current-page',
+      '2',
+    );
+    fireEvent.click(screen.getByTestId('mock-modal-pagination'));
+    expect(onPageChange).toHaveBeenCalledWith(3);
     expect(document.body.style.overflow).toBe('');
+  });
+
+  it('Should render footer pagination without custom footer content', () => {
+    const onPageChange = vi.fn();
+
+    renderWithAct(
+      <HansModal
+        isOpen
+        title="Pagination only"
+        paginationCurrentPage={1}
+        paginationTotalPages={3}
+        onPageChange={onPageChange}
+        dismissible={false}
+      >
+        <div>Body</div>
+      </HansModal>,
+    );
+
+    expect(screen.getByTestId('mock-modal-pagination')).toHaveAttribute(
+      'data-total-pages',
+      '3',
+    );
+    expect(screen.queryByText('Custom footer content')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId('mock-modal-pagination'));
+
+    expect(onPageChange).toHaveBeenCalledWith(2);
   });
 
   it('Should support header-only and footer-only optional section combinations', () => {
@@ -298,6 +389,29 @@ describe('HansModal', () => {
     expect(screen.getByTestId('mock-modal-loading').parentElement).toHaveClass(
       'hans-modal-body-content',
       'hans-modal-body-loading',
+    );
+  });
+
+  it('Should expose confirm loading and disabled footer actions', () => {
+    renderWithAct(
+      <HansModal
+        isOpen
+        title="Saving"
+        confirmLabel="Save"
+        cancelLabel="Close"
+        confirmDisabled
+        cancelDisabled
+        confirmLoading
+      >
+        <div>Body</div>
+      </HansModal>,
+    );
+
+    expect(screen.getByRole('button', { name: 'Close' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Save' })).toHaveAttribute(
+      'data-loading',
+      'true',
     );
   });
 

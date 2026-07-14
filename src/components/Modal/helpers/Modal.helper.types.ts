@@ -32,6 +32,7 @@ export type CreateModalActionHandlerParams = {
   onAction?: () => void;
   close: (reason: ModalCloseReason) => void;
   reason: ModalCloseReason;
+  shouldClose: boolean;
 };
 
 export type CreateModalBackdropClickHandlerParams = {
