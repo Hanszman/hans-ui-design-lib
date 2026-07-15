@@ -89,7 +89,7 @@ export const HansToast = React.memo((props: HansToastProps) => {
     position,
     offset,
     stackOffset,
-    zIndex: 1000 + Math.max(stackIndex, 0),
+    zIndex: 1400 + Math.max(stackIndex, 0),
     style,
   });
 
@@ -144,3 +144,4 @@ export const HansToast = React.memo((props: HansToastProps) => {
 });
 
 HansToast.displayName = 'HansToast';
+

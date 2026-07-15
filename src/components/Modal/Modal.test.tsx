@@ -64,10 +64,16 @@ vi.mock('../Pagination/Pagination', () => ({
   HansPagination: ({
     currentPage,
     totalPages,
+    firstLabel,
+    lastLabel,
+    maxVisiblePages,
     onPageChange,
   }: {
     currentPage: number;
     totalPages: number;
+    firstLabel?: string;
+    lastLabel?: string;
+    maxVisiblePages?: number;
     onPageChange?: (page: number) => void;
   }) => (
     <button
@@ -75,6 +81,9 @@ vi.mock('../Pagination/Pagination', () => ({
       data-testid="mock-modal-pagination"
       data-current-page={currentPage}
       data-total-pages={totalPages}
+      data-first-label={firstLabel}
+      data-last-label={lastLabel}
+      data-max-visible-pages={maxVisiblePages}
       onClick={() => onPageChange?.(currentPage + 1)}
     >
       pagination
@@ -127,6 +136,9 @@ describe('HansModal', () => {
     expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Close modal' })).toBeInTheDocument();
+    expect(document.body.querySelector('.hans-modal-footer')).toHaveClass(
+      'hans-modal-footer-actions-only',
+    );
     expect(
       screen.getByTestId('mock-modal-icon-IoIosCloseCircle'),
     ).toBeInTheDocument();
@@ -270,6 +282,9 @@ describe('HansModal', () => {
         footer={<span>Custom footer content</span>}
         paginationCurrentPage={2}
         paginationTotalPages={4}
+        paginationFirstLabel="Start"
+        paginationLastLabel="End"
+        paginationMaxVisiblePages={7}
         onPageChange={onPageChange}
         dismissible={false}
         lockBodyScroll={false}
@@ -286,6 +301,18 @@ describe('HansModal', () => {
     expect(screen.getByTestId('mock-modal-pagination')).toHaveAttribute(
       'data-current-page',
       '2',
+    );
+    expect(screen.getByTestId('mock-modal-pagination')).toHaveAttribute(
+      'data-first-label',
+      'Start',
+    );
+    expect(screen.getByTestId('mock-modal-pagination')).toHaveAttribute(
+      'data-last-label',
+      'End',
+    );
+    expect(screen.getByTestId('mock-modal-pagination')).toHaveAttribute(
+      'data-max-visible-pages',
+      '7',
     );
     fireEvent.click(screen.getByTestId('mock-modal-pagination'));
     expect(onPageChange).toHaveBeenCalledWith(3);
@@ -313,6 +340,9 @@ describe('HansModal', () => {
       '3',
     );
     expect(screen.queryByText('Custom footer content')).not.toBeInTheDocument();
+    expect(document.body.querySelector('.hans-modal-footer')).not.toHaveClass(
+      'hans-modal-footer-actions-only',
+    );
 
     fireEvent.click(screen.getByTestId('mock-modal-pagination'));
 

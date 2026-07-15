@@ -1,7 +1,16 @@
 .hans-pagination {
-  @apply flex flex-wrap items-center justify-between gap-3;
+  @apply flex justify-center;
+}
+
+.hans-pagination-group {
+  @apply flex flex-wrap items-center justify-center gap-3;
 }
 
 .hans-pagination-pages {
   @apply flex flex-wrap items-center justify-center gap-3;
+}
+
+.hans-pagination-ellipsis {
+  @apply inline-flex min-w-10 items-center justify-center text-sm font-medium leading-none;
+  color: var(--gray-700);
 }

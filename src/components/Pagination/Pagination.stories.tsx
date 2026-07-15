@@ -12,9 +12,12 @@ const meta: Meta<typeof HansPagination> = {
     currentPage: 2,
     totalPages: 5,
     ariaLabel: 'Pagination',
+    firstLabel: 'First',
     previousLabel: 'Previous',
     nextLabel: 'Next',
+    lastLabel: 'Last',
     pageLabel: 'Page',
+    maxVisiblePages: 5,
     paginationColor: 'primary',
     paginationSize: 'medium',
     activePageVariant: 'default',
@@ -64,4 +67,31 @@ export const ColorVariants: Story = {
 
 export const Disabled: Story = {
   render: () => <HansPagination currentPage={3} totalPages={5} disabled />,
+};
+
+export const LongRangesAndIcons: Story = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <HansPagination
+        currentPage={6}
+        totalPages={14}
+        firstContent="MdKeyboardDoubleArrowLeft"
+        previousContent="MdKeyboardArrowLeft"
+        nextContent="MdKeyboardArrowRight"
+        lastContent="MdKeyboardDoubleArrowRight"
+      />
+
+      <HansPagination
+        currentPage={11}
+        totalPages={24}
+        maxVisiblePages={7}
+        firstContent={<span className="font-semibold">First</span>}
+        previousContent={<span>Prev</span>}
+        nextContent={<span>Next</span>}
+        lastContent={<span className="font-semibold">Last</span>}
+        paginationColor="secondary"
+        activePageVariant="strong"
+      />
+    </div>
+  ),
 };

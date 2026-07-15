@@ -56,9 +56,16 @@ export const HansModal = React.memo((props: HansModalProps) => {
     paginationTotalPages = 0,
     paginationDisabled = false,
     paginationAriaLabel = 'Pagination',
+    paginationFirstLabel = 'First',
     paginationPreviousLabel = 'Previous',
     paginationNextLabel = 'Next',
+    paginationLastLabel = 'Last',
     paginationPageLabel = 'Page',
+    paginationFirstContent,
+    paginationPreviousContent,
+    paginationNextContent,
+    paginationLastContent,
+    paginationMaxVisiblePages = 5,
     paginationColor = 'primary',
     paginationSize = 'medium',
     paginationActivePageVariant = 'default',
@@ -130,6 +137,7 @@ export const HansModal = React.memo((props: HansModalProps) => {
   const hasBody = loading || renderBody || hasRenderableModalContent(children);
   const hasFooterContent = hasRenderableModalContent(footer);
   const hasPagination = paginationTotalPages > 1;
+  const hasFooterSupport = hasPagination || hasFooterContent;
   const hasFooter = shouldRenderModalFooter({
     footer,
     confirmLabel,
@@ -271,12 +279,13 @@ export const HansModal = React.memo((props: HansModalProps) => {
                 className={[
                   'hans-modal-footer',
                   showFooterDivider ? 'hans-modal-footer-divider' : '',
+                  hasFooterSupport ? '' : 'hans-modal-footer-actions-only',
                   footerClassName,
                 ]
                   .filter(Boolean)
                   .join(' ')}
               >
-                {hasPagination || hasFooterContent ? (
+                {hasFooterSupport ? (
                   <div className="hans-modal-footer-support">
                     {hasPagination ? (
                       <div className="hans-modal-footer-pagination">
@@ -285,9 +294,16 @@ export const HansModal = React.memo((props: HansModalProps) => {
                           totalPages={paginationTotalPages}
                           disabled={paginationDisabled}
                           ariaLabel={paginationAriaLabel}
+                          firstLabel={paginationFirstLabel}
                           previousLabel={paginationPreviousLabel}
                           nextLabel={paginationNextLabel}
+                          lastLabel={paginationLastLabel}
                           pageLabel={paginationPageLabel}
+                          firstContent={paginationFirstContent}
+                          previousContent={paginationPreviousContent}
+                          nextContent={paginationNextContent}
+                          lastContent={paginationLastContent}
+                          maxVisiblePages={paginationMaxVisiblePages}
                           paginationColor={paginationColor}
                           paginationSize={paginationSize}
                           activePageVariant={paginationActivePageVariant}

@@ -125,6 +125,10 @@
   @apply mt-auto flex flex-col gap-4 md:flex-row md:items-end md:justify-between;
 }
 
+.hans-modal-footer-actions-only {
+  @apply items-end md:justify-end;
+}
+
 .hans-modal-footer-support {
   @apply flex min-w-0 flex-1 flex-col gap-3;
 }
