@@ -50,8 +50,14 @@ Use `disabled` to freeze navigation while an async request is replacing the curr
 
 <Canvas of={HansPaginationStories.Disabled} />
 
-## Long Ranges And Icon Controls
+## Icon Controls
 
-When the total page count grows, the component automatically compresses the middle range with ellipsis while keeping first and last page access visible. You can also project custom content into the boundary buttons, including icon-name strings or explicit React nodes.
+Use boundary button content props to render icon-name strings, explicit icon nodes or mixed icon-and-text content without rewriting the pagination layout.
 
-<Canvas of={HansPaginationStories.LongRangesAndIcons} />
+<Canvas of={HansPaginationStories.IconControls} />
+
+## Long Ranges
+
+When the total page count grows, the component automatically compresses the middle range with ellipsis while keeping first and last page access visible. The examples below cover both a single middle ellipsis and dual ellipsis ranges.
+
+<Canvas of={HansPaginationStories.LongRanges} />

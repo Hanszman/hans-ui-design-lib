@@ -1,12 +1,11 @@
 import React from 'react';
 import type { HansPaginationProps } from './Pagination.types';
 import { HansButton } from '../Forms/Button/Button';
-import { HansIcon } from '../Icon/Icon';
 import {
-  buildPaginationItems,
-  canSelectPaginationPage,
+  buildPaginationViewModel,
   hasMultiplePaginationPages,
-  isPaginationIconName,
+  resolvePaginationControlContent,
+  selectPaginationPage,
 } from './helpers/Pagination.helper';
 
 export const HansPagination = React.memo((props: HansPaginationProps) => {
@@ -34,56 +33,20 @@ export const HansPagination = React.memo((props: HansPaginationProps) => {
     ...rest
   } = props;
 
-  const pageItems = React.useMemo(
-    () => buildPaginationItems({ currentPage, totalPages, maxVisiblePages }),
-    [currentPage, maxVisiblePages, totalPages],
-  );
-
-  const resolveControlContent = React.useCallback(
-    (
-      content: React.ReactNode,
-      fallbackLabel: string,
-      iconAriaHidden = false,
-    ): React.ReactNode => {
-      if (React.isValidElement(content)) {
-        return content;
-      }
-
-      if (typeof content === 'string' && content.trim().length > 0) {
-        return isPaginationIconName(content) ? (
-          <HansIcon
-            name={content}
-            iconSize="small"
-            aria-hidden={iconAriaHidden}
-          />
-        ) : (
-          content
-        );
-      }
-
-      return fallbackLabel;
-    },
-    [],
+  const viewModel = React.useMemo(
+    () =>
+      buildPaginationViewModel({
+        currentPage,
+        totalPages,
+        maxVisiblePages,
+        disabled,
+      }),
+    [currentPage, disabled, maxVisiblePages, totalPages],
   );
 
   if (!hasMultiplePaginationPages({ totalPages })) {
     return null;
   }
-
-  const selectPage = (page: number): void => {
-    if (
-      !canSelectPaginationPage({
-        currentPage,
-        totalPages,
-        disabled,
-        page,
-      })
-    ) {
-      return;
-    }
-
-    onPageChange?.(page);
-  };
 
   return (
     <nav
@@ -97,17 +60,22 @@ export const HansPagination = React.memo((props: HansPaginationProps) => {
           buttonColor={paginationColor}
           buttonSize={paginationSize}
           buttonVariant="default"
-          disabled={
-            !canSelectPaginationPage({
+          disabled={viewModel.isFirstDisabled}
+          onClick={() =>
+            selectPaginationPage({
               currentPage,
               totalPages,
               disabled,
-              page: 1,
+              page: viewModel.firstPage,
+              onPageChange,
             })
           }
-          onClick={() => selectPage(1)}
         >
-          {resolveControlContent(firstContent, firstLabel, true)}
+          {resolvePaginationControlContent({
+            content: firstContent,
+            fallbackLabel: firstLabel,
+            iconAriaHidden: true,
+          })}
         </HansButton>
 
         <HansButton
@@ -115,21 +83,26 @@ export const HansPagination = React.memo((props: HansPaginationProps) => {
           buttonColor={paginationColor}
           buttonSize={paginationSize}
           buttonVariant="default"
-          disabled={
-            !canSelectPaginationPage({
+          disabled={viewModel.isPreviousDisabled}
+          onClick={() =>
+            selectPaginationPage({
               currentPage,
               totalPages,
               disabled,
-              page: currentPage - 1,
+              page: viewModel.previousPage,
+              onPageChange,
             })
           }
-          onClick={() => selectPage(currentPage - 1)}
         >
-          {resolveControlContent(previousContent, previousLabel, true)}
+          {resolvePaginationControlContent({
+            content: previousContent,
+            fallbackLabel: previousLabel,
+            iconAriaHidden: true,
+          })}
         </HansButton>
 
         <div className="hans-pagination-pages">
-          {pageItems.map((item) =>
+          {viewModel.items.map((item) =>
             typeof item === 'number' ? (
               <HansButton
                 key={item}
@@ -142,7 +115,15 @@ export const HansPagination = React.memo((props: HansPaginationProps) => {
                   item === currentPage ? activePageVariant : inactivePageVariant
                 }
                 disabled={disabled}
-                onClick={() => selectPage(item)}
+                onClick={() =>
+                  selectPaginationPage({
+                    currentPage,
+                    totalPages,
+                    disabled,
+                    page: item,
+                    onPageChange,
+                  })
+                }
               />
             ) : (
               <span
@@ -161,17 +142,22 @@ export const HansPagination = React.memo((props: HansPaginationProps) => {
           buttonColor={paginationColor}
           buttonSize={paginationSize}
           buttonVariant="default"
-          disabled={
-            !canSelectPaginationPage({
+          disabled={viewModel.isNextDisabled}
+          onClick={() =>
+            selectPaginationPage({
               currentPage,
               totalPages,
               disabled,
-              page: currentPage + 1,
+              page: viewModel.nextPage,
+              onPageChange,
             })
           }
-          onClick={() => selectPage(currentPage + 1)}
         >
-          {resolveControlContent(nextContent, nextLabel, true)}
+          {resolvePaginationControlContent({
+            content: nextContent,
+            fallbackLabel: nextLabel,
+            iconAriaHidden: true,
+          })}
         </HansButton>
 
         <HansButton
@@ -179,17 +165,22 @@ export const HansPagination = React.memo((props: HansPaginationProps) => {
           buttonColor={paginationColor}
           buttonSize={paginationSize}
           buttonVariant="default"
-          disabled={
-            !canSelectPaginationPage({
+          disabled={viewModel.isLastDisabled}
+          onClick={() =>
+            selectPaginationPage({
               currentPage,
               totalPages,
               disabled,
-              page: totalPages,
+              page: viewModel.lastPage,
+              onPageChange,
             })
           }
-          onClick={() => selectPage(totalPages)}
         >
-          {resolveControlContent(lastContent, lastLabel, true)}
+          {resolvePaginationControlContent({
+            content: lastContent,
+            fallbackLabel: lastLabel,
+            iconAriaHidden: true,
+          })}
         </HansButton>
       </div>
     </nav>
