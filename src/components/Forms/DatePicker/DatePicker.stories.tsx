@@ -190,21 +190,29 @@ export const StatesAndColors: Story = {
 
 export const SurfaceOverrides: Story = {
   render: () => (
-    <div className="flex max-w-md flex-col gap-4 bg-slate-900 p-4">
+    <div
+      className="flex max-w-md flex-col gap-4 p-4"
+      style={
+        {
+          '--storybook-date-picker-dark-surface': '#1f2937',
+          '--storybook-date-picker-muted-surface': '#e6e8f2',
+        } as React.CSSProperties
+      }
+    >
       <HansDatePicker
         label="Dark surface"
         pickerType="date"
         defaultValue="2026-03-13"
         inputColor="base"
-        popupBackgroundColor="var(--background-color)"
-        panelBackgroundColor="var(--background-color)"
+        popupBackgroundColor="transparent"
+        panelBackgroundColor="var(--storybook-date-picker-dark-surface)"
       />
       <HansDatePicker
         label="Muted panel"
         pickerType="datetime"
         defaultValue="2026-03-13T16:20"
-        popupBackgroundColor="var(--background-color)"
-        panelBackgroundColor="color-mix(in srgb, var(--background-color) 94%, var(--white))"
+        popupBackgroundColor="transparent"
+        panelBackgroundColor="var(--storybook-date-picker-muted-surface)"
       />
     </div>
   ),

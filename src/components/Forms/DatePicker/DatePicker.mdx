@@ -61,7 +61,7 @@ Set `allowInputTyping` to let users type `date` and `datetime` values manually w
 
 ## Surface Overrides
 
-Use `popupBackgroundColor` to style the popup container and `panelBackgroundColor` to align the calendar surface with custom theme backgrounds such as dark modal shells.
+Use `popupBackgroundColor` to style the outer popup shell when needed and `panelBackgroundColor` to control the calendar surface itself. In dark or modal-like contexts, prefer overriding the panel surface directly so the calendar background stays aligned with the surrounding theme.
 
 <Canvas of={HansDatePickerStories.SurfaceOverrides} />
 
