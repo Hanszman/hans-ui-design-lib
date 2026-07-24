@@ -132,4 +132,20 @@ describe('HansDateTimeInput', () => {
 
     expect(screen.getByPlaceholderText('DD/MM/YYYY')).toHaveValue('');
   });
+
+  it('Should expose the custom panel background surface variable', () => {
+    render(
+      <HansDateTimeInput
+        pickerType="date"
+        defaultValue="2026-03-13"
+        panelBackgroundColor="rgb(12, 34, 56)"
+      />,
+    );
+
+    fireEvent.mouseDown(screen.getByDisplayValue('13/03/2026'));
+
+    expect(
+      document.querySelector('.hans-date-picker-panel'),
+    ).toHaveStyle('--hans-date-picker-panel-background-color: rgb(12, 34, 56)');
+  });
 });

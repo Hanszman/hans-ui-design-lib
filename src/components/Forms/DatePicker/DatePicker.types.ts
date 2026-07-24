@@ -26,6 +26,7 @@ const HansDatePickerSchema = {
   calendarColor: { type: 'custom', ref: {} as Color },
   calendarVariant: { type: 'custom', ref: {} as Variant },
   popupBackgroundColor: 'string',
+  panelBackgroundColor: 'string',
   noDateText: 'string',
   clearLabel: 'string',
   todayLabel: 'string',

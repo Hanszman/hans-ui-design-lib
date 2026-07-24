@@ -52,6 +52,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     calendarColor = 'primary',
     calendarVariant = 'default',
     popupBackgroundColor = 'var(--background-color, var(--white))',
+    panelBackgroundColor = 'var(--background-color, var(--white))',
     clearLabel = 'Clear',
     todayLabel = 'Today',
     applyLabel = 'Apply',
@@ -311,7 +312,14 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
           />
         )}
       >
-        <div className="hans-date-picker-panel">
+        <div
+          className="hans-date-picker-panel"
+          style={
+            {
+              '--hans-date-picker-panel-background-color': panelBackgroundColor,
+            } as React.CSSProperties
+          }
+        >
           <HansDateTimeCalendar
             days={calendarDays}
             weekdayLabels={getWeekdayLabels(weekStartsOnSunday)}

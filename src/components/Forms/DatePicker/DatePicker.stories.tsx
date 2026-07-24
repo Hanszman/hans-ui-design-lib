@@ -56,6 +56,7 @@ const meta: Meta<typeof HansDatePicker> = {
     calendarVariant: 'default',
     timePrecision: 'minute',
     allowInputTyping: false,
+    panelBackgroundColor: 'var(--background-color, var(--white))',
     disabled: false,
   },
   argTypes: {
@@ -91,6 +92,7 @@ const meta: Meta<typeof HansDatePicker> = {
     inputSize: { control: 'select', options: ['small', 'medium', 'large'] },
     timePrecision: { control: 'select', options: ['minute', 'second'] },
     allowInputTyping: { control: 'boolean' },
+    panelBackgroundColor: { control: 'text' },
   },
   parameters: {
     docs: {
@@ -181,6 +183,28 @@ export const StatesAndColors: Story = {
         pickerType="time"
         defaultValue="18:30"
         disabled
+      />
+    </div>
+  ),
+};
+
+export const SurfaceOverrides: Story = {
+  render: () => (
+    <div className="flex max-w-md flex-col gap-4 bg-slate-900 p-4">
+      <HansDatePicker
+        label="Dark surface"
+        pickerType="date"
+        defaultValue="2026-03-13"
+        inputColor="base"
+        popupBackgroundColor="var(--background-color)"
+        panelBackgroundColor="var(--background-color)"
+      />
+      <HansDatePicker
+        label="Muted panel"
+        pickerType="datetime"
+        defaultValue="2026-03-13T16:20"
+        popupBackgroundColor="var(--background-color)"
+        panelBackgroundColor="color-mix(in srgb, var(--background-color) 94%, var(--white))"
       />
     </div>
   ),

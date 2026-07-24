@@ -39,7 +39,11 @@
 }
 
 .hans-date-picker-panel {
-  @apply flex flex-col gap-3 rounded-xl border border-[var(--base-neutral-color)] bg-[var(--white)] p-3 shadow-lg;
+  @apply flex flex-col gap-3 rounded-xl border border-[var(--base-neutral-color)] p-3 shadow-lg;
+  background: var(
+    --hans-date-picker-panel-background-color,
+    var(--background-color, var(--white))
+  );
 }
 
 .hans-date-picker-trigger-icon {
