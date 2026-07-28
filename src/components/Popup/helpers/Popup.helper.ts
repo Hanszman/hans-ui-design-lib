@@ -90,18 +90,26 @@ export const createPopupOutsideMouseDownHandler = ({
     });
   };
 
+export const getPopupTriggerRect = (container: HTMLElement | null): DOMRect | null => {
+  if (!container) return null;
+  const trigger = container.querySelector<HTMLElement>(
+    '[data-hans-popup-trigger], input, button',
+  );
+  return (trigger ?? container).getBoundingClientRect();
+};
+
 export const resolvePopupDirection = ({
   container,
   panel,
   viewportHeight,
 }: ResolvePopupDirectionParams): PopupDirection | null => {
   if (!container || !panel) return null;
-  const containerRect = container.getBoundingClientRect();
+  const containerRect = getPopupTriggerRect(container)!;
   const panelRect = panel.getBoundingClientRect();
   return getPopupDirection({
     spaceBelow: viewportHeight - containerRect.bottom,
     spaceAbove: containerRect.top,
-    panelHeight: panelRect.height,
+    panelHeight: Math.max(panelRect.height, panel.scrollHeight),
   });
 };
 
@@ -111,7 +119,7 @@ export const resolvePopupHorizontalPosition = ({
   viewportWidth,
 }: ResolvePopupHorizontalPositionParams): 'start' | 'end' | null => {
   if (!container || !panel) return null;
-  const containerRect = container.getBoundingClientRect();
+  const containerRect = getPopupTriggerRect(container)!;
   const panelRect = panel.getBoundingClientRect();
   return getPopupHorizontalPosition({
     spaceRight: viewportWidth - containerRect.left,

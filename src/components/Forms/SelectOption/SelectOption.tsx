@@ -15,12 +15,10 @@ import {
   createHandleRemoveSelected,
   createHandleSelectOption,
   createSyncAutocompleteSearchTerm,
-  createSyncPopupOffsets,
   createSyncSelectOptionValue,
   createHandleToggle,
   createSetSelectOptionOpen,
   filterSelectOptionItens,
-  getSelectOptionFieldStyle,
   getInitialSelectOptionValue,
   getOptionId,
   getSelectedOptions,
@@ -61,7 +59,6 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   const [openDirection, setOpenDirection] = React.useState<'down' | 'up'>(
     'down',
   );
-  const [popupOffsets, setPopupOffsets] = React.useState({ up: 0, down: 0 });
   const [searchTerm, setSearchTerm] = React.useState('');
   const [internalValue, setInternalValue] = React.useState<SelectOptionValue>(
     () => getInitialSelectOptionValue(value, defaultValue, isMulti),
@@ -130,15 +127,6 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
   const handleToggle = createHandleToggle(setSelectOptionOpen, () => isOpen);
   const inputValue = enableAutocomplete ? searchTerm : selectedLabel;
 
-  React.useEffect(() => {
-    createSyncPopupOffsets({ selectOptionRef, setPopupOffsets })();
-  }, [label, message, inputSize, labelColor, messageColor]);
-
-  const popupFieldStyle = React.useMemo(
-    () => getSelectOptionFieldStyle(popupOffsets),
-    [popupOffsets],
-  );
-
   return (
     <div className="hans-select-option" ref={selectOptionRef}>
       <HansPopup
@@ -150,7 +138,6 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
         popupClassName="hans-select-option-popup"
         panelClassName="hans-select-option-popup-content"
         portalMatchTriggerWidth={true}
-        style={popupFieldStyle}
         onDirectionChange={setOpenDirection}
         renderTrigger={() => (
           <HansInput

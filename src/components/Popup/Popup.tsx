@@ -12,6 +12,7 @@ import {
   createPopupStateHandlers,
   getPopupPanelStyle,
   getPopupPortalStyle,
+  getPopupTriggerRect,
   hasPopupRenderableContent,
 } from './helpers/Popup.helper';
 
@@ -73,13 +74,16 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
 
   React.useEffect(() => {
     if (!isOpen) return;
-    const frame = requestAnimationFrame(resolveDirection);
+    const frame = requestAnimationFrame(() => {
+      resolveDirection();
+      requestAnimationFrame(resolveDirection);
+    });
 
     return () => cancelAnimationFrame(frame);
   }, [children, isOpen, resolveDirection]);
 
   const updatePortalPosition = React.useCallback(() => {
-    const triggerRect = containerRef.current?.getBoundingClientRect();
+    const triggerRect = getPopupTriggerRect(containerRef.current);
     if (!triggerRect) return;
 
     setPortalStyle(

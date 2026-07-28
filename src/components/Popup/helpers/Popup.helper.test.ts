@@ -9,6 +9,7 @@ import {
   getPopupHorizontalPosition,
   getPopupPanelStyle,
   getPopupPortalStyle,
+  getPopupTriggerRect,
   hasPopupRenderableContent,
   handlePopupOutsideClick,
   resolvePopupItemClassName,
@@ -161,6 +162,18 @@ describe('Popup.helper', () => {
     expect(
       resolvePopupDirection({ container: null, panel, viewportHeight: 360 }),
     ).toBeNull();
+  });
+
+  it('Should measure the actual trigger inside a labelled popup container', () => {
+    const container = document.createElement('div');
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    container.append(label, input);
+    const inputRect = { top: 80, bottom: 112 } as DOMRect;
+    vi.spyOn(input, 'getBoundingClientRect').mockReturnValue(inputRect);
+
+    expect(getPopupTriggerRect(container)).toBe(inputRect);
+    expect(getPopupTriggerRect(null)).toBeNull();
   });
 
   it('Should resolve popup horizontal position from dom measurements', () => {

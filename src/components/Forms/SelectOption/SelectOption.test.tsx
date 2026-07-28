@@ -445,6 +445,7 @@ describe('HansSelectOption', () => {
       .mockImplementation(function (this: HTMLElement) {
         if (
           this.classList.contains('hans-select-option-field') ||
+          this.classList.contains('hans-select-option-input') ||
           this.classList.contains('hans-popup')
         ) {
           return {

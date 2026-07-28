@@ -30,6 +30,25 @@
   @apply max-h-none overflow-visible p-0;
 }
 
+.hans-popup-panel-portal.hans-date-picker-popup
+  .hans-date-picker-popup-content {
+  max-height: none;
+  overflow: visible;
+}
+
+.hans-popup-panel-portal.hans-date-picker-popup-date
+  .hans-date-picker-calendar {
+  min-height: 22rem;
+}
+
+.hans-popup-panel-portal.hans-date-picker-popup-datetime
+  .hans-date-picker-popup-content,
+.hans-popup-panel-portal.hans-date-picker-popup-time
+  .hans-date-picker-popup-content {
+  max-height: 24rem;
+  overflow: auto;
+}
+
 .hans-date-picker-field .hans-popup-panel[data-direction='up'] {
   bottom: calc(100% - var(--hans-date-picker-up-offset, 0px));
 }

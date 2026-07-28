@@ -28,14 +28,6 @@
   @apply max-h-60 overflow-auto;
 }
 
-.hans-select-option-field .hans-popup-panel[data-direction='up'] {
-  bottom: calc(100% - var(--hans-select-option-up-offset, 0px));
-}
-
-.hans-select-option-field .hans-popup-panel[data-direction='down'] {
-  top: calc(100% - var(--hans-select-option-down-offset, 0px));
-}
-
 .hans-select-option-loading-icon {
   @apply shrink-0;
 }

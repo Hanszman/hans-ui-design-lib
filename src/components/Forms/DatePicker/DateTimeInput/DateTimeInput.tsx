@@ -275,7 +275,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
         onOpenChange={handleOpenChange}
         popupBackgroundColor={popupBackgroundColor}
         customClasses="hans-date-picker-field"
-        popupClassName="hans-date-picker-popup"
+        popupClassName={`hans-date-picker-popup hans-date-picker-popup-${resolvedPickerType}`}
         panelClassName="hans-date-picker-popup-content"
         portalMatchTriggerWidth={false}
         portalHorizontalPosition="end"

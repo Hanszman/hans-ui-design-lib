@@ -115,13 +115,8 @@
   max-height: var(--hans-modal-body-max-height);
 }
 
-.hans-modal-body::after {
-  content: '';
-  @apply block h-5 shrink-0;
-}
-
 .hans-modal-body-content {
-  @apply flex min-h-0 flex-col;
+  @apply flex min-h-0 flex-col pb-5;
 }
 
 .hans-modal-projected-content {
