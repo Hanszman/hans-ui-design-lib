@@ -270,6 +270,10 @@ export const HansModal = React.memo((props: HansModalProps) => {
                     .join(' ')}
                 >
                   {modalBodyContent}
+                  <div
+                    className="hans-modal-body-end-spacer"
+                    aria-hidden="true"
+                  />
                 </div>
               </div>
             ) : null}

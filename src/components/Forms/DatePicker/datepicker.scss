@@ -36,6 +36,11 @@
   overflow: visible;
 }
 
+.hans-popup-panel-portal.hans-date-picker-popup {
+  max-height: calc(100vh - 1rem);
+  overflow-y: auto;
+}
+
 .hans-popup-panel-portal.hans-date-picker-popup-date
   .hans-date-picker-calendar {
   min-height: 22rem;

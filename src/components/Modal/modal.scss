@@ -116,7 +116,11 @@
 }
 
 .hans-modal-body-content {
-  @apply flex min-h-0 flex-col pb-5;
+  @apply flex min-h-0 flex-col;
+}
+
+.hans-modal-body-end-spacer {
+  @apply block h-5 shrink-0;
 }
 
 .hans-modal-projected-content {
