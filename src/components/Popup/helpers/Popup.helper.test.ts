@@ -361,6 +361,8 @@ describe('Popup.helper', () => {
       left: 100,
       top: 244,
       minWidth: 200,
+      maxHeight: '548px',
+      overflowY: 'auto',
       zIndex: 1300,
     });
 
@@ -377,6 +379,8 @@ describe('Popup.helper', () => {
       position: 'fixed',
       right: 700,
       bottom: 604,
+      maxHeight: '188px',
+      overflowY: 'auto',
       zIndex: 1300,
     });
   });

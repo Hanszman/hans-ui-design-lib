@@ -180,17 +180,28 @@ export const getPopupPortalStyle = ({
   viewportWidth,
   viewportHeight,
   matchTriggerWidth,
-}: GetPopupPortalStyleParams): React.CSSProperties => ({
-  position: 'fixed',
-  ...(horizontalPosition === 'start'
-    ? { left: triggerRect.left }
-    : { right: viewportWidth - triggerRect.right }),
-  ...(direction === 'down'
-    ? { top: triggerRect.bottom + 4 }
-    : { bottom: viewportHeight - triggerRect.top + 4 }),
-  ...(matchTriggerWidth ? { minWidth: triggerRect.width } : {}),
-  zIndex: 1300,
-});
+}: GetPopupPortalStyleParams): React.CSSProperties => {
+  const availableHeight = Math.max(
+    0,
+    direction === 'down'
+      ? viewportHeight - triggerRect.bottom - 12
+      : triggerRect.top - 12,
+  );
+
+  return {
+    position: 'fixed',
+    ...(horizontalPosition === 'start'
+      ? { left: triggerRect.left }
+      : { right: viewportWidth - triggerRect.right }),
+    ...(direction === 'down'
+      ? { top: triggerRect.bottom + 4 }
+      : { bottom: viewportHeight - triggerRect.top + 4 }),
+    ...(matchTriggerWidth ? { minWidth: triggerRect.width } : {}),
+    maxHeight: `${availableHeight}px`,
+    overflowY: 'auto',
+    zIndex: 1300,
+  };
+};
 
 export const resolvePopupItemPath = (parentPath: string, index: number): string =>
   parentPath.length > 0 ? `${parentPath}.${index}` : `${index}`;
