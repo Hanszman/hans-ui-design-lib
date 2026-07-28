@@ -39,14 +39,20 @@
 
 .hans-modal-small.hans-modal-placement-center {
   @apply max-w-md;
+  width: min(100%, 28rem);
+  max-height: min(100%, 32rem);
 }
 
 .hans-modal-medium.hans-modal-placement-center {
   @apply max-w-2xl;
+  width: min(100%, 42rem);
+  max-height: min(100%, 48rem);
 }
 
 .hans-modal-large.hans-modal-placement-center {
   @apply max-w-5xl;
+  width: min(100%, 72rem);
+  max-height: min(100%, 64rem);
 }
 
 .hans-modal-small.hans-modal-placement-left,
