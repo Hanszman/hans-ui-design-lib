@@ -7,7 +7,7 @@
 }
 
 .hans-popup-panel-portal {
-  @apply fixed z-[1300];
+  @apply fixed z-[1300] min-w-0 w-max max-w-[calc(100vw-1rem)];
 }
 
 .hans-popup-panel[data-horizontal-position='start'] {

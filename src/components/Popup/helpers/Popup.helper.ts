@@ -15,14 +15,24 @@ import type {
   CreatePopupDirectionFrameHandlerParams,
   ResolvePopupDirectionParams,
   ResolvePopupHorizontalPositionParams,
+  GetPopupPortalStyleParams,
 } from './Popup.helper.types';
 
 export const getPopupDirection = ({
   spaceBelow,
   spaceAbove,
   panelHeight,
-}: GetPopupDirectionParams): PopupDirection =>
-  spaceBelow < panelHeight && spaceAbove > panelHeight ? 'up' : 'down';
+}: GetPopupDirectionParams): PopupDirection => {
+  if (spaceBelow >= panelHeight) {
+    return 'down';
+  }
+
+  if (spaceAbove >= panelHeight) {
+    return 'up';
+  }
+
+  return spaceAbove > spaceBelow ? 'up' : 'down';
+};
 
 export const getPopupHorizontalPosition = ({
   spaceRight,
@@ -154,6 +164,25 @@ export const getPopupPanelStyle = ({
   ({
     '--hans-popup-bg': popupBackgroundColor,
   }) as React.CSSProperties;
+
+export const getPopupPortalStyle = ({
+  triggerRect,
+  direction,
+  horizontalPosition,
+  viewportWidth,
+  viewportHeight,
+  matchTriggerWidth,
+}: GetPopupPortalStyleParams): React.CSSProperties => ({
+  position: 'fixed',
+  ...(horizontalPosition === 'start'
+    ? { left: triggerRect.left }
+    : { right: viewportWidth - triggerRect.right }),
+  ...(direction === 'down'
+    ? { top: triggerRect.bottom + 4 }
+    : { bottom: viewportHeight - triggerRect.top + 4 }),
+  ...(matchTriggerWidth ? { minWidth: triggerRect.width } : {}),
+  zIndex: 1300,
+});
 
 export const resolvePopupItemPath = (parentPath: string, index: number): string =>
   parentPath.length > 0 ? `${parentPath}.${index}` : `${index}`;

@@ -8,6 +8,7 @@ import {
   getPopupDirection,
   getPopupHorizontalPosition,
   getPopupPanelStyle,
+  getPopupPortalStyle,
   hasPopupRenderableContent,
   handlePopupOutsideClick,
   resolvePopupItemClassName,
@@ -27,6 +28,15 @@ describe('Popup.helper', () => {
     expect(
       getPopupDirection({ spaceBelow: 80, spaceAbove: 220, panelHeight: 120 }),
     ).toBe('up');
+  });
+
+  it('Should choose the side with more room when neither side fits', () => {
+    expect(
+      getPopupDirection({ spaceBelow: 40, spaceAbove: 80, panelHeight: 120 }),
+    ).toBe('up');
+    expect(
+      getPopupDirection({ spaceBelow: 80, spaceAbove: 40, panelHeight: 120 }),
+    ).toBe('down');
   });
 
   it('Should align popup to the end when there is not enough horizontal room on the right', () => {
@@ -312,6 +322,49 @@ describe('Popup.helper', () => {
       getPopupPanelStyle({ popupBackgroundColor: 'rgb(255, 255, 255)' }),
     ).toEqual({
       '--hans-popup-bg': 'rgb(255, 255, 255)',
+    });
+  });
+
+  it('Should resolve portal placement for both directions and alignments', () => {
+    const triggerRect = {
+      left: 100,
+      right: 300,
+      top: 200,
+      bottom: 240,
+      width: 200,
+    } as DOMRect;
+
+    expect(
+      getPopupPortalStyle({
+        triggerRect,
+        direction: 'down',
+        horizontalPosition: 'start',
+        viewportWidth: 1000,
+        viewportHeight: 800,
+        matchTriggerWidth: true,
+      }),
+    ).toEqual({
+      position: 'fixed',
+      left: 100,
+      top: 244,
+      minWidth: 200,
+      zIndex: 1300,
+    });
+
+    expect(
+      getPopupPortalStyle({
+        triggerRect,
+        direction: 'up',
+        horizontalPosition: 'end',
+        viewportWidth: 1000,
+        viewportHeight: 800,
+        matchTriggerWidth: false,
+      }),
+    ).toEqual({
+      position: 'fixed',
+      right: 700,
+      bottom: 604,
+      zIndex: 1300,
     });
   });
 

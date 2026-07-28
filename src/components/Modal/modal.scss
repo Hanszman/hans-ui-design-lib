@@ -111,12 +111,17 @@
 }
 
 .hans-modal-body {
-  @apply box-border flex min-h-0 flex-1 flex-col overflow-auto px-5 pt-5;
+  @apply box-border flex min-h-0 flex-1 flex-col overflow-auto px-5 py-5;
   max-height: var(--hans-modal-body-max-height);
 }
 
+.hans-modal-body::after {
+  content: '';
+  @apply block h-5 shrink-0;
+}
+
 .hans-modal-body-content {
-  @apply flex min-h-0 flex-col pb-5;
+  @apply flex min-h-0 flex-col;
 }
 
 .hans-modal-projected-content {

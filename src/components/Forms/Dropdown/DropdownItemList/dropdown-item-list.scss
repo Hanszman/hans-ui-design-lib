@@ -17,7 +17,7 @@
 }
 
 .hans-dropdown-option {
-  @apply px-3 py-2 flex items-center gap-2 cursor-pointer relative whitespace-nowrap;
+  @apply px-3 py-2 flex items-center gap-2 cursor-pointer relative whitespace-normal break-words;
   color: var(--hans-dropdown-option-text-color, var(--text-color));
 }
 

@@ -123,4 +123,21 @@ describe('HansPopup', () => {
 
     expect(inlineContainer.querySelector('.hans-popup-panel')).toBeInTheDocument();
   });
+
+  it('Should accept an end-aligned portal configuration', () => {
+    render(
+      <HansPopup
+        isOpen
+        portalHorizontalPosition="end"
+        renderTrigger={() => <button type="button">Trigger</button>}
+      >
+        <div>Aligned content</div>
+      </HansPopup>,
+    );
+
+    expect(document.body.querySelector('.hans-popup-panel')).toHaveAttribute(
+      'data-horizontal-position',
+      'end',
+    );
+  });
 });

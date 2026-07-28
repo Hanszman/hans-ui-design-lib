@@ -277,6 +277,8 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
         customClasses="hans-date-picker-field"
         popupClassName="hans-date-picker-popup"
         panelClassName="hans-date-picker-popup-content"
+        portalMatchTriggerWidth={false}
+        portalHorizontalPosition="end"
         style={popupFieldStyle}
         renderTrigger={() => (
           <HansInput

@@ -28,6 +28,7 @@ const HansPopupSchema = {
   panelClassName: 'string',
   customClasses: 'string',
   portal: 'boolean',
+  portalMatchTriggerWidth: 'boolean',
 } as const;
 
 export type HansPopupProps = InferPropsFromSchema<typeof HansPopupSchema> &
@@ -44,6 +45,7 @@ export type HansPopupProps = InferPropsFromSchema<typeof HansPopupSchema> &
     onHorizontalPositionChange?: (
       horizontalPosition: PopupHorizontalPosition,
     ) => void;
+    portalHorizontalPosition?: PopupHorizontalPosition;
   };
 
 export const HansPopupPropsList = createPropsList(HansPopupSchema);

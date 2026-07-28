@@ -11,6 +11,7 @@ import {
   createPopupOutsideMouseDownHandler,
   createPopupStateHandlers,
   getPopupPanelStyle,
+  getPopupPortalStyle,
   hasPopupRenderableContent,
 } from './helpers/Popup.helper';
 
@@ -24,6 +25,8 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
     panelClassName = '',
     customClasses = '',
     portal = true,
+    portalMatchTriggerWidth = true,
+    portalHorizontalPosition,
     onOpenChange,
     onDirectionChange,
     onHorizontalPositionChange,
@@ -79,19 +82,17 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
     const triggerRect = containerRef.current?.getBoundingClientRect();
     if (!triggerRect) return;
 
-    setPortalStyle({
-      position: 'fixed',
-      left: triggerRect.left,
-      top: direction === 'down' ? triggerRect.bottom + 4 : undefined,
-      bottom:
-        direction === 'up'
-          ? window.innerHeight - triggerRect.top + 4
-          : undefined,
-      width: triggerRect.width,
-      minWidth: triggerRect.width,
-      zIndex: 1300,
-    });
-  }, [direction]);
+    setPortalStyle(
+      getPopupPortalStyle({
+        triggerRect,
+        direction,
+        horizontalPosition: portalHorizontalPosition ?? horizontalPosition,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        matchTriggerWidth: portalMatchTriggerWidth,
+      }),
+    );
+  }, [direction, horizontalPosition, portalHorizontalPosition, portalMatchTriggerWidth]);
 
   React.useEffect(() => {
     if (!portal || !isOpen || typeof window === 'undefined') return;
@@ -113,7 +114,7 @@ export const HansPopup = React.memo((props: HansPopupProps) => {
       ref={panelRef}
       className={`hans-popup-panel ${portal ? 'hans-popup-panel-portal' : ''} ${popupClassName}`}
       data-direction={direction}
-      data-horizontal-position={horizontalPosition}
+      data-horizontal-position={portalHorizontalPosition ?? horizontalPosition}
       style={{ ...getPopupPanelStyle({ popupBackgroundColor }), ...portalStyle }}
     >
       <div className={`hans-popup-panel-content ${panelClassName}`}>

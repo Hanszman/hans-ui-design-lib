@@ -65,3 +65,12 @@ export type CreatePopupDirectionFrameHandlerParams = {
 export type GetPopupPanelStyleParams = {
   popupBackgroundColor: string;
 };
+
+export type GetPopupPortalStyleParams = {
+  triggerRect: DOMRect;
+  direction: PopupDirection;
+  horizontalPosition: PopupHorizontalPosition;
+  viewportWidth: number;
+  viewportHeight: number;
+  matchTriggerWidth: boolean;
+};

@@ -149,6 +149,7 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
         customClasses="hans-select-option-field"
         popupClassName="hans-select-option-popup"
         panelClassName="hans-select-option-popup-content"
+        portalMatchTriggerWidth={true}
         style={popupFieldStyle}
         onDirectionChange={setOpenDirection}
         renderTrigger={() => (
