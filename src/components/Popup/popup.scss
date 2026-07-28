@@ -6,6 +6,10 @@
   @apply absolute z-[9999] min-w-full;
 }
 
+.hans-popup-panel-portal {
+  @apply fixed z-[1300];
+}
+
 .hans-popup-panel[data-horizontal-position='start'] {
   @apply left-0 right-auto;
 }

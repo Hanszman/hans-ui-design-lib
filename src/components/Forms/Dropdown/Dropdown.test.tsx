@@ -79,13 +79,13 @@ describe('HansDropdown', () => {
   });
 
   it('Should render empty text when options are missing', () => {
-    const { container } = render(
+    render(
       <HansDropdown triggerLabel="Menu" options={[]} noOptionsText="Nothing" />,
     );
     fireEvent.click(screen.getByRole('button', { name: /menu/i }));
     expect(screen.getByText('Nothing')).toBeInTheDocument();
     expect(
-      container.querySelector('.hans-popup-panel')?.getAttribute('style'),
+      document.body.querySelector('.hans-popup-panel')?.getAttribute('style'),
     ).toContain('--hans-popup-bg: var(--background-color, var(--white))');
   });
 
@@ -336,7 +336,7 @@ describe('HansDropdown', () => {
   });
 
   it('Should apply custom option colors through dropdown list CSS variables', () => {
-    const { container } = render(
+    render(
       <HansDropdown
         triggerLabel="Theme"
         options={options}
@@ -349,7 +349,7 @@ describe('HansDropdown', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /theme/i }));
 
-    const list = container.querySelector('.hans-dropdown-list') as HTMLElement;
+    const list = document.body.querySelector('.hans-dropdown-list') as HTMLElement;
     expect(list.getAttribute('style')).toContain(
       '--hans-dropdown-option-text-color: var(--base-strong-color)',
     );

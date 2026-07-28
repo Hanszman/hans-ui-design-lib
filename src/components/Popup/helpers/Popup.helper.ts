@@ -53,22 +53,28 @@ export const createPopupStateHandlers = ({
 
 export const handlePopupOutsideClick = ({
   container,
+  panel,
   target,
   close,
 }: HandlePopupOutsideClickParams): void => {
   if (!container || !target) return;
   const root = container.getRootNode();
   const isShadowHostTarget = root instanceof ShadowRoot && root.host === target;
-  if (!container.contains(target) && !isShadowHostTarget) close();
+  const isInsidePanel = panel?.contains(target) ?? false;
+  if (!container.contains(target) && !isInsidePanel && !isShadowHostTarget) {
+    close();
+  }
 };
 
 export const createPopupOutsideMouseDownHandler = ({
   containerRef,
+  panelRef,
   close,
 }: CreatePopupOutsideMouseDownHandlerParams) =>
   (event: MouseEvent): void => {
     handlePopupOutsideClick({
       container: containerRef.current,
+      panel: panelRef?.current,
       target: event.target as Node | null,
       close,
     });

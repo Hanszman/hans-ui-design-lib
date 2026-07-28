@@ -27,6 +27,7 @@ const HansPopupSchema = {
   popupClassName: 'string',
   panelClassName: 'string',
   customClasses: 'string',
+  portal: 'boolean',
 } as const;
 
 export type HansPopupProps = InferPropsFromSchema<typeof HansPopupSchema> &

@@ -17,6 +17,7 @@ export type CreatePopupOpenSetterParams = {
 
 export type HandlePopupOutsideClickParams = {
   container: HTMLDivElement | null;
+  panel?: HTMLDivElement | null;
   target: Node | null;
   close: () => void;
 };
@@ -46,6 +47,7 @@ export type CreatePopupStateHandlersParams = {
 
 export type CreatePopupOutsideMouseDownHandlerParams = {
   containerRef: React.RefObject<HTMLDivElement | null>;
+  panelRef?: React.RefObject<HTMLDivElement | null>;
   close: () => void;
 };
 

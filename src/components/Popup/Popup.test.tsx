@@ -63,7 +63,7 @@ describe('HansPopup', () => {
   });
 
   it('Should render default no-content message when children are empty', () => {
-    const { container } = render(
+    render(
       <HansPopup
         isOpen
         renderTrigger={() => <button type="button">Trigger</button>}
@@ -74,13 +74,13 @@ describe('HansPopup', () => {
 
     expect(screen.getByText('No content')).toBeInTheDocument();
     expect(
-      container.querySelector('.hans-popup-panel')?.getAttribute('style'),
+      document.body.querySelector('.hans-popup-panel')?.getAttribute('style'),
     ).toContain('--hans-popup-bg: var(--background-color, var(--white))');
   });
 
   it('Should expose the computed horizontal popup position on the panel', () => {
     const onHorizontalPositionChange = vi.fn();
-    const { container } = render(
+    render(
       <HansPopup
         isOpen
         onHorizontalPositionChange={onHorizontalPositionChange}
@@ -90,9 +90,37 @@ describe('HansPopup', () => {
       </HansPopup>,
     );
 
-    const panel = container.querySelector('.hans-popup-panel');
+    const panel = document.body.querySelector('.hans-popup-panel');
 
     expect(panel?.getAttribute('data-horizontal-position')).toBe('start');
     expect(onHorizontalPositionChange).not.toHaveBeenCalled();
+  });
+
+  it('Should keep portal popups interactive and allow opting out of the portal', () => {
+    const onOpenChange = vi.fn();
+    render(
+      <HansPopup
+        isOpen
+        onOpenChange={onOpenChange}
+        renderTrigger={() => <button type="button">Trigger</button>}
+      >
+        <button type="button">Portal action</button>
+      </HansPopup>,
+    );
+
+    fireEvent.mouseDown(screen.getByText('Portal action'));
+    expect(onOpenChange).not.toHaveBeenCalled();
+
+    const { container: inlineContainer } = render(
+      <HansPopup
+        isOpen
+        portal={false}
+        renderTrigger={() => <button type="button">Inline trigger</button>}
+      >
+        <div>Inline content</div>
+      </HansPopup>,
+    );
+
+    expect(inlineContainer.querySelector('.hans-popup-panel')).toBeInTheDocument();
   });
 });
