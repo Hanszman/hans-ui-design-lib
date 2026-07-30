@@ -198,7 +198,7 @@ describe('Dropdown.helper', () => {
         closeDelay: 50,
       })('0.1.2', {
         relatedTarget: document.body,
-      } as React.MouseEvent);
+      } as unknown as React.MouseEvent);
 
       vi.advanceTimersByTime(51);
       expect(setHoveredPath).toHaveBeenCalledWith('0.1');
@@ -210,7 +210,7 @@ describe('Dropdown.helper', () => {
         closeDelay: 50,
       })('0.1', {
         relatedTarget: nestedList,
-      } as React.MouseEvent);
+      } as unknown as React.MouseEvent);
 
       vi.advanceTimersByTime(51);
       expect(setHoveredPath).toHaveBeenCalledTimes(1);

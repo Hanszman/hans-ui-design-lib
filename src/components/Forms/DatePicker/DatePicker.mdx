@@ -35,6 +35,18 @@ export const Example = () => (
 
 <Controls />
 
+## Required fields
+
+Set `required` to append the standard asterisk to the label and apply the native
+constraint to the underlying date, datetime or time input. Do not include `*` in
+the label text supplied by the consumer.
+
+<Canvas of={HansDatePickerStories.Required} />
+
+```html
+<hans-date-picker label="Start date" required></hans-date-picker>
+```
+
 ## Date
 
 Use `pickerType="date"` for a fast calendar-only selection flow.

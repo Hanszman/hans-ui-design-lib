@@ -39,6 +39,7 @@ const HansInputSchema = {
   messageColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',
   disabled: 'boolean',
+  required: 'boolean',
   leftIcon: { type: 'custom', ref: {} as InputIcon },
   leftIconAriaLabel: 'string',
   onLeftIconClick: {

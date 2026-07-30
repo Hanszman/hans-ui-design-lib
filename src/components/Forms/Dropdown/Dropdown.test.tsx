@@ -390,7 +390,9 @@ describe('HansDropdown', () => {
       const nestedMenu = screen.getAllByRole('menu')[1];
       fireEvent.mouseLeave(nestedMenu);
       fireEvent.mouseEnter(nestedMenu);
-      vi.advanceTimersByTime(120);
+      act(() => {
+        vi.advanceTimersByTime(120);
+      });
 
       expect(screen.getByText('Child')).toBeInTheDocument();
     } finally {

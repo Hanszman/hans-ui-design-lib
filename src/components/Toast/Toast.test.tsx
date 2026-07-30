@@ -29,15 +29,20 @@ const renderWithAct = (ui: React.ReactNode) => {
 describe('HansToast', () => {
   beforeEach(() => {
     vi.useFakeTimers();
-    resetToastStackRegistry();
+    act(() => {
+      resetToastStackRegistry();
+    });
     vi.stubGlobal('ResizeObserver', ResizeObserverMock);
   });
 
   afterEach(() => {
+    act(() => {
+      vi.clearAllTimers();
+      resetToastStackRegistry();
+    });
     vi.useRealTimers();
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
-    resetToastStackRegistry();
   });
 
   it('Should render title, message, icon and semantic classes', () => {
@@ -222,7 +227,9 @@ describe('HansToast', () => {
     );
 
     expect(portalTarget).toHaveTextContent('Portal toast');
-    document.body.removeChild(portalTarget);
+    act(() => {
+      document.body.removeChild(portalTarget);
+    });
   });
 
   it('Should not render when visibility starts disabled', () => {

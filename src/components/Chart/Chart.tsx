@@ -49,7 +49,6 @@ export const HansChart = React.memo((props: HansChartProps) => {
         series,
         palette,
         showLegend,
-        title,
         backgroundColor,
         optionOverrides,
       ),
@@ -61,7 +60,6 @@ export const HansChart = React.memo((props: HansChartProps) => {
       palette,
       series,
       showLegend,
-      title,
     ],
   );
 

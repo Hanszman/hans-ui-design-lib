@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { HansSelectOption } from './SelectOption';
@@ -12,6 +12,21 @@ const options: SelectOptionItem[] = [
 ];
 
 describe('HansSelectOption', () => {
+  it('Should forward the required field contract to the shared input', () => {
+    render(
+      <HansSelectOption
+        label="Technology"
+        options={options}
+        required
+      />,
+    );
+
+    expect(screen.getByText('Technology').closest('label')).toHaveTextContent(
+      'Technology *',
+    );
+    expect(screen.getByPlaceholderText('Select an option')).toBeRequired();
+  });
+
   it('Should render label and message with colors', () => {
     render(
       <HansSelectOption
@@ -550,7 +565,9 @@ describe('HansSelectOption', () => {
     await user.click(document.body);
 
     if (typeof rafCallbackRef.current === 'function') {
-      rafCallbackRef.current(0);
+      act(() => {
+        rafCallbackRef.current?.(0);
+      });
     }
 
     rafSpy.mockRestore();

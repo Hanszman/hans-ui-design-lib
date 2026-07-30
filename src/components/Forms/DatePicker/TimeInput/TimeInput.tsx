@@ -24,6 +24,7 @@ export const HansTimeInput = React.memo((props: HansTimeInputProps) => {
     messageColor = 'base',
     customClasses = '',
     disabled = false,
+    required = false,
     pickerType = 'time',
     value,
     defaultValue = '',
@@ -97,6 +98,7 @@ export const HansTimeInput = React.memo((props: HansTimeInputProps) => {
         }
         customClasses={`hans-date-picker-input ${customClasses}`}
         disabled={disabled}
+        required={required}
         value={timeInputValue || selectedValue}
         onChange={handleChange}
         rightIcon={<HansIcon name="MdAccessTime" iconSize="small" />}

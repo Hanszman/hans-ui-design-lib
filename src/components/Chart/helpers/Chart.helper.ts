@@ -254,7 +254,6 @@ export const buildChartOption = (
   series: HansChartSeries[],
   palette: readonly string[],
   showLegend: boolean,
-  title: string,
   backgroundColor: string,
   optionOverrides: Record<string, unknown>,
 ): echarts.EChartsOption => {

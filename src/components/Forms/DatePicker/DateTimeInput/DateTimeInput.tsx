@@ -46,6 +46,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     messageColor = 'base',
     customClasses = '',
     disabled = false,
+    required = false,
     pickerType = 'date',
     value,
     defaultValue = '',
@@ -295,6 +296,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
             }
             customClasses={`hans-date-picker-input ${customClasses}`}
             disabled={disabled}
+            required={required}
             value={displayValue}
             readOnly={!allowInputTyping}
             onChange={allowInputTyping ? handleDisplayInputChange : undefined}

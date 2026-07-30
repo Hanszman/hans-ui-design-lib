@@ -57,6 +57,7 @@ const meta: Meta<typeof HansSelectOption> = {
     selectionType: 'single',
     enableAutocomplete: true,
     disabled: false,
+    required: false,
     message: '',
     messageColor: 'base',
   },
@@ -113,6 +114,13 @@ type Story = StoryObj<typeof HansSelectOption>;
 export const Primary: Story = {
   args: {
     label: 'Select Option',
+  },
+};
+
+export const Required: Story = {
+  args: {
+    label: 'Technology',
+    required: true,
   },
 };
 

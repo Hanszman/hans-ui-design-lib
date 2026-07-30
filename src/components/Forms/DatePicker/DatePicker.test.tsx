@@ -14,4 +14,22 @@ describe('HansDatePicker', () => {
 
     expect(screen.getByDisplayValue('13/03/2026')).toBeInTheDocument();
   });
+
+  it('Should forward required to date and time input variants', () => {
+    const { rerender } = render(
+      <HansDatePicker label="Start date" pickerType="date" required />,
+    );
+
+    expect(screen.getByText('Start date').closest('label')).toHaveTextContent(
+      'Start date *',
+    );
+    expect(screen.getByPlaceholderText('DD/MM/YYYY')).toBeRequired();
+
+    rerender(<HansDatePicker label="Start time" pickerType="time" required />);
+
+    expect(screen.getByText('Start time').closest('label')).toHaveTextContent(
+      'Start time *',
+    );
+    expect(screen.getByPlaceholderText('HH:MM')).toBeRequired();
+  });
 });

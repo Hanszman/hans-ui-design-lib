@@ -23,6 +23,7 @@ const HansSelectOptionSchema = {
   messageColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',
   disabled: 'boolean',
+  required: 'boolean',
   options: {
     type: 'custom',
     ref: {} as PopupOptionItem[],

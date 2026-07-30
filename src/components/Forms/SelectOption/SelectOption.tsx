@@ -38,6 +38,7 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
     messageColor = 'base',
     customClasses = '',
     disabled = false,
+    required = false,
     options = [],
     selectionType = 'single',
     enableAutocomplete = true,
@@ -151,6 +152,7 @@ export const HansSelectOption = React.memo((props: HansSelectOptionProps) => {
             placeholder={placeholder}
             customClasses={`hans-select-option-input ${customClasses}`}
             disabled={disabled}
+            required={required}
             value={inputValue}
             onChange={handleInputChange}
             onFocus={handleOpen}

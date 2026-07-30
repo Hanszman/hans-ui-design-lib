@@ -30,6 +30,15 @@ describe('HansInput', () => {
     expect(screen.queryByText('Helper')).not.toBeInTheDocument();
   });
 
+  it('Should render the required indicator and native input constraint', () => {
+    render(<HansInput label="E-mail" required />);
+
+    expect(screen.getByText('E-mail').closest('label')).toHaveTextContent(
+      'E-mail *',
+    );
+    expect(screen.getByRole('textbox')).toBeRequired();
+  });
+
   it('Should apply size, color, and custom classes', () => {
     render(
       <HansInput

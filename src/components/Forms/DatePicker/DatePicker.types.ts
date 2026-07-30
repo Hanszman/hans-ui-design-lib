@@ -20,6 +20,7 @@ const HansDatePickerSchema = {
   messageColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',
   disabled: 'boolean',
+  required: 'boolean',
   pickerType: { type: 'custom', ref: {} as HansDatePickerType },
   value: 'string',
   defaultValue: 'string',

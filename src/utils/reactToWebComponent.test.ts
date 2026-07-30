@@ -159,8 +159,11 @@ describe('reactToWebComponent', () => {
     };
     const changeSpy = vi.fn();
 
-    instance.checked = false;
-    instance.items = [{ label: 'Alpha' }];
+    await act(async () => {
+      instance.checked = false;
+      instance.items = [{ label: 'Alpha' }];
+      await Promise.resolve();
+    });
     instance.addEventListener('change', (event) =>
       changeSpy((event as CustomEvent<boolean>).detail),
     );
@@ -206,8 +209,11 @@ describe('reactToWebComponent', () => {
     customElements.define(tag, WebComp);
 
     const lowerCaseInstance = document.createElement(tag);
-    lowerCaseInstance.setAttribute('inputid', 'skills-search');
-    lowerCaseInstance.setAttribute('lefticon', 'FaSearch');
+    await act(async () => {
+      lowerCaseInstance.setAttribute('inputid', 'skills-search');
+      lowerCaseInstance.setAttribute('lefticon', 'FaSearch');
+      await Promise.resolve();
+    });
 
     await act(async () => {
       document.body.appendChild(lowerCaseInstance);
@@ -219,8 +225,11 @@ describe('reactToWebComponent', () => {
     );
 
     const kebabCaseInstance = document.createElement(tag);
-    kebabCaseInstance.setAttribute('input-id', 'projects-search');
-    kebabCaseInstance.setAttribute('left-icon', 'FaSearch');
+    await act(async () => {
+      kebabCaseInstance.setAttribute('input-id', 'projects-search');
+      kebabCaseInstance.setAttribute('left-icon', 'FaSearch');
+      await Promise.resolve();
+    });
 
     await act(async () => {
       document.body.appendChild(kebabCaseInstance);
@@ -254,7 +263,7 @@ describe('reactToWebComponent', () => {
     }).not.toThrow();
   });
 
-  it('Should skip aliased sync when the host reports a null attribute value', () => {
+  it('Should skip aliased sync when the host reports a null attribute value', async () => {
     const Dummy: React.FC = () => React.createElement('div', null, 'Hello');
     const tag = 'null-attribute-element';
     const WebComp = createWebComponent(Dummy, {
@@ -281,9 +290,10 @@ describe('reactToWebComponent', () => {
       value: vi.fn(() => null),
     });
 
-    expect(() => {
+    await act(async () => {
       instance.attributeChangedCallback('left-icon', null, 'FaSearch');
-    }).not.toThrow();
+      await Promise.resolve();
+    });
     expect(instance.getAttribute).toHaveBeenCalledWith('left-icon');
   });
 

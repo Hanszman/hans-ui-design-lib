@@ -13,6 +13,7 @@ const meta: Meta<typeof HansInput> = {
     inputColor: 'base',
     inputSize: 'medium',
     disabled: false,
+    required: false,
     message: '',
     messageColor: 'base',
   },
@@ -143,6 +144,15 @@ export const WithIcons: Story = {
       />
     </div>
   ),
+};
+
+export const Required: Story = {
+  args: {
+    label: 'E-mail',
+    inputType: 'email',
+    placeholder: 'user@email.com',
+    required: true,
+  },
 };
 
 export const WithActionIcon: Story = {

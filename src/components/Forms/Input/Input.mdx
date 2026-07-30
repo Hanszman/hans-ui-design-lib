@@ -37,6 +37,19 @@ The component accepts the following properties:
 
 <Controls />
 
+## Required fields
+
+Set `required` to apply native form validation and append an accessible visual
+asterisk to the label. Consumers should pass the plain label without adding `*`.
+
+<Canvas of={HansInputStories.Required} />
+
+The same contract is available to Web Component consumers:
+
+```html
+<hans-input label="E-mail" required></hans-input>
+```
+
 ## Sizes
 
 Listed below are the possible sizes of the component:

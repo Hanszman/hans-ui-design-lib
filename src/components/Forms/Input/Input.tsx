@@ -24,6 +24,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
     messageColor = 'base',
     customClasses = '',
     disabled = false,
+    required = false,
     leftIcon,
     leftIconAriaLabel = 'Left input action',
     onLeftIconClick,
@@ -113,6 +114,11 @@ export const HansInput = React.memo((props: HansInputProps) => {
           className={`hans-input-label hans-input-label-${labelColor}`}
         >
           {label}
+          {required ? (
+            <span className="hans-input-required-indicator" aria-hidden="true">
+              {' *'}
+            </span>
+          ) : null}
         </label>
       ) : null}
 
@@ -132,6 +138,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
           id={inputId}
           type={inputType}
           disabled={disabled}
+          required={required}
           placeholder={placeholder}
           className={inputClassName}
           value={inputValue}

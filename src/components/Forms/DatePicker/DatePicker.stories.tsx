@@ -58,6 +58,7 @@ const meta: Meta<typeof HansDatePicker> = {
     allowInputTyping: false,
     panelBackgroundColor: 'var(--background-color, var(--white))',
     disabled: false,
+    required: false,
   },
   argTypes: {
     pickerType: { control: 'select', options: ['date', 'datetime', 'time'] },
@@ -108,6 +109,14 @@ export const Primary: Story = {
   args: {
     pickerType: 'date',
     defaultValue: '2026-03-13',
+  },
+};
+
+export const Required: Story = {
+  args: {
+    label: 'Start date',
+    pickerType: 'date',
+    required: true,
   },
 };
 

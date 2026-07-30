@@ -186,7 +186,6 @@ describe('Chart.helper', () => {
         [{ name: 'Traffic', type: 'pie', data: [10] }],
       ['#8257e5'],
       true,
-      'Traffic By Channel',
       'transparent',
       {},
     ),

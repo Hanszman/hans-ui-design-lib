@@ -42,6 +42,18 @@ The component accepts the following properties:
 
 <Controls />
 
+## Required fields
+
+Set `required` to append the standard asterisk to the label and apply the native
+constraint to the underlying input. Pass the label without a manually appended
+asterisk.
+
+<Canvas of={HansSelectOptionStories.Required} />
+
+```html
+<hans-select-option label="Technology" required></hans-select-option>
+```
+
 ## Colors
 
 Use the color props to style label, border, and icons.
