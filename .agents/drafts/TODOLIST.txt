@@ -1,10 +1,8 @@
 * Continuar próximos componentes:
--Message?
--Translation?
+-Message
 -AdSense (Publi/propaganda)
--Separar .env entre original e example e ignorar do git o original
 -Criar pipeline ci/cd e docker no projeto
--Criar skills para criação de componentes, assim como descrito abaixo
+-Criar skills para criação de components e services, assim como descrito abaixo (também detalhado no agents.md)
 
 Recap Prompt:
 Fala GPT! Bom dia, tudo bem?
