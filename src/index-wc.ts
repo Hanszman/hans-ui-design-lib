@@ -91,6 +91,11 @@ import {
   type HansPaginationProps,
   HansPaginationPropsList,
 } from './components/Pagination/Pagination.types';
+import { HansProgressBar } from './components/ProgressBar/ProgressBar';
+import {
+  type HansProgressBarProps,
+  HansProgressBarPropsList,
+} from './components/ProgressBar/ProgressBar.types';
 import { HansPopup } from './components/Popup/Popup';
 import {
   type HansPopupProps,
@@ -218,6 +223,11 @@ registerReactAsWebComponent<HansPaginationProps>(
   HansPagination,
   HansPaginationPropsList,
   ['onPageChange'],
+);
+registerReactAsWebComponent<HansProgressBarProps>(
+  'hans-progress-bar',
+  HansProgressBar,
+  HansProgressBarPropsList,
 );
 registerReactAsWebComponent<HansPopupProps>(
   'hans-popup',

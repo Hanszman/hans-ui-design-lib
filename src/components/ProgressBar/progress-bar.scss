@@ -1,0 +1,64 @@
+.hans-progress-bar {
+  --hans-progress-bar-fill: var(--primary-default-color);
+  @apply flex w-full flex-col gap-2;
+}
+
+.hans-progress-bar-copy {
+  @apply flex items-center justify-between gap-4;
+}
+
+.hans-progress-bar-label {
+  @apply min-w-0 font-semibold text-[var(--text-color)];
+}
+
+.hans-progress-bar-value {
+  @apply shrink-0 text-[var(--text-color)];
+}
+
+.hans-progress-bar-track {
+  @apply w-full overflow-hidden rounded-full bg-[var(--base-neutral-color)];
+}
+
+.hans-progress-bar-fill {
+  @apply block h-full rounded-full bg-[var(--hans-progress-bar-fill)] transition-[width] duration-300;
+}
+
+.hans-progress-bar-small .hans-progress-bar-track {
+  @apply h-2;
+}
+
+.hans-progress-bar-medium .hans-progress-bar-track {
+  @apply h-3;
+}
+
+.hans-progress-bar-large .hans-progress-bar-track {
+  @apply h-4;
+}
+
+.hans-progress-bar-primary {
+  --hans-progress-bar-fill: var(--primary-default-color);
+}
+
+.hans-progress-bar-secondary {
+  --hans-progress-bar-fill: var(--secondary-default-color);
+}
+
+.hans-progress-bar-success {
+  --hans-progress-bar-fill: var(--success-default-color);
+}
+
+.hans-progress-bar-danger {
+  --hans-progress-bar-fill: var(--danger-default-color);
+}
+
+.hans-progress-bar-warning {
+  --hans-progress-bar-fill: var(--warning-default-color);
+}
+
+.hans-progress-bar-info {
+  --hans-progress-bar-fill: var(--info-default-color);
+}
+
+.hans-progress-bar-base {
+  --hans-progress-bar-fill: var(--base-strong-color);
+}

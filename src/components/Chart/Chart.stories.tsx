@@ -27,7 +27,7 @@ const meta: Meta<typeof HansChart> = {
   argTypes: {
     chartType: {
       control: 'select',
-      options: ['line', 'bar', 'pie', 'doughnut', 'mixed'],
+      options: ['line', 'bar', 'pie', 'doughnut', 'radar', 'mixed'],
     },
     showLegend: { control: 'boolean' },
     height: { control: 'number' },
@@ -153,6 +153,30 @@ export const Doughnut: Story = {
       },
     ],
     colors: ['success', 'info', 'danger'],
+  },
+};
+
+export const Radar: Story = {
+  args: {
+    chartType: 'radar',
+    title: 'Experience By Context',
+    categories: [],
+    radarIndicators: [
+      { name: 'Professional', max: 84 },
+      { name: 'Personal', max: 84 },
+      { name: 'Academic', max: 84 },
+      { name: 'Study', max: 84 },
+    ],
+    series: [
+      {
+        name: 'Angular',
+        type: 'radar',
+        data: [{ name: 'Angular', value: [75, 18, 12, 24] }],
+      },
+    ],
+    radarValueFormatter: (value) => `${value} months`,
+    colors: ['primary'],
+    showLegend: false,
   },
 };
 

@@ -5,12 +5,15 @@ import {
   type HansChartColor,
   type HansChartDataPoint,
   type HansChartLabelPosition,
+  type HansChartRadarIndicator,
+  type HansChartRadarValueFormatter,
   type HansChartSeries,
   type HansChartSeriesLabelOption,
   type HansChartSeriesType,
   type HansChartThemeColor,
   type HansChartType,
 } from '../Chart.types';
+import type { RadarTooltipParams } from './Chart.helper.types';
 
 export const readCssVar = (cssVar: string, fallback: string): string => {
   const value = window
@@ -46,7 +49,10 @@ export const normalizePieData = (
   data.map((item, index) =>
     typeof item === 'number'
       ? { name: categories[index] ?? `Item ${index + 1}`, value: item }
-      : { name: item.name, value: item.value },
+      : {
+          name: item.name,
+          value: Array.isArray(item.value) ? (item.value[0] ?? 0) : item.value,
+        },
   );
 
 export const getLabelRotation = (position: HansChartLabelPosition): number => {
@@ -137,9 +143,7 @@ export const resolveChartGrid = (
         containLabel: true,
       };
 
-export const resolvePieCenter = (
-  showLegend: boolean,
-): [string, string] => {
+export const resolvePieCenter = (showLegend: boolean): [string, string] => {
   if (showLegend) return ['50%', '42%'];
   return ['50%', '50%'];
 };
@@ -174,7 +178,11 @@ export const buildCartesianSeries = (
   series.map((item): echarts.SeriesOption => {
     const seriesType = resolveCartesianType(chartType, item.type);
     const numericData = item.data.map((point) =>
-      typeof point === 'number' ? point : point.value,
+      typeof point === 'number'
+        ? point
+        : Array.isArray(point.value)
+          ? (point.value[0] ?? 0)
+          : point.value,
     );
     const label = buildCartesianLabel(
       item.label?.position,
@@ -233,9 +241,7 @@ export const isPieLikeType = (
   series: HansChartSeries[],
 ): boolean => {
   if (chartType === 'pie' || chartType === 'doughnut') return true;
-  return series.some(
-    (item) => item.type === 'pie' || item.type === 'doughnut',
-  );
+  return series.some((item) => item.type === 'pie' || item.type === 'doughnut');
 };
 
 export const hasPieSeries = (
@@ -243,10 +249,60 @@ export const hasPieSeries = (
   series: HansChartSeries[],
 ): boolean => {
   if (chartType === 'pie' || chartType === 'doughnut') return true;
-  return series.some(
-    (item) => item.type === 'pie' || item.type === 'doughnut',
-  );
+  return series.some((item) => item.type === 'pie' || item.type === 'doughnut');
 };
+
+export const isRadarLikeType = (
+  chartType: HansChartType,
+  series: HansChartSeries[],
+): boolean =>
+  chartType === 'radar' || series.some((item) => item.type === 'radar');
+
+export const buildRadarSeries = (
+  series: HansChartSeries[],
+): echarts.RadarSeriesOption[] =>
+  series.map((item) => ({
+    type: 'radar',
+    name: item.name,
+    data: item.data.map((point) => ({
+      name: typeof point === 'number' ? item.name : point.name,
+      value:
+        typeof point === 'number'
+          ? [point]
+          : Array.isArray(point.value)
+            ? point.value
+            : [point.value],
+    })),
+    ...(buildCommonSeriesStyle() as Pick<
+      echarts.RadarSeriesOption,
+      'emphasis' | 'select' | 'blur'
+    >),
+  }));
+
+export const buildRadarTooltip = (
+  indicators: HansChartRadarIndicator[],
+  valueFormatter?: HansChartRadarValueFormatter,
+): echarts.EChartsOption['tooltip'] => ({
+  trigger: 'item',
+  renderMode: 'richText',
+  formatter: (params: unknown): string => {
+    const item = (
+      Array.isArray(params) ? params[0] : params
+    ) as RadarTooltipParams;
+    const values = Array.isArray(item?.value) ? item.value : [];
+    const title = item?.name || item?.seriesName || '';
+    const rows = indicators.map((indicator, index) => {
+      const numericValue = Number(values[index] ?? 0);
+      const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
+      const formatted = valueFormatter
+        ? valueFormatter(safeValue, index, indicator)
+        : String(safeValue);
+      return `${indicator.name}: ${formatted}`;
+    });
+
+    return [title, ...rows].filter(Boolean).join('\n');
+  },
+});
 
 export const buildChartOption = (
   chartType: HansChartType,
@@ -256,31 +312,37 @@ export const buildChartOption = (
   showLegend: boolean,
   backgroundColor: string,
   optionOverrides: Record<string, unknown>,
+  radarIndicators: HansChartRadarIndicator[] = [],
+  radarValueFormatter?: HansChartRadarValueFormatter,
 ): echarts.EChartsOption => {
   const pieLike = isPieLikeType(chartType, series);
+  const radarLike = isRadarLikeType(chartType, series);
   const pieSeries = hasPieSeries(chartType, series);
-  const allSeries: echarts.SeriesOption[] = pieSeries
-    ? buildPieSeries(chartType, series, categories)
-    : buildCartesianSeries(chartType, series);
+  const allSeries: echarts.SeriesOption[] = radarLike
+    ? buildRadarSeries(series)
+    : pieSeries
+      ? buildPieSeries(chartType, series, categories)
+      : buildCartesianSeries(chartType, series);
   const chartSeries = pieLike
-    ? applyPieCenterToSeries(
-        allSeries,
-        resolvePieCenter(showLegend),
-      )
+    ? applyPieCenterToSeries(allSeries, resolvePieCenter(showLegend))
     : allSeries;
 
   return {
     animation: false,
     backgroundColor,
-    tooltip: {
-      trigger: pieLike ? 'item' : 'axis',
-      axisPointer: pieLike ? undefined : { type: 'line' },
-    },
+    tooltip: radarLike
+      ? buildRadarTooltip(radarIndicators, radarValueFormatter)
+      : {
+          trigger: pieLike ? 'item' : 'axis',
+          axisPointer: pieLike ? undefined : { type: 'line' },
+        },
     legend: resolveChartLegend(showLegend),
     color: [...palette],
-    grid: resolveChartGrid(pieLike, showLegend),
-    xAxis: pieLike ? undefined : { type: 'category', data: categories },
-    yAxis: pieLike ? undefined : { type: 'value' },
+    radar: radarLike ? { indicator: radarIndicators } : undefined,
+    grid: radarLike ? undefined : resolveChartGrid(pieLike, showLegend),
+    xAxis:
+      pieLike || radarLike ? undefined : { type: 'category', data: categories },
+    yAxis: pieLike || radarLike ? undefined : { type: 'value' },
     series: chartSeries,
     ...(optionOverrides as echarts.EChartsOption),
   };

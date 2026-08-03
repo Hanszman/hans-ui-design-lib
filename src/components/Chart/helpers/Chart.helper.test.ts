@@ -9,10 +9,13 @@ import {
   buildPieLabel,
   buildPieSeries,
   buildRandomPalette,
+  buildRadarSeries,
+  buildRadarTooltip,
   getLabelRotation,
   hasPieSeries,
   isChartColorKey,
   isPieLikeType,
+  isRadarLikeType,
   normalizePieData,
   readCssVar,
   resolveCartesianType,
@@ -49,9 +52,16 @@ describe('Chart.helper', () => {
   });
 
   it('Should normalize pie data', () => {
-    expect(normalizePieData([10, { name: 'B', value: 20 }], ['A'])).toEqual([
+    expect(
+      normalizePieData(
+        [10, { name: 'B', value: 20 }, { name: 'C', value: [30] }, { name: 'D', value: [] }],
+        ['A'],
+      ),
+    ).toEqual([
       { name: 'A', value: 10 },
       { name: 'B', value: 20 },
+      { name: 'C', value: 30 },
+      { name: 'D', value: 0 },
     ]);
   });
 
@@ -128,10 +138,17 @@ describe('Chart.helper', () => {
 
     const result = buildCartesianSeries('mixed', [
       { name: 'A', type: 'bar', data: [1, 2], label: { position: 'inside' } },
-      { name: 'B', type: 'line', data: [3, 4], smooth: true },
+      {
+        name: 'B',
+        type: 'line',
+        data: [{ name: 'first', value: [3] }, { name: 'second', value: 4 }],
+        smooth: true,
+      },
+      { name: 'Empty array', type: 'line', data: [{ name: 'empty', value: [] }] },
     ]);
     expect(result[0]).toMatchObject({ type: 'bar' });
     expect(result[1]).toMatchObject({ type: 'line', smooth: true });
+    expect(result[2]).toMatchObject({ data: [0] });
   });
 
   it('Should resolve pie radius and build pie series', () => {
@@ -211,5 +228,86 @@ describe('Chart.helper', () => {
     expect(hasPieSeries('line', [{ name: 'L', type: 'line', data: [1] }])).toBe(
       false,
     );
+  });
+
+  it('Should build radar series and localized tooltip values', () => {
+    const indicators = [
+      { name: 'Professional', max: 48 },
+      { name: 'Personal', max: 48 },
+    ];
+    const radarSeries = buildRadarSeries([
+      {
+        name: 'Angular',
+        type: 'radar',
+        data: [
+          { name: 'Angular', value: [36, 12] },
+          { name: 'Scalar', value: 4 },
+          2,
+        ],
+      },
+    ]);
+
+    expect(radarSeries[0]).toMatchObject({
+      type: 'radar',
+      data: [
+        { name: 'Angular', value: [36, 12] },
+        { name: 'Scalar', value: [4] },
+        { name: 'Angular', value: [2] },
+      ],
+    });
+    expect(isRadarLikeType('radar', [])).toBe(true);
+    expect(
+      isRadarLikeType('mixed', [{ name: 'A', type: 'radar', data: [1] }]),
+    ).toBe(true);
+    expect(isRadarLikeType('line', [])).toBe(false);
+
+    const tooltip = buildRadarTooltip(
+      indicators,
+      (value, _index, indicator) => `${value} months in ${indicator.name}`,
+    ) as { formatter: (params: unknown) => string };
+    expect(
+      tooltip.formatter({ name: 'Angular', value: [36, Number.NaN] }),
+    ).toBe(
+      'Angular\nProfessional: 36 months in Professional\nPersonal: 0 months in Personal',
+    );
+
+    const defaultTooltip = buildRadarTooltip(indicators) as {
+      formatter: (params: unknown) => string;
+    };
+    expect(
+      defaultTooltip.formatter([{ seriesName: 'Angular', value: [1] }]),
+    ).toBe('Angular\nProfessional: 1\nPersonal: 0');
+    expect(defaultTooltip.formatter({ value: 7 })).toBe(
+      'Professional: 0\nPersonal: 0',
+    );
+  });
+
+  it('Should build a native radar option without cartesian axes', () => {
+    expect(
+      buildChartOption(
+        'radar',
+        [],
+        [{ name: 'Angular', data: [{ name: 'Angular', value: [24, 6] }] }],
+        ['#8257e5'],
+        false,
+        'transparent',
+        {},
+        [
+          { name: 'Professional', max: 24 },
+          { name: 'Personal', max: 24 },
+        ],
+      ),
+    ).toMatchObject({
+      radar: {
+        indicator: [
+          { name: 'Professional', max: 24 },
+          { name: 'Personal', max: 24 },
+        ],
+      },
+      grid: undefined,
+      xAxis: undefined,
+      yAxis: undefined,
+      series: [{ type: 'radar' }],
+    });
   });
 });

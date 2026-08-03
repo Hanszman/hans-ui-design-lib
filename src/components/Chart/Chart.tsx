@@ -26,6 +26,8 @@ export const HansChart = React.memo((props: HansChartProps) => {
     customClasses = '',
     emptyText = 'No data available',
     optionOverrides = {},
+    radarIndicators = [],
+    radarValueFormatter,
     onPointClick,
     ...rest
   } = props;
@@ -51,6 +53,8 @@ export const HansChart = React.memo((props: HansChartProps) => {
         showLegend,
         backgroundColor,
         optionOverrides,
+        radarIndicators,
+        radarValueFormatter,
       ),
     [
       backgroundColor,
@@ -58,6 +62,8 @@ export const HansChart = React.memo((props: HansChartProps) => {
       chartType,
       optionOverrides,
       palette,
+      radarIndicators,
+      radarValueFormatter,
       series,
       showLegend,
     ],
@@ -72,11 +78,15 @@ export const HansChart = React.memo((props: HansChartProps) => {
     const handleResize = () => {
       instance.resize();
     };
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(handleResize);
 
     window.addEventListener('resize', handleResize);
+    resizeObserver?.observe(wrapperRef.current);
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      resizeObserver?.disconnect();
       instance.dispose();
       instanceRef.current = null;
     };
@@ -144,7 +154,11 @@ export const HansChart = React.memo((props: HansChartProps) => {
       {...rest}
     >
       {title ? <span className="hans-chart-title">{title}</span> : null}
-      <div className="hans-chart-canvas" ref={wrapperRef} />
+      <div
+        className="hans-chart-canvas"
+        ref={wrapperRef}
+        style={{ height: Math.max(220, height - (title ? 60 : 24)) }}
+      />
     </div>
   );
 });

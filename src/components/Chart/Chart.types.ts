@@ -8,13 +8,28 @@ import type { LoadingType } from '../Loading/Loading.types';
 
 export type HansChartType = HansChartSeriesType | 'mixed';
 
-export type HansChartSeriesType = 'line' | 'bar' | 'pie' | 'doughnut';
+export type HansChartSeriesType = 'line' | 'bar' | 'pie' | 'doughnut' | 'radar';
 
 export type HansChartColor = Color | string;
 
 export type HansChartThemeColor = Color;
 
-export type HansChartDataPoint = number | { name: string; value: number };
+export type HansChartDataPoint =
+  | number
+  | { name: string; value: number }
+  | { name: string; value: number[] };
+
+export type HansChartRadarIndicator = {
+  name: string;
+  max: number;
+  min?: number;
+};
+
+export type HansChartRadarValueFormatter = (
+  value: number,
+  index: number,
+  indicator: HansChartRadarIndicator,
+) => string;
 
 export type HansChartPointEvent = {
   name?: string;
@@ -94,6 +109,16 @@ const HansChartSchema = {
   optionOverrides: {
     type: 'custom',
     ref: {} as Record<string, unknown>,
+    webComponentType: 'property',
+  },
+  radarIndicators: {
+    type: 'custom',
+    ref: [] as HansChartRadarIndicator[],
+    webComponentType: 'property',
+  },
+  radarValueFormatter: {
+    type: 'custom',
+    ref: {} as HansChartRadarValueFormatter,
     webComponentType: 'property',
   },
 } as const;

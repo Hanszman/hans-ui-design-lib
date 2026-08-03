@@ -58,7 +58,7 @@ The component accepts the following properties:
 
 ## Types
 
-Supported chart modes include `line`, `bar`, `pie`, `doughnut`, and `mixed`.
+Supported chart modes include `line`, `bar`, `pie`, `doughnut`, `radar`, and `mixed`.
 
 In `mixed`, use per-series `type` to combine bars and lines in one chart.
 
@@ -104,6 +104,12 @@ Use `chartType="pie"` for proportional distribution.
 Use `chartType="doughnut"` for ring-style pie charts.
 
 <Canvas of={HansChartStories.Doughnut} />
+
+## Radar
+
+Use `chartType="radar"` with `radarIndicators`. The tooltip lists every indicator and uses `radarValueFormatter` to format domain units such as months.
+
+<Canvas of={HansChartStories.Radar} />
 
 ## Empty
 

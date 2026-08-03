@@ -1,0 +1,22 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './ProgressBar.stories';
+
+<Meta of={Stories} />
+
+# Progress Bar
+
+Accessible determinate progress for numeric or ordinal values. Always pair semantic colors with a visible `valueLabel` when color represents a domain state.
+
+<Canvas of={Stories.Default} />
+<Controls of={Stories.Default} />
+
+## Ordinal states
+
+The following stories document the 25%, 50%, 75% and 100% states used by ordinal domain values.
+
+<Canvas of={Stories.Studying} />
+<Canvas of={Stories.PreviouslyUsed} />
+<Canvas of={Stories.Occasional} />
+<Canvas of={Stories.Complete} />
+
+The Web Component is available as `<hans-progress-bar>`. Use `value`, `min`, `max`, `label`, `value-label`, `progress-color`, `progress-size` and `show-value`.

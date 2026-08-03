@@ -414,4 +414,51 @@ describe('HansChart', () => {
     unmount();
     expect(echartsMocks.mockDispose).toHaveBeenCalledTimes(1);
   });
+
+  it('Should provide a concrete canvas height with and without a title', () => {
+    const { container, rerender } = render(
+      <HansChart
+        title="Revenue"
+        height={380}
+        series={[{ name: 'Revenue', data: [10] }]}
+      />,
+    );
+
+    expect(container.querySelector<HTMLElement>('.hans-chart-canvas')?.style.height).toBe('320px');
+    rerender(<HansChart height={200} series={[{ name: 'Revenue', data: [10] }]} />);
+    expect(container.querySelector<HTMLElement>('.hans-chart-canvas')?.style.height).toBe('220px');
+  });
+
+  it('Should observe container size changes and disconnect on unmount', () => {
+    const observe = vi.fn();
+    const disconnect = vi.fn();
+    let resizeCallback: ResizeObserverCallback | undefined;
+    const originalResizeObserver = globalThis.ResizeObserver;
+    globalThis.ResizeObserver = class {
+      constructor(callback: ResizeObserverCallback) {
+        resizeCallback = callback;
+      }
+      observe = observe;
+      unobserve = vi.fn();
+      disconnect = disconnect;
+    };
+
+    try {
+      const { unmount } = render(
+        <HansChart
+          chartType="line"
+          categories={['Jan']}
+          series={[{ name: 'Revenue', data: [10] }]}
+        />,
+      );
+
+      expect(observe).toHaveBeenCalledTimes(1);
+      resizeCallback?.([], {} as ResizeObserver);
+      expect(echartsMocks.mockResize).toHaveBeenCalledTimes(1);
+      unmount();
+      expect(disconnect).toHaveBeenCalledTimes(1);
+    } finally {
+      globalThis.ResizeObserver = originalResizeObserver;
+    }
+  });
 });
