@@ -14,6 +14,7 @@ const HansProgressBarSchema = {
   progressColor: { type: 'custom', ref: {} as Color },
   progressSize: { type: 'custom', ref: {} as Size },
   showValue: 'boolean',
+  loading: 'boolean',
   customClasses: 'string',
 } as const;
 

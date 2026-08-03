@@ -33,3 +33,10 @@ export const PreviouslyUsed: Story = {
 export const Occasional: Story = {
   args: { value: 75, valueLabel: 'Occasional', progressColor: 'warning' },
 };
+
+export const Loading: Story = {
+  args: {
+    loading: true,
+    label: 'Knowledge level',
+  },
+};

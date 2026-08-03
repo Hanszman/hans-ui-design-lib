@@ -19,4 +19,10 @@ The following stories document the 25%, 50%, 75% and 100% states used by ordinal
 <Canvas of={Stories.Occasional} />
 <Canvas of={Stories.Complete} />
 
-The Web Component is available as `<hans-progress-bar>`. Use `value`, `min`, `max`, `label`, `value-label`, `progress-color`, `progress-size` and `show-value`.
+## Loading
+
+Use `loading` while the value is unresolved. The determinate semantics are withheld until a real value is available, and an accessible skeleton is rendered instead.
+
+<Canvas of={Stories.Loading} />
+
+The Web Component is available as `<hans-progress-bar>`. Use props: `value`, `min`, `max`, `label`, `value-label`, `progress-color`, `progress-size`, `show-value` and `loading`.

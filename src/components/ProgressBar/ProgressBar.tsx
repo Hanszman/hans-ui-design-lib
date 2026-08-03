@@ -1,4 +1,5 @@
 import React from 'react';
+import { HansLoading } from '../Loading/Loading';
 import type { HansProgressBarProps } from './ProgressBar.types';
 import {
   getProgressBarClassName,
@@ -15,6 +16,7 @@ export const HansProgressBar = React.memo((props: HansProgressBarProps) => {
     progressColor = 'primary',
     progressSize = 'medium',
     showValue = true,
+    loading = false,
     customClasses = '',
     style,
     ...rest
@@ -22,6 +24,29 @@ export const HansProgressBar = React.memo((props: HansProgressBarProps) => {
   const normalized = normalizeProgressBarValues(value, min, max);
   const visibleValue = valueLabel || `${Math.round(normalized.percentage)}%`;
   const accessibleName = rest['aria-label'] ?? label;
+
+  if (loading) {
+    return (
+      <div
+        className={`${getProgressBarClassName(
+          progressColor,
+          progressSize,
+          customClasses,
+        )} hans-progress-bar-loading`}
+        style={style}
+        {...rest}
+      >
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth="100%"
+          skeletonHeight={
+            progressSize === 'large' ? 52 : progressSize === 'small' ? 36 : 44
+          }
+          ariaLabel={label ? `Loading ${label}` : 'Loading progress'}
+        />
+      </div>
+    );
+  }
 
   return (
     <div

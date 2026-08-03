@@ -3,6 +3,10 @@
   @apply flex w-full flex-col gap-2;
 }
 
+.hans-progress-bar-loading {
+  @apply justify-center;
+}
+
 .hans-progress-bar-copy {
   @apply flex items-center justify-between gap-4;
 }

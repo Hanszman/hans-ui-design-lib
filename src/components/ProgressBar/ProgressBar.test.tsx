@@ -36,4 +36,32 @@ describe('HansProgressBar', () => {
     expect(screen.getByText('Usage')).toBeInTheDocument();
     expect(screen.queryByText('10%')).not.toBeInTheDocument();
   });
+
+  it('renders an accessible loading skeleton without determinate semantics', () => {
+    const { container } = render(
+      <HansProgressBar value={66} label="Knowledge level" loading />,
+    );
+
+    expect(screen.getByRole('status')).toHaveAccessibleName(
+      'Loading Knowledge level',
+    );
+    expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+    expect(
+      container.querySelector('.hans-progress-bar-loading'),
+    ).toBeInTheDocument();
+  });
+
+  it('renders the generic loading label when no label is provided', () => {
+    render(<HansProgressBar loading progressSize="small" />);
+
+    expect(screen.getByRole('status')).toHaveAccessibleName('Loading progress');
+  });
+
+  it('renders the large loading skeleton', () => {
+    render(<HansProgressBar loading progressSize="large" label="Experience" />);
+
+    expect(screen.getByRole('status')).toHaveAccessibleName(
+      'Loading Experience',
+    );
+  });
 });
