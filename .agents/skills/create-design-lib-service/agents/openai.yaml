@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Create Design Library Service'
+  short_description: 'Create reusable non-visual library services'
+  default_prompt: 'Use $create-design-lib-service to create a tested service that works across the library runtime surfaces.'

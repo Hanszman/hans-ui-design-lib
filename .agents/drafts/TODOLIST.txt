@@ -2,7 +2,6 @@
 -Message
 -AdSense (Publi/propaganda)
 -Criar pipeline ci/cd e docker no projeto
--Criar skills para criação de components e services, assim como descrito abaixo (também detalhado no agents.md)
 
 Recap Prompt:
 Fala GPT! Bom dia, tudo bem?

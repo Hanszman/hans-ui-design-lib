@@ -1,0 +1,4 @@
+interface:
+  display_name: 'Create Design Library Component'
+  short_description: 'Create React and Web Component primitives'
+  default_prompt: 'Use $create-design-lib-component to create a documented, accessible component for React and CDN consumers.'
