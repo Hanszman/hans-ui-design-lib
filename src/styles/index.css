@@ -18,6 +18,7 @@
 @import '../components/Chart/chart.scss';
 @import '../components/Accordion/accordion.scss';
 @import '../components/Loading/loading.scss';
+@import '../components/Message/message.scss';
 @import '../components/Kanban/kanban.scss';
 @import '../components/Icon/icon.scss';
 @import '../components/Pagination/pagination.scss';

@@ -1,4 +1,10 @@
-import { Meta, Title, Primary, Controls, Canvas } from '@storybook/addon-docs/blocks';
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
 import * as HansLoadingStories from './Loading.stories';
 
 <Meta of={HansLoadingStories} />
@@ -42,6 +48,12 @@ Use `loadingColor` to align with semantic design-system tokens.
 
 <Canvas of={HansLoadingStories.SpinnerColors} />
 
+## Spinner Thickness
+
+Use `spinnerThickness` to set the circular stroke width in pixels. Values lower than `1` are normalized to `1`.
+
+<Canvas of={HansLoadingStories.SpinnerThickness} />
+
 ## Skeleton Variants
 
 Use `skeletonWidth` and `skeletonHeight` for custom placeholders.
@@ -53,4 +65,3 @@ Use `skeletonWidth` and `skeletonHeight` for custom placeholders.
 Use skeleton mode to cover entire containers while content is loading.
 
 <Canvas of={HansLoadingStories.FullAreaSkeleton} />
-

@@ -71,6 +71,11 @@ import {
   type HansLoadingProps,
   HansLoadingPropsList,
 } from './components/Loading/Loading.types';
+import { HansMessage } from './components/Message/Message';
+import {
+  type HansMessageProps,
+  HansMessagePropsList,
+} from './components/Message/Message.types';
 import { HansKanban } from './components/Kanban/Kanban';
 import {
   type HansKanbanProps,
@@ -201,6 +206,12 @@ registerReactAsWebComponent<HansLoadingProps>(
   'hans-loading',
   HansLoading,
   HansLoadingPropsList,
+);
+registerReactAsWebComponent<HansMessageProps>(
+  'hans-message',
+  HansMessage,
+  HansMessagePropsList,
+  ['onClose', 'onVisibilityChange'],
 );
 registerReactAsWebComponent<HansKanbanProps>(
   'hans-kanban',

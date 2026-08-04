@@ -1,9 +1,6 @@
 import React from 'react';
 import * as echarts from 'echarts';
-import {
-  type HansChartPointEvent,
-  type HansChartProps,
-} from './Chart.types';
+import { type HansChartPointEvent, type HansChartProps } from './Chart.types';
 import { HansLoading } from '../Loading/Loading';
 import {
   buildRandomPalette,
@@ -35,6 +32,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const instanceRef = React.useRef<echarts.ECharts | null>(null);
   const onPointClickRef = React.useRef<typeof onPointClick>(onPointClick);
+  const [isChartReady, setIsChartReady] = React.useState(false);
 
   onPointClickRef.current = onPointClick;
 
@@ -72,6 +70,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
   React.useEffect(() => {
     if (!wrapperRef.current || series.length === 0) return;
 
+    setIsChartReady(false);
     const instance = echarts.init(wrapperRef.current);
     instanceRef.current = instance;
 
@@ -79,14 +78,19 @@ export const HansChart = React.memo((props: HansChartProps) => {
       instance.resize();
     };
     const resizeObserver =
-      typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(handleResize);
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(handleResize);
+    const handleFinished = () => setIsChartReady(true);
 
     window.addEventListener('resize', handleResize);
     resizeObserver?.observe(wrapperRef.current);
+    instance.on('finished', handleFinished);
 
     return () => {
       window.removeEventListener('resize', handleResize);
       resizeObserver?.disconnect();
+      instance.off('finished', handleFinished);
       instance.dispose();
       instanceRef.current = null;
     };
@@ -154,11 +158,23 @@ export const HansChart = React.memo((props: HansChartProps) => {
       {...rest}
     >
       {title ? <span className="hans-chart-title">{title}</span> : null}
-      <div
-        className="hans-chart-canvas"
-        ref={wrapperRef}
-        style={{ height: Math.max(220, height - (title ? 60 : 24)) }}
-      />
+      <div className="hans-chart-stage">
+        <div
+          className="hans-chart-canvas"
+          ref={wrapperRef}
+          style={{ height: Math.max(220, height - (title ? 60 : 24)) }}
+        />
+        {!isChartReady ? (
+          <HansLoading
+            customClasses="hans-chart-initializing"
+            loadingType="skeleton"
+            loadingSize="large"
+            skeletonWidth="100%"
+            skeletonHeight="100%"
+            ariaLabel="Loading chart"
+          />
+        ) : null}
+      </div>
     </div>
   );
 });

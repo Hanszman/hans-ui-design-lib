@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { vi } from 'vitest';
 import { HansChart } from './Chart';
 
@@ -84,7 +84,7 @@ describe('HansChart', () => {
   });
 
   it('Should initialize chart and set line option', () => {
-    render(
+    const { container } = render(
       <HansChart
         chartType="line"
         categories={['Jan', 'Feb']}
@@ -112,6 +112,17 @@ describe('HansChart', () => {
       smooth: true,
       label: { show: true, position: 'top', rotate: 0, formatter: '{c}' },
     });
+    expect(
+      container.querySelector('.hans-chart-initializing'),
+    ).toBeInTheDocument();
+
+    const finishedHandler = echartsMocks.mockOn.mock.calls.find(
+      ([eventName]) => eventName === 'finished',
+    )?.[1] as (() => void) | undefined;
+    act(() => finishedHandler?.());
+    expect(
+      container.querySelector('.hans-chart-initializing'),
+    ).not.toBeInTheDocument();
   });
 
   it('Should render chart without title when title is not provided', () => {
@@ -124,7 +135,9 @@ describe('HansChart', () => {
       />,
     );
 
-    expect(container.querySelector('.hans-chart-title')).not.toBeInTheDocument();
+    expect(
+      container.querySelector('.hans-chart-title'),
+    ).not.toBeInTheDocument();
     expect(echartsMocks.mockInit).toHaveBeenCalledTimes(1);
   });
 
@@ -134,7 +147,14 @@ describe('HansChart', () => {
         title="Orders"
         chartType="bar"
         categories={['Q1']}
-        series={[{ name: 'Orders', type: 'bar', data: [4], label: { position: 'inside' } }]}
+        series={[
+          {
+            name: 'Orders',
+            type: 'bar',
+            data: [4],
+            label: { position: 'inside' },
+          },
+        ]}
         colors={['rgb(10, 20, 30)']}
         showLegend={false}
         optionOverrides={{ grid: { left: 16 } }}
@@ -200,7 +220,13 @@ describe('HansChart', () => {
       <HansChart
         chartType="bar"
         categories={['Q1', 'Q2']}
-        series={[{ name: 'Orders', type: 'bar', data: [{ name: 'Q1', value: 12 }, 18] }]}
+        series={[
+          {
+            name: 'Orders',
+            type: 'bar',
+            data: [{ name: 'Q1', value: 12 }, 18],
+          },
+        ]}
       />,
     );
 
@@ -214,8 +240,18 @@ describe('HansChart', () => {
         chartType="mixed"
         categories={['Jan', 'Feb']}
         series={[
-          { name: 'Orders', type: 'bar', data: [8, 11], label: { position: 'inside' } },
-          { name: 'Revenue', type: 'line', data: [14, 20], label: { position: 'diagonal' } },
+          {
+            name: 'Orders',
+            type: 'bar',
+            data: [8, 11],
+            label: { position: 'inside' },
+          },
+          {
+            name: 'Revenue',
+            type: 'line',
+            data: [14, 20],
+            label: { position: 'diagonal' },
+          },
         ]}
       />,
     );
@@ -238,7 +274,14 @@ describe('HansChart', () => {
         chartType="pie"
         title="Traffic"
         categories={['Organic', 'Paid']}
-        series={[{ name: 'Traffic', type: 'pie', data: [30, 70], label: { position: 'vertical' } }]}
+        series={[
+          {
+            name: 'Traffic',
+            type: 'pie',
+            data: [30, 70],
+            label: { position: 'vertical' },
+          },
+        ]}
       />,
     );
 
@@ -262,7 +305,13 @@ describe('HansChart', () => {
         chartType="doughnut"
         title="Users"
         categories={['A', 'B']}
-        series={[{ name: 'Users', type: 'doughnut', data: [{ name: 'A', value: 10 }, 20] }]}
+        series={[
+          {
+            name: 'Users',
+            type: 'doughnut',
+            data: [{ name: 'A', value: 10 }, 20],
+          },
+        ]}
       />,
     );
 
@@ -280,12 +329,23 @@ describe('HansChart', () => {
       <HansChart
         chartType="pie"
         categories={['A', 'B']}
-        series={[{ name: 'Share', type: 'pie', data: [40, 60], label: { position: 'inside' } }]}
+        series={[
+          {
+            name: 'Share',
+            type: 'pie',
+            data: [40, 60],
+            label: { position: 'inside' },
+          },
+        ]}
       />,
     );
 
     const option = echartsMocks.mockSetOption.mock.calls[0][0];
-    expect(option.series[0].label).toEqual({ show: true, position: 'inside', formatter: undefined });
+    expect(option.series[0].label).toEqual({
+      show: true,
+      position: 'inside',
+      formatter: undefined,
+    });
   });
 
   it('Should fallback pie item label when category is missing', () => {
@@ -374,9 +434,14 @@ describe('HansChart', () => {
     );
 
     expect(echartsMocks.mockOff).toHaveBeenCalledWith('click');
-    expect(echartsMocks.mockOn).toHaveBeenCalledWith('click', expect.any(Function));
+    expect(echartsMocks.mockOn).toHaveBeenCalledWith(
+      'click',
+      expect.any(Function),
+    );
 
-    const clickHandler = echartsMocks.mockOn.mock.calls[0][1] as (event: unknown) => void;
+    const clickHandler = echartsMocks.mockOn.mock.calls.find(
+      ([eventName]) => eventName === 'click',
+    )?.[1] as (event: unknown) => void;
     clickHandler({ name: 'Jan', value: 10, seriesName: 'Revenue' });
 
     expect(handlePointClick).toHaveBeenCalledWith({
@@ -395,7 +460,9 @@ describe('HansChart', () => {
       />,
     );
 
-    const clickHandler = echartsMocks.mockOn.mock.calls[0][1] as (event: unknown) => void;
+    const clickHandler = echartsMocks.mockOn.mock.calls.find(
+      ([eventName]) => eventName === 'click',
+    )?.[1] as (event: unknown) => void;
     expect(() => clickHandler({ name: 'Jan' })).not.toThrow();
   });
 
@@ -424,9 +491,15 @@ describe('HansChart', () => {
       />,
     );
 
-    expect(container.querySelector<HTMLElement>('.hans-chart-canvas')?.style.height).toBe('320px');
-    rerender(<HansChart height={200} series={[{ name: 'Revenue', data: [10] }]} />);
-    expect(container.querySelector<HTMLElement>('.hans-chart-canvas')?.style.height).toBe('220px');
+    expect(
+      container.querySelector<HTMLElement>('.hans-chart-canvas')?.style.height,
+    ).toBe('320px');
+    rerender(
+      <HansChart height={200} series={[{ name: 'Revenue', data: [10] }]} />,
+    );
+    expect(
+      container.querySelector<HTMLElement>('.hans-chart-canvas')?.style.height,
+    ).toBe('220px');
   });
 
   it('Should observe container size changes and disconnect on unmount', () => {

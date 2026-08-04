@@ -11,6 +11,7 @@ const HansLoadingSchema = {
   loadingType: { type: 'custom', ref: {} as LoadingType },
   loadingSize: { type: 'custom', ref: {} as Size },
   loadingColor: { type: 'custom', ref: {} as Color },
+  spinnerThickness: 'number',
   skeletonWidth: { type: 'custom', ref: {} as string | number },
   skeletonHeight: { type: 'custom', ref: {} as string | number },
   rounded: 'boolean',

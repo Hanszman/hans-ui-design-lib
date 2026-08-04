@@ -1,0 +1,40 @@
+.hans-message {
+  @apply flex w-full items-start gap-3 rounded-lg border;
+  background: var(--hans-message-bg);
+  border-color: var(--hans-message-border);
+  color: var(--hans-message-text);
+}
+
+.hans-message-small {
+  @apply px-3 py-2 text-sm;
+}
+
+.hans-message-medium {
+  @apply px-4 py-3 text-sm;
+}
+
+.hans-message-large {
+  @apply px-5 py-4 text-base;
+}
+
+.hans-message-icon,
+.hans-message-close {
+  @apply inline-flex shrink-0 items-center justify-center;
+  color: var(--hans-message-accent);
+}
+
+.hans-message-content {
+  @apply flex min-w-0 flex-1 flex-col gap-1;
+}
+
+.hans-message-title {
+  @apply font-semibold leading-5;
+}
+
+.hans-message-copy {
+  @apply leading-5;
+}
+
+.hans-message-close {
+  @apply cursor-pointer rounded-md border-none bg-transparent p-0;
+}

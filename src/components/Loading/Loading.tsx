@@ -11,6 +11,7 @@ export const HansLoading = React.memo((props: HansLoadingProps) => {
     loadingType = 'spinner',
     loadingSize = 'medium',
     loadingColor = 'base',
+    spinnerThickness = 2,
     skeletonWidth = '100%',
     skeletonHeight = '100%',
     rounded = true,
@@ -20,7 +21,11 @@ export const HansLoading = React.memo((props: HansLoadingProps) => {
   } = props;
 
   const token = LOADING_COLOR_MAP[loadingColor];
-  const className = getLoadingClassName(loadingType, loadingSize, customClasses);
+  const className = getLoadingClassName(
+    loadingType,
+    loadingSize,
+    customClasses,
+  );
   const isSkeleton = loadingType === 'skeleton';
 
   if (isSkeleton) {
@@ -30,7 +35,10 @@ export const HansLoading = React.memo((props: HansLoadingProps) => {
         style={
           {
             '--hans-loading-skeleton-color': token.skeleton,
-            '--hans-loading-width': normalizeLoadingDimension(skeletonWidth, '100%'),
+            '--hans-loading-width': normalizeLoadingDimension(
+              skeletonWidth,
+              '100%',
+            ),
             '--hans-loading-height': normalizeLoadingDimension(
               skeletonHeight,
               '100%',
@@ -51,6 +59,7 @@ export const HansLoading = React.memo((props: HansLoadingProps) => {
         {
           '--hans-loading-spinner-border': token.border,
           '--hans-loading-spinner-top': token.borderTop,
+          '--hans-loading-spinner-thickness': `${Math.max(1, spinnerThickness)}px`,
         } as React.CSSProperties
       }
       role="status"

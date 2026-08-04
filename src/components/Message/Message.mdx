@@ -1,0 +1,42 @@
+import {
+  Meta,
+  Title,
+  Primary,
+  Controls,
+  Canvas,
+} from '@storybook/addon-docs/blocks';
+import * as HansMessageStories from './Message.stories';
+
+<Meta of={HansMessageStories} />
+
+<Title />
+
+`HansMessage` presents persistent inline feedback inside the document flow. Use semantic theme colors for success, information, danger and warning states. Use `HansToast` for transient notifications instead.
+
+<Primary />
+
+## Properties
+
+<Controls />
+
+## Semantic messages
+
+<Canvas of={HansMessageStories.SemanticMessages} />
+
+## Optional dismissal
+
+Set `dismissible` to show a close action. The component hides itself when uncontrolled and emits `onClose` and `onVisibilityChange` for consumers that manage visibility.
+
+<Canvas of={HansMessageStories.Dismissible} />
+
+## Visual variants
+
+Every variant derives its foreground, background, border and icon colors from the active Hans UI theme.
+
+<Canvas of={HansMessageStories.Variants} />
+
+## Accessibility and Web Components
+
+- Danger and warning messages use `role="alert"`; danger uses assertive announcements.
+- Other messages use `role="status"` with polite announcements.
+- Use `<hans-message>` outside React. Pass complex `title` and `message` values as element properties and listen for `close` or `visibilitychange` events.

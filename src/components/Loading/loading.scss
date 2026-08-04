@@ -3,12 +3,10 @@
 }
 
 .hans-loading-spinner {
-  @apply rounded-full border-2 border-solid animate-spin;
+  @apply rounded-full border-solid animate-spin;
+  border-width: var(--hans-loading-spinner-thickness, 2px);
   border-color: var(--hans-loading-spinner-border, var(--base-neutral-color));
-  border-top-color: var(
-    --hans-loading-spinner-top,
-    var(--base-default-color)
-  );
+  border-top-color: var(--hans-loading-spinner-top, var(--base-default-color));
 }
 
 .hans-loading-skeleton {

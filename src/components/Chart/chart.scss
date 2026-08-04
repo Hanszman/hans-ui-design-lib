@@ -10,6 +10,14 @@
   @apply min-h-[220px] w-full flex-1;
 }
 
+.hans-chart-stage {
+  @apply relative min-h-[220px] w-full flex-1;
+}
+
+.hans-chart-initializing {
+  @apply absolute inset-0;
+}
+
 .hans-chart-empty {
   @apply flex items-center justify-center;
 }

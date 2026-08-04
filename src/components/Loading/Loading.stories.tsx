@@ -10,6 +10,7 @@ const meta: Meta<typeof HansLoading> = {
     loadingType: 'spinner',
     loadingSize: 'medium',
     loadingColor: 'base',
+    spinnerThickness: 2,
     ariaLabel: 'Loading',
   },
   argTypes: {
@@ -17,9 +18,18 @@ const meta: Meta<typeof HansLoading> = {
     loadingSize: { control: 'select', options: ['small', 'medium', 'large'] },
     loadingColor: {
       control: 'select',
-      options: ['base', 'primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+      options: [
+        'base',
+        'primary',
+        'secondary',
+        'success',
+        'danger',
+        'warning',
+        'info',
+      ],
     },
     rounded: { control: 'boolean' },
+    spinnerThickness: { control: { type: 'range', min: 1, max: 8, step: 1 } },
   },
   parameters: {
     docs: {
@@ -46,16 +56,41 @@ export const SpinnerSizes: Story = {
 export const SpinnerColors: Story = {
   render: () => (
     <div className="flex items-center gap-4 flex-wrap">
-      {(['base', 'primary', 'secondary', 'success', 'danger', 'warning', 'info'] as Color[]).map(
-        (color) => (
-          <HansLoading
-            key={color}
-            loadingType="spinner"
-            loadingColor={color}
-            ariaLabel={`Loading ${color}`}
-          />
-        ),
-      )}
+      {(
+        [
+          'base',
+          'primary',
+          'secondary',
+          'success',
+          'danger',
+          'warning',
+          'info',
+        ] as Color[]
+      ).map((color) => (
+        <HansLoading
+          key={color}
+          loadingType="spinner"
+          loadingColor={color}
+          ariaLabel={`Loading ${color}`}
+        />
+      ))}
+    </div>
+  ),
+};
+
+export const SpinnerThickness: Story = {
+  render: () => (
+    <div className="flex items-center gap-6">
+      {[1, 2, 4, 6].map((thickness) => (
+        <HansLoading
+          key={thickness}
+          loadingType="spinner"
+          loadingSize="large"
+          loadingColor="primary"
+          spinnerThickness={thickness}
+          ariaLabel={`Loading with ${thickness}px thickness`}
+        />
+      ))}
     </div>
   ),
 };
@@ -64,20 +99,64 @@ export const SkeletonVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-5 w-full max-w-[720px]">
       <div className="flex flex-col gap-3">
-        <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight={14} />
-        <HansLoading loadingType="skeleton" skeletonWidth="85%" skeletonHeight={14} />
-        <HansLoading loadingType="skeleton" skeletonWidth="60%" skeletonHeight={14} />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth="100%"
+          skeletonHeight={14}
+        />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth="85%"
+          skeletonHeight={14}
+        />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth="60%"
+          skeletonHeight={14}
+        />
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight={56} />
-        <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight={84} />
-        <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight={120} />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth="100%"
+          skeletonHeight={56}
+        />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth="100%"
+          skeletonHeight={84}
+        />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth="100%"
+          skeletonHeight={120}
+        />
       </div>
       <div className="flex items-end gap-3">
-        <HansLoading loadingType="skeleton" skeletonWidth={18} skeletonHeight={40} rounded={false} />
-        <HansLoading loadingType="skeleton" skeletonWidth={18} skeletonHeight={72} rounded={false} />
-        <HansLoading loadingType="skeleton" skeletonWidth={18} skeletonHeight={96} rounded={false} />
-        <HansLoading loadingType="skeleton" skeletonWidth={18} skeletonHeight={56} rounded={false} />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth={18}
+          skeletonHeight={40}
+          rounded={false}
+        />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth={18}
+          skeletonHeight={72}
+          rounded={false}
+        />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth={18}
+          skeletonHeight={96}
+          rounded={false}
+        />
+        <HansLoading
+          loadingType="skeleton"
+          skeletonWidth={18}
+          skeletonHeight={56}
+          rounded={false}
+        />
       </div>
       <HansLoading
         loadingType="skeleton"
@@ -99,7 +178,11 @@ export const SkeletonVariants: Story = {
 export const FullAreaSkeleton: Story = {
   render: () => (
     <div className="w-full max-w-[640px] h-[260px] border border-[var(--gray-300)] rounded-lg p-3">
-      <HansLoading loadingType="skeleton" skeletonWidth="100%" skeletonHeight="100%" />
+      <HansLoading
+        loadingType="skeleton"
+        skeletonWidth="100%"
+        skeletonHeight="100%"
+      />
     </div>
   ),
 };

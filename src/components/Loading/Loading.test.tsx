@@ -9,6 +9,7 @@ describe('HansLoading', () => {
     expect(spinner).toBeInTheDocument();
     expect(spinner).toHaveClass('hans-loading-medium');
     expect(spinner).toHaveAttribute('aria-label', 'Loading');
+    expect(spinner).toHaveStyle('--hans-loading-spinner-thickness: 2px');
   });
 
   it('Should render skeleton with dimensions and no rounded when disabled', () => {
@@ -45,7 +46,12 @@ describe('HansLoading', () => {
   });
 
   it('Should allow custom aria label', () => {
-    render(<HansLoading ariaLabel="Fetching users" />);
+    const { container } = render(
+      <HansLoading ariaLabel="Fetching users" spinnerThickness={0} />,
+    );
     expect(screen.getByLabelText('Fetching users')).toBeInTheDocument();
+    expect(container.querySelector('.hans-loading-spinner')).toHaveStyle(
+      '--hans-loading-spinner-thickness: 1px',
+    );
   });
 });
