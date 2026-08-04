@@ -35,7 +35,7 @@ describe('HansMessage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Close banner' }));
 
     expect(screen.queryByText('Dismiss me')).not.toBeInTheDocument();
-    expect(onClose).toHaveBeenCalledOnce();
+    expect(onClose).toHaveBeenCalledTimes(1);
     expect(onVisibilityChange).toHaveBeenCalledWith(false);
   });
 

@@ -63,10 +63,10 @@ export const resolveMessageTone = (
     case 'neutral':
     default:
       return {
-        background: neutral,
-        border: color,
+        background: `color-mix(in srgb, ${neutral} 58%, var(--background-color))`,
+        border: `color-mix(in srgb, ${color} 62%, var(--background-color))`,
         text: strong,
-        accent: color,
+        accent: strong,
       };
   }
 };

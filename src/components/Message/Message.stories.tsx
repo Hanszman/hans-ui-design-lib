@@ -38,6 +38,7 @@ const meta: Meta<typeof HansMessage> = {
       ],
     },
     messageSize: { control: 'select', options: ['small', 'medium', 'large'] },
+    dismissible: { control: 'boolean' },
   },
   parameters: { docs: { page: DocsPage } },
 };
@@ -81,6 +82,8 @@ export const SemanticMessages: Story = {
 export const Dismissible: Story = {
   args: {
     title: 'Optional title',
+    message: 'Close this message to verify the dismissal behavior.',
+    messageColor: 'base',
     dismissible: true,
     closeButtonLabel: 'Close message',
   },

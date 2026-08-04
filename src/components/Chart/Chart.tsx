@@ -68,7 +68,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
   );
 
   React.useEffect(() => {
-    if (!wrapperRef.current || series.length === 0) return;
+    if (isLoading || !wrapperRef.current || series.length === 0) return;
 
     setIsChartReady(false);
     const instance = echarts.init(wrapperRef.current);
@@ -94,7 +94,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
       instance.dispose();
       instanceRef.current = null;
     };
-  }, [series.length]);
+  }, [isLoading, series.length]);
 
   React.useEffect(() => {
     const instance = instanceRef.current;

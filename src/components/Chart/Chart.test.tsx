@@ -83,6 +83,22 @@ describe('HansChart', () => {
     expect(echartsMocks.mockInit).not.toHaveBeenCalled();
   });
 
+  it('Should initialize after a loading chart becomes ready to render', () => {
+    const series = [{ name: 'Revenue', data: [10] }];
+    const { rerender } = render(
+      <HansChart categories={['Jan']} series={series} isLoading />,
+    );
+
+    expect(echartsMocks.mockInit).not.toHaveBeenCalled();
+
+    rerender(
+      <HansChart categories={['Jan']} series={series} isLoading={false} />,
+    );
+
+    expect(echartsMocks.mockInit).toHaveBeenCalledTimes(1);
+    expect(echartsMocks.mockSetOption).toHaveBeenCalledTimes(1);
+  });
+
   it('Should initialize chart and set line option', () => {
     const { container } = render(
       <HansChart

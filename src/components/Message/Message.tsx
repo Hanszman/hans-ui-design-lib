@@ -66,7 +66,7 @@ export const HansMessage = React.memo((props: HansMessageProps) => {
           aria-label={closeButtonLabel}
           onClick={handleClose}
         >
-          <HansIcon name="IoIosClose" iconSize={messageSize} />
+          <HansIcon name="IoIosCloseCircle" iconSize={messageSize} />
         </button>
       ) : null}
     </div>

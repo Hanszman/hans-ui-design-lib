@@ -21,7 +21,10 @@ describe('Message.helper', () => {
       'var(--background-color)',
     );
     expect(resolveMessageTone('base', 'neutral').background).toBe(
-      'var(--base-neutral-color)',
+      'color-mix(in srgb, var(--base-neutral-color) 58%, var(--background-color))',
+    );
+    expect(resolveMessageTone('danger', 'neutral').accent).toBe(
+      'var(--danger-strong-color)',
     );
   });
 
@@ -37,7 +40,8 @@ describe('Message.helper', () => {
       }),
     ).toMatchObject({
       width: 320,
-      '--hans-message-bg': 'var(--info-neutral-color)',
+      '--hans-message-bg':
+        'color-mix(in srgb, var(--info-neutral-color) 58%, var(--background-color))',
     });
     expect(getMessageAccessibilityState('warning')).toEqual({
       role: 'alert',
