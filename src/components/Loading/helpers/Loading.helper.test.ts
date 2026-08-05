@@ -33,7 +33,7 @@ describe('Loading.helper', () => {
   it('Should expose color tokens for all common colors', () => {
     expect(LOADING_COLOR_MAP.base.borderTop).toBe('var(--base-default-color)');
     expect(LOADING_COLOR_MAP.primary.skeleton).toBe(
-      'var(--primary-neutral-color)',
+      'var(--primary-default-color)',
     );
     expect(LOADING_COLOR_MAP.warning.border).toBe(
       'var(--warning-neutral-color)',
