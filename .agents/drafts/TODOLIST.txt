@@ -1,3 +1,4 @@
-* Continuar próximos componentes:
--AdSense (Publi/propaganda)
+TODO:
+-Continuar próximos componentes:
+    * AdSense (Publi/propaganda)
 -Criar pipeline ci/cd e docker no projeto
