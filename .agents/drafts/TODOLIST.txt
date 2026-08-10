@@ -1,5 +1,7 @@
 TODO:
--Colocar opção de tipo circle/square/rounded no button
+-Garantir 100% de coverage nos testes nos arquivos que faltaram.
+-Colocar opção de tipo circle/square/rounded no button.
+-Corrigir datepicker com dois scrolls como podemos ver no Screenshot_1 (pasta downloads).
 -Continuar próximos componentes:
     * AdSense (Publi/propaganda)
--Criar pipeline ci/cd e docker no projeto
+-Criar pipeline ci/cd e docker no projeto.

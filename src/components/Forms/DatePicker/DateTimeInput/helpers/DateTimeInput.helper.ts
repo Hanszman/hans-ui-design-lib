@@ -88,6 +88,7 @@ export const createDatePickerSelectDayHandler =
   ({
     pickerType,
     timePrecision,
+    dateFormat = 'DD/MM/YYYY',
     applyValue,
     setDisplayValue,
     setDraftDate,
@@ -108,6 +109,7 @@ export const createDatePickerSelectDayHandler =
           pickerType,
           day.isoValue,
           timePrecision,
+          dateFormat,
         ),
       );
       handleOpenChange(false);
@@ -134,6 +136,7 @@ export const createDatePickerTodayHandler =
   ({
     pickerType,
     timePrecision,
+    dateFormat = 'DD/MM/YYYY',
     applyValue,
     setDisplayValue,
     setDraftDate,
@@ -154,7 +157,7 @@ export const createDatePickerTodayHandler =
       });
       applyValue(nextValue);
       setDisplayValue(
-        getInitialDatePickerDisplayValue(pickerType, nextValue, timePrecision),
+        getInitialDatePickerDisplayValue(pickerType, nextValue, timePrecision, dateFormat),
       );
       handleOpenChange(false);
       return;
@@ -176,6 +179,7 @@ export const createDatePickerApplyHandler =
     draftDate,
     timeInputValue,
     timePrecision,
+    dateFormat = 'DD/MM/YYYY',
     setTimeInputValue,
     setDisplayValue,
     applyValue,
@@ -197,7 +201,7 @@ export const createDatePickerApplyHandler =
     });
     applyValue(nextValue);
     setDisplayValue(
-      getInitialDatePickerDisplayValue(pickerType, nextValue, timePrecision),
+      getInitialDatePickerDisplayValue(pickerType, nextValue, timePrecision, dateFormat),
     );
     handleOpenChange(false);
   };
@@ -215,6 +219,7 @@ export const syncDatePickerState = ({
   pickerType,
   value,
   timePrecision,
+  dateFormat = 'DD/MM/YYYY',
   setDraftDate,
   setViewDate,
   setTimeInputValue,
@@ -243,7 +248,7 @@ export const syncDatePickerState = ({
 
   if (setDisplayValue && pickerType !== 'time') {
     setDisplayValue(
-      getDatePickerDisplayValueFromStoredValue(pickerType, value, timePrecision),
+      getDatePickerDisplayValueFromStoredValue(pickerType, value, timePrecision, dateFormat),
     );
   }
 };
@@ -253,6 +258,7 @@ export const createDatePickerBlurHandler =
     pickerType,
     allowInputTyping,
     timePrecision,
+    dateFormat = 'DD/MM/YYYY',
     displayValue,
     setDisplayValue,
     setDraftDate,
@@ -275,6 +281,7 @@ export const createDatePickerBlurHandler =
       pickerType,
       displayValue.trim(),
       timePrecision,
+      dateFormat,
     );
 
     if (!parsedDate) {
@@ -299,15 +306,16 @@ export const createDatePickerBlurHandler =
           hours: parsedDate.getHours(),
           minutes: parsedDate.getMinutes(),
           seconds: parsedDate.getSeconds(),
-        },
-        timePrecision,
-      ),
+          },
+          timePrecision,
+        ),
     );
     setDisplayValue(
       getDatePickerDisplayValueFromStoredValue(
         pickerType,
         storedValue,
         timePrecision,
+        dateFormat,
       ),
     );
     applyValue(storedValue);

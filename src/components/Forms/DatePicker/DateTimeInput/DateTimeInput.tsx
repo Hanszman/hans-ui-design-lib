@@ -58,6 +58,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     todayLabel = 'Today',
     applyLabel = 'Apply',
     timePrecision = 'minute',
+    dateFormat = 'DD/MM/YYYY',
     weekStartsOnSunday = true,
     allowInputTyping = false,
     onChange,
@@ -74,6 +75,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
       resolvedPickerType,
       initialValue,
       timePrecision,
+      dateFormat,
     ),
   );
   const [isOpen, setIsOpen] = React.useState(false);
@@ -94,12 +96,13 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
       pickerType: resolvedPickerType,
       value: selectedValue,
       timePrecision,
+      dateFormat,
       setDraftDate,
       setViewDate,
       setTimeInputValue,
       setDisplayValue,
     });
-  }, [resolvedPickerType, selectedValue, timePrecision]);
+  }, [dateFormat, resolvedPickerType, selectedValue, timePrecision]);
 
   React.useEffect(() => {
     createSyncDatePickerPopupOffsets({ datePickerRef, setPopupOffsets })();
@@ -140,6 +143,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
         pickerType: resolvedPickerType,
         allowInputTyping,
         timePrecision,
+        dateFormat,
         displayValue,
         setDisplayValue,
         setDraftDate,
@@ -153,6 +157,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
       displayValue,
       resolvedPickerType,
       timePrecision,
+      dateFormat,
     ],
   );
 
@@ -184,13 +189,14 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
       createDatePickerSelectDayHandler({
         pickerType: resolvedPickerType,
         timePrecision,
+        dateFormat,
         applyValue,
         setDisplayValue,
         setDraftDate,
         setViewDate,
         handleOpenChange,
       }),
-    [applyValue, handleOpenChange, resolvedPickerType, timePrecision],
+    [applyValue, dateFormat, handleOpenChange, resolvedPickerType, timePrecision],
   );
   const handleClear = React.useMemo(
     () =>
@@ -208,6 +214,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
       createDatePickerTodayHandler({
         pickerType: resolvedPickerType,
         timePrecision,
+        dateFormat,
         applyValue,
         setDisplayValue,
         setDraftDate,
@@ -215,7 +222,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
         setTimeInputValue,
         handleOpenChange,
       }),
-    [applyValue, handleOpenChange, resolvedPickerType, timePrecision],
+    [applyValue, dateFormat, handleOpenChange, resolvedPickerType, timePrecision],
   );
   const handleApply = React.useMemo(
     () =>
@@ -224,12 +231,20 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
         draftDate,
         timeInputValue,
         timePrecision,
+        dateFormat,
         setTimeInputValue,
         setDisplayValue,
         applyValue,
         handleOpenChange,
       }),
-    [applyValue, draftDate, handleOpenChange, timeInputValue, timePrecision],
+    [
+      applyValue,
+      dateFormat,
+      draftDate,
+      handleOpenChange,
+      timeInputValue,
+      timePrecision,
+    ],
   );
   const allowApply = React.useMemo(
     () =>
@@ -292,7 +307,11 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
             inputSize={inputSize}
             placeholder={
               placeholder ??
-              getDatePickerPlaceholder(resolvedPickerType, timePrecision)
+              getDatePickerPlaceholder(
+                resolvedPickerType,
+                timePrecision,
+                dateFormat,
+              )
             }
             customClasses={`hans-date-picker-input ${customClasses}`}
             disabled={disabled}

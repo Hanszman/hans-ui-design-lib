@@ -31,6 +31,9 @@ describe('DatePicker.helper', () => {
   it('Should resolve placeholders and shared parsing helpers', () => {
     expect(padDatePickerNumber(4)).toBe('04');
     expect(getDatePickerPlaceholder('date', 'minute')).toBe('DD/MM/YYYY');
+    expect(getDatePickerPlaceholder('date', 'minute', 'MM/DD/YYYY')).toBe(
+      'MM/DD/YYYY',
+    );
     expect(getDatePickerPlaceholder('datetime', 'second')).toBe(
       'DD/MM/YYYY HH:MM:SS',
     );
@@ -136,6 +139,14 @@ describe('DatePicker.helper', () => {
     expect(
       parseTypedDatePickerDisplayValue('date', '31/02/2026', 'minute'),
     ).toBeNull();
+    expect(
+      parseTypedDatePickerDisplayValue(
+        'date',
+        '03/13/2026',
+        'minute',
+        'MM/DD/YYYY',
+      ),
+    ).toEqual(new Date(2026, 2, 13));
     expect(parseTypedDatePickerDisplayValue('date', 'oops', 'minute')).toBeNull();
     expect(
       parseTypedDatePickerDisplayValue('datetime', 'oops', 'minute'),
@@ -161,6 +172,15 @@ describe('DatePicker.helper', () => {
         noDateText: '',
       }),
     ).toBe('13/03/2026');
+    expect(
+      formatDatePickerDisplay({
+        pickerType: 'date',
+        value: '2026-03-13',
+        timePrecision: 'minute',
+        noDateText: '',
+        dateFormat: 'MM/DD/YYYY',
+      }),
+    ).toBe('03/13/2026');
     expect(
       formatDatePickerDisplay({
         pickerType: 'datetime',

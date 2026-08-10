@@ -1,4 +1,5 @@
 import type {
+  HansDatePickerFormat,
   HansDatePickerTimePrecision,
   HansDatePickerType,
 } from '../../DatePicker.types';
@@ -13,6 +14,7 @@ export type CreateDatePickerBlurHandlerParams = {
   pickerType: Exclude<HansDatePickerType, 'time'>;
   allowInputTyping: boolean;
   timePrecision: HansDatePickerTimePrecision;
+  dateFormat?: HansDatePickerFormat;
   displayValue: string;
   setDisplayValue: (value: string) => void;
   setDraftDate: (value: Date | null) => void;
@@ -25,6 +27,7 @@ export type SyncDatePickerStateParams = {
   pickerType: HansDatePickerType;
   value: string;
   timePrecision: HansDatePickerTimePrecision;
+  dateFormat?: HansDatePickerFormat;
   setDraftDate: (value: Date | null) => void;
   setViewDate: (value: Date) => void;
   setTimeInputValue: (value: string) => void;
@@ -45,6 +48,7 @@ export type CreateDatePickerToggleIconMouseDownHandlerParams = {
 export type CreateDatePickerSelectDayHandlerParams = {
   pickerType: Exclude<HansDatePickerType, 'time'>;
   timePrecision: HansDatePickerTimePrecision;
+  dateFormat?: HansDatePickerFormat;
   applyValue: (value: string) => void;
   setDisplayValue: (value: string) => void;
   setDraftDate: (value: Date | null) => void;
@@ -63,6 +67,7 @@ export type CreateDatePickerClearHandlerParams = {
 export type CreateDatePickerTodayHandlerParams = {
   pickerType: Exclude<HansDatePickerType, 'time'>;
   timePrecision: HansDatePickerTimePrecision;
+  dateFormat?: HansDatePickerFormat;
   applyValue: (value: string) => void;
   setDisplayValue: (value: string) => void;
   setDraftDate: (value: Date | null) => void;
@@ -77,6 +82,7 @@ export type CreateDatePickerApplyHandlerParams = {
   draftDate: Date | null;
   timeInputValue: string;
   timePrecision: HansDatePickerTimePrecision;
+  dateFormat?: HansDatePickerFormat;
   setTimeInputValue: (value: string) => void;
   setDisplayValue: (value: string) => void;
   applyValue: (value: string) => void;

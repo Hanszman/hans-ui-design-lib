@@ -15,6 +15,18 @@ describe('HansDatePicker', () => {
     expect(screen.getByDisplayValue('13/03/2026')).toBeInTheDocument();
   });
 
+  it('Should display month before day when requested', () => {
+    render(
+      <HansDatePicker
+        pickerType="date"
+        dateFormat="MM/DD/YYYY"
+        defaultValue="2026-03-13"
+      />,
+    );
+
+    expect(screen.getByDisplayValue('03/13/2026')).toBeInTheDocument();
+  });
+
   it('Should forward required to date and time input variants', () => {
     const { rerender } = render(
       <HansDatePicker label="Start date" pickerType="date" required />,

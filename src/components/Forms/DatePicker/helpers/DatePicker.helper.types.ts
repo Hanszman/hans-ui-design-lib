@@ -1,5 +1,6 @@
 import type React from 'react';
 import type {
+  HansDatePickerFormat,
   HansDatePickerTimePrecision,
   HansDatePickerType,
 } from '../DatePicker.types';
@@ -27,6 +28,7 @@ export type FormatDatePickerDisplayParams = {
   value: string | undefined;
   timePrecision: HansDatePickerTimePrecision;
   noDateText: string;
+  dateFormat?: HansDatePickerFormat;
 };
 
 export type CreateDatePickerChangeHandlerParams = {

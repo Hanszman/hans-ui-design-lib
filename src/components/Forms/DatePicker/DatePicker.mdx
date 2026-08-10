@@ -53,6 +53,21 @@ Use `pickerType="date"` for a fast calendar-only selection flow.
 
 <Canvas of={HansDatePickerStories.DateOnly} />
 
+## Display format
+
+Dates use `DD/MM/YYYY` by default. Set `dateFormat="MM/DD/YYYY"` for locales
+that display the month before the day. The selected value remains the stable
+ISO form `YYYY-MM-DD`, regardless of the visual format.
+
+<Canvas of={HansDatePickerStories.MonthDayYear} />
+
+```html
+<hans-date-picker
+  label="Start date"
+  date-format="MM/DD/YYYY"
+></hans-date-picker>
+```
+
 ## DateTime
 
 Use `pickerType="datetime"` when a date and a masked time should be selected together.

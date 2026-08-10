@@ -10,6 +10,7 @@ import type {
   ParseDatePickerValueParams,
 } from './DatePicker.helper.types';
 import type {
+  HansDatePickerFormat,
   HansDatePickerTimePrecision,
   HansDatePickerType,
 } from '../DatePicker.types';
@@ -28,6 +29,7 @@ export const padDatePickerNumber = (value: number): string =>
 export const getDatePickerPlaceholder = (
   pickerType: HansDatePickerType,
   timePrecision: HansDatePickerTimePrecision,
+  dateFormat: HansDatePickerFormat = 'DD/MM/YYYY',
 ): string => {
   if (pickerType === 'time') {
     return timePrecision === 'second' ? 'HH:MM:SS' : 'HH:MM';
@@ -35,11 +37,11 @@ export const getDatePickerPlaceholder = (
 
   if (pickerType === 'datetime') {
     return timePrecision === 'second'
-      ? 'DD/MM/YYYY HH:MM:SS'
-      : 'DD/MM/YYYY HH:MM';
+      ? `${dateFormat} HH:MM:SS`
+      : `${dateFormat} HH:MM`;
   }
 
-  return 'DD/MM/YYYY';
+  return dateFormat;
 };
 
 export const resolveDateTimePickerType = (
@@ -204,13 +206,16 @@ export const parseTypedDatePickerDisplayValue = (
   pickerType: Exclude<HansDatePickerType, 'time'>,
   value: string,
   timePrecision: HansDatePickerTimePrecision,
+  dateFormat: HansDatePickerFormat = 'DD/MM/YYYY',
 ): Date | null => {
   if (pickerType === 'date') {
     const match = value.match(DISPLAY_DATE_INPUT_PATTERN);
     if (!match) return null;
 
-    const day = Number(match[1]);
-    const month = Number(match[2]);
+    const firstPart = Number(match[1]);
+    const secondPart = Number(match[2]);
+    const day = dateFormat === 'MM/DD/YYYY' ? secondPart : firstPart;
+    const month = dateFormat === 'MM/DD/YYYY' ? firstPart : secondPart;
     const year = Number(match[3]);
     const nextDate = new Date(year, month - 1, day, 0, 0, 0, 0);
 
@@ -220,8 +225,10 @@ export const parseTypedDatePickerDisplayValue = (
   const match = value.match(DISPLAY_DATETIME_INPUT_PATTERN);
   if (!match) return null;
 
-  const day = Number(match[1]);
-  const month = Number(match[2]);
+  const firstPart = Number(match[1]);
+  const secondPart = Number(match[2]);
+  const day = dateFormat === 'MM/DD/YYYY' ? secondPart : firstPart;
+  const month = dateFormat === 'MM/DD/YYYY' ? firstPart : secondPart;
   const year = Number(match[3]);
   const hours = Number(match[4]);
   const minutes = Number(match[5]);
@@ -240,6 +247,7 @@ export const formatDatePickerDisplay = ({
   value,
   timePrecision,
   noDateText,
+  dateFormat = 'DD/MM/YYYY',
 }: FormatDatePickerDisplayParams): string => {
   const parsedValue = parseDatePickerValue({
     pickerType,
@@ -259,7 +267,11 @@ export const formatDatePickerDisplay = ({
     );
   }
 
-  const dateValue = parsedValue.toLocaleDateString('en-GB');
+  const day = String(parsedValue.getDate()).padStart(2, '0');
+  const month = String(parsedValue.getMonth() + 1).padStart(2, '0');
+  const year = String(parsedValue.getFullYear()).padStart(4, '0');
+  const dateValue =
+    dateFormat === 'MM/DD/YYYY' ? `${month}/${day}/${year}` : `${day}/${month}/${year}`;
   if (pickerType === 'date') return dateValue;
 
   return `${dateValue} ${formatDatePickerTimeValue(
@@ -276,20 +288,23 @@ export const getDatePickerDisplayValueFromStoredValue = (
   pickerType: HansDatePickerType,
   value: string,
   timePrecision: HansDatePickerTimePrecision,
+  dateFormat: HansDatePickerFormat = 'DD/MM/YYYY',
 ): string =>
   formatDatePickerDisplay({
     pickerType,
     value,
     timePrecision,
     noDateText: '',
+    dateFormat,
   });
 
 export const getInitialDatePickerDisplayValue = (
   pickerType: Exclude<HansDatePickerType, 'time'>,
   value: string,
   timePrecision: HansDatePickerTimePrecision,
+  dateFormat: HansDatePickerFormat = 'DD/MM/YYYY',
 ): string =>
-  getDatePickerDisplayValueFromStoredValue(pickerType, value, timePrecision);
+  getDatePickerDisplayValueFromStoredValue(pickerType, value, timePrecision, dateFormat);
 
 export const mergeDateAndTime = (
   date: Date,

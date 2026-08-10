@@ -50,6 +50,7 @@ const meta: Meta<typeof HansDatePicker> = {
   args: {
     label: 'Schedule',
     pickerType: 'date',
+    dateFormat: 'DD/MM/YYYY',
     inputColor: 'primary',
     inputSize: 'medium',
     calendarColor: 'primary',
@@ -62,6 +63,7 @@ const meta: Meta<typeof HansDatePicker> = {
   },
   argTypes: {
     pickerType: { control: 'select', options: ['date', 'datetime', 'time'] },
+    dateFormat: { control: 'select', options: ['DD/MM/YYYY', 'MM/DD/YYYY'] },
     inputColor: {
       control: 'select',
       options: [
@@ -128,6 +130,16 @@ export const DateOnly: Story = {
       <ControlledDateStory {...args} label="Delivery date" />
     </div>
   ),
+};
+
+export const MonthDayYear: Story = {
+  args: {
+    label: 'US date',
+    pickerType: 'date',
+    dateFormat: 'MM/DD/YYYY',
+    defaultValue: '2026-03-13',
+    allowInputTyping: true,
+  },
 };
 
 export const DateTime: Story = {
