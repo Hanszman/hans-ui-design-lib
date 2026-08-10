@@ -1,4 +1,5 @@
 TODO:
+-Colocar opção de tipo circle/square/rounded no button
 -Continuar próximos componentes:
     * AdSense (Publi/propaganda)
 -Criar pipeline ci/cd e docker no projeto
