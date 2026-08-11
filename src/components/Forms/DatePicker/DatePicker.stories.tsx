@@ -51,6 +51,7 @@ const meta: Meta<typeof HansDatePicker> = {
     label: 'Schedule',
     pickerType: 'date',
     dateFormat: 'DD/MM/YYYY',
+    locale: 'en-us',
     inputColor: 'primary',
     inputSize: 'medium',
     calendarColor: 'primary',
@@ -64,6 +65,7 @@ const meta: Meta<typeof HansDatePicker> = {
   argTypes: {
     pickerType: { control: 'select', options: ['date', 'datetime', 'time'] },
     dateFormat: { control: 'select', options: ['DD/MM/YYYY', 'MM/DD/YYYY'] },
+    locale: { control: 'select', options: ['en-us', 'pt-br', 'es-es'] },
     inputColor: {
       control: 'select',
       options: [
@@ -140,6 +142,25 @@ export const MonthDayYear: Story = {
     defaultValue: '2026-03-13',
     allowInputTyping: true,
   },
+};
+
+export const LocalizedCalendars: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      <HansDatePicker
+        {...args}
+        label="Data em português"
+        locale="pt-br"
+        defaultValue="2026-03-13"
+      />
+      <HansDatePicker
+        {...args}
+        label="Fecha en español"
+        locale="es-es"
+        defaultValue="2026-03-13"
+      />
+    </div>
+  ),
 };
 
 export const DateTime: Story = {

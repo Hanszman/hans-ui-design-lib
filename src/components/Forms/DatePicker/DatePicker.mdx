@@ -68,6 +68,19 @@ ISO form `YYYY-MM-DD`, regardless of the visual format.
 ></hans-date-picker>
 ```
 
+## Calendar locale
+
+Use `locale="en-us"`, `locale="pt-br"` or `locale="es-es"` to localize month
+names, weekday abbreviations, calendar actions and accessible navigation labels.
+The default is `en-us`. Explicit `clearLabel`, `todayLabel` and `applyLabel`
+values continue to override the localized defaults.
+
+<Canvas of={HansDatePickerStories.LocalizedCalendars} />
+
+```html
+<hans-date-picker locale="pt-br"></hans-date-picker>
+```
+
 ## DateTime
 
 Use `pickerType="datetime"` when a date and a masked time should be selected together.

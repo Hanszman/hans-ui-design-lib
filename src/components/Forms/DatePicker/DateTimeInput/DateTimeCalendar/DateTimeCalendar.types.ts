@@ -16,6 +16,9 @@ export type HansDateTimeCalendarProps = {
   clearLabel: string;
   todayLabel: string;
   applyLabel: string;
+  timeLabel?: string;
+  previousMonthLabel?: string;
+  nextMonthLabel?: string;
   allowApply: boolean;
   onPreviousMonth: () => void;
   onNextMonth: () => void;

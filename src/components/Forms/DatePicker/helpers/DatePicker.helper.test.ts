@@ -161,6 +161,14 @@ describe('DatePicker.helper', () => {
         'minute',
       ),
     ).toBeNull();
+    expect(
+      parseTypedDatePickerDisplayValue(
+        'datetime',
+        '03/13/2026 09:05',
+        'minute',
+        'MM/DD/YYYY',
+      ),
+    ).toEqual(new Date(2026, 2, 13, 9, 5));
   });
 
   it('Should expose shared display, selection and validation helpers', () => {

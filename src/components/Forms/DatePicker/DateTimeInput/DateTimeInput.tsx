@@ -18,6 +18,7 @@ import {
 import {
   buildCalendarDays,
   createMonthNavigationHandler,
+  getDatePickerLocaleText,
   getDatePickerMonthLabel,
   getWeekdayLabels,
 } from './DateTimeCalendar/helpers/DateTimeCalendar.helper';
@@ -54,11 +55,12 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     calendarVariant = 'default',
     popupBackgroundColor = 'var(--background-color, var(--white))',
     panelBackgroundColor = 'var(--background-color, var(--white))',
-    clearLabel = 'Clear',
-    todayLabel = 'Today',
-    applyLabel = 'Apply',
+    clearLabel,
+    todayLabel,
+    applyLabel,
     timePrecision = 'minute',
     dateFormat = 'DD/MM/YYYY',
+    locale = 'en-us',
     weekStartsOnSunday = true,
     allowInputTyping = false,
     onChange,
@@ -66,6 +68,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     ...rest
   } = props;
   const resolvedPickerType = resolveDateTimePickerType(pickerType);
+  const localeText = React.useMemo(() => getDatePickerLocaleText(locale), [locale]);
 
   const isControlled = typeof value !== 'undefined';
   const initialValue = isControlled ? ((value as string) ?? '') : defaultValue;
@@ -325,7 +328,7 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
               <button
                 type="button"
                 className="hans-date-picker-trigger-icon"
-                aria-label="Toggle date picker"
+                aria-label={localeText.toggle}
                 onMouseDown={handleToggleIconMouseDown}
               >
                 <HansIcon name="MdDateRange" iconSize="small" />
@@ -345,17 +348,20 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
         >
           <HansDateTimeCalendar
             days={calendarDays}
-            weekdayLabels={getWeekdayLabels(weekStartsOnSunday)}
-            monthLabel={getDatePickerMonthLabel(viewDate)}
+            weekdayLabels={getWeekdayLabels(weekStartsOnSunday, locale)}
+            monthLabel={getDatePickerMonthLabel(viewDate, locale)}
             calendarColor={calendarColor}
             calendarVariant={calendarVariant}
             inputColor={inputColor}
             timePrecision={timePrecision}
             pickerType={resolvedPickerType}
             timeInputValue={timeInputValue}
-            clearLabel={clearLabel}
-            todayLabel={todayLabel}
-            applyLabel={applyLabel}
+            clearLabel={clearLabel ?? localeText.clear}
+            todayLabel={todayLabel ?? localeText.today}
+            applyLabel={applyLabel ?? localeText.apply}
+            timeLabel={localeText.time}
+            previousMonthLabel={localeText.previousMonth}
+            nextMonthLabel={localeText.nextMonth}
             allowApply={allowApply}
             onPreviousMonth={handlePreviousMonth}
             onNextMonth={handleNextMonth}

@@ -46,14 +46,6 @@
   min-height: 22rem;
 }
 
-.hans-popup-panel-portal.hans-date-picker-popup-datetime
-  .hans-date-picker-popup-content,
-.hans-popup-panel-portal.hans-date-picker-popup-time
-  .hans-date-picker-popup-content {
-  max-height: 24rem;
-  overflow: auto;
-}
-
 .hans-date-picker-field .hans-popup-panel[data-direction='up'] {
   bottom: calc(100% - var(--hans-date-picker-up-offset, 0px));
 }

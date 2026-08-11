@@ -11,6 +11,8 @@ export type HansDatePickerTimePrecision = 'minute' | 'second';
 
 export type HansDatePickerFormat = 'DD/MM/YYYY' | 'MM/DD/YYYY';
 
+export type HansDatePickerLocale = 'en-us' | 'pt-br' | 'es-es';
+
 const HansDatePickerSchema = {
   label: 'string',
   labelColor: { type: 'custom', ref: {} as Color },
@@ -36,6 +38,7 @@ const HansDatePickerSchema = {
   applyLabel: 'string',
   timePrecision: { type: 'custom', ref: {} as HansDatePickerTimePrecision },
   dateFormat: { type: 'custom', ref: {} as HansDatePickerFormat },
+  locale: { type: 'custom', ref: {} as HansDatePickerLocale },
   weekStartsOnSunday: 'boolean',
   allowInputTyping: 'boolean',
 } as const;

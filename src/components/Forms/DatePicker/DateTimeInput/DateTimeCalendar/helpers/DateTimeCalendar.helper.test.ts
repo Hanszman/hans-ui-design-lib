@@ -3,6 +3,7 @@ import {
   addMonths,
   buildCalendarDays,
   createMonthNavigationHandler,
+  getDatePickerLocaleText,
   getDatePickerMonthLabel,
   getStartOfCalendarGrid,
   getWeekdayLabels,
@@ -29,6 +30,20 @@ describe('DateTimeCalendar.helper', () => {
       'Sun',
     ]);
     expect(getDatePickerMonthLabel(new Date(2026, 2, 1))).toBe('March 2026');
+    expect(getWeekdayLabels(true, 'pt-br')[0]).toBe('dom.');
+    expect(getWeekdayLabels(false, 'es-es')[0]).toBe('lun');
+    expect(getDatePickerMonthLabel(new Date(2026, 2, 1), 'pt-br')).toBe(
+      'março de 2026',
+    );
+    expect(getDatePickerMonthLabel(new Date(2026, 2, 1), 'es-es')).toBe(
+      'marzo de 2026',
+    );
+    expect(getDatePickerLocaleText('pt-br')).toEqual(
+      expect.objectContaining({ clear: 'Limpar', today: 'Hoje' }),
+    );
+    expect(getDatePickerLocaleText('es-es')).toEqual(
+      expect.objectContaining({ clear: 'Limpiar', today: 'Hoy' }),
+    );
     expect(addMonths(new Date(2026, 0, 31), 1).getMonth()).toBe(1);
     expect(getStartOfCalendarGrid(new Date(2026, 2, 15), true).getDay()).toBe(0);
     expect(getStartOfCalendarGrid(new Date(2026, 2, 15), false).getDay()).toBe(1);

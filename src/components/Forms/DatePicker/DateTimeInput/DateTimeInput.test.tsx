@@ -148,4 +148,26 @@ describe('HansDateTimeInput', () => {
       document.querySelector('.hans-date-picker-panel'),
     ).toHaveStyle('--hans-date-picker-panel-background-color: rgb(12, 34, 56)');
   });
+
+  it('Should localize calendar copy and preserve explicit action labels', () => {
+    render(
+      <HansDateTimeInput
+        pickerType="datetime"
+        locale="pt-br"
+        defaultValue="2026-03-13T10:15"
+        clearLabel="Remover"
+      />,
+    );
+
+    fireEvent.mouseDown(screen.getByDisplayValue('13/03/2026 10:15'));
+
+    expect(screen.getByText('março de 2026')).toBeInTheDocument();
+    expect(screen.getByText('dom.')).toBeInTheDocument();
+    expect(screen.getByText('Remover')).toBeInTheDocument();
+    expect(screen.getByText('Hoje')).toBeInTheDocument();
+    expect(screen.getByText('Aplicar')).toBeInTheDocument();
+    expect(screen.getByLabelText('Hora')).toBeInTheDocument();
+    expect(screen.getByLabelText('Mês anterior')).toBeInTheDocument();
+    expect(screen.getByLabelText('Próximo mês')).toBeInTheDocument();
+  });
 });

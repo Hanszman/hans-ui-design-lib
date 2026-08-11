@@ -7,32 +7,68 @@ import {
   formatDatePickerValue,
   isSameDay,
 } from '../../../helpers/DatePicker.helper';
+import type { HansDatePickerLocale } from '../../../DatePicker.types';
 
-export const WEEKDAY_LABELS_SUNDAY = [
-  'Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
-];
+const DATE_PICKER_INTL_LOCALES: Record<HansDatePickerLocale, string> = {
+  'en-us': 'en-US',
+  'pt-br': 'pt-BR',
+  'es-es': 'es-ES',
+};
 
-export const WEEKDAY_LABELS_MONDAY = [
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
-  'Sun',
-];
+const DATE_PICKER_LOCALE_TEXTS = {
+  'en-us': {
+    clear: 'Clear',
+    today: 'Today',
+    apply: 'Apply',
+    time: 'Time',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
+    toggle: 'Toggle date picker',
+  },
+  'pt-br': {
+    clear: 'Limpar',
+    today: 'Hoje',
+    apply: 'Aplicar',
+    time: 'Hora',
+    previousMonth: 'Mês anterior',
+    nextMonth: 'Próximo mês',
+    toggle: 'Alternar seletor de data',
+  },
+  'es-es': {
+    clear: 'Limpiar',
+    today: 'Hoy',
+    apply: 'Aplicar',
+    time: 'Hora',
+    previousMonth: 'Mes anterior',
+    nextMonth: 'Mes siguiente',
+    toggle: 'Alternar selector de fecha',
+  },
+} as const;
 
-export const getWeekdayLabels = (weekStartsOnSunday: boolean): string[] =>
-  weekStartsOnSunday ? WEEKDAY_LABELS_SUNDAY : WEEKDAY_LABELS_MONDAY;
+export const getDatePickerLocaleText = (
+  locale: HansDatePickerLocale = 'en-us',
+) => DATE_PICKER_LOCALE_TEXTS[locale];
 
-export const getDatePickerMonthLabel = (value: Date): string =>
-  value.toLocaleDateString('en-US', {
+export const getWeekdayLabels = (
+  weekStartsOnSunday: boolean,
+  locale: HansDatePickerLocale = 'en-us',
+): string[] => {
+  const formatter = new Intl.DateTimeFormat(DATE_PICKER_INTL_LOCALES[locale], {
+    weekday: 'short',
+  });
+  const sunday = new Date(2026, 0, 4);
+  const labels = Array.from({ length: 7 }, (_, index) =>
+    formatter.format(new Date(2026, 0, sunday.getDate() + index)),
+  );
+
+  return weekStartsOnSunday ? labels : [...labels.slice(1), labels[0]];
+};
+
+export const getDatePickerMonthLabel = (
+  value: Date,
+  locale: HansDatePickerLocale = 'en-us',
+): string =>
+  value.toLocaleDateString(DATE_PICKER_INTL_LOCALES[locale], {
     month: 'long',
     year: 'numeric',
   });

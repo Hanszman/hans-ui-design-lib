@@ -19,6 +19,9 @@ export const HansDateTimeCalendar = React.memo(
       clearLabel,
       todayLabel,
       applyLabel,
+      timeLabel = 'Time',
+      previousMonthLabel = 'Previous month',
+      nextMonthLabel = 'Next month',
       allowApply,
       onPreviousMonth,
       onNextMonth,
@@ -38,7 +41,7 @@ export const HansDateTimeCalendar = React.memo(
             buttonSize="small"
             buttonShape="rounded"
             customClasses="hans-date-picker-calendar-nav"
-            aria-label="Previous month"
+            aria-label={previousMonthLabel}
             onClick={onPreviousMonth}
           >
             <HansIcon name="IoIosArrowBack" iconSize="small" />
@@ -50,7 +53,7 @@ export const HansDateTimeCalendar = React.memo(
             buttonSize="small"
             buttonShape="rounded"
             customClasses="hans-date-picker-calendar-nav"
-            aria-label="Next month"
+            aria-label={nextMonthLabel}
             onClick={onNextMonth}
           >
             <HansIcon name="IoIosArrowForward" iconSize="small" />
@@ -91,7 +94,7 @@ export const HansDateTimeCalendar = React.memo(
             <HansTimeInput
               inputId="hans-date-picker-calendar-time"
               pickerType="time"
-              label="Time"
+              label={timeLabel}
               inputColor={inputColor}
               inputSize="small"
               timePrecision={timePrecision}
