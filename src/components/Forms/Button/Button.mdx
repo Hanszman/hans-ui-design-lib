@@ -53,9 +53,16 @@ You can also change the combination of color theme to see other options.
 
 ## Shapes
 
-Use `buttonShape` to switch between rounded and square styles.
+Use `buttonShape` to choose the corner treatment:
+
+- `circle` uses fully rounded corners and is the default, preserving the original Button appearance.
+- `rounded` uses a medium corner radius.
+- `square` uses straight corners.
 
 <Canvas of={HansButtonStories.Shapes} />
+
+Web Component consumers can use the same contract with
+`<hans-button button-shape="circle">`.
 
 ## Children
 

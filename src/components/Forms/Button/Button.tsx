@@ -11,7 +11,7 @@ export const HansButton = React.memo((props: HansButtonProps) => {
     buttonVariant = 'default',
     hoverButtonColor,
     hoverButtonVariant,
-    buttonShape = 'rounded',
+    buttonShape = 'circle',
     buttonType = 'button',
     customClasses = '',
     disabled = false,
@@ -46,8 +46,8 @@ export const HansButton = React.memo((props: HansButtonProps) => {
         loadingSize={buttonSize}
         skeletonWidth={loadingSize.width}
         skeletonHeight={loadingSize.height}
-        rounded={buttonShape === 'rounded'}
-        customClasses={`hans-button-loading ${customClasses}`}
+        rounded={false}
+        customClasses={`hans-button-loading hans-button-loading-shape-${buttonShape} ${customClasses}`}
         ariaLabel="Loading button"
       />
     );

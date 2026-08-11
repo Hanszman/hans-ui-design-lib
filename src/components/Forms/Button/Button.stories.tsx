@@ -14,13 +14,16 @@ const meta: Meta<typeof HansButton> = {
     buttonVariant: 'default',
     hoverButtonColor: undefined,
     hoverButtonVariant: undefined,
-    buttonShape: 'rounded',
+    buttonShape: 'circle',
     disabled: false,
     loading: false,
   },
   argTypes: {
     buttonSize: { control: 'select', options: ['small', 'medium', 'large'] },
-    buttonShape: { control: 'select', options: ['rounded', 'square'] },
+    buttonShape: {
+      control: 'select',
+      options: ['circle', 'rounded', 'square'],
+    },
     buttonColor: {
       control: 'select',
       options: [
@@ -127,6 +130,7 @@ export const VariantsAndColors: Story = {
 export const Shapes: Story = {
   render: () => (
     <div className="flex items-center gap-3 flex-wrap">
+      <HansButton label="Circle" buttonShape="circle" />
       <HansButton label="Rounded" buttonShape="rounded" />
       <HansButton label="Square" buttonShape="square" />
       <HansButton

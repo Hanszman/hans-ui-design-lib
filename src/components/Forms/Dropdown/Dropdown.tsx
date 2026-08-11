@@ -27,7 +27,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     triggerHoverVariant,
     triggerIconName,
     showTriggerCaret = true,
-    triggerShape = 'square',
+    triggerShape = 'rounded',
     triggerSize = 'medium',
     popupId = 'hans-dropdown',
     popupBackgroundColor = 'var(--background-color, var(--white))',

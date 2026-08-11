@@ -205,10 +205,10 @@ describe('HansDropdown', () => {
     });
   });
 
-  it('Should use square button shape by default', () => {
+  it('Should use the intermediate rounded button shape by default', () => {
     render(<HansDropdown triggerLabel="Menu" options={options} />);
     expect(screen.getByRole('button', { name: /menu/i })).toHaveClass(
-      'hans-button-square',
+      'hans-button-rounded',
     );
   });
 

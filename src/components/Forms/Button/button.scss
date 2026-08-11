@@ -7,12 +7,19 @@
     outline-color 0.2s ease;
 }
 
-.hans-button-rounded {
+.hans-button-circle,
+.hans-button-loading-shape-circle {
   @apply rounded-full;
 }
 
-.hans-button-square {
+.hans-button-rounded,
+.hans-button-loading-shape-rounded {
   @apply rounded-md;
+}
+
+.hans-button-square,
+.hans-button-loading-shape-square {
+  @apply rounded-none;
 }
 
 .hans-button:disabled,

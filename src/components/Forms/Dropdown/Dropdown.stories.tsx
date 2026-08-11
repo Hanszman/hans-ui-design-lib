@@ -105,7 +105,7 @@ const meta: Meta<typeof HansDropdown> = {
     triggerHoverColor: undefined,
     triggerHoverVariant: undefined,
     triggerIconName: undefined,
-    triggerShape: 'square',
+    triggerShape: 'rounded',
     triggerSize: 'medium',
     options,
     loading: false,

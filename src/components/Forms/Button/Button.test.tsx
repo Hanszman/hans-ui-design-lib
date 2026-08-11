@@ -23,7 +23,7 @@ describe('HansButton', () => {
     expect(button).toHaveClass('hans-button-large');
     expect(button).toHaveClass('hans-button-danger');
     expect(button).toHaveClass('hans-button-outline');
-    expect(button).toHaveClass('hans-button-rounded');
+    expect(button).toHaveClass('hans-button-circle');
   });
 
   it('Should render with all props combined', () => {
@@ -53,6 +53,12 @@ describe('HansButton', () => {
       'custom-test',
     );
     expect(button).toBeDisabled();
+  });
+
+  it('Should support the intermediate rounded shape', () => {
+    render(<HansButton label="Rounded" buttonShape="rounded" />);
+
+    expect(screen.getByRole('button')).toHaveClass('hans-button-rounded');
   });
 
   it('Should support the inverse visual variant', () => {
@@ -143,8 +149,28 @@ describe('HansButton', () => {
     render(<HansButton label="Load" loading />);
     const loading = screen.getByLabelText('Loading button');
     expect(loading).toBeInTheDocument();
-    expect(loading).toHaveClass('hans-button-loading', 'hans-loading-skeleton');
+    expect(loading).toHaveClass(
+      'hans-button-loading',
+      'hans-button-loading-shape-circle',
+      'hans-loading-skeleton',
+    );
     expect(screen.queryByText('Load')).not.toBeInTheDocument();
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
+
+  it('Should preserve the selected shape in loading skeletons', () => {
+    const { rerender } = render(
+      <HansButton label="Load" loading buttonShape="rounded" />,
+    );
+
+    expect(screen.getByLabelText('Loading button')).toHaveClass(
+      'hans-button-loading-shape-rounded',
+    );
+
+    rerender(<HansButton label="Load" loading buttonShape="square" />);
+
+    expect(screen.getByLabelText('Loading button')).toHaveClass(
+      'hans-button-loading-shape-square',
+    );
   });
 });
