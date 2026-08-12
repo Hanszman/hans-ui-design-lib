@@ -9,8 +9,10 @@ import {
   createHandleDropdownSelect,
   getDropdownSubmenuArrowName,
   getDropdownItemClassName,
+  getDropdownSubmenuPositionStyle,
   getHoveredPathOnListLeave,
   getDropdownSelection,
+  getNextDropdownSubmenuAnchors,
   getNextDropdownSubmenuDirections,
   hasCustomDropdownContent,
   hasNestedDropdownItems,
@@ -100,9 +102,11 @@ describe('Dropdown.helper', () => {
 
     const setHoveredPath = vi.fn();
     const setSubmenuDirection = vi.fn();
+    const setSubmenuAnchor = vi.fn();
     const handleItemEnter = createHandleDropdownItemEnter({
       setHoveredPath,
       setSubmenuDirection,
+      setSubmenuAnchor,
       submenuWidth: 200,
     });
     const target = document.createElement('div');
@@ -121,6 +125,11 @@ describe('Dropdown.helper', () => {
     handleItemEnter('0.1', target);
     expect(setHoveredPath).toHaveBeenCalledWith('0.1');
     expect(setSubmenuDirection).toHaveBeenCalledWith('0.1', 'left');
+    expect(setSubmenuAnchor).toHaveBeenCalledWith('0.1', {
+      top: 0,
+      leftEdge: 200,
+      rightEdge: 300,
+    });
 
     Object.defineProperty(window, 'innerWidth', { value: 900, writable: true });
     handleItemEnter('0.2', target);
@@ -133,6 +142,7 @@ describe('Dropdown.helper', () => {
     });
     handleItemEnter('0.3', target);
     expect(setSubmenuDirection).toHaveBeenCalledTimes(2);
+    expect(setSubmenuAnchor).toHaveBeenCalledTimes(2);
     Object.defineProperty(globalThis, 'window', {
       value: originalWindow,
       configurable: true,
@@ -147,6 +157,28 @@ describe('Dropdown.helper', () => {
       'left',
     );
     expect(sameDirection).toBe(sameDirectionSource);
+
+    const anchor = { top: 10, leftEdge: 100, rightEdge: 220 };
+    expect(getNextDropdownSubmenuAnchors({}, '0.1', anchor)).toEqual({
+      '0.1': anchor,
+    });
+    expect(
+      getDropdownSubmenuPositionStyle(anchor, 'right'),
+    ).toEqual({ position: 'fixed', top: 10, left: 220 });
+    expect(
+      getDropdownSubmenuPositionStyle(anchor, 'left'),
+    ).toEqual({ position: 'fixed', top: 10, right: 900 - 100 });
+    expect(getDropdownSubmenuPositionStyle(undefined, 'right')).toBeUndefined();
+    Object.defineProperty(globalThis, 'window', {
+      value: undefined,
+      configurable: true,
+    });
+    expect(getDropdownSubmenuPositionStyle(anchor, 'right')).toBeUndefined();
+    Object.defineProperty(globalThis, 'window', {
+      value: originalWindow,
+      configurable: true,
+    });
+
     expect(getDropdownSubmenuArrowName('left')).toBe('IoIosArrowBack');
     expect(getDropdownSubmenuArrowName('right')).toBe('IoIosArrowForward');
     expect(getHoveredPathOnListLeave('')).toBeNull();

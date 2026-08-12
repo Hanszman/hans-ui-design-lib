@@ -11,6 +11,8 @@ contracts without adding textarea-only branches to the single-line input.
 
 <Canvas of={TextareaStories.Primary} />
 
+<Controls />
+
 ## Rich formatting
 
 Enable `formattingToolbar` for bold, italic, underline and unordered lists. Formatting is
@@ -23,10 +25,13 @@ it without accepting arbitrary HTML. Applying an active command again removes it
 ## Web Component
 
 ```html
-<hans-textarea label="Description" rows="6" formatting-toolbar="true" required="true"></hans-textarea>
+<hans-textarea
+  label="Description"
+  rows="6"
+  formatting-toolbar="true"
+  required="true"
+></hans-textarea>
 ```
 
 Listen to `input`, `change`, or `valuechange`. The last event exposes the serialized value
 in `event.detail`.
-
-<Controls />

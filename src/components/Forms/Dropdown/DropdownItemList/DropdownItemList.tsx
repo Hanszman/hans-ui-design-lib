@@ -5,6 +5,7 @@ import type { DropdownItem } from '../Dropdown.types';
 import {
   getDropdownSubmenuArrowName,
   getDropdownItemClassName,
+  getDropdownSubmenuPositionStyle,
   shouldShowDropdownSubmenu,
 } from '../helpers/Dropdown.helper';
 import type { HansDropdownItemListProps } from './DropdownItemList.types';
@@ -16,6 +17,8 @@ export const HansDropdownItemList = React.memo(
       noOptionsText,
       hoveredPath,
       submenuDirections,
+      submenuAnchors,
+      positionStyle,
       optionTextColor,
       optionHoverBackgroundColor,
       optionHoverTextColor,
@@ -39,6 +42,7 @@ export const HansDropdownItemList = React.memo(
             '--hans-dropdown-option-hover-background-color': optionHoverBackgroundColor,
             '--hans-dropdown-option-hover-text-color': optionHoverTextColor,
             '--hans-dropdown-empty-text-color': emptyTextColor,
+            ...positionStyle,
           } as React.CSSProperties
         }
         role="menu"
@@ -71,12 +75,19 @@ export const HansDropdownItemList = React.memo(
           const showSubmenu = shouldShowDropdownSubmenu(hoveredPath, state.itemPath);
           if (!showSubmenu) return null;
 
+          const submenuDirection = submenuDirections[state.itemPath] ?? 'right';
+
           return (
             <HansDropdownItemList
               items={state.item.children as DropdownItem[]}
               noOptionsText={noOptionsText}
               hoveredPath={hoveredPath}
               submenuDirections={submenuDirections}
+              submenuAnchors={submenuAnchors}
+              positionStyle={getDropdownSubmenuPositionStyle(
+                submenuAnchors[state.itemPath],
+                submenuDirection,
+              )}
               optionTextColor={optionTextColor}
               optionHoverBackgroundColor={optionHoverBackgroundColor}
               optionHoverTextColor={optionHoverTextColor}

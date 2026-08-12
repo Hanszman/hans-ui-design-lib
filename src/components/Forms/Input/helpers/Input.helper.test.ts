@@ -12,6 +12,9 @@ import {
 type InputValueChangeEvent = Parameters<
   ReturnType<typeof createInputValueEventHandlers>['handleChange']
 >[0];
+type InputInputEvent = Parameters<
+  ReturnType<typeof createInputValueEventHandlers>['handleInput']
+>[0];
 
 const createInputEvent = (value: string) => {
   const host = document.createElement('hans-input');
@@ -23,9 +26,10 @@ const createInputEvent = (value: string) => {
   return {
     currentTarget: input,
     host,
-  } as unknown as InputValueChangeEvent & {
-    host: HTMLElement & { value?: string };
-  };
+  } as unknown as InputValueChangeEvent &
+    InputInputEvent & {
+      host: HTMLElement & { value?: string };
+    };
 };
 
 describe('Input helper', () => {

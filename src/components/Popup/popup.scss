@@ -27,7 +27,7 @@
 }
 
 .hans-popup-panel-content {
-  @apply overflow-auto rounded-lg border border-[var(--base-neutral-color)] shadow-md;
+  @apply overflow-y-auto overflow-x-visible rounded-lg border border-[var(--base-neutral-color)] shadow-md;
   @apply max-h-56;
   background-color: var(--hans-popup-bg);
 }

@@ -152,8 +152,18 @@ export const applyTextareaFormatting = ({
       item.textContent = line;
       list.append(item);
     });
+
+    const blockContainer = closestElement(range.commonAncestorContainer, ['div']);
     range.deleteContents();
-    range.insertNode(list);
+    if (
+      blockContainer &&
+      blockContainer.parentElement === editor &&
+      !blockContainer.textContent?.trim()
+    ) {
+      blockContainer.replaceWith(list);
+    } else {
+      range.insertNode(list);
+    }
     return selectContents(list);
   }
 

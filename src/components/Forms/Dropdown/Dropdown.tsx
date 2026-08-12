@@ -12,9 +12,11 @@ import {
   createHandleDropdownListEnter,
   createHandleDropdownListLeave,
   createHandleDropdownSelect,
+  getNextDropdownSubmenuAnchors,
   getNextDropdownSubmenuDirections,
   hasCustomDropdownContent,
 } from './helpers/Dropdown.helper';
+import type { SubmenuAnchor } from './helpers/Dropdown.helper.types';
 
 export const HansDropdown = React.memo((props: HansDropdownProps) => {
   const {
@@ -52,6 +54,9 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
   const [hoveredPath, setHoveredPath] = React.useState<string | null>(null);
   const [submenuDirections, setSubmenuDirections] = React.useState<
     Record<string, 'left' | 'right'>
+  >({});
+  const [submenuAnchors, setSubmenuAnchors] = React.useState<
+    Record<string, SubmenuAnchor>
   >({});
   const isOpen = open ?? internalIsOpen;
   const hasCustomContent = hasCustomDropdownContent(children);
@@ -99,6 +104,12 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
     },
     [],
   );
+  const setSubmenuAnchor = React.useCallback(
+    (path: string, anchor: SubmenuAnchor) => {
+      setSubmenuAnchors((prev) => getNextDropdownSubmenuAnchors(prev, path, anchor));
+    },
+    [],
+  );
   const handleListEnter = React.useMemo(
     () => createHandleDropdownListEnter(clearListLeaveTimeout),
     [clearListLeaveTimeout],
@@ -118,27 +129,29 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
       clearListLeaveTimeout();
       setHoveredPath(null);
       setSubmenuDirections({});
+      setSubmenuAnchors({});
     }
   }, [clearListLeaveTimeout, isOpen]);
-  
+
   React.useEffect(
     () => () => {
       clearListLeaveTimeout();
     },
     [clearListLeaveTimeout],
   );
-  
+
   const handleDropdownItemEnter = React.useMemo(() => {
     const handleItemEnter = createHandleDropdownItemEnter({
       setHoveredPath,
       setSubmenuDirection,
+      setSubmenuAnchor,
       submenuWidth: 240,
     });
     return (path: string, target: HTMLElement): void => {
       clearListLeaveTimeout();
       handleItemEnter(path, target);
     };
-  }, [clearListLeaveTimeout, setSubmenuDirection]);
+  }, [clearListLeaveTimeout, setSubmenuDirection, setSubmenuAnchor]);
 
   return (
     <div className={`hans-dropdown ${customClasses}`} {...rest}>
@@ -209,6 +222,7 @@ export const HansDropdown = React.memo((props: HansDropdownProps) => {
             noOptionsText={noOptionsText}
             hoveredPath={hoveredPath}
             submenuDirections={submenuDirections}
+            submenuAnchors={submenuAnchors}
             optionTextColor={optionTextColor}
             optionHoverBackgroundColor={optionHoverBackgroundColor}
             optionHoverTextColor={optionHoverTextColor}

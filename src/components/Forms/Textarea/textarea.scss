@@ -11,9 +11,8 @@
 }
 
 .hans-textarea-field {
-  @apply overflow-hidden rounded-lg border;
+  @apply overflow-hidden rounded-lg border bg-transparent;
   border-color: var(--neutral-color);
-  background: var(--background-color);
 }
 
 .hans-textarea-field:focus-within {

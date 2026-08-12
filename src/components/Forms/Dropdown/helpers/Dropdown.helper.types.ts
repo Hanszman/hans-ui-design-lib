@@ -1,6 +1,12 @@
 import type React from 'react';
 import type { DropdownItem } from '../Dropdown.types';
 
+export type SubmenuAnchor = {
+  top: number;
+  leftEdge: number;
+  rightEdge: number;
+};
+
 export type ResolveDropdownItemIdParams = {
   item: DropdownItem;
   itemPath: string;
@@ -20,6 +26,7 @@ export type CreateHandleDropdownSelectParams = {
 export type CreateHandleDropdownItemEnterParams = {
   setHoveredPath: (nextPath: string | null) => void;
   setSubmenuDirection: (path: string, direction: 'left' | 'right') => void;
+  setSubmenuAnchor: (path: string, anchor: SubmenuAnchor) => void;
   submenuWidth?: number;
 };
 

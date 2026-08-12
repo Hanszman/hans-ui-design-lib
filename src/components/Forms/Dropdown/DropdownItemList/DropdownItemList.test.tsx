@@ -11,6 +11,7 @@ describe('HansDropdownItemList', () => {
         noOptionsText="No options"
         hoveredPath={null}
         submenuDirections={{}}
+        submenuAnchors={{}}
         onItemEnter={vi.fn()}
         onListLeave={vi.fn()}
         onSelect={vi.fn()}
@@ -37,6 +38,7 @@ describe('HansDropdownItemList', () => {
         noOptionsText="No options"
         hoveredPath="0"
         submenuDirections={{ '0': 'right' }}
+        submenuAnchors={{}}
         onItemEnter={onItemEnter}
         onListLeave={onListLeave}
         onSelect={onSelect}
@@ -55,5 +57,29 @@ describe('HansDropdownItemList', () => {
       label: 'Leaf',
       value: 'leaf',
     });
+  });
+
+  it('Should default an already-shown submenu to the right direction when none was recorded yet', () => {
+    render(
+      <HansDropdownItemList
+        items={[
+          {
+            id: 'parent',
+            label: 'Parent',
+            value: 'parent',
+            children: [{ id: 'leaf', label: 'Leaf', value: 'leaf' }],
+          },
+        ]}
+        noOptionsText="No options"
+        hoveredPath="0"
+        submenuDirections={{}}
+        submenuAnchors={{}}
+        onItemEnter={vi.fn()}
+        onListLeave={vi.fn()}
+        onSelect={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('Leaf')).toBeInTheDocument();
   });
 });

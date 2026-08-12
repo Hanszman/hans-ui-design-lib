@@ -8,6 +8,7 @@ import type {
   CreateDropdownOpenSetterParams,
   CreateHandleDropdownSelectParams,
   ResolveDropdownItemIdParams,
+  SubmenuAnchor,
 } from './Dropdown.helper.types';
 
 export const resolveDropdownItemId = ({
@@ -50,6 +51,28 @@ export const getNextDropdownSubmenuDirections = (
 ): Record<string, 'left' | 'right'> => {
   if (previousDirections[path] === direction) return previousDirections;
   return { ...previousDirections, [path]: direction };
+};
+
+export const getNextDropdownSubmenuAnchors = (
+  previousAnchors: Record<string, SubmenuAnchor>,
+  path: string,
+  anchor: SubmenuAnchor,
+): Record<string, SubmenuAnchor> => ({ ...previousAnchors, [path]: anchor });
+
+export const getDropdownSubmenuPositionStyle = (
+  anchor: SubmenuAnchor | undefined,
+  direction: 'left' | 'right',
+): React.CSSProperties | undefined => {
+  if (!anchor) return undefined;
+  if (typeof window === 'undefined') return undefined;
+
+  return {
+    position: 'fixed',
+    top: anchor.top,
+    ...(direction === 'right'
+      ? { left: anchor.rightEdge }
+      : { right: window.innerWidth - anchor.leftEdge }),
+  };
 };
 
 export const getDropdownSubmenuArrowName = (
@@ -99,6 +122,7 @@ export const createHandleDropdownItemEnter =
   ({
     setHoveredPath,
     setSubmenuDirection,
+    setSubmenuAnchor,
     submenuWidth = 240,
   }: CreateHandleDropdownItemEnterParams) =>
   (path: string, target: HTMLElement): void => {
@@ -108,6 +132,11 @@ export const createHandleDropdownItemEnter =
     const availableSpaceRight = window.innerWidth - targetRect.right;
     const direction = availableSpaceRight < submenuWidth ? 'left' : 'right';
     setSubmenuDirection(path, direction);
+    setSubmenuAnchor(path, {
+      top: targetRect.top,
+      leftEdge: targetRect.left,
+      rightEdge: targetRect.right,
+    });
   };
 
 export const createClearDropdownLeaveTimeout = ({

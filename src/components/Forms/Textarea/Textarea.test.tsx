@@ -122,6 +122,45 @@ describe('HansTextarea', () => {
     getSelection.mockRestore();
   });
 
+  it('Should not overwrite the live rich editor DOM in reaction to its own input', () => {
+    const onValueChange = vi.fn();
+    render(
+      <HansTextarea
+        formattingToolbar
+        defaultValue="Hello"
+        onValueChange={onValueChange}
+      />,
+    );
+    const editor = screen.getByRole('textbox');
+    editor.innerHTML = '<div>Hel*a*lo</div>';
+    fireEvent.input(editor);
+    expect(editor.innerHTML).toBe('<div>Hel*a*lo</div>');
+    expect(onValueChange).toHaveBeenLastCalledWith('Hel*a*lo');
+  });
+
+  it('Should still apply a genuine external value change after a self-triggered input', () => {
+    const onValueChange = vi.fn();
+    const { rerender } = render(
+      <HansTextarea
+        formattingToolbar
+        value="Alpha"
+        onValueChange={onValueChange}
+      />,
+    );
+    const editor = screen.getByRole('textbox');
+    editor.innerHTML = '<div>Alp*a*ha</div>';
+    fireEvent.input(editor);
+    expect(editor.innerHTML).toBe('<div>Alp*a*ha</div>');
+    rerender(
+      <HansTextarea
+        formattingToolbar
+        value="Reset value"
+        onValueChange={onValueChange}
+      />,
+    );
+    expect(editor).toHaveTextContent('Reset value');
+  });
+
   it('Should synchronize controlled rich content and disable editing and actions', () => {
     const { rerender } = render(
       <HansTextarea formattingToolbar value="First" />,

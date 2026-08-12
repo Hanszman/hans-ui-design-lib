@@ -46,22 +46,27 @@ export const HansTextarea = React.memo((props: HansTextareaProps) => {
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const editorRef = React.useRef<HTMLDivElement>(null);
   const selectionRangeRef = React.useRef<Range | null>(null);
+  const lastEmittedValueRef = React.useRef<string | null>(null);
   const editorHtml = React.useMemo(
     () => textareaValueToHtml(currentValue),
     [currentValue],
   );
 
   React.useLayoutEffect(() => {
-    if (formattingToolbar && editorRef.current?.innerHTML !== editorHtml) {
-      editorRef.current!.innerHTML = editorHtml;
+    if (!formattingToolbar) return;
+    if (lastEmittedValueRef.current === currentValue) return;
+    lastEmittedValueRef.current = currentValue;
+    if (editorRef.current && editorRef.current.innerHTML !== editorHtml) {
+      editorRef.current.innerHTML = editorHtml;
     }
-  }, [editorHtml, formattingToolbar]);
+  }, [currentValue, editorHtml, formattingToolbar]);
 
   const { handleChange: dispatchChange, handleInput: dispatchInput } =
     createTextareaValueEventHandlers({ onChange, onInput, onValueChange });
 
   const syncRichValue = (eventName: 'input' | 'change') => {
     const nextValue = textareaHtmlToValue(editorRef.current);
+    lastEmittedValueRef.current = nextValue;
     if (!controlled) {
       setInternalValue(nextValue);
     }

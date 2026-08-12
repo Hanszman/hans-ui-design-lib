@@ -95,6 +95,27 @@ describe('Textarea.helper', () => {
     editor.remove();
   });
 
+  it('Should replace a fully-selected block line with a top-level list instead of nesting it', () => {
+    const editor = document.createElement('div');
+    editor.innerHTML = '<div>Kept before</div><div>Selected line</div><div>Kept after</div>';
+    document.body.append(editor);
+    const targetDiv = editor.children[1];
+    const range = document.createRange();
+    range.selectNodeContents(targetDiv);
+    expect(
+      applyTextareaFormatting({
+        action: 'list',
+        editor,
+        selectionRange: range,
+      }),
+    ).toBeInstanceOf(Range);
+    expect(editor.innerHTML).toBe(
+      '<div>Kept before</div><ul><li>Selected line</li></ul><div>Kept after</div>',
+    );
+    expect(textareaHtmlToValue(editor)).toBe('Kept before\n- Selected line\nKept after');
+    editor.remove();
+  });
+
   it('Should preserve collapsed selections', () => {
     const editor = document.createElement('div');
     editor.textContent = 'Text';
