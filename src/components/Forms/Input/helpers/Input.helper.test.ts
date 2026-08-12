@@ -1,5 +1,6 @@
 import { vi } from 'vitest';
 import {
+  applyInputFormatting,
   createInputValueEventHandlers,
   dispatchInputActionEvents,
   INPUT_ACTION_EVENT_NAMES_BY_SIDE,
@@ -201,5 +202,47 @@ describe('Input helper', () => {
         ariaLabel: '   ',
       }),
     ).toBe(false);
+  });
+
+  it('Should apply supported formatting markers to selections', () => {
+    expect(
+      applyInputFormatting({
+        value: 'format me',
+        selectionStart: 0,
+        selectionEnd: 6,
+        action: 'bold',
+      }),
+    ).toEqual({ value: '**format** me', selectionStart: 2, selectionEnd: 8 });
+    expect(
+      applyInputFormatting({
+        value: 'format',
+        selectionStart: 0,
+        selectionEnd: 6,
+        action: 'italic',
+      }).value,
+    ).toBe('*format*');
+    expect(
+      applyInputFormatting({
+        value: 'format',
+        selectionStart: 0,
+        selectionEnd: 6,
+        action: 'underline',
+      }).value,
+    ).toBe('__format__');
+  });
+
+  it('Should format every selected line as an unordered list', () => {
+    expect(
+      applyInputFormatting({
+        value: 'Before\nFirst\nSecond\nAfter',
+        selectionStart: 7,
+        selectionEnd: 19,
+        action: 'unordered-list',
+      }),
+    ).toEqual({
+      value: 'Before\n- First\n- Second\nAfter',
+      selectionStart: 9,
+      selectionEnd: 23,
+    });
   });
 });

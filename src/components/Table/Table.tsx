@@ -189,7 +189,7 @@ export const HansTable = React.memo((props: HansTableProps) => {
                         placeholder={getFilterPlaceholder(column)}
                         inputSize="small"
                         value={filters[column.key] ?? ''}
-                        onChange={(event) =>
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                           handleFilterChange(column.key, event.target.value)
                         }
                         customClasses="hans-table-filter-input"

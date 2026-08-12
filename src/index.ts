@@ -31,6 +31,7 @@ export * from './components/Tabs/Tabs';
 
 // Types:
 export * from './components/Forms/Button/Button.types';
+export * from './components/Forms/Input/Input.types';
 export * from './components/Forms/Dropdown/Dropdown.types';
 export * from './components/Forms/SelectOption/SelectOption.types';
 export * from './components/Forms/Toggle/Toggle.types';

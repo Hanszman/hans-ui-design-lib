@@ -1,8 +1,16 @@
 import type React from 'react';
-import type { InputIconClickHandler, InputValue } from '../Input.types';
+import type {
+  InputFormattingAction,
+  InputIconClickHandler,
+  InputValue,
+} from '../Input.types';
+
+export type InputElement = HTMLInputElement | HTMLTextAreaElement;
 
 export type InputValueChangeHandler = (value: string) => void;
+
 export type InputActionSide = 'left' | 'right';
+
 export type InputActionEventName =
   | 'leftIconClick'
   | 'lefticonclick'
@@ -19,8 +27,8 @@ export type InputValueEventName =
 export type StandardInputEventName = 'input' | 'change';
 
 export type CreateInputValueEventHandlersParams = {
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onInput?: React.FormEventHandler<HTMLInputElement>;
+  onChange?: React.ChangeEventHandler<InputElement>;
+  onInput?: React.FormEventHandler<InputElement>;
   onValueChange?: InputValueChangeHandler;
 };
 
@@ -32,7 +40,7 @@ export type ResolveInputActionParams = {
 };
 
 export type DispatchInputValueEventsParams = {
-  target: HTMLInputElement;
+  target: InputElement;
   value: string;
   eventName: StandardInputEventName;
 };
@@ -40,4 +48,17 @@ export type DispatchInputValueEventsParams = {
 export type DispatchInputActionEventsParams = {
   target: HTMLElement;
   side: InputActionSide;
+};
+
+export type ApplyInputFormattingParams = {
+  value: string;
+  selectionStart: number;
+  selectionEnd: number;
+  action: InputFormattingAction;
+};
+
+export type InputFormattingResult = {
+  value: string;
+  selectionStart: number;
+  selectionEnd: number;
 };

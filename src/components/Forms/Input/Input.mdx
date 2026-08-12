@@ -44,6 +44,30 @@ asterisk to the label. Consumers should pass the plain label without adding `*`.
 
 <Canvas of={HansInputStories.Required} />
 
+## Textarea
+
+Set `inputType="textarea"` for multiline content and use `textareaRows` to define the
+initial writing area. Line breaks are emitted unchanged through `onValueChange` and the
+Web Component `input`, `change` and `valuechange` events.
+
+<Canvas of={HansInputStories.Textarea} />
+
+Enable `formattingToolbar` to expose accessible bold, italic, underline and unordered-list
+actions. The toolbar stores portable, restricted Markdown-like markers (`**bold**`,
+`*italic*`, `__underline__` and `- list item`) instead of executable HTML. Consumers must
+render those markers through a safe formatter rather than binding arbitrary HTML.
+
+<Canvas of={HansInputStories.FormattedTextarea} />
+
+```html
+<hans-input
+  inputType="textarea"
+  textareaRows="6"
+  formattingToolbar
+  label="Description"
+></hans-input>
+```
+
 The same contract is available to Web Component consumers:
 
 ```html

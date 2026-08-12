@@ -13,11 +13,21 @@ export type InputType =
   | 'checkbox'
   | 'radio'
   | 'file'
-  | 'hidden';
+  | 'hidden'
+  | 'textarea';
+
+export type InputFormattingAction =
+  | 'bold'
+  | 'italic'
+  | 'underline'
+  | 'unordered-list';
 
 export type InputIcon = React.ReactNode | string;
+
 export type InputValueChangeHandler = (value: string) => void;
+
 export type InputValue = string | number | readonly string[];
+
 export type InputIconClickHandler = (
   event: React.MouseEvent<HTMLButtonElement>,
 ) => void;
@@ -35,6 +45,13 @@ const HansInputSchema = {
   inputColor: { type: 'custom', ref: {} as Color },
   inputSize: { type: 'custom', ref: {} as Size },
   inputType: { type: 'custom', ref: {} as InputType },
+  textareaRows: 'number',
+  formattingToolbar: 'boolean',
+  formattingToolbarAriaLabel: 'string',
+  boldActionLabel: 'string',
+  italicActionLabel: 'string',
+  underlineActionLabel: 'string',
+  unorderedListActionLabel: 'string',
   message: 'string',
   messageColor: { type: 'custom', ref: {} as Color },
   customClasses: 'string',
@@ -62,11 +79,11 @@ const HansInputSchema = {
 } as const;
 
 type HansInputSchemaProps = InferPropsFromSchema<typeof HansInputSchema>;
+
 type NativeInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
-  'value' | 'defaultValue'
+  'value' | 'defaultValue' | 'onChange' | 'onInput'
 >;
-
 export type HansInputProps = Omit<
   HansInputSchemaProps,
   'value' | 'onValueChange'
@@ -74,6 +91,12 @@ export type HansInputProps = Omit<
   NativeInputProps & {
     value?: InputValue;
     defaultValue?: InputValue;
+    onChange?:
+      | React.ChangeEventHandler<HTMLInputElement>
+      | React.ChangeEventHandler<HTMLTextAreaElement>;
+    onInput?:
+      | React.FormEventHandler<HTMLInputElement>
+      | React.FormEventHandler<HTMLTextAreaElement>;
     onValueChange?: InputValueChangeHandler;
   };
 
