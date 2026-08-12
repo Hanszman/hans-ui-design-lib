@@ -1,0 +1,3 @@
+Mirror pointer — canonical content lives in `.agents/drafts/DRAFT-PROMPTS.txt`.
+
+@../../.agents/drafts/DRAFT-PROMPTS.txt

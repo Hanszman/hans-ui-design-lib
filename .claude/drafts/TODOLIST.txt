@@ -1,0 +1,3 @@
+Mirror pointer — canonical content lives in `.agents/drafts/TODOLIST.txt`.
+
+@../../.agents/drafts/TODOLIST.txt

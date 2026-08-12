@@ -289,3 +289,28 @@ Consumer guidance:
 - Keep changes narrow and intentional.
 - If a consumer project needs a reusable component or missing generic capability, prefer implementing it here instead of duplicating it in the app.
 - If the need is portfolio-specific or other project specific component, it belongs in the other project, not here.
+- Never run `git commit`, `git push`, or any deploy command (including `npm run release:*` / `npm run publish:*`) without the user's explicit authorization for that specific change. Leave changes uncommitted so the user can review the diff first.
+
+## Agent tooling index
+
+This file is the single source of truth for project context for any AI coding agent. The
+repository root `CLAUDE.md` only imports this file so Claude Code shares it instead of forking
+a second copy. `.claude/skills/`, `.claude/plans/` and `.claude/drafts/` mirror the folders below
+through one-line pointer files so Claude Code discovers them natively; edit content only here in
+`.agents/`, never in the `.claude/` mirror.
+
+Skills (`.agents/skills/<name>/SKILL.md`; each file's frontmatter documents its own trigger
+conditions):
+
+- `create-design-lib-component`
+- `create-design-lib-service`
+
+Plans (`.agents/plans/`):
+
+- `ADSENSEPLAN.md`
+
+Drafts (`.agents/drafts/`, scratch notes, not authoritative):
+
+- `ADSENSEQUESTIONS.txt`
+- `DRAFT-PROMPTS.txt`
+- `TODOLIST.txt`

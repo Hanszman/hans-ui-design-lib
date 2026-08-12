@@ -1,0 +1,3 @@
+Mirror pointer — canonical content lives in `.agents/drafts/ADSENSEQUESTIONS.txt`.
+
+@../../.agents/drafts/ADSENSEQUESTIONS.txt
