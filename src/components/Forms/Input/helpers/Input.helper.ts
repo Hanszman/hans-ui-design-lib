@@ -9,9 +9,7 @@ import type {
   ResolveInitialInputValueParams,
   ResolveInputActionParams,
   StandardInputEventName,
-  ApplyInputFormattingParams,
   InputElement,
-  InputFormattingResult,
 } from './Input.helper.types';
 
 export const INPUT_VALUE_EVENT_NAMES: readonly InputValueEventName[] = [
@@ -95,7 +93,7 @@ export const createInputValueEventHandlers = ({
   onValueChange,
 }: CreateInputValueEventHandlersParams): {
   handleChange: React.ChangeEventHandler<InputElement>;
-  handleInput: React.FormEventHandler<InputElement>;
+  handleInput: React.InputEventHandler<InputElement>;
 } => ({
   handleChange: (event) => {
     onChange?.(event);
@@ -118,39 +116,6 @@ export const createInputValueEventHandlers = ({
     });
   },
 });
-
-const INPUT_FORMATTING_MARKERS = {
-  bold: ['**', '**'],
-  italic: ['*', '*'],
-  underline: ['__', '__'],
-  'unordered-list': ['- ', ''],
-} as const;
-
-export const applyInputFormatting = ({
-  value,
-  selectionStart,
-  selectionEnd,
-  action,
-}: ApplyInputFormattingParams): InputFormattingResult => {
-  const [openingMarker, closingMarker] = INPUT_FORMATTING_MARKERS[action];
-  const selectedText = value.slice(selectionStart, selectionEnd);
-  const formattedText =
-    action === 'unordered-list'
-      ? selectedText
-          .split('\n')
-          .map((line) => `${openingMarker}${line}`)
-          .join('\n')
-      : `${openingMarker}${selectedText}${closingMarker}`;
-  const nextValue = `${value.slice(0, selectionStart)}${formattedText}${value.slice(selectionEnd)}`;
-  return {
-    value: nextValue,
-    selectionStart: selectionStart + openingMarker.length,
-    selectionEnd:
-      action === 'unordered-list'
-        ? selectionStart + formattedText.length
-        : selectionStart + openingMarker.length + selectedText.length,
-  };
-};
 
 const createValueEvent = (
   eventName: InputValueEventName,

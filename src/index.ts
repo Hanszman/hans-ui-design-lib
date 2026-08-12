@@ -5,6 +5,7 @@ import './styles/index.css';
 // Components:
 export * from './components/Forms/Button/Button';
 export * from './components/Forms/Input/Input';
+export * from './components/Forms/Textarea/Textarea';
 export * from './components/Forms/Dropdown/Dropdown';
 export * from './components/Forms/SelectOption/SelectOption';
 export * from './components/Forms/Toggle/Toggle';
@@ -32,6 +33,7 @@ export * from './components/Tabs/Tabs';
 // Types:
 export * from './components/Forms/Button/Button.types';
 export * from './components/Forms/Input/Input.types';
+export * from './components/Forms/Textarea/Textarea.types';
 export * from './components/Forms/Dropdown/Dropdown.types';
 export * from './components/Forms/SelectOption/SelectOption.types';
 export * from './components/Forms/Toggle/Toggle.types';

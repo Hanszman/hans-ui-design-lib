@@ -6,6 +6,7 @@ import {
 import type { Size, Variant, Color } from '../../../types/Common.types';
 
 export type ButtonType = 'button' | 'submit' | 'reset';
+
 export type ButtonShape = 'circle' | 'rounded' | 'square';
 
 const HansButtonSchema = {

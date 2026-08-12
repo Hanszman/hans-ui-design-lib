@@ -23,26 +23,6 @@
   @apply relative flex items-center w-full;
 }
 
-.hans-input-field-textarea {
-  @apply items-stretch;
-}
-
-textarea.hans-input {
-  @apply h-auto min-h-28 resize-y py-2;
-}
-
-.hans-input-formatting-toolbar {
-  @apply flex items-center gap-1 rounded-t-lg border border-b-0 border-[var(--base-default-color)] px-2 py-1;
-}
-
-.hans-input-formatting-action {
-  @apply inline-flex h-8 w-8 items-center justify-center rounded-md text-[var(--text-color)] hover:bg-[var(--base-neutral-color)] disabled:cursor-not-allowed disabled:opacity-50;
-}
-
-.hans-input-formatting-toolbar + .hans-input-field textarea.hans-input {
-  @apply rounded-t-none;
-}
-
 .hans-input-icon-left {
   @apply left-2;
 }

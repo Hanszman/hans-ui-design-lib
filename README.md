@@ -217,6 +217,10 @@ Run tests with coverage:
 npm run test:coverage
 ```
 
+Every delivery has a blocking quality gate: lint, exactly `100%` statements/branches/
+functions/lines, the npm build, CDN build and Storybook build must all pass after the final
+change. Passing tests with partial coverage does not satisfy this gate.
+
 Lint code:
 
 ```bash
@@ -248,6 +252,8 @@ export * from './components/YourComponent';
 /* ./src/styles/index.css */
 @import '../components/yourComponent.scss';
 ```
+
+The global Tailwind entry is owned by `src/styles/tailwind.css`. Component SCSS files imported by `src/styles/index.css` must use `@apply` directly and must not add `@reference "tailwindcss"` or re-import Tailwind, because doing so can suppress shared spacing, typography and radius tokens.
 
 ## 📖 Documentation
 

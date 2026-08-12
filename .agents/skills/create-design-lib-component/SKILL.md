@@ -42,6 +42,8 @@ Add helper implementation, helper types, and helper tests only when behavior war
 - Use semantic HTML, keyboard support, focus behavior, ARIA names/states, disabled/loading behavior, and cleanup appropriate to the control.
 - Keep controlled and uncontrolled behavior explicit; do not hide synchronization side effects.
 - Use SCSS with Tailwind `@apply` and existing design tokens. Add the stylesheet to `src/styles/index.css`.
+- Never add `@reference "tailwindcss"` or another Tailwind import to a component stylesheet consumed by the global aggregator. `src/styles/tailwind.css` is the single Tailwind theme entry; duplicate references can remove the global spacing, typography and radius tokens from all components.
+- Whenever `src/styles/index.css` changes, visually inspect the changed component and existing Button/Input stories and verify their computed padding, height and radius before delivery.
 
 ## Expose both entrypoints
 
@@ -56,6 +58,8 @@ Add helper implementation, helper types, and helper tests only when behavior war
 - Explain purpose, props, usage, edge cases, accessibility, and Web Component syntax in MDX.
 - Test visible behavior, events, accessibility, controlled/uncontrolled paths, edge cases, helper branches, DOM cleanup, and Web Component-sensitive metadata.
 - Maintain 100% statements, branches, functions, and lines.
+- Inspect the final summary itself: a successful command with `99.x%` in any metric is a
+  failed delivery and must be corrected before handoff.
 
 ## Validate
 

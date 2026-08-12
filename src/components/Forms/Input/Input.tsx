@@ -2,16 +2,13 @@ import React from 'react';
 import type { HansInputProps } from './Input.types';
 import { HansInputActionIcon } from './InputActionIcon/InputActionIcon';
 import {
-  applyInputFormatting,
   createInputValueEventHandlers,
   dispatchInputActionEvents,
   normalizeInputValue,
   resolveInitialInputValue,
   shouldRenderInputAction,
 } from './helpers/Input.helper';
-import type { InputElement, InputFormattingResult } from './helpers/Input.helper.types';
-import type { InputFormattingAction } from './Input.types';
-import { HansIcon } from '../../Icon/Icon';
+import type { InputElement } from './helpers/Input.helper.types';
 
 export const HansInput = React.memo((props: HansInputProps) => {
   const {
@@ -24,13 +21,6 @@ export const HansInput = React.memo((props: HansInputProps) => {
     inputColor = 'base',
     inputSize = 'medium',
     inputType = 'text',
-    textareaRows = 5,
-    formattingToolbar = false,
-    formattingToolbarAriaLabel = 'Text formatting',
-    boldActionLabel = 'Bold',
-    italicActionLabel = 'Italic',
-    underlineActionLabel = 'Underline',
-    unorderedListActionLabel = 'Bullet list',
     message = '',
     messageColor = 'base',
     customClasses = '',
@@ -80,7 +70,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
     dispatchChange(event);
   };
 
-  const handleInput: React.FormEventHandler<InputElement> = (event) => {
+  const handleInput: React.InputEventHandler<InputElement> = (event) => {
     if (!isControlled) {
       setUncontrolledValue(event.currentTarget.value);
     }
@@ -117,25 +107,6 @@ export const HansInput = React.memo((props: HansInputProps) => {
     .filter(Boolean)
     .join(' ');
 
-  const applyFormatting = (action: InputFormattingAction): void => {
-    const element = inputRef.current;
-    if (!element) return;
-
-    const result: InputFormattingResult = applyInputFormatting({
-      value: inputValue,
-      selectionStart: element.selectionStart ?? inputValue.length,
-      selectionEnd: element.selectionEnd ?? inputValue.length,
-      action,
-    });
-    if (!isControlled) setUncontrolledValue(result.value);
-    element.value = result.value;
-    element.dispatchEvent(new Event('input', { bubbles: true, composed: true }));
-    requestAnimationFrame(() => {
-      element.focus();
-      element.setSelectionRange(result.selectionStart, result.selectionEnd);
-    });
-  };
-
   const sharedFieldProps = {
     id: inputId,
     disabled,
@@ -164,34 +135,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
         </label>
       ) : null}
 
-      {inputType === 'textarea' && formattingToolbar ? (
-        <div
-          className="hans-input-formatting-toolbar"
-          role="toolbar"
-          aria-label={formattingToolbarAriaLabel}
-        >
-          {([
-            ['bold', 'LuBold', boldActionLabel],
-            ['italic', 'LuItalic', italicActionLabel],
-            ['underline', 'LuUnderline', underlineActionLabel],
-            ['unordered-list', 'LuList', unorderedListActionLabel],
-          ] as const).map(([action, icon, labelText]) => (
-            <button
-              key={action}
-              type="button"
-              className="hans-input-formatting-action"
-              aria-label={labelText}
-              disabled={disabled}
-              onMouseDown={(event) => event.preventDefault()}
-              onClick={() => applyFormatting(action)}
-            >
-              <HansIcon name={icon} iconSize="small" />
-            </button>
-          ))}
-        </div>
-      ) : null}
-
-      <div className={`hans-input-field ${inputType === 'textarea' ? 'hans-input-field-textarea' : ''}`}>
+      <div className="hans-input-field">
         {leftIcon ? (
           <HansInputActionIcon
             icon={leftIcon}
@@ -203,16 +147,7 @@ export const HansInput = React.memo((props: HansInputProps) => {
           />
         ) : null}
 
-        {inputType === 'textarea' ? (
-          <textarea
-            ref={inputRef as React.RefObject<HTMLTextAreaElement>}
-            rows={textareaRows}
-            {...sharedFieldProps}
-            {...(rest as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
-          />
-        ) : (
-          <input ref={inputRef as React.RefObject<HTMLInputElement>} type={inputType} {...sharedFieldProps} {...rest} />
-        )}
+        <input ref={inputRef} type={inputType} {...sharedFieldProps} {...rest} />
 
         {rightIcon ? (
           <HansInputActionIcon

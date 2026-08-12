@@ -1,0 +1,32 @@
+import { Canvas, Controls, Meta } from '@storybook/addon-docs/blocks';
+import * as TextareaStories from './Textarea.stories';
+
+<Meta of={TextareaStories} />
+
+# Textarea
+
+`HansTextarea` is the multiline sibling of `HansInput`. It preserves the same label,
+required, validation-message, color, size, controlled/uncontrolled and Web Component
+contracts without adding textarea-only branches to the single-line input.
+
+<Canvas of={TextareaStories.Primary} />
+
+## Rich formatting
+
+Enable `formattingToolbar` for bold, italic, underline and unordered lists. Formatting is
+visible while editing. The component serializes a small safe text syntax (`**bold**`,
+`*italic*`, `__underline__`, and `- list item`) so consumers can store plain text and render
+it without accepting arbitrary HTML. Applying an active command again removes it.
+
+<Canvas of={TextareaStories.RichFormatting} />
+
+## Web Component
+
+```html
+<hans-textarea label="Description" rows="6" formatting-toolbar="true" required="true"></hans-textarea>
+```
+
+Listen to `input`, `change`, or `valuechange`. The last event exposes the serialized value
+in `event.detail`.
+
+<Controls />

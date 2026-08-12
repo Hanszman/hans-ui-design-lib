@@ -55,6 +55,11 @@ Required validation before a task is done:
 
 Coverage must stay at `100%` statements, branches, functions and lines for relevant files. Lint must pass with no errors and no warnings. Builds must pass. Storybook behavior must stay valid for all changed components.
 
+Treat those four coverage metrics as an indivisible delivery gate: inspect the final summary
+of `npm run test:coverage` and require exactly `100%` in every metric. A green command with
+any `99.x%` metric is still an incomplete delivery. Run and inspect all five required
+commands after the final code change, never before it.
+
 Known external warnings, such as unrelated React `act(...)` warnings in existing tests, should not be expanded or ignored silently if the touched scope can fix them safely.
 
 ## Core folder structure
@@ -147,6 +152,8 @@ If a helper or child component needs specific types, create a local `*.helper.ty
 - Keep component styles local to the component stylesheet.
 - Global resets, theme colors and Tailwind layers belong in `src/styles/`.
 - Every component stylesheet must be imported by `src/styles/index.css` when the component is part of the public library.
+- Component stylesheets that are imported by `src/styles/index.css` must not declare `@reference "tailwindcss"` or import Tailwind again. The global `src/styles/tailwind.css` entry owns the Tailwind theme; redefining it from a component can suppress foundational tokens such as `--spacing`, typography and radius variables and silently break every component.
+- After changing the global stylesheet graph, validate at least one existing Button and Input in Storybook in addition to the changed component. Confirm that fundamental computed values such as padding, height and border radius are not empty or zero because of unresolved Tailwind variables.
 
 ## Documentation and Storybook
 
@@ -219,7 +226,8 @@ When props or events change:
 - Helper tests live in the `helpers/` folder.
 - Prefer testing helper behavior directly instead of asserting implementation details through large component mounts.
 - Test accessibility-relevant behavior, events, controlled/uncontrolled behavior, variants, states, edge cases and cleanup.
-- Keep `test:coverage` at `100%`.
+- Keep `test:coverage` at exactly `100%` statements, branches, functions, and lines; do not
+  hand off a green run whose summary contains any partial metric.
 
 ## Important scripts
 

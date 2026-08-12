@@ -11,6 +11,11 @@ import {
   type HansInputProps,
   HansInputPropsList,
 } from './components/Forms/Input/Input.types';
+import { HansTextarea } from './components/Forms/Textarea/Textarea';
+import {
+  type HansTextareaProps,
+  HansTextareaPropsList,
+} from './components/Forms/Textarea/Textarea.types';
 import { HansDropdown } from './components/Forms/Dropdown/Dropdown';
 import {
   type HansDropdownProps,
@@ -138,6 +143,12 @@ registerReactAsWebComponent<HansInputProps>(
   'hans-input',
   HansInput,
   HansInputPropsList,
+);
+registerReactAsWebComponent<HansTextareaProps>(
+  'hans-textarea',
+  HansTextarea,
+  HansTextareaPropsList,
+  ['onChange', 'onInput', 'onValueChange'],
 );
 registerReactAsWebComponent<HansDropdownProps>(
   'hans-dropdown',

@@ -15,15 +15,13 @@ const meta: Meta<typeof HansInput> = {
     disabled: false,
     required: false,
     inputType: 'text',
-    textareaRows: 5,
-    formattingToolbar: false,
     message: '',
     messageColor: 'base',
   },
   argTypes: {
     inputType: {
       control: 'select',
-      options: ['text', 'number', 'email', 'password', 'checkbox', 'radio', 'file', 'hidden', 'textarea'],
+      options: ['text', 'number', 'email', 'password', 'checkbox', 'radio', 'file', 'hidden'],
     },
     inputSize: { control: 'select', options: ['small', 'medium', 'large'] },
     inputColor: {
@@ -159,25 +157,6 @@ export const Required: Story = {
     inputType: 'email',
     placeholder: 'user@email.com',
     required: true,
-  },
-};
-
-export const Textarea: Story = {
-  args: {
-    label: 'Description',
-    inputType: 'textarea',
-    textareaRows: 6,
-    placeholder: 'Write multiple paragraphs...',
-  },
-};
-
-export const FormattedTextarea: Story = {
-  args: {
-    label: 'Rich description',
-    inputType: 'textarea',
-    textareaRows: 7,
-    formattingToolbar: true,
-    defaultValue: 'Select text and apply **bold**, *italic*, __underline__ or a list.',
   },
 };
 

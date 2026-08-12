@@ -1,0 +1,162 @@
+.hans-textarea-div {
+  @apply flex w-full flex-col gap-2;
+}
+
+.hans-textarea-label {
+  @apply font-semibold;
+}
+
+.hans-textarea-required-indicator {
+  color: var(--danger-color);
+}
+
+.hans-textarea-field {
+  @apply overflow-hidden rounded-lg border;
+  border-color: var(--neutral-color);
+  background: var(--background-color);
+}
+
+.hans-textarea-field:focus-within {
+  border-color: var(--primary-color);
+}
+
+.hans-textarea-field-rich .hans-textarea {
+  border: 0;
+  border-radius: 0;
+}
+
+.hans-textarea-toolbar {
+  @apply flex items-center gap-1 border-b p-2;
+  border-color: var(--neutral-color);
+}
+
+.hans-textarea-toolbar button {
+  @apply inline-flex size-8 items-center justify-center rounded-md;
+  color: var(--text-color);
+}
+
+.hans-textarea-toolbar button:hover:not(:disabled),
+.hans-textarea-toolbar button:focus-visible {
+  background: color-mix(in srgb, var(--primary-color) 16%, transparent);
+  color: var(--primary-color);
+}
+
+.hans-textarea-toolbar button:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.hans-textarea {
+  @apply block w-full resize-y bg-transparent outline-none;
+  color: var(--text-color);
+}
+
+.hans-textarea:empty::before {
+  color: color-mix(in srgb, var(--text-color) 55%, transparent);
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+
+.hans-textarea-small {
+  @apply min-h-20 px-3 py-2 text-sm;
+}
+
+.hans-textarea-medium {
+  @apply min-h-28 px-4 py-3 text-base;
+}
+
+.hans-textarea-large {
+  @apply min-h-36 px-5 py-4 text-lg;
+}
+
+.hans-textarea-primary {
+  border-color: var(--primary-color);
+}
+
+.hans-textarea-secondary {
+  border-color: var(--secondary-color);
+}
+
+.hans-textarea-success {
+  border-color: var(--success-color);
+}
+
+.hans-textarea-danger {
+  border-color: var(--danger-color);
+}
+
+.hans-textarea-warning {
+  border-color: var(--warning-color);
+}
+
+.hans-textarea-info {
+  border-color: var(--info-color);
+}
+
+.hans-textarea-neutral,
+.hans-textarea-base {
+  border-color: var(--neutral-color);
+}
+
+.hans-textarea-label-primary,
+.hans-textarea-message-primary {
+  color: var(--primary-color);
+}
+
+.hans-textarea-label-secondary,
+.hans-textarea-message-secondary {
+  color: var(--secondary-color);
+}
+
+.hans-textarea-label-success,
+.hans-textarea-message-success {
+  color: var(--success-color);
+}
+
+.hans-textarea-label-danger,
+.hans-textarea-message-danger {
+  color: var(--danger-color);
+}
+
+.hans-textarea-label-warning,
+.hans-textarea-message-warning {
+  color: var(--warning-color);
+}
+
+.hans-textarea-label-info,
+.hans-textarea-message-info {
+  color: var(--info-color);
+}
+
+.hans-textarea-label-neutral,
+.hans-textarea-message-neutral {
+  color: var(--neutral-color);
+}
+
+.hans-textarea-label-base,
+.hans-textarea-message-base {
+  color: var(--text-color);
+}
+
+.hans-textarea-message {
+  @apply text-sm;
+}
+
+.hans-textarea:disabled {
+  @apply cursor-not-allowed opacity-60;
+}
+
+.hans-textarea ul {
+  @apply list-disc pl-5;
+}
+
+.hans-textarea strong {
+  @apply font-bold;
+}
+
+.hans-textarea em {
+  @apply italic;
+}
+
+.hans-textarea u {
+  @apply underline;
+}
