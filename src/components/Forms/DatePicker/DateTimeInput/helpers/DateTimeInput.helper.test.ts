@@ -1,6 +1,7 @@
 import type React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import {
+  createBackToCalendarHandler,
   createDatePickerApplyHandler,
   createDatePickerBlurHandler,
   createDatePickerClearHandler,
@@ -9,6 +10,10 @@ import {
   createDatePickerSelectDayHandler,
   createDatePickerTodayHandler,
   createDatePickerToggleIconMouseDownHandler,
+  createMonthYearPageNavigationHandler,
+  createOpenMonthPickerHandler,
+  createOpenYearPickerHandler,
+  createSelectMonthYearHandler,
   getDatePickerAllowApply,
   syncDatePickerState,
 } from './DateTimeInput.helper';
@@ -247,5 +252,58 @@ describe('DateTimeInput.helper', () => {
 
     expect(applyValue).toHaveBeenCalledWith('');
     expect(applyValue).toHaveBeenCalledWith('2026-03-13T10:20');
+  });
+
+  it('Should create month/year picker navigation and selection handlers', () => {
+    const setPageAnchor = vi.fn();
+    const setCalendarView = vi.fn();
+    const setViewDate = vi.fn();
+    const viewDate = new Date(2026, 2, 13);
+
+    createOpenMonthPickerHandler({ viewDate, setPageAnchor, setCalendarView })();
+    expect(setPageAnchor).toHaveBeenCalledWith(2026);
+    expect(setCalendarView).toHaveBeenCalledWith('months');
+
+    createOpenYearPickerHandler({ viewDate, setPageAnchor, setCalendarView })();
+    expect(setPageAnchor).toHaveBeenCalledWith(2016);
+    expect(setCalendarView).toHaveBeenCalledWith('years');
+
+    createMonthYearPageNavigationHandler({
+      calendarView: 'months',
+      pageAnchor: 2026,
+      direction: -1,
+      setPageAnchor,
+    })();
+    expect(setPageAnchor).toHaveBeenCalledWith(2025);
+
+    createMonthYearPageNavigationHandler({
+      calendarView: 'years',
+      pageAnchor: 2016,
+      direction: 1,
+      setPageAnchor,
+    })();
+    expect(setPageAnchor).toHaveBeenCalledWith(2028);
+
+    createSelectMonthYearHandler({
+      calendarView: 'months',
+      pageAnchor: 2026,
+      viewDate,
+      setViewDate,
+      setCalendarView,
+    })(5);
+    expect(setViewDate).toHaveBeenCalledWith(new Date(2026, 5, 1));
+    expect(setCalendarView).toHaveBeenCalledWith('days');
+
+    createSelectMonthYearHandler({
+      calendarView: 'years',
+      pageAnchor: 2016,
+      viewDate,
+      setViewDate,
+      setCalendarView,
+    })(2030);
+    expect(setViewDate).toHaveBeenCalledWith(new Date(2030, 2, 1));
+
+    createBackToCalendarHandler({ setCalendarView })();
+    expect(setCalendarView).toHaveBeenCalledWith('days');
   });
 });

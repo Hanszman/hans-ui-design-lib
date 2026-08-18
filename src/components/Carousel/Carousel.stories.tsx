@@ -82,6 +82,8 @@ const meta: Meta<typeof HansCarousel> = {
     removeItemGap: { control: 'boolean' },
     infiniteLoop: { control: 'boolean' },
     showTextOnTop: { control: 'boolean' },
+    openImageOnClick: { control: 'boolean' },
+    openImageLabel: { control: 'text' },
     carouselSize: { control: 'select', options: ['small', 'medium', 'large'] },
     carouselColor: {
       control: 'select',
@@ -256,6 +258,14 @@ export const Empty: Story = {
   args: {
     items: [],
     emptyText: 'There are no images to show in this carousel right now.',
+  },
+};
+
+export const OpenImageOnClick: Story = {
+  args: {
+    items: carouselItems,
+    visibleItemsCount: 2,
+    openImageOnClick: true,
   },
 };
 

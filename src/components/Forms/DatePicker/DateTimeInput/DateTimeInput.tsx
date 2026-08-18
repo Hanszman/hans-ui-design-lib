@@ -19,10 +19,10 @@ import {
   buildCalendarDays,
   createMonthNavigationHandler,
   getDatePickerLocaleText,
-  getDatePickerMonthLabel,
   getWeekdayLabels,
 } from './DateTimeCalendar/helpers/DateTimeCalendar.helper';
 import {
+  createBackToCalendarHandler,
   createDatePickerApplyHandler,
   createDatePickerBlurHandler,
   createDatePickerClearHandler,
@@ -31,9 +31,14 @@ import {
   createDatePickerSelectDayHandler,
   createDatePickerTodayHandler,
   createDatePickerToggleIconMouseDownHandler,
+  createMonthYearPageNavigationHandler,
+  createOpenMonthPickerHandler,
+  createOpenYearPickerHandler,
+  createSelectMonthYearHandler,
   getDatePickerAllowApply,
   syncDatePickerState,
 } from './helpers/DateTimeInput.helper';
+import type { HansDateTimeCalendarView } from './DateTimeCalendar/DateTimeCalendar.types';
 
 export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
   const {
@@ -90,7 +95,14 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
     getInitialDatePickerViewDate(pickerType, initialValue, timePrecision),
   );
   const [timeInputValue, setTimeInputValue] = React.useState('');
+  const [calendarView, setCalendarView] =
+    React.useState<HansDateTimeCalendarView>('days');
+  const [pageAnchor, setPageAnchor] = React.useState(0);
   const datePickerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (!isOpen) setCalendarView('days');
+  }, [isOpen]);
 
   const selectedValue = isControlled ? (value as string) : internalValue;
 
@@ -285,6 +297,59 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
       }),
     [viewDate],
   );
+  const handleOpenMonthPicker = React.useMemo(
+    () =>
+      createOpenMonthPickerHandler({
+        viewDate,
+        setPageAnchor,
+        setCalendarView,
+      }),
+    [viewDate],
+  );
+  const handleOpenYearPicker = React.useMemo(
+    () =>
+      createOpenYearPickerHandler({
+        viewDate,
+        setPageAnchor,
+        setCalendarView,
+      }),
+    [viewDate],
+  );
+  const handlePreviousMonthYearPage = React.useMemo(
+    () =>
+      createMonthYearPageNavigationHandler({
+        calendarView,
+        pageAnchor,
+        direction: -1,
+        setPageAnchor,
+      }),
+    [calendarView, pageAnchor],
+  );
+  const handleNextMonthYearPage = React.useMemo(
+    () =>
+      createMonthYearPageNavigationHandler({
+        calendarView,
+        pageAnchor,
+        direction: 1,
+        setPageAnchor,
+      }),
+    [calendarView, pageAnchor],
+  );
+  const handleSelectMonthYear = React.useMemo(
+    () =>
+      createSelectMonthYearHandler({
+        calendarView,
+        pageAnchor,
+        viewDate,
+        setViewDate,
+        setCalendarView,
+      }),
+    [calendarView, pageAnchor, viewDate],
+  );
+  const handleBackToCalendar = React.useMemo(
+    () => createBackToCalendarHandler({ setCalendarView }),
+    [],
+  );
 
   return (
     <div className="hans-date-picker hans-date-picker-date-time-input" ref={datePickerRef}>
@@ -347,9 +412,12 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
           }
         >
           <HansDateTimeCalendar
+            calendarView={calendarView}
             days={calendarDays}
             weekdayLabels={getWeekdayLabels(weekStartsOnSunday, locale)}
-            monthLabel={getDatePickerMonthLabel(viewDate, locale)}
+            viewDate={viewDate}
+            pageAnchor={pageAnchor}
+            locale={locale}
             calendarColor={calendarColor}
             calendarVariant={calendarVariant}
             inputColor={inputColor}
@@ -362,10 +430,23 @@ export const HansDateTimeInput = React.memo((props: HansDateTimeInputProps) => {
             timeLabel={localeText.time}
             previousMonthLabel={localeText.previousMonth}
             nextMonthLabel={localeText.nextMonth}
+            monthPickerLabel={localeText.monthPicker}
+            yearPickerLabel={localeText.yearPicker}
+            backToCalendarLabel={localeText.backToCalendar}
+            previousYearLabel={localeText.previousYear}
+            nextYearLabel={localeText.nextYear}
+            previousYearsLabel={localeText.previousYears}
+            nextYearsLabel={localeText.nextYears}
             allowApply={allowApply}
             onPreviousMonth={handlePreviousMonth}
             onNextMonth={handleNextMonth}
             onSelectDay={handleSelectDay}
+            onOpenMonthPicker={handleOpenMonthPicker}
+            onOpenYearPicker={handleOpenYearPicker}
+            onSelectMonthYear={handleSelectMonthYear}
+            onPreviousMonthYearPage={handlePreviousMonthYearPage}
+            onNextMonthYearPage={handleNextMonthYearPage}
+            onBackToCalendar={handleBackToCalendar}
             onTimeInputChange={setTimeInputValue}
             onClear={handleClear}
             onToday={handleToday}

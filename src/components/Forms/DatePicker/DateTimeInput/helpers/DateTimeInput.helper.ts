@@ -8,6 +8,9 @@ import type {
   CreateDatePickerSelectDayHandlerParams,
   CreateDatePickerTodayHandlerParams,
   CreateDatePickerToggleIconMouseDownHandlerParams,
+  CreateMonthYearPageNavigationHandlerParams,
+  CreateOpenMonthYearPickerHandlerParams,
+  CreateSelectMonthYearHandlerParams,
   SyncDatePickerStateParams,
 } from './DateTimeInput.helper.types';
 import type {
@@ -23,6 +26,12 @@ import {
   mergeDateAndTime,
   parseTypedDatePickerDisplayValue,
 } from '../../helpers/DatePicker.helper';
+import {
+  YEAR_WINDOW_SIZE,
+  getNextViewDateFromMonthSelection,
+  getNextViewDateFromYearSelection,
+  getYearWindowStart,
+} from '../DateTimeCalendar/MonthYearPicker/helpers/MonthYearPicker.helper';
 
 export const createDatePickerDisplayInputHandler =
   ({
@@ -319,4 +328,66 @@ export const createDatePickerBlurHandler =
       ),
     );
     applyValue(storedValue);
+  };
+
+export const createOpenMonthPickerHandler =
+  ({
+    viewDate,
+    setPageAnchor,
+    setCalendarView,
+  }: CreateOpenMonthYearPickerHandlerParams) =>
+  (): void => {
+    setPageAnchor(viewDate.getFullYear());
+    setCalendarView('months');
+  };
+
+export const createOpenYearPickerHandler =
+  ({
+    viewDate,
+    setPageAnchor,
+    setCalendarView,
+  }: CreateOpenMonthYearPickerHandlerParams) =>
+  (): void => {
+    setPageAnchor(getYearWindowStart(viewDate.getFullYear()));
+    setCalendarView('years');
+  };
+
+export const createMonthYearPageNavigationHandler =
+  ({
+    calendarView,
+    pageAnchor,
+    direction,
+    setPageAnchor,
+  }: CreateMonthYearPageNavigationHandlerParams) =>
+  (): void => {
+    const step = calendarView === 'months' ? 1 : YEAR_WINDOW_SIZE;
+    setPageAnchor(pageAnchor + step * direction);
+  };
+
+export const createSelectMonthYearHandler =
+  ({
+    calendarView,
+    pageAnchor,
+    viewDate,
+    setViewDate,
+    setCalendarView,
+  }: CreateSelectMonthYearHandlerParams) =>
+  (value: number): void => {
+    const nextViewDate =
+      calendarView === 'months'
+        ? getNextViewDateFromMonthSelection({ pageYear: pageAnchor, monthIndex: value })
+        : getNextViewDateFromYearSelection({ viewDate, year: value });
+
+    setViewDate(nextViewDate);
+    setCalendarView('days');
+  };
+
+export const createBackToCalendarHandler =
+  ({
+    setCalendarView,
+  }: {
+    setCalendarView: (view: 'days' | 'months' | 'years') => void;
+  }) =>
+  (): void => {
+    setCalendarView('days');
   };

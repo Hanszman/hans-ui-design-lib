@@ -109,6 +109,29 @@ Use `showBorder={false}` when the carousel should blend into the surrounding lay
 
 <Canvas of={HansCarouselStories.WithoutBorder} />
 
+## Open Image On Click
+
+Enable `openImageOnClick` to let visitors open the currently active/centered
+slide's full image in a new browser tab. Only the active slide becomes
+interactive — the other visible slides (when `visibleItemsCount` is 2 or 3)
+stay non-interactive until they become the active one.
+
+This is opt-in and defaults to `false`, so existing carousels keep their
+current behavior unless you explicitly enable it.
+
+When enabled, the active slide's image:
+
+- switches its accessible role from `img` to `button`.
+- exposes a descriptive `aria-label`, controlled by `openImageLabel`
+  (defaults to `"Open image in new tab"`).
+- becomes focusable (`tabIndex={0}`) and is operable with both mouse clicks
+  and the keyboard (`Enter` or `Space`).
+- opens `item.imageSrc` with `window.open(imageSrc, '_blank', 'noopener,noreferrer')`.
+- gets a `hans-carousel-image-clickable` class that only changes the cursor
+  to a pointer, with no other visual change.
+
+<Canvas of={HansCarouselStories.OpenImageOnClick} />
+
 ## Loading State
 
 Use `loading` while images are still being fetched.

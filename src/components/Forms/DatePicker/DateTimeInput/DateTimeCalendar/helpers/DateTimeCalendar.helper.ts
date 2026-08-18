@@ -24,6 +24,13 @@ const DATE_PICKER_LOCALE_TEXTS = {
     previousMonth: 'Previous month',
     nextMonth: 'Next month',
     toggle: 'Toggle date picker',
+    monthPicker: 'Open month picker',
+    yearPicker: 'Open year picker',
+    backToCalendar: 'Back to calendar',
+    previousYear: 'Previous year',
+    nextYear: 'Next year',
+    previousYears: 'Previous years',
+    nextYears: 'Next years',
   },
   'pt-br': {
     clear: 'Limpar',
@@ -33,6 +40,13 @@ const DATE_PICKER_LOCALE_TEXTS = {
     previousMonth: 'Mês anterior',
     nextMonth: 'Próximo mês',
     toggle: 'Alternar seletor de data',
+    monthPicker: 'Abrir seletor de mês',
+    yearPicker: 'Abrir seletor de ano',
+    backToCalendar: 'Voltar ao calendário',
+    previousYear: 'Ano anterior',
+    nextYear: 'Próximo ano',
+    previousYears: 'Anos anteriores',
+    nextYears: 'Próximos anos',
   },
   'es-es': {
     clear: 'Limpiar',
@@ -42,12 +56,31 @@ const DATE_PICKER_LOCALE_TEXTS = {
     previousMonth: 'Mes anterior',
     nextMonth: 'Mes siguiente',
     toggle: 'Alternar selector de fecha',
+    monthPicker: 'Abrir selector de mes',
+    yearPicker: 'Abrir selector de año',
+    backToCalendar: 'Volver al calendario',
+    previousYear: 'Año anterior',
+    nextYear: 'Año siguiente',
+    previousYears: 'Años anteriores',
+    nextYears: 'Años siguientes',
   },
 } as const;
 
 export const getDatePickerLocaleText = (
   locale: HansDatePickerLocale = 'en-us',
 ) => DATE_PICKER_LOCALE_TEXTS[locale];
+
+export const getDatePickerIntlLocale = (
+  locale: HansDatePickerLocale = 'en-us',
+): string => DATE_PICKER_INTL_LOCALES[locale];
+
+export const getDatePickerMonthName = (
+  value: Date,
+  locale: HansDatePickerLocale = 'en-us',
+): string =>
+  value.toLocaleDateString(DATE_PICKER_INTL_LOCALES[locale], {
+    month: 'long',
+  });
 
 export const getWeekdayLabels = (
   weekStartsOnSunday: boolean,

@@ -268,4 +268,87 @@ describe('HansCarousel', () => {
     fireEvent.click(previousButton);
     expect(screen.getByRole('img', { name: 'Plain image' })).toBeInTheDocument();
   });
+
+  it('Should not make the active image clickable when openImageOnClick is disabled', () => {
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(<HansCarousel items={items} visibleItemsCount={1} />);
+
+    const image = screen.getByRole('img', { name: 'Campaign image' });
+
+    expect(image).not.toHaveAttribute('tabindex');
+    fireEvent.click(image);
+
+    expect(openSpy).not.toHaveBeenCalled();
+
+    openSpy.mockRestore();
+  });
+
+  it('Should open the active image in a new tab on click when openImageOnClick is enabled', () => {
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(
+      <HansCarousel items={items} visibleItemsCount={2} openImageOnClick />,
+    );
+
+    const activeImage = screen.getByRole('button', {
+      name: 'Open image in new tab',
+    });
+
+    expect(activeImage).toHaveAttribute('tabindex', '0');
+    fireEvent.click(activeImage);
+
+    expect(openSpy).toHaveBeenCalledWith(
+      '/campaign.jpg',
+      '_blank',
+      'noopener,noreferrer',
+    );
+
+    expect(
+      screen.getByRole('img', { name: 'Workspace image' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Workspace image' }),
+    ).not.toBeInTheDocument();
+
+    openSpy.mockRestore();
+  });
+
+  it('Should open the active image in a new tab on Enter and Space key presses', () => {
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(
+      <HansCarousel
+        items={items}
+        visibleItemsCount={1}
+        openImageOnClick
+        openImageLabel="View full image"
+      />,
+    );
+
+    const activeImage = screen.getByRole('button', {
+      name: 'View full image',
+    });
+
+    fireEvent.keyDown(activeImage, { key: 'Enter' });
+    expect(openSpy).toHaveBeenCalledWith(
+      '/campaign.jpg',
+      '_blank',
+      'noopener,noreferrer',
+    );
+
+    openSpy.mockClear();
+    fireEvent.keyDown(activeImage, { key: ' ' });
+    expect(openSpy).toHaveBeenCalledWith(
+      '/campaign.jpg',
+      '_blank',
+      'noopener,noreferrer',
+    );
+
+    openSpy.mockClear();
+    fireEvent.keyDown(activeImage, { key: 'Tab' });
+    expect(openSpy).not.toHaveBeenCalled();
+
+    openSpy.mockRestore();
+  });
 });

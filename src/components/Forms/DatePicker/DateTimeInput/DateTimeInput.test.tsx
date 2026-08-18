@@ -16,9 +16,56 @@ describe('HansDateTimeInput', () => {
 
     fireEvent.mouseDown(screen.getByDisplayValue('13/03/2026'));
     fireEvent.click(screen.getByLabelText('Previous month'));
-    expect(screen.getByText('February 2026')).toBeInTheDocument();
+    expect(screen.getByText('February')).toBeInTheDocument();
+    expect(screen.getByText('2026')).toBeInTheDocument();
     fireEvent.click(screen.getAllByRole('button', { name: '14' })[0]);
     expect(onChange).toHaveBeenCalled();
+  });
+
+  it('Should quickly pick a month and a year through the month/year picker', () => {
+    render(
+      <HansDateTimeInput pickerType="date" defaultValue="2026-03-13" />,
+    );
+
+    fireEvent.mouseDown(screen.getByDisplayValue('13/03/2026'));
+
+    fireEvent.click(screen.getByLabelText('Open month picker'));
+    expect(screen.queryByText('Apply')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'June' }));
+    expect(screen.getByText('June')).toBeInTheDocument();
+    expect(screen.getByText('2026')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText('Open year picker'));
+    expect(screen.getByText('2016 - 2027')).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText('Next years'));
+    expect(screen.getByText('2028 - 2039')).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText('Previous years'));
+    expect(screen.getByText('2016 - 2027')).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText('Next years'));
+    fireEvent.click(screen.getByRole('button', { name: '2030' }));
+    expect(screen.getByText('June')).toBeInTheDocument();
+    expect(screen.getByText('2030')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText('Open month picker'));
+    fireEvent.click(screen.getByLabelText('Next year'));
+    fireEvent.click(screen.getByLabelText('Previous year'));
+    fireEvent.click(screen.getByLabelText('Back to calendar'));
+    expect(screen.getByText('June')).toBeInTheDocument();
+    expect(screen.getByText('2030')).toBeInTheDocument();
+  });
+
+  it('Should reset the month/year picker view when the popup is closed and reopened', () => {
+    render(<HansDateTimeInput pickerType="date" defaultValue="2026-03-13" />);
+
+    const input = screen.getByDisplayValue('13/03/2026');
+    fireEvent.mouseDown(input);
+    fireEvent.click(screen.getByLabelText('Open month picker'));
+    expect(screen.getByLabelText('Back to calendar')).toBeInTheDocument();
+
+    fireEvent.mouseDown(screen.getByLabelText('Toggle date picker'));
+    fireEvent.mouseDown(screen.getByLabelText('Toggle date picker'));
+
+    expect(screen.getByLabelText('Open month picker')).toBeInTheDocument();
   });
 
   it('Should handle datetime apply and invalid apply paths', () => {
@@ -161,7 +208,8 @@ describe('HansDateTimeInput', () => {
 
     fireEvent.mouseDown(screen.getByDisplayValue('13/03/2026 10:15'));
 
-    expect(screen.getByText('março de 2026')).toBeInTheDocument();
+    expect(screen.getByText('março')).toBeInTheDocument();
+    expect(screen.getByText('2026')).toBeInTheDocument();
     expect(screen.getByText('dom.')).toBeInTheDocument();
     expect(screen.getByText('Remover')).toBeInTheDocument();
     expect(screen.getByText('Hoje')).toBeInTheDocument();
@@ -169,5 +217,7 @@ describe('HansDateTimeInput', () => {
     expect(screen.getByLabelText('Hora')).toBeInTheDocument();
     expect(screen.getByLabelText('Mês anterior')).toBeInTheDocument();
     expect(screen.getByLabelText('Próximo mês')).toBeInTheDocument();
+    expect(screen.getByLabelText('Abrir seletor de mês')).toBeInTheDocument();
+    expect(screen.getByLabelText('Abrir seletor de ano')).toBeInTheDocument();
   });
 });

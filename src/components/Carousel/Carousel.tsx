@@ -5,6 +5,8 @@ import { HansLoading } from '../Loading/Loading';
 import type { HansCarouselProps } from './Carousel.types';
 import {
   clampVisibleItemsCount,
+  createHandleCarouselImageClick,
+  createHandleCarouselImageKeyDown,
   createHandleCarouselMove,
   createHandleCarouselSelect,
   createSyncCarouselIndex,
@@ -36,6 +38,8 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
     removeItemGap = false,
     infiniteLoop = false,
     showTextOnTop = false,
+    openImageOnClick = false,
+    openImageLabel = 'Open image in new tab',
     carouselSize = 'medium',
     carouselColor = 'base',
     carouselVariant = 'outline',
@@ -223,40 +227,64 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
       <div className="hans-carousel-frame">
         <div className="hans-carousel-viewport">
           <div className={trackClassName}>
-            {visibleItems.map((item) => (
-              <div
-                key={item.resolvedId}
-                className={getCarouselSlideClassName(
-                  item.index === resolvedActiveItemIndex,
-                )}
-              >
+            {visibleItems.map((item) => {
+              const isActiveItem = item.index === resolvedActiveItemIndex;
+              const isImageClickable = openImageOnClick && isActiveItem;
+              const imageActionParams = {
+                imageSrc: item.imageSrc,
+                isActive: isActiveItem,
+                openImageOnClick,
+              };
+
+              return (
                 <div
-                  className={getCarouselImageClassName(showTextOnTop)}
-                  role="img"
-                  aria-label={item.imageAlt}
-                  style={
-                    {
-                      '--hans-carousel-slide-image': `url("${item.imageSrc}")`,
-                    } as React.CSSProperties
-                  }
+                  key={item.resolvedId}
+                  className={getCarouselSlideClassName(isActiveItem)}
                 >
-                  {item.title || item.description ? (
-                    <div className={getCarouselCopyClassName(showTextOnTop)}>
-                      {item.title ? (
-                        <strong className="hans-carousel-title">
-                          {item.title}
-                        </strong>
-                      ) : null}
-                      {item.description ? (
-                        <span className="hans-carousel-description">
-                          {item.description}
-                        </span>
-                      ) : null}
-                    </div>
-                  ) : null}
+                  <div
+                    className={getCarouselImageClassName(
+                      showTextOnTop,
+                      isImageClickable,
+                    )}
+                    role={isImageClickable ? 'button' : 'img'}
+                    aria-label={
+                      isImageClickable ? openImageLabel : item.imageAlt
+                    }
+                    tabIndex={isImageClickable ? 0 : undefined}
+                    onClick={
+                      isImageClickable
+                        ? createHandleCarouselImageClick(imageActionParams)
+                        : undefined
+                    }
+                    onKeyDown={
+                      isImageClickable
+                        ? createHandleCarouselImageKeyDown(imageActionParams)
+                        : undefined
+                    }
+                    style={
+                      {
+                        '--hans-carousel-slide-image': `url("${item.imageSrc}")`,
+                      } as React.CSSProperties
+                    }
+                  >
+                    {item.title || item.description ? (
+                      <div className={getCarouselCopyClassName(showTextOnTop)}>
+                        {item.title ? (
+                          <strong className="hans-carousel-title">
+                            {item.title}
+                          </strong>
+                        ) : null}
+                        {item.description ? (
+                          <span className="hans-carousel-description">
+                            {item.description}
+                          </span>
+                        ) : null}
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <HansButton

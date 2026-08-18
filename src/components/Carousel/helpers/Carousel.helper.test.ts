@@ -1,7 +1,10 @@
+import type React from 'react';
 import { vi } from 'vitest';
 import {
   clampCarouselIndex,
   clampVisibleItemsCount,
+  createHandleCarouselImageClick,
+  createHandleCarouselImageKeyDown,
   createHandleCarouselMove,
   createHandleCarouselSelect,
   createSyncCarouselIndex,
@@ -167,6 +170,12 @@ describe('Carousel.helper', () => {
       'hans-carousel-image-top-copy',
     );
     expect(getCarouselImageClassName(false)).toContain('hans-carousel-image');
+    expect(getCarouselImageClassName(false, true)).toContain(
+      'hans-carousel-image-clickable',
+    );
+    expect(getCarouselImageClassName(false, false)).not.toContain(
+      'hans-carousel-image-clickable',
+    );
     expect(getCarouselCopyClassName(true)).toContain('hans-carousel-copy-top');
     expect(getCarouselCopyClassName(false)).toContain('hans-carousel-copy');
     expect(getCarouselSlideClassName(false)).not.toContain(
@@ -319,5 +328,99 @@ describe('Carousel.helper', () => {
     expect(setInternalActiveItemIndex).toHaveBeenCalledWith(3);
     expect(onActiveItemChange).toHaveBeenNthCalledWith(1, 3);
     expect(onActiveItemChange).toHaveBeenNthCalledWith(2, 1);
+  });
+
+  it('Should open the image in a new tab only when clicked for the active slide with the feature enabled', () => {
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    createHandleCarouselImageClick({
+      imageSrc: '/active.jpg',
+      isActive: true,
+      openImageOnClick: true,
+    })();
+
+    expect(openSpy).toHaveBeenCalledWith(
+      '/active.jpg',
+      '_blank',
+      'noopener,noreferrer',
+    );
+
+    openSpy.mockClear();
+
+    createHandleCarouselImageClick({
+      imageSrc: '/inactive.jpg',
+      isActive: false,
+      openImageOnClick: true,
+    })();
+
+    expect(openSpy).not.toHaveBeenCalled();
+
+    createHandleCarouselImageClick({
+      imageSrc: '/active.jpg',
+      isActive: true,
+      openImageOnClick: false,
+    })();
+
+    expect(openSpy).not.toHaveBeenCalled();
+
+    openSpy.mockRestore();
+  });
+
+  it('Should open the image in a new tab on Enter or Space and ignore other keys', () => {
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const preventDefault = vi.fn();
+    const buildEvent = (key: string) =>
+      ({ key, preventDefault }) as unknown as React.KeyboardEvent<HTMLDivElement>;
+
+    createHandleCarouselImageKeyDown({
+      imageSrc: '/active.jpg',
+      isActive: true,
+      openImageOnClick: true,
+    })(buildEvent('Enter'));
+
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(openSpy).toHaveBeenCalledWith(
+      '/active.jpg',
+      '_blank',
+      'noopener,noreferrer',
+    );
+
+    openSpy.mockClear();
+    preventDefault.mockClear();
+
+    createHandleCarouselImageKeyDown({
+      imageSrc: '/active.jpg',
+      isActive: true,
+      openImageOnClick: true,
+    })(buildEvent(' '));
+
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(openSpy).toHaveBeenCalledWith(
+      '/active.jpg',
+      '_blank',
+      'noopener,noreferrer',
+    );
+
+    openSpy.mockClear();
+    preventDefault.mockClear();
+
+    createHandleCarouselImageKeyDown({
+      imageSrc: '/active.jpg',
+      isActive: true,
+      openImageOnClick: true,
+    })(buildEvent('Tab'));
+
+    expect(preventDefault).not.toHaveBeenCalled();
+    expect(openSpy).not.toHaveBeenCalled();
+
+    createHandleCarouselImageKeyDown({
+      imageSrc: '/inactive.jpg',
+      isActive: false,
+      openImageOnClick: true,
+    })(buildEvent('Enter'));
+
+    expect(openSpy).not.toHaveBeenCalled();
+
+    openSpy.mockRestore();
   });
 });

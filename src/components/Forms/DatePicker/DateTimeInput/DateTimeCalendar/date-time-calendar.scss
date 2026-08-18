@@ -7,7 +7,15 @@
 }
 
 .hans-date-picker-calendar-title {
-  @apply text-sm font-semibold text-[var(--text-color)];
+  @apply flex items-center justify-center gap-1 text-sm font-semibold text-[var(--text-color)];
+}
+
+.hans-date-picker-calendar-title-button {
+  @apply cursor-pointer rounded-md border-none bg-transparent px-1 capitalize text-[var(--text-color)] transition-colors duration-150;
+}
+
+.hans-date-picker-calendar-title-button:hover {
+  @apply bg-[var(--base-neutral-color)];
 }
 
 .hans-date-picker-calendar-nav {

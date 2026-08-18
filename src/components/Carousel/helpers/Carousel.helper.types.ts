@@ -49,3 +49,9 @@ export type CreateHandleCarouselSelectParams = {
   setInternalActiveItemIndex: React.Dispatch<React.SetStateAction<number>>;
   onActiveItemChange?: (activeItemIndex: number) => void;
 };
+
+export type CreateHandleCarouselImageActionParams = {
+  imageSrc: string;
+  isActive: boolean;
+  openImageOnClick: boolean;
+};

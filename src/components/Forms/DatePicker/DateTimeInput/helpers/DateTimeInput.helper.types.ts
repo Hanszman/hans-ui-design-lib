@@ -77,6 +77,29 @@ export type CreateDatePickerTodayHandlerParams = {
   now?: Date;
 };
 
+export type HansDateTimeCalendarViewState = 'days' | 'months' | 'years';
+
+export type CreateOpenMonthYearPickerHandlerParams = {
+  viewDate: Date;
+  setPageAnchor: (value: number) => void;
+  setCalendarView: (view: HansDateTimeCalendarViewState) => void;
+};
+
+export type CreateMonthYearPageNavigationHandlerParams = {
+  calendarView: HansDateTimeCalendarViewState;
+  pageAnchor: number;
+  direction: 1 | -1;
+  setPageAnchor: (value: number) => void;
+};
+
+export type CreateSelectMonthYearHandlerParams = {
+  calendarView: HansDateTimeCalendarViewState;
+  pageAnchor: number;
+  viewDate: Date;
+  setViewDate: (value: Date) => void;
+  setCalendarView: (view: HansDateTimeCalendarViewState) => void;
+};
+
 export type CreateDatePickerApplyHandlerParams = {
   pickerType: Extract<HansDatePickerType, 'datetime'>;
   draftDate: Date | null;

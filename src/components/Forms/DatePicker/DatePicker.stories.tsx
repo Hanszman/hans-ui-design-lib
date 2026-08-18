@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState, type ComponentProps } from 'react';
+import { expect, userEvent, within } from 'storybook/test';
 import { HansDatePicker } from './DatePicker';
 import DocsPage from './DatePicker.mdx';
 
@@ -228,6 +229,69 @@ export const StatesAndColors: Story = {
       />
     </div>
   ),
+};
+
+export const QuickMonthYearPicker: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      <HansDatePicker
+        {...args}
+        label="Pick a far-away date"
+        pickerType="date"
+        defaultValue="2026-03-13"
+      />
+      <p className="text-xs text-[var(--gray-700)]">
+        Open the picker, then click the month name (for example
+        &quot;March&quot;) or the year (for example &quot;2026&quot;) in the
+        calendar header instead of pressing the arrow buttons repeatedly. The
+        month page lets you jump to any month of the shown year and move to the
+        previous/next year with the small arrows. The year page shows a 12-year
+        window with its own previous/next page arrows. Picking a month or year
+        returns to the day grid immediately, and the back arrow on the left
+        always returns to the day grid without picking anything.
+      </p>
+    </div>
+  ),
+};
+
+export const QuickMonthYearPickerRoundTrip: Story = {
+  args: {
+    label: 'Pick a far-away date',
+    pickerType: 'date',
+    defaultValue: '2026-03-13',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+
+    await userEvent.click(canvas.getByDisplayValue('13/03/2026'));
+
+    // Open the month picker from the header and pick a month.
+    await userEvent.click(body.getByLabelText('Open month picker'));
+    await expect(body.queryByText('Apply')).not.toBeInTheDocument();
+    await userEvent.click(body.getByRole('button', { name: 'June' }));
+    await expect(body.getByText('June')).toBeInTheDocument();
+    await expect(body.getByText('2026')).toBeInTheDocument();
+
+    // Open the year picker, paginate the year window, then pick a year.
+    await userEvent.click(body.getByLabelText('Open year picker'));
+    await expect(body.getByText('2016 - 2027')).toBeInTheDocument();
+    await userEvent.click(body.getByLabelText('Next years'));
+    await expect(body.getByText('2028 - 2039')).toBeInTheDocument();
+    await userEvent.click(body.getByLabelText('Previous years'));
+    await expect(body.getByText('2016 - 2027')).toBeInTheDocument();
+    await userEvent.click(body.getByRole('button', { name: '2020' }));
+
+    // Round trip: the day grid now shows the picked year and kept month.
+    await expect(body.getByText('June')).toBeInTheDocument();
+    await expect(body.getByText('2020')).toBeInTheDocument();
+
+    // The back button on the month page returns without picking anything.
+    await userEvent.click(body.getByLabelText('Open month picker'));
+    await userEvent.click(body.getByLabelText('Back to calendar'));
+    await expect(body.getByText('June')).toBeInTheDocument();
+    await expect(body.getByText('2020')).toBeInTheDocument();
+  },
 };
 
 export const SurfaceOverrides: Story = {

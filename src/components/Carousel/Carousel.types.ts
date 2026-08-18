@@ -26,6 +26,8 @@ const HansCarouselSchema = {
   removeItemGap: 'boolean',
   infiniteLoop: 'boolean',
   showTextOnTop: 'boolean',
+  openImageOnClick: 'boolean',
+  openImageLabel: 'string',
   carouselSize: { type: 'custom', ref: {} as Size },
   carouselColor: { type: 'custom', ref: {} as Color },
   carouselVariant: { type: 'custom', ref: {} as Variant },

@@ -93,6 +93,29 @@ Use `pickerType="time"` for masked time selection only. Set `timePrecision="seco
 
 <Canvas of={HansDatePickerStories.TimeOnly} />
 
+## Quick month/year picker
+
+Instead of pressing the previous/next month arrow repeatedly to reach a
+far-away date, click the month name or the year in the calendar header. Both
+are independently clickable and swap the calendar content for a month grid or
+a year grid **inside the same popup** — there is no extra nested popup.
+
+- Clicking the **month name** opens a grid with the 12 months of the shown
+  year. Its own previous/next arrows move a full year backward or forward;
+  picking a month returns to the day grid with that month and year selected.
+- Clicking the **year** opens a grid with a fixed window of 12 years. Its
+  previous/next arrows page the window backward or forward by 12 years;
+  picking a year returns to the day grid with that year selected and the
+  current month kept.
+- Both pages have a back arrow (leftmost button) that returns to the day grid
+  without changing the selection.
+- The picker always reopens on the day grid; it never keeps the month or year
+  page open across a close/reopen cycle.
+
+<Canvas of={HansDatePickerStories.QuickMonthYearPicker} />
+
+<Canvas of={HansDatePickerStories.QuickMonthYearPickerRoundTrip} />
+
 ## Manual Typing
 
 Set `allowInputTyping` to let users type `date` and `datetime` values manually while keeping the same validation rules.

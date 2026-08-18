@@ -5,6 +5,7 @@ import type {
   CarouselClassNameArgs,
   CarouselIndicatorItem,
   CarouselStyleArgs,
+  CreateHandleCarouselImageActionParams,
   CreateHandleCarouselMoveParams,
   CreateHandleCarouselSelectParams,
   CreateSyncCarouselIndexParams,
@@ -206,10 +207,14 @@ export const getCarouselSlideClassName = (isActive: boolean): string =>
     ${isActive ? 'hans-carousel-slide-active' : ''}
   `;
 
-export const getCarouselImageClassName = (showTextOnTop: boolean): string =>
+export const getCarouselImageClassName = (
+  showTextOnTop: boolean,
+  isClickable = false,
+): string =>
   `
     hans-carousel-image
     ${showTextOnTop ? 'hans-carousel-image-top-copy' : ''}
+    ${isClickable ? 'hans-carousel-image-clickable' : ''}
   `;
 
 export const getCarouselCopyClassName = (showTextOnTop: boolean): string =>
@@ -389,4 +394,29 @@ export const createHandleCarouselSelect =
     }
 
     if (onActiveItemChange) onActiveItemChange(nextIndex);
+  };
+
+const openCarouselImageInNewTab = ({
+  imageSrc,
+  isActive,
+  openImageOnClick,
+}: CreateHandleCarouselImageActionParams): void => {
+  if (!openImageOnClick || !isActive) return;
+
+  window.open(imageSrc, '_blank', 'noopener,noreferrer');
+};
+
+export const createHandleCarouselImageClick =
+  (params: CreateHandleCarouselImageActionParams) =>
+  (): void => {
+    openCarouselImageInNewTab(params);
+  };
+
+export const createHandleCarouselImageKeyDown =
+  (params: CreateHandleCarouselImageActionParams) =>
+  (event: React.KeyboardEvent<HTMLDivElement>): void => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+
+    event.preventDefault();
+    openCarouselImageInNewTab(params);
   };

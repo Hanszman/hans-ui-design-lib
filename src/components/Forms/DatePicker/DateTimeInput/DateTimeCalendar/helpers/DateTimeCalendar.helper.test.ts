@@ -3,8 +3,10 @@ import {
   addMonths,
   buildCalendarDays,
   createMonthNavigationHandler,
+  getDatePickerIntlLocale,
   getDatePickerLocaleText,
   getDatePickerMonthLabel,
+  getDatePickerMonthName,
   getStartOfCalendarGrid,
   getWeekdayLabels,
 } from './DateTimeCalendar.helper';
@@ -44,6 +46,10 @@ describe('DateTimeCalendar.helper', () => {
     expect(getDatePickerLocaleText('es-es')).toEqual(
       expect.objectContaining({ clear: 'Limpiar', today: 'Hoy' }),
     );
+    expect(getDatePickerIntlLocale()).toBe('en-US');
+    expect(getDatePickerIntlLocale('pt-br')).toBe('pt-BR');
+    expect(getDatePickerMonthName(new Date(2026, 2, 1))).toBe('March');
+    expect(getDatePickerMonthName(new Date(2026, 2, 1), 'es-es')).toBe('marzo');
     expect(addMonths(new Date(2026, 0, 31), 1).getMonth()).toBe(1);
     expect(getStartOfCalendarGrid(new Date(2026, 2, 15), true).getDay()).toBe(0);
     expect(getStartOfCalendarGrid(new Date(2026, 2, 15), false).getDay()).toBe(1);
