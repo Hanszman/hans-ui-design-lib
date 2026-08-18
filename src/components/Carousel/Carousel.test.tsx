@@ -284,16 +284,16 @@ describe('HansCarousel', () => {
     openSpy.mockRestore();
   });
 
-  it('Should open the active image in a new tab on click when openImageOnClick is enabled', () => {
+  it('Should open any visible image in a new tab on click when openImageOnClick is enabled', () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
 
     render(
       <HansCarousel items={items} visibleItemsCount={2} openImageOnClick />,
     );
 
-    const activeImage = screen.getByRole('button', {
+    const activeImage = screen.getAllByRole('button', {
       name: 'Open image in new tab',
-    });
+    })[0];
 
     expect(activeImage).toHaveAttribute('tabindex', '0');
     fireEvent.click(activeImage);
@@ -304,12 +304,34 @@ describe('HansCarousel', () => {
       'noopener,noreferrer',
     );
 
-    expect(
-      screen.getByRole('img', { name: 'Workspace image' }),
-    ).toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: 'Workspace image' }),
-    ).not.toBeInTheDocument();
+    const secondaryImage = screen.getAllByRole('button', {
+      name: 'Open image in new tab',
+    })[1];
+    expect(secondaryImage).toBeInTheDocument();
+
+    openSpy.mockRestore();
+  });
+
+  it('Should open every visible image in a new tab, not only the active one', () => {
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(
+      <HansCarousel items={items} visibleItemsCount={2} openImageOnClick />,
+    );
+
+    const visibleImages = screen.getAllByRole('button', {
+      name: 'Open image in new tab',
+    });
+
+    expect(visibleImages).toHaveLength(2);
+
+    fireEvent.click(visibleImages[1]);
+
+    expect(openSpy).toHaveBeenCalledWith(
+      '/workspace.jpg',
+      '_blank',
+      'noopener,noreferrer',
+    );
 
     openSpy.mockRestore();
   });

@@ -330,12 +330,11 @@ describe('Carousel.helper', () => {
     expect(onActiveItemChange).toHaveBeenNthCalledWith(2, 1);
   });
 
-  it('Should open the image in a new tab only when clicked for the active slide with the feature enabled', () => {
+  it('Should open the image in a new tab when clicked with the feature enabled, for any slide', () => {
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
 
     createHandleCarouselImageClick({
       imageSrc: '/active.jpg',
-      isActive: true,
       openImageOnClick: true,
     })();
 
@@ -348,16 +347,20 @@ describe('Carousel.helper', () => {
     openSpy.mockClear();
 
     createHandleCarouselImageClick({
-      imageSrc: '/inactive.jpg',
-      isActive: false,
+      imageSrc: '/secondary.jpg',
       openImageOnClick: true,
     })();
 
-    expect(openSpy).not.toHaveBeenCalled();
+    expect(openSpy).toHaveBeenCalledWith(
+      '/secondary.jpg',
+      '_blank',
+      'noopener,noreferrer',
+    );
+
+    openSpy.mockClear();
 
     createHandleCarouselImageClick({
       imageSrc: '/active.jpg',
-      isActive: true,
       openImageOnClick: false,
     })();
 
@@ -374,7 +377,6 @@ describe('Carousel.helper', () => {
 
     createHandleCarouselImageKeyDown({
       imageSrc: '/active.jpg',
-      isActive: true,
       openImageOnClick: true,
     })(buildEvent('Enter'));
 
@@ -390,7 +392,6 @@ describe('Carousel.helper', () => {
 
     createHandleCarouselImageKeyDown({
       imageSrc: '/active.jpg',
-      isActive: true,
       openImageOnClick: true,
     })(buildEvent(' '));
 
@@ -406,7 +407,6 @@ describe('Carousel.helper', () => {
 
     createHandleCarouselImageKeyDown({
       imageSrc: '/active.jpg',
-      isActive: true,
       openImageOnClick: true,
     })(buildEvent('Tab'));
 
@@ -414,9 +414,8 @@ describe('Carousel.helper', () => {
     expect(openSpy).not.toHaveBeenCalled();
 
     createHandleCarouselImageKeyDown({
-      imageSrc: '/inactive.jpg',
-      isActive: false,
-      openImageOnClick: true,
+      imageSrc: '/active.jpg',
+      openImageOnClick: false,
     })(buildEvent('Enter'));
 
     expect(openSpy).not.toHaveBeenCalled();

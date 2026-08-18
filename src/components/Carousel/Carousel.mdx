@@ -111,15 +111,15 @@ Use `showBorder={false}` when the carousel should blend into the surrounding lay
 
 ## Open Image On Click
 
-Enable `openImageOnClick` to let visitors open the currently active/centered
-slide's full image in a new browser tab. Only the active slide becomes
-interactive — the other visible slides (when `visibleItemsCount` is 2 or 3)
-stay non-interactive until they become the active one.
+Enable `openImageOnClick` to let visitors open any currently visible slide's
+full image in a new browser tab. Every visible slide becomes interactive
+(when `visibleItemsCount` is 2 or 3, all of them — not only the active/
+centered one).
 
 This is opt-in and defaults to `false`, so existing carousels keep their
 current behavior unless you explicitly enable it.
 
-When enabled, the active slide's image:
+When enabled, each visible slide's image:
 
 - switches its accessible role from `img` to `button`.
 - exposes a descriptive `aria-label`, controlled by `openImageLabel`

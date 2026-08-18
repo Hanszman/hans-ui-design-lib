@@ -52,6 +52,5 @@ export type CreateHandleCarouselSelectParams = {
 
 export type CreateHandleCarouselImageActionParams = {
   imageSrc: string;
-  isActive: boolean;
   openImageOnClick: boolean;
 };

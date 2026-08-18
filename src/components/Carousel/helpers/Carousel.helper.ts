@@ -398,10 +398,9 @@ export const createHandleCarouselSelect =
 
 const openCarouselImageInNewTab = ({
   imageSrc,
-  isActive,
   openImageOnClick,
 }: CreateHandleCarouselImageActionParams): void => {
-  if (!openImageOnClick || !isActive) return;
+  if (!openImageOnClick) return;
 
   window.open(imageSrc, '_blank', 'noopener,noreferrer');
 };

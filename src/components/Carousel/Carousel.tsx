@@ -229,10 +229,9 @@ export const HansCarousel = React.memo((props: HansCarouselProps) => {
           <div className={trackClassName}>
             {visibleItems.map((item) => {
               const isActiveItem = item.index === resolvedActiveItemIndex;
-              const isImageClickable = openImageOnClick && isActiveItem;
+              const isImageClickable = openImageOnClick;
               const imageActionParams = {
                 imageSrc: item.imageSrc,
-                isActive: isActiveItem,
                 openImageOnClick,
               };
 
