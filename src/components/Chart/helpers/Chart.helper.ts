@@ -5,6 +5,7 @@ import {
   type HansChartColor,
   type HansChartDataPoint,
   type HansChartLabelPosition,
+  type HansChartLegendItem,
   type HansChartRadarIndicator,
   type HansChartRadarValueFormatter,
   type HansChartSeries,
@@ -14,6 +15,10 @@ import {
   type HansChartType,
 } from '../Chart.types';
 import type { RadarTooltipParams } from './Chart.helper.types';
+
+export const CHART_TEXT_COLOR = 'var(--text-color)';
+export const CHART_MUTED_TEXT_COLOR =
+  'color-mix(in srgb, var(--text-color) 68%, transparent)';
 
 export const readCssVar = (cssVar: string, fallback: string): string => {
   const value = window
@@ -67,13 +72,14 @@ export const buildCartesianLabel = (
 ): HansChartSeriesLabelOption | undefined => {
   if (!position || position === 'none') return { show: false };
   if (position === 'inside') {
-    return { show: true, position: 'inside', formatter };
+    return { show: true, position: 'inside', formatter, color: CHART_TEXT_COLOR };
   }
   return {
     show: true,
     position: 'top',
     rotate: getLabelRotation(position),
     formatter,
+    color: CHART_TEXT_COLOR,
   };
 };
 
@@ -83,13 +89,14 @@ export const buildPieLabel = (
 ): HansChartSeriesLabelOption | undefined => {
   if (!position || position === 'none') return { show: false };
   if (position === 'inside') {
-    return { show: true, position: 'inside', formatter };
+    return { show: true, position: 'inside', formatter, color: CHART_TEXT_COLOR };
   }
   return {
     show: true,
     position: 'outside',
     rotate: getLabelRotation(position),
     formatter,
+    color: CHART_TEXT_COLOR,
   };
 };
 
@@ -124,7 +131,7 @@ export const resolveChartLegend = (
         itemGap: 16,
         padding: [0, 8, 0, 8],
         textStyle: {
-          color: 'color-mix(in srgb, var(--text-color) 68%, transparent)',
+          color: CHART_MUTED_TEXT_COLOR,
         },
       }
     : undefined;
@@ -252,6 +259,22 @@ export const hasPieSeries = (
   return series.some((item) => item.type === 'pie' || item.type === 'doughnut');
 };
 
+export const buildLegendItems = (
+  chartType: HansChartType,
+  categories: string[],
+  series: HansChartSeries[],
+  palette: readonly string[],
+): HansChartLegendItem[] => {
+  const names = isPieLikeType(chartType, series)
+    ? categories
+    : series.map((item) => item.name);
+
+  return names.map((name, index) => ({
+    name,
+    color: palette.length > 0 ? palette[index % palette.length] : 'currentColor',
+  }));
+};
+
 export const isRadarLikeType = (
   chartType: HansChartType,
   series: HansChartSeries[],
@@ -341,8 +364,17 @@ export const buildChartOption = (
     radar: radarLike ? { indicator: radarIndicators } : undefined,
     grid: radarLike ? undefined : resolveChartGrid(pieLike, showLegend),
     xAxis:
-      pieLike || radarLike ? undefined : { type: 'category', data: categories },
-    yAxis: pieLike || radarLike ? undefined : { type: 'value' },
+      pieLike || radarLike
+        ? undefined
+        : {
+            type: 'category',
+            data: categories,
+            axisLabel: { color: CHART_MUTED_TEXT_COLOR },
+          },
+    yAxis:
+      pieLike || radarLike
+        ? undefined
+        : { type: 'value', axisLabel: { color: CHART_MUTED_TEXT_COLOR } },
     series: chartSeries,
     ...(optionOverrides as echarts.EChartsOption),
   };

@@ -11,6 +11,8 @@ import {
   buildRandomPalette,
   buildRadarSeries,
   buildRadarTooltip,
+  CHART_MUTED_TEXT_COLOR,
+  CHART_TEXT_COLOR,
   getLabelRotation,
   hasPieSeries,
   isChartColorKey,
@@ -77,12 +79,14 @@ describe('Chart.helper', () => {
       show: true,
       position: 'inside',
       formatter: '{c}',
+      color: CHART_TEXT_COLOR,
     });
     expect(buildCartesianLabel('diagonal', '{c}')).toEqual({
       show: true,
       position: 'top',
       rotate: 45,
       formatter: '{c}',
+      color: CHART_TEXT_COLOR,
     });
   });
 
@@ -92,12 +96,14 @@ describe('Chart.helper', () => {
       show: true,
       position: 'inside',
       formatter: '{d}%',
+      color: CHART_TEXT_COLOR,
     });
     expect(buildPieLabel('vertical', '{d}%')).toEqual({
       show: true,
       position: 'outside',
       rotate: 90,
       formatter: '{d}%',
+      color: CHART_TEXT_COLOR,
     });
   });
 
@@ -115,7 +121,7 @@ describe('Chart.helper', () => {
       type: 'plain',
       width: '90%',
       textStyle: {
-        color: 'color-mix(in srgb, var(--text-color) 68%, transparent)',
+        color: CHART_MUTED_TEXT_COLOR,
       },
     });
     expect(resolveChartLegend(false)).toBeUndefined();
@@ -212,11 +218,32 @@ describe('Chart.helper', () => {
       bottom: 0,
       left: 'center',
       textStyle: {
-        color: 'color-mix(in srgb, var(--text-color) 68%, transparent)',
+        color: CHART_MUTED_TEXT_COLOR,
       },
     },
     series: [{ center: ['50%', '42%'] }],
   });
+  });
+
+  it('Should build a cartesian option with themed axis label colors', () => {
+    expect(
+      buildChartOption(
+        'bar',
+        ['JavaScript', 'TypeScript'],
+        [{ name: 'Usage', type: 'bar', data: [48, 29] }],
+        ['#8257e5'],
+        false,
+        'transparent',
+        {},
+      ),
+    ).toMatchObject({
+      xAxis: {
+        type: 'category',
+        data: ['JavaScript', 'TypeScript'],
+        axisLabel: { color: CHART_MUTED_TEXT_COLOR },
+      },
+      yAxis: { type: 'value', axisLabel: { color: CHART_MUTED_TEXT_COLOR } },
+    });
   });
 
   it('Should detect pie-like and pie-series modes', () => {

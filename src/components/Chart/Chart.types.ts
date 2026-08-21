@@ -54,6 +54,7 @@ export type HansChartSeriesLabelOption = {
   position?: 'inside' | 'outside' | 'top';
   rotate?: number;
   formatter?: string;
+  color?: string;
 };
 
 export type HansChartSeries = {
@@ -62,6 +63,11 @@ export type HansChartSeries = {
   type?: HansChartSeriesType;
   smooth?: boolean;
   label?: HansChartSeriesLabel;
+};
+
+export type HansChartLegendItem = {
+  name: string;
+  color: string;
 };
 
 export const COLOR_TOKEN_MAP: Record<
@@ -102,6 +108,7 @@ const HansChartSchema = {
   backgroundColor: 'string',
   height: 'number',
   showLegend: 'boolean',
+  legendScrollable: 'boolean',
   isLoading: 'boolean',
   loadingType: { type: 'custom', ref: {} as LoadingType },
   customClasses: 'string',

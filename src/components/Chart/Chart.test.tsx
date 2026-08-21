@@ -361,6 +361,7 @@ describe('HansChart', () => {
       show: true,
       position: 'inside',
       formatter: undefined,
+      color: 'var(--text-color)',
     });
   });
 

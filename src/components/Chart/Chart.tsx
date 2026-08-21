@@ -3,10 +3,13 @@ import * as echarts from 'echarts';
 import { type HansChartPointEvent, type HansChartProps } from './Chart.types';
 import { HansLoading } from '../Loading/Loading';
 import {
+  buildLegendItems,
   buildRandomPalette,
   buildChartOption,
   resolveColor,
 } from './helpers/Chart.helper';
+
+const LEGEND_ROW_HEIGHT = 40;
 
 export const HansChart = React.memo((props: HansChartProps) => {
   const {
@@ -17,6 +20,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
     colors,
     height = 320,
     showLegend = true,
+    legendScrollable = false,
     isLoading = false,
     loadingType = 'skeleton',
     backgroundColor = 'transparent',
@@ -41,6 +45,16 @@ export const HansChart = React.memo((props: HansChartProps) => {
     return colors.map(resolveColor);
   }, [colors]);
 
+  const showScrollableLegend = showLegend && legendScrollable;
+
+  const legendItems = React.useMemo(
+    () =>
+      showScrollableLegend
+        ? buildLegendItems(chartType, categories, series, palette)
+        : [],
+    [categories, chartType, palette, series, showScrollableLegend],
+  );
+
   const chartOption = React.useMemo(
     () =>
       buildChartOption(
@@ -48,7 +62,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
         categories,
         series,
         palette,
-        showLegend,
+        showLegend && !legendScrollable,
         backgroundColor,
         optionOverrides,
         radarIndicators,
@@ -58,6 +72,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
       backgroundColor,
       categories,
       chartType,
+      legendScrollable,
       optionOverrides,
       palette,
       radarIndicators,
@@ -151,6 +166,8 @@ export const HansChart = React.memo((props: HansChartProps) => {
     );
   }
 
+  const legendRowHeight = showScrollableLegend ? LEGEND_ROW_HEIGHT : 0;
+
   return (
     <div
       className={`hans-chart ${customClasses}`}
@@ -162,7 +179,12 @@ export const HansChart = React.memo((props: HansChartProps) => {
         <div
           className="hans-chart-canvas"
           ref={wrapperRef}
-          style={{ height: Math.max(220, height - (title ? 60 : 24)) }}
+          style={{
+            height: Math.max(
+              220,
+              height - (title ? 60 : 24) - legendRowHeight,
+            ),
+          }}
         />
         {!isChartReady ? (
           <HansLoading
@@ -175,6 +197,23 @@ export const HansChart = React.memo((props: HansChartProps) => {
           />
         ) : null}
       </div>
+      {showScrollableLegend ? (
+        <div
+          className="hans-chart-legend"
+          part="legend"
+          style={{ height: LEGEND_ROW_HEIGHT }}
+        >
+          {legendItems.map((item) => (
+            <span className="hans-chart-legend-item" key={item.name}>
+              <span
+                className="hans-chart-legend-swatch"
+                style={{ backgroundColor: item.color }}
+              />
+              {item.name}
+            </span>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 });

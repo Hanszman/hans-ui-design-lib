@@ -29,3 +29,17 @@
 .hans-chart-loading {
   @apply overflow-hidden;
 }
+
+.hans-chart-legend {
+  @apply flex w-full flex-nowrap items-center gap-4 overflow-x-auto whitespace-nowrap pb-1 pt-2;
+  scrollbar-width: thin;
+}
+
+.hans-chart-legend-item {
+  @apply inline-flex shrink-0 items-center gap-2 text-xs;
+  color: color-mix(in srgb, var(--text-color) 68%, transparent);
+}
+
+.hans-chart-legend-swatch {
+  @apply inline-block h-2.5 w-2.5 shrink-0 rounded-full;
+}
