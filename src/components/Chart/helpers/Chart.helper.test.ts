@@ -6,13 +6,13 @@ import {
   buildCartesianSeries,
   buildChartOption,
   buildCommonSeriesStyle,
+  buildLegendItems,
   buildPieLabel,
   buildPieSeries,
   buildRandomPalette,
   buildRadarSeries,
   buildRadarTooltip,
-  CHART_MUTED_TEXT_COLOR,
-  CHART_TEXT_COLOR,
+  CHART_LEGEND_ROW_HEIGHT,
   getLabelRotation,
   hasPieSeries,
   isChartColorKey,
@@ -21,6 +21,7 @@ import {
   normalizePieData,
   readCssVar,
   resolveCartesianType,
+  resolveChartTextColor,
   resolveColor,
   resolvePieRadius,
   resolveChartGrid,
@@ -28,6 +29,8 @@ import {
   resolvePieCenter,
   resolveTokenColor,
 } from './Chart.helper';
+
+const CHART_TEXT_COLOR = resolveChartTextColor();
 
 describe('Chart.helper', () => {
   it('Should read css var and fallback', () => {
@@ -121,7 +124,7 @@ describe('Chart.helper', () => {
       type: 'plain',
       width: '90%',
       textStyle: {
-        color: CHART_MUTED_TEXT_COLOR,
+        color: CHART_TEXT_COLOR,
       },
     });
     expect(resolveChartLegend(false)).toBeUndefined();
@@ -218,7 +221,7 @@ describe('Chart.helper', () => {
       bottom: 0,
       left: 'center',
       textStyle: {
-        color: CHART_MUTED_TEXT_COLOR,
+        color: CHART_TEXT_COLOR,
       },
     },
     series: [{ center: ['50%', '42%'] }],
@@ -240,9 +243,9 @@ describe('Chart.helper', () => {
       xAxis: {
         type: 'category',
         data: ['JavaScript', 'TypeScript'],
-        axisLabel: { color: CHART_MUTED_TEXT_COLOR },
+        axisLabel: { color: CHART_TEXT_COLOR },
       },
-      yAxis: { type: 'value', axisLabel: { color: CHART_MUTED_TEXT_COLOR } },
+      yAxis: { type: 'value', axisLabel: { color: CHART_TEXT_COLOR } },
     });
   });
 
@@ -307,6 +310,41 @@ describe('Chart.helper', () => {
     expect(defaultTooltip.formatter({ value: 7 })).toBe(
       'Professional: 0\nPersonal: 0',
     );
+  });
+
+  it('Should build legend items for pie-like and cartesian charts', () => {
+    expect(
+      buildLegendItems('pie', ['A', 'B'], [{ name: 'Traffic', type: 'pie', data: [10, 20] }], [
+        '#111111',
+        '#222222',
+      ]),
+    ).toEqual([
+      { name: 'A', color: '#111111' },
+      { name: 'B', color: '#222222' },
+    ]);
+
+    expect(
+      buildLegendItems(
+        'bar',
+        [],
+        [
+          { name: 'Front-End', type: 'bar', data: [1] },
+          { name: 'Back-End', type: 'bar', data: [2] },
+        ],
+        ['#333333'],
+      ),
+    ).toEqual([
+      { name: 'Front-End', color: '#333333' },
+      { name: 'Back-End', color: '#333333' },
+    ]);
+
+    expect(
+      buildLegendItems('bar', [], [{ name: 'Solo', type: 'bar', data: [1] }], []),
+    ).toEqual([{ name: 'Solo', color: 'currentColor' }]);
+  });
+
+  it('Should expose a fixed legend row height for scrollable legends', () => {
+    expect(CHART_LEGEND_ROW_HEIGHT).toBe(40);
   });
 
   it('Should build a native radar option without cartesian axes', () => {

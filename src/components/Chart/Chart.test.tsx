@@ -231,6 +231,48 @@ describe('HansChart', () => {
     });
   });
 
+  it('Should render a scrollable DOM legend instead of the native one when legendScrollable is set', () => {
+    const { container } = render(
+      <HansChart
+        title="Orders"
+        chartType="bar"
+        categories={['Q1', 'Q2']}
+        series={[
+          { name: 'Front-End', type: 'bar', data: [4] },
+          { name: 'Back-End', type: 'bar', data: [6] },
+        ]}
+        colors={['rgb(10, 20, 30)', 'rgb(40, 50, 60)']}
+        showLegend={true}
+        legendScrollable={true}
+      />,
+    );
+
+    const option = echartsMocks.mockSetOption.mock.calls[0][0];
+    expect(option.legend).toBeUndefined();
+    expect(option.grid).toMatchObject({ bottom: 16 });
+
+    const legend = container.querySelector('.hans-chart-legend');
+    expect(legend).toBeInTheDocument();
+    expect(legend).toHaveAttribute('part', 'legend');
+    expect(screen.getByText('Front-End')).toBeInTheDocument();
+    expect(screen.getByText('Back-End')).toBeInTheDocument();
+    expect(container.querySelectorAll('.hans-chart-legend-swatch')).toHaveLength(2);
+  });
+
+  it('Should not render a scrollable legend when legendScrollable is set but showLegend is false', () => {
+    const { container } = render(
+      <HansChart
+        chartType="bar"
+        categories={['Q1']}
+        series={[{ name: 'Orders', type: 'bar', data: [4] }]}
+        showLegend={false}
+        legendScrollable={true}
+      />,
+    );
+
+    expect(container.querySelector('.hans-chart-legend')).not.toBeInTheDocument();
+  });
+
   it('Should normalize object datapoints in cartesian charts', () => {
     render(
       <HansChart
@@ -361,7 +403,7 @@ describe('HansChart', () => {
       show: true,
       position: 'inside',
       formatter: undefined,
-      color: 'var(--text-color)',
+      color: '#0e0e10',
     });
   });
 

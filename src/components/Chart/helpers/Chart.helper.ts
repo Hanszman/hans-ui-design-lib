@@ -16,9 +16,7 @@ import {
 } from '../Chart.types';
 import type { RadarTooltipParams } from './Chart.helper.types';
 
-export const CHART_TEXT_COLOR = 'var(--text-color)';
-export const CHART_MUTED_TEXT_COLOR =
-  'color-mix(in srgb, var(--text-color) 68%, transparent)';
+export const CHART_LEGEND_ROW_HEIGHT = 40;
 
 export const readCssVar = (cssVar: string, fallback: string): string => {
   const value = window
@@ -27,6 +25,9 @@ export const readCssVar = (cssVar: string, fallback: string): string => {
     .trim();
   return value || fallback;
 };
+
+export const resolveChartTextColor = (): string =>
+  readCssVar('--text-color', COLOR_TOKEN_MAP.base.fallback);
 
 export const resolveTokenColor = (colorKey: HansChartThemeColor): string => {
   const token = COLOR_TOKEN_MAP[colorKey];
@@ -71,15 +72,16 @@ export const buildCartesianLabel = (
   formatter?: string,
 ): HansChartSeriesLabelOption | undefined => {
   if (!position || position === 'none') return { show: false };
+  const color = resolveChartTextColor();
   if (position === 'inside') {
-    return { show: true, position: 'inside', formatter, color: CHART_TEXT_COLOR };
+    return { show: true, position: 'inside', formatter, color };
   }
   return {
     show: true,
     position: 'top',
     rotate: getLabelRotation(position),
     formatter,
-    color: CHART_TEXT_COLOR,
+    color,
   };
 };
 
@@ -88,15 +90,16 @@ export const buildPieLabel = (
   formatter?: string,
 ): HansChartSeriesLabelOption | undefined => {
   if (!position || position === 'none') return { show: false };
+  const color = resolveChartTextColor();
   if (position === 'inside') {
-    return { show: true, position: 'inside', formatter, color: CHART_TEXT_COLOR };
+    return { show: true, position: 'inside', formatter, color };
   }
   return {
     show: true,
     position: 'outside',
     rotate: getLabelRotation(position),
     formatter,
-    color: CHART_TEXT_COLOR,
+    color,
   };
 };
 
@@ -131,7 +134,7 @@ export const resolveChartLegend = (
         itemGap: 16,
         padding: [0, 8, 0, 8],
         textStyle: {
-          color: CHART_MUTED_TEXT_COLOR,
+          color: resolveChartTextColor(),
         },
       }
     : undefined;
@@ -369,12 +372,12 @@ export const buildChartOption = (
         : {
             type: 'category',
             data: categories,
-            axisLabel: { color: CHART_MUTED_TEXT_COLOR },
+            axisLabel: { color: resolveChartTextColor() },
           },
     yAxis:
       pieLike || radarLike
         ? undefined
-        : { type: 'value', axisLabel: { color: CHART_MUTED_TEXT_COLOR } },
+        : { type: 'value', axisLabel: { color: resolveChartTextColor() } },
     series: chartSeries,
     ...(optionOverrides as echarts.EChartsOption),
   };

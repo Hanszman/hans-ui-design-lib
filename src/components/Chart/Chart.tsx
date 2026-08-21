@@ -7,9 +7,8 @@ import {
   buildRandomPalette,
   buildChartOption,
   resolveColor,
+  CHART_LEGEND_ROW_HEIGHT,
 } from './helpers/Chart.helper';
-
-const LEGEND_ROW_HEIGHT = 40;
 
 export const HansChart = React.memo((props: HansChartProps) => {
   const {
@@ -166,7 +165,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
     );
   }
 
-  const legendRowHeight = showScrollableLegend ? LEGEND_ROW_HEIGHT : 0;
+  const legendRowHeight = showScrollableLegend ? CHART_LEGEND_ROW_HEIGHT : 0;
 
   return (
     <div
@@ -201,7 +200,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
         <div
           className="hans-chart-legend"
           part="legend"
-          style={{ height: LEGEND_ROW_HEIGHT }}
+          style={{ height: CHART_LEGEND_ROW_HEIGHT }}
         >
           {legendItems.map((item) => (
             <span className="hans-chart-legend-item" key={item.name}>
