@@ -391,7 +391,7 @@ describe('Chart.helper', () => {
 
   it('Should no-op when MutationObserver is unavailable', () => {
     const originalMutationObserver = globalThis.MutationObserver;
-    delete globalThis.MutationObserver;
+    delete (globalThis as { MutationObserver?: typeof MutationObserver }).MutationObserver;
 
     const stopObserving = observeThemeChanges(vi.fn());
     expect(() => stopObserving()).not.toThrow();
