@@ -19,6 +19,7 @@ import {
   isPieLikeType,
   isRadarLikeType,
   normalizePieData,
+  observeThemeChanges,
   readCssVar,
   resolveCartesianType,
   resolveChartTextColor,
@@ -59,7 +60,12 @@ describe('Chart.helper', () => {
   it('Should normalize pie data', () => {
     expect(
       normalizePieData(
-        [10, { name: 'B', value: 20 }, { name: 'C', value: [30] }, { name: 'D', value: [] }],
+        [
+          10,
+          { name: 'B', value: 20 },
+          { name: 'C', value: [30] },
+          { name: 'D', value: [] },
+        ],
         ['A'],
       ),
     ).toEqual([
@@ -150,10 +156,17 @@ describe('Chart.helper', () => {
       {
         name: 'B',
         type: 'line',
-        data: [{ name: 'first', value: [3] }, { name: 'second', value: 4 }],
+        data: [
+          { name: 'first', value: [3] },
+          { name: 'second', value: 4 },
+        ],
         smooth: true,
       },
-      { name: 'Empty array', type: 'line', data: [{ name: 'empty', value: [] }] },
+      {
+        name: 'Empty array',
+        type: 'line',
+        data: [{ name: 'empty', value: [] }],
+      },
     ]);
     expect(result[0]).toMatchObject({ type: 'bar' });
     expect(result[1]).toMatchObject({ type: 'line', smooth: true });
@@ -184,7 +197,11 @@ describe('Chart.helper', () => {
             avoidLabelOverlap: true,
             data: [{ name: 'Organic', value: 10 }],
             label: { show: true, position: 'outside' },
-            emphasis: { focus: 'none', scale: false, itemStyle: { opacity: 1 } },
+            emphasis: {
+              focus: 'none',
+              scale: false,
+              itemStyle: { opacity: 1 },
+            },
             select: { disabled: true },
             blur: { itemStyle: { opacity: 1 } },
           },
@@ -193,7 +210,11 @@ describe('Chart.helper', () => {
             name: 'Fallback',
             data: [2],
             smooth: false,
-            emphasis: { focus: 'none', scale: false, itemStyle: { opacity: 1 } },
+            emphasis: {
+              focus: 'none',
+              scale: false,
+              itemStyle: { opacity: 1 },
+            },
             select: { disabled: true },
             blur: { itemStyle: { opacity: 1 } },
           },
@@ -210,22 +231,22 @@ describe('Chart.helper', () => {
         'pie',
         ['Organic'],
         [{ name: 'Traffic', type: 'pie', data: [10] }],
-      ['#8257e5'],
-      true,
-      'transparent',
-      {},
-    ),
-  ).toMatchObject({
-    backgroundColor: 'transparent',
-    legend: {
-      bottom: 0,
-      left: 'center',
-      textStyle: {
-        color: CHART_TEXT_COLOR,
+        ['#8257e5'],
+        true,
+        'transparent',
+        {},
+      ),
+    ).toMatchObject({
+      backgroundColor: 'transparent',
+      legend: {
+        bottom: 0,
+        left: 'center',
+        textStyle: {
+          color: CHART_TEXT_COLOR,
+        },
       },
-    },
-    series: [{ center: ['50%', '42%'] }],
-  });
+      series: [{ center: ['50%', '42%'] }],
+    });
   });
 
   it('Should build a cartesian option with themed axis label colors', () => {
@@ -314,10 +335,12 @@ describe('Chart.helper', () => {
 
   it('Should build legend items for pie-like and cartesian charts', () => {
     expect(
-      buildLegendItems('pie', ['A', 'B'], [{ name: 'Traffic', type: 'pie', data: [10, 20] }], [
-        '#111111',
-        '#222222',
-      ]),
+      buildLegendItems(
+        'pie',
+        ['A', 'B'],
+        [{ name: 'Traffic', type: 'pie', data: [10, 20] }],
+        ['#111111', '#222222'],
+      ),
     ).toEqual([
       { name: 'A', color: '#111111' },
       { name: 'B', color: '#222222' },
@@ -339,12 +362,41 @@ describe('Chart.helper', () => {
     ]);
 
     expect(
-      buildLegendItems('bar', [], [{ name: 'Solo', type: 'bar', data: [1] }], []),
+      buildLegendItems(
+        'bar',
+        [],
+        [{ name: 'Solo', type: 'bar', data: [1] }],
+        [],
+      ),
     ).toEqual([{ name: 'Solo', color: 'currentColor' }]);
   });
 
   it('Should expose a fixed legend row height for scrollable legends', () => {
     expect(CHART_LEGEND_ROW_HEIGHT).toBe(40);
+  });
+
+  it('Should notify subscribers when the theme attributes mutate and stop on cleanup', async () => {
+    const onChange = vi.fn();
+    const stopObserving = observeThemeChanges(onChange);
+
+    document.documentElement.style.setProperty('--text-color', '#123456');
+    await vi.waitFor(() => expect(onChange).toHaveBeenCalled());
+
+    onChange.mockClear();
+    stopObserving();
+    document.documentElement.style.setProperty('--text-color', '#654321');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('Should no-op when MutationObserver is unavailable', () => {
+    const originalMutationObserver = globalThis.MutationObserver;
+    delete globalThis.MutationObserver;
+
+    const stopObserving = observeThemeChanges(vi.fn());
+    expect(() => stopObserving()).not.toThrow();
+
+    globalThis.MutationObserver = originalMutationObserver;
   });
 
   it('Should build a native radar option without cartesian axes', () => {

@@ -29,6 +29,22 @@ export const readCssVar = (cssVar: string, fallback: string): string => {
 export const resolveChartTextColor = (): string =>
   readCssVar('--text-color', COLOR_TOKEN_MAP.base.fallback);
 
+export const observeThemeChanges = (onChange: () => void): (() => void) => {
+  if (typeof MutationObserver === 'undefined' || typeof document === 'undefined') {
+    return () => undefined;
+  }
+
+  const observer = new MutationObserver(onChange);
+  const targets = [document.documentElement, document.body].filter(
+    (target): target is HTMLElement => Boolean(target),
+  );
+  targets.forEach((target) => {
+    observer.observe(target, { attributes: true, attributeFilter: ['style', 'data-theme'] });
+  });
+
+  return () => observer.disconnect();
+};
+
 export const resolveTokenColor = (colorKey: HansChartThemeColor): string => {
   const token = COLOR_TOKEN_MAP[colorKey];
   return readCssVar(token.cssVar, token.fallback);

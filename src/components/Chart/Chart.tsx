@@ -6,6 +6,7 @@ import {
   buildLegendItems,
   buildRandomPalette,
   buildChartOption,
+  observeThemeChanges,
   resolveColor,
   CHART_LEGEND_ROW_HEIGHT,
 } from './helpers/Chart.helper';
@@ -35,14 +36,23 @@ export const HansChart = React.memo((props: HansChartProps) => {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const instanceRef = React.useRef<echarts.ECharts | null>(null);
   const onPointClickRef = React.useRef<typeof onPointClick>(onPointClick);
+  const randomPaletteRef = React.useRef<string[] | null>(null);
   const [isChartReady, setIsChartReady] = React.useState(false);
+  const [themeTick, setThemeTick] = React.useState(0);
 
   onPointClickRef.current = onPointClick;
 
+  React.useEffect(
+    () => observeThemeChanges(() => setThemeTick((tick) => tick + 1)),
+    [],
+  );
+
   const palette = React.useMemo(() => {
-    if (!colors || colors.length === 0) return buildRandomPalette();
-    return colors.map(resolveColor);
-  }, [colors]);
+    void themeTick;
+    if (colors && colors.length > 0) return colors.map(resolveColor);
+    randomPaletteRef.current ??= buildRandomPalette();
+    return randomPaletteRef.current;
+  }, [colors, themeTick]);
 
   const showScrollableLegend = showLegend && legendScrollable;
 
@@ -54,32 +64,32 @@ export const HansChart = React.memo((props: HansChartProps) => {
     [categories, chartType, palette, series, showScrollableLegend],
   );
 
-  const chartOption = React.useMemo(
-    () =>
-      buildChartOption(
-        chartType,
-        categories,
-        series,
-        palette,
-        showLegend && !legendScrollable,
-        backgroundColor,
-        optionOverrides,
-        radarIndicators,
-        radarValueFormatter,
-      ),
-    [
-      backgroundColor,
-      categories,
+  const chartOption = React.useMemo(() => {
+    void themeTick;
+    return buildChartOption(
       chartType,
-      legendScrollable,
-      optionOverrides,
+      categories,
+      series,
       palette,
+      showLegend && !legendScrollable,
+      backgroundColor,
+      optionOverrides,
       radarIndicators,
       radarValueFormatter,
-      series,
-      showLegend,
-    ],
-  );
+    );
+  }, [
+    backgroundColor,
+    categories,
+    chartType,
+    legendScrollable,
+    optionOverrides,
+    palette,
+    radarIndicators,
+    radarValueFormatter,
+    series,
+    showLegend,
+    themeTick,
+  ]);
 
   React.useEffect(() => {
     if (isLoading || !wrapperRef.current || series.length === 0) return;
@@ -179,10 +189,7 @@ export const HansChart = React.memo((props: HansChartProps) => {
           className="hans-chart-canvas"
           ref={wrapperRef}
           style={{
-            height: Math.max(
-              220,
-              height - (title ? 60 : 24) - legendRowHeight,
-            ),
+            height: Math.max(220, height - (title ? 60 : 24) - legendRowHeight),
           }}
         />
         {!isChartReady ? (

@@ -273,6 +273,44 @@ describe('HansChart', () => {
     expect(container.querySelector('.hans-chart-legend')).not.toBeInTheDocument();
   });
 
+  it('Should re-resolve theme-aware colors when the observed theme attributes mutate', () => {
+    let mutationCallback: MutationCallback | undefined;
+    const originalMutationObserver = globalThis.MutationObserver;
+
+    class FakeMutationObserver {
+      constructor(callback: MutationCallback) {
+        mutationCallback = callback;
+      }
+      observe(): void {}
+      disconnect(): void {}
+    }
+
+    globalThis.MutationObserver = FakeMutationObserver as unknown as typeof MutationObserver;
+
+    render(
+      <HansChart
+        chartType="bar"
+        categories={['Q1']}
+        series={[{ name: 'Orders', type: 'bar', data: [4], label: { position: 'inside' } }]}
+      />,
+    );
+
+    expect(echartsMocks.mockSetOption).toHaveBeenCalledTimes(1);
+
+    document.documentElement.style.setProperty('--text-color', '#ff00ff');
+    act(() => {
+      mutationCallback?.([], {} as MutationObserver);
+    });
+
+    expect(echartsMocks.mockSetOption.mock.calls.length).toBeGreaterThan(1);
+    const latestOption =
+      echartsMocks.mockSetOption.mock.calls[echartsMocks.mockSetOption.mock.calls.length - 1][0];
+    expect(latestOption.series[0].label.color).toBe('#ff00ff');
+
+    document.documentElement.style.removeProperty('--text-color');
+    globalThis.MutationObserver = originalMutationObserver;
+  });
+
   it('Should normalize object datapoints in cartesian charts', () => {
     render(
       <HansChart
